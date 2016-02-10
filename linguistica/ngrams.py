@@ -2,8 +2,6 @@
 
 from collections import Counter
 
-from linguistica.util import ENCODING
-
 
 def fix_punctuations(line):
     line = line.replace('.', ' . ')
@@ -17,8 +15,7 @@ def fix_punctuations(line):
     return line
 
 
-def run(file_abspath=None, encoding=ENCODING, keep_case=False,
-        max_word_tokens=0):
+def run(corpus_file_object=None, keep_case=False, max_word_tokens=0):
 
     unigrams_counter = Counter()
     bigrams_counter = Counter()
@@ -26,7 +23,7 @@ def run(file_abspath=None, encoding=ENCODING, keep_case=False,
 
     current_word_token_count = 0
 
-    for line in open(file_abspath, encoding=encoding):
+    for line in corpus_file_object:
         if max_word_tokens and current_word_token_count > max_word_tokens:
             break
 

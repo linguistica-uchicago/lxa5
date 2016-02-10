@@ -2,19 +2,29 @@
 
 import os
 import json
+from io import StringIO
 
 from linguistica import (ngrams, signatures)
+from linguistica.ngrams import fix_punctuations
 from linguistica.util import (ENCODING, CONFIG_FILENAME, CONFIG,
                               double_sorted)
 
 
 class Lexicon:
-    def __init__(self, file_path, wordlist=False, encoding=ENCODING,
+    def __init__(self, file_path=None, wordlist_file=False,
+                 corpus_object=None, wordlist_object=None, encoding=ENCODING,
                  configfile=CONFIG_FILENAME, keep_case=False, **kwargs):
         self.file_abspath = self.check_file_path(file_path)
-        self.directory = os.path.dirname(self.file_abspath)
-        self.is_wordlist = wordlist
+
+        if self.file_abspath is None:
+            self.directory = None
+        else:
+            self.directory = os.path.dirname(self.file_abspath)
+
+        self.file_is_wordlist = wordlist_file
         self.encoding = encoding
+        self.corpus_object = corpus_object
+        self.wordlist_object = wordlist_object
         self.configfile = configfile
         self.config = self.determine_config(**kwargs)
         self.keep_case = keep_case
@@ -26,6 +36,9 @@ class Lexicon:
         """
         Return the absolute path of *file_path*.
         """
+        if file_path is None:
+            return None
+
         file_abspath = os.path.abspath(file_path)
         if not os.path.isfile(file_abspath):
             raise ValueError('invalid file path -- ' + file_path)
@@ -36,10 +49,9 @@ class Lexicon:
         """
         Determine the configuration dict.
         """
+        temp_config = CONFIG
         if os.path.isfile(self.configfile):
-            temp_config = json.load(open(self.configfile))
-        else:
-            temp_config = CONFIG
+            temp_config.update(json.load(open(self.configfile)))
 
         for parameter in kwargs.keys():
             if parameter not in CONFIG:
@@ -50,9 +62,6 @@ class Lexicon:
         return temp_config
 
     def _initialize(self):
-        """
-        Initialize all data objects.
-        """
         # word ngrams
         self._word_unigram_counter = None
         self._word_bigram_counter = None
@@ -60,6 +69,8 @@ class Lexicon:
 
         # wordlist
         self._wordlist = None
+        if self.wordlist_object is not None:
+            self._wordlist = list(self.wordlist_object)
 
         # signature-related objects
         self._stems_to_words = None
@@ -73,6 +84,23 @@ class Lexicon:
         self._words_in_signatures = None
         self._affixes = None
         self._stems = None
+
+        # corpus file object
+        if self.corpus_object is not None:
+            corpus_str = fix_punctuations(str(self.corpus_object))
+            self.corpus_file_object = StringIO(corpus_str)
+        elif self.file_abspath and not self.file_is_wordlist:
+            self.corpus_file_object = open(self.file_abspath,
+                                           encoding=self.encoding)
+        else:
+            self.corpus_file_object = None
+
+        # wordlist file object
+        if self.file_is_wordlist:
+            self.wordlist_file_object = open(self.file_abspath,
+                                             encoding=self.encoding)
+        else:
+            self.wordlist_file_object = StringIO()
 
     def reset(self):
         """
@@ -88,7 +116,13 @@ class Lexicon:
         Return a dict of words with their counts.
         """
         if self._word_unigram_counter is None:
-            self._make_word_ngrams()
+            if self.corpus_file_object:
+                self._make_word_ngrams_from_corpus_file_object()
+            elif self.wordlist_file_object:
+                self._make_word_unigram_counter_from_wordlist_file_object()
+            else:
+                raise ValueError('no corpus/wordlist file object '
+                                 'or wordlist object')
         return self._word_unigram_counter
 
     def word_bigram_counter(self):
@@ -96,7 +130,7 @@ class Lexicon:
         Return a dict of word bigrams with their counts.
         """
         if self._word_bigram_counter is None:
-            self._make_word_ngrams()
+            self._make_word_ngrams_from_corpus_file_object()
         return self._word_bigram_counter
 
     def word_trigram_counter(self):
@@ -104,7 +138,7 @@ class Lexicon:
         Return a dict of word trigrams with their counts.
         """
         if self._word_trigram_counter is None:
-            self._make_word_ngrams()
+            self._make_word_ngrams_from_corpus_file_object()
         return self._word_trigram_counter
 
     def _make_wordlist(self):
@@ -126,9 +160,35 @@ class Lexicon:
             self._make_wordlist()
         return self._wordlist
 
-    def _make_word_ngrams(self):
+    def _make_word_unigram_counter_from_wordlist_file_object(self):
+        word_freq_dict = dict()
+
+        if self.wordlist_file_object is None:
+            self._word_unigram_counter = dict()
+            return
+
+        for line in self.wordlist_file_object:
+            line = line.strip()
+            if not line:
+                continue
+
+            if not self.keep_case:
+                line = line.lower()
+
+            word, *rest = line.split()
+
+            try:
+                freq = int(rest[0])
+            except (ValueError, IndexError):
+                freq = 1
+
+            word_freq_dict[word] = freq
+
+        self._word_unigram_counter = word_freq_dict
+
+    def _make_word_ngrams_from_corpus_file_object(self):
         unigrams, bigrams, trigrams = ngrams.run(
-            file_abspath=self.file_abspath, encoding=self.encoding,
+            corpus_file_object=self.corpus_file_object,
             keep_case=self.keep_case,
             max_word_tokens=self.config['max_word_tokens'])
 
