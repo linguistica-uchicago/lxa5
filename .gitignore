@@ -1,0 +1,7 @@
+/.idea/
+/test_dev/
+/linguistica.egg-info/
+/doc/
+
+/linguistica/*.pyc
+*.sh
