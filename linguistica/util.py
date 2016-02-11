@@ -87,6 +87,18 @@ PROGRAM_TO_PARAMETERS = {
 }
 
 
+def fix_punctuations(line):
+    line = line.replace('.', ' . ')
+    line = line.replace(',', ' , ')
+    line = line.replace(';', ' ; ')
+    line = line.replace('!', ' ! ')
+    line = line.replace('?', ' ? ')
+    line = line.replace(':', ' : ')
+    line = line.replace(')', ' ) ')
+    line = line.replace('(', ' ( ')
+    return line
+
+
 def double_sorted(input_object, key=lambda x: x, reverse=False,
                   subkey=lambda x: x, subreverse=False):
     if not input_object:
@@ -134,14 +146,16 @@ class LinguisticaJSONEncoder(json.JSONEncoder):
     See example here: https://docs.python.org/3/library/json.html
     """
     def default(self, obj):
-        if isinstance(obj, set):
+        if type(obj) is set:
             return sorted(obj)
-        if type(obj) not in {int, float} and is_complex(obj):
+        elif type(obj) is tuple:
+            return list(obj)
+        elif type(obj) not in {int, float} and is_complex(obj):
             return obj.real
         return json.JSONEncoder.default(self, obj)
 
 
-def json_dump(obj, outfile_opened, ensure_ascii=False, indent=4,
+def json_dump(obj, outfile_opened, ensure_ascii=False, indent=2,
               separators=(',', ': '), sort_keys=True,
               cls=LinguisticaJSONEncoder):
     """

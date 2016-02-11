@@ -2,17 +2,7 @@
 
 from collections import Counter
 
-
-def fix_punctuations(line):
-    line = line.replace('.', ' . ')
-    line = line.replace(',', ' , ')
-    line = line.replace(';', ' ; ')
-    line = line.replace('!', ' ! ')
-    line = line.replace('?', ' ? ')
-    line = line.replace(':', ' : ')
-    line = line.replace(')', ' ) ')
-    line = line.replace('(', ' ( ')
-    return line
+from linguistica.util import fix_punctuations
 
 
 def run(corpus_file_object=None, keep_case=False, max_word_tokens=0):

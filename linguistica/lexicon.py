@@ -4,10 +4,9 @@ import os
 import json
 from io import StringIO
 
-from linguistica import (ngrams, signatures)
-from linguistica.ngrams import fix_punctuations
+from linguistica import (ngrams, signatures, manifold)
 from linguistica.util import (ENCODING, CONFIG_FILENAME, CONFIG,
-                              double_sorted)
+                              double_sorted, fix_punctuations)
 
 
 class Lexicon:
@@ -101,6 +100,12 @@ class Lexicon:
                                              encoding=self.encoding)
         else:
             self.wordlist_file_object = StringIO()
+
+        # manifold-related objects
+        self._words_to_neighbors = None
+        self._words_to_contexts = None
+        self._contexts_to_words = None
+        self._neighbor_graph = None
 
     def reset(self):
         """
@@ -276,3 +281,35 @@ class Lexicon:
         self._words_in_signatures = set(self._words_to_signatures.keys())
         self._affixes = set(self._affixes_to_signatures.keys())
         self._stems = set(self._stems_to_words.keys())
+
+    # --------------------------------------------------------------------------
+    # for the "manifold" module
+
+    def words_to_neighbors(self):
+        if self._words_to_neighbors is None:
+            self._make_all_manifold_objects()
+        return self._words_to_neighbors
+
+    def words_to_contexts(self):
+        if self._words_to_contexts is None:
+            self._make_all_manifold_objects()
+        return self._words_to_contexts
+
+    def contexts_to_words(self):
+        if self._contexts_to_words is None:
+            self._make_all_manifold_objects()
+        return self._contexts_to_words
+
+    def neighbor_graph(self):
+        if self._neighbor_graph is None:
+            self._make_all_manifold_objects()
+        return self._neighbor_graph
+
+    def _make_all_manifold_objects(self):
+        self._words_to_neighbors, self._words_to_contexts, \
+            self._contexts_to_words = manifold.run(
+                self.word_unigram_counter(), self.word_bigram_counter(),
+                self.word_trigram_counter(), self.config['max_word_types'],
+                self.config['n_neighbors'], self.config['n_eigenvectors'],
+                self.config['min_context_count'])
+        self._neighbor_graph = manifold.compute_graph(self._words_to_neighbors)
