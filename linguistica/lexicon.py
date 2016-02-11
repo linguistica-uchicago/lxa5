@@ -4,7 +4,7 @@ import os
 import json
 from io import StringIO
 
-from linguistica import (ngrams, signatures, manifold, phon)
+from linguistica import (ngram, signature, manifold, phon)
 from linguistica.util import (ENCODING, CONFIG_FILENAME, CONFIG,
                               double_sorted, fix_punctuations)
 
@@ -197,7 +197,7 @@ class Lexicon:
         self._word_unigram_counter = word_freq_dict
 
     def _make_word_ngrams_from_corpus_file_object(self):
-        unigrams, bigrams, trigrams = ngrams.run(
+        unigrams, bigrams, trigrams = ngram.run(
             corpus_file_object=self.corpus_file_object,
             keep_case=self.keep_case,
             max_word_tokens=self.config['max_word_tokens'])
@@ -260,27 +260,27 @@ class Lexicon:
         return self._stems
 
     def _make_all_signature_objects(self):
-        self._stems_to_words = signatures.make_stems_to_words(
+        self._stems_to_words = signature.make_stems_to_words(
             self.wordlist(), self.config['min_stem_length'],
             self.config['max_affix_length'], self.config['suffixing'],
             self.config['min_sig_count'])
 
-        self._signatures_to_stems = signatures.make_signatures_to_stems(
+        self._signatures_to_stems = signature.make_signatures_to_stems(
             self._stems_to_words, self.config['max_affix_length'],
             self.config['min_sig_count'], self.config['suffixing'])
 
-        self._stems_to_signatures = signatures.make_stems_to_signatures(
+        self._stems_to_signatures = signature.make_stems_to_signatures(
             self._signatures_to_stems)
 
-        self._words_to_signatures = signatures.make_words_to_signatures(
+        self._words_to_signatures = signature.make_words_to_signatures(
             self._stems_to_words, self._stems_to_signatures)
 
-        self._words_to_sigtransforms = signatures.make_words_to_sigtransforms(
+        self._words_to_sigtransforms = signature.make_words_to_sigtransforms(
             self._words_to_signatures, self.config['suffixing'])
 
         self._signatures = set(self._signatures_to_stems.keys())
 
-        self._affixes_to_signatures = signatures.make_affixes_to_signatures(
+        self._affixes_to_signatures = signature.make_affixes_to_signatures(
             self._signatures)
 
         self._words_in_signatures = set(self._words_to_signatures.keys())
