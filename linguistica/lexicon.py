@@ -69,7 +69,7 @@ class Lexicon:
         # wordlist
         self._wordlist = None
         if self.wordlist_object is not None:
-            self._wordlist = list(self.wordlist_object)
+            self._wordlist = list(set(self.wordlist_object))
 
         # signature-related objects
         self._stems_to_words = None

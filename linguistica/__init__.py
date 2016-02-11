@@ -1,4 +1,35 @@
-# -*- encoding: utf-8 -*-
+# -*- encoding: utf8 -*-
+
+"""
+A Linguistica object is initialized with some data.
+The way this can be done depends on the nature of your data source:
+
+.. currentmodule:: linguistica
+
+.. autosummary::
+
+   read_corpus
+   read_wordlist
+   from_corpus
+   from_wordlist
+
+For instance, if the Brown corpus (Kučera and Francis 1967) is available on
+your local drive:
+
+.. code-block:: python
+
+   >>> import linguistica as lxa
+   >>> lxa_object = lxa.read_corpus('path/to/english.brown.txt')
+
+Use ``read_wordlist()``
+if you have a wordlist text file instead (where each line contains
+one word type, optionally followed by whitespace plus frequency count for that
+word).
+
+Use ``from_corpus()`` or ``from_wordlist()``
+if your data is an in-memory Python object (either a corpus text or a wordlist).
+
+"""
 
 import os
 
@@ -18,7 +49,7 @@ def read_corpus(file_path, encoding=ENCODING,
                 configfile=CONFIG_FILENAME, keep_case=False,
                 **kwargs):
     """
-    Create the Linguistica lexicon object with a corpus data file.
+    Create a Linguistica object with a corpus data file.
 
     :param file_path: path of input corpus file
     :param encoding: encoding of the file at *file_path*. Default: ``'utf8'``
@@ -35,10 +66,11 @@ def read_wordlist(file_path, encoding=ENCODING,
                   configfile=CONFIG_FILENAME, keep_case=False,
                   **kwargs):
     """
-    Create the Linguistica lexicon object with a wordlist file.
+    Create a Linguistica object with a wordlist file.
 
     :param file_path: path of input wordlist file where each line contains
-        one word type at the beginning of the line.
+        one word type (and, optionally, a whitespace plus the token count
+        for that word).
     :param encoding: encoding of the file at *file_path*. Default: ``'utf8'``
     :param configfile: configuration filename. Default: ``config.json``
     :param keep_case: whether to keep case distinction (e.g., "the" vs "The").
@@ -52,10 +84,9 @@ def read_wordlist(file_path, encoding=ENCODING,
 def from_corpus(corpus_object, configfile=CONFIG_FILENAME, keep_case=False,
                 **kwargs):
     """
-    Create the Linguistica lexicon object with a corpus object.
+    Create a Linguistica object with a corpus object.
 
-    :param corpus_object: a corpus object (e.g., a long string of text) to
-        which ``str()`` applies.
+    :param corpus_object: a long string of text to which ``str()`` applies.
     :param configfile: configuration filename. Default: ``config.json``
     :param keep_case: whether to keep case distinction (e.g., "the" vs "The").
         Default: ``False``
@@ -68,10 +99,9 @@ def from_corpus(corpus_object, configfile=CONFIG_FILENAME, keep_case=False,
 def from_wordlist(wordlist_object, configfile=CONFIG_FILENAME, keep_case=False,
                   **kwargs):
     """
-    Create the Linguistica lexicon object with a wordlist object.
+    Create a Linguistica object with a wordlist object.
 
-    :param wordlist_object: a wordlist object which is a sequence of word types
-        as str.
+    :param wordlist_object: a sequence of unique word types as str
     :param configfile: configuration filename. Default: ``config.json``
     :param keep_case: whether to keep case distinction (e.g., "the" vs "The").
         Default: ``False``
