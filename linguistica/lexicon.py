@@ -1,5 +1,84 @@
 # -*- encoding: utf-8 -*-
 
+"""
+Once a Linguistica object (such as ``lxa_object`` below with the Brown corpus)
+is initialized, various methods and attributes are available for automatic
+linguistic analysis:
+
+.. code-block:: python
+
+   >>> import linguistica as lxa
+   >>> lxa_object = lxa.read_corpus('path/to/english-brown.txt')
+   >>> words = lxa_object.wordlist()  # using wordlist()
+
+Word ngrams
+-----------
+
+.. currentmodule:: linguistica.lexicon.Lexicon
+
+.. autosummary::
+
+   wordlist
+   word_unigram_counter
+   word_bigram_counter
+   word_trigram_counter
+
+Morphological signatures
+------------------------
+
+.. currentmodule:: linguistica.lexicon.Lexicon
+
+.. autosummary::
+
+   signatures
+   stems
+   affixes
+
+   signatures_to_stems
+   affixes_to_signatures
+   stems_to_signatures
+   stems_to_words
+   words_in_signatures
+   words_to_signatures
+   words_to_sigtransforms
+
+Word manifolds and syntactic word neighborhood
+----------------------------------------------
+
+.. currentmodule:: linguistica.lexicon.Lexicon
+
+.. autosummary::
+
+   words_to_neighbors
+   neighbor_graph
+   words_to_contexts
+   contexts_to_words
+
+Phonology
+---------
+
+.. currentmodule:: linguistica.lexicon.Lexicon
+
+.. autosummary::
+
+   phone_unigram_counter
+   phone_bigram_counter
+   phone_trigram_counter
+
+Tries
+-----
+
+.. currentmodule:: linguistica.lexicon.Lexicon
+
+.. autosummary::
+
+   broken_words_left_to_right
+   broken_words_right_to_left
+   successors
+   predecessors
+
+"""
+
 import os
 import json
 from io import StringIO
@@ -10,10 +89,15 @@ from linguistica.util import (ENCODING, CONFIG_FILENAME, CONFIG,
 
 
 class Lexicon:
+    """
+    A class for a Linguistica object. It is called "Lexicon" for the historical
+    reason that the same element in the C++ version of Linguistica 4 is also
+    called as such.
+    """
     def __init__(self, file_path=None, wordlist_file=False,
                  corpus_object=None, wordlist_object=None, encoding=ENCODING,
                  configfile=CONFIG_FILENAME, keep_case=False, **kwargs):
-        self.file_abspath = self.check_file_path(file_path)
+        self.file_abspath = self._check_file_path(file_path)
 
         if self.file_abspath is None:
             self.directory = None
@@ -25,13 +109,13 @@ class Lexicon:
         self.corpus_object = corpus_object
         self.wordlist_object = wordlist_object
         self.configfile = configfile
-        self.config = self.determine_config(**kwargs)
+        self.config = self._determine_config(**kwargs)
         self.keep_case = keep_case
 
         self._initialize()
 
     @staticmethod
-    def check_file_path(file_path):
+    def _check_file_path(file_path):
         """
         Return the absolute path of *file_path*.
         """
@@ -44,7 +128,7 @@ class Lexicon:
         else:
             return file_abspath
 
-    def determine_config(self, **kwargs):
+    def _determine_config(self, **kwargs):
         """
         Determine the configuration dict.
         """
@@ -120,7 +204,7 @@ class Lexicon:
 
     def reset(self):
         """
-        Reset all data objects.
+        Reset all attributes to be ``None``.
         """
         self._initialize()
 
@@ -130,6 +214,8 @@ class Lexicon:
     def word_unigram_counter(self):
         """
         Return a dict of words with their counts.
+
+        :rtype: dict(str: in)
         """
         if self._word_unigram_counter is None:
             if self.corpus_file_object:
@@ -144,6 +230,8 @@ class Lexicon:
     def word_bigram_counter(self):
         """
         Return a dict of word bigrams with their counts.
+
+        :rtype: dict(tuple(str): int)
         """
         if self._word_bigram_counter is None:
             self._make_word_ngrams_from_corpus_file_object()
@@ -152,6 +240,8 @@ class Lexicon:
     def word_trigram_counter(self):
         """
         Return a dict of word trigrams with their counts.
+
+        :rtype: dict(tuple(str): int)
         """
         if self._word_trigram_counter is None:
             self._make_word_ngrams_from_corpus_file_object()
@@ -171,6 +261,8 @@ class Lexicon:
         """
         Return a wordlist sorted by word frequency in descending order.
         (So "the" will most likely be the first word for written English.)
+
+        :rtype: list(str)
         """
         if self._wordlist is None:
             self._make_wordlist()
@@ -216,51 +308,101 @@ class Lexicon:
     # for the "signatures" module
 
     def stems_to_words(self):
+        """
+        Return a dict of stems to words.
+
+        :rtype: dict(str: set(str))
+        """
         if self._stems_to_words is None:
             self._make_all_signature_objects()
         return self._stems_to_words
 
     def signatures_to_stems(self):
+        """
+        Return a dict of morphological signatures to stems.
+
+        :rtype: dict(tuple(str): set(str))
+        """
         if self._signatures_to_stems is None:
             self._make_all_signature_objects()
         return self._signatures_to_stems
 
     def stems_to_signatures(self):
+        """
+        Return a dict of stems to morphological signatures.
+
+        :rtype: dict(str: set(tuple(str)))
+        """
         if self._stems_to_signatures is None:
             self._make_all_signature_objects()
         return self._stems_to_signatures
 
     def words_to_signatures(self):
+        """
+        Return a dict of words to morphological signatures.
+
+        :rtype: dict(str: set(tuple(str)))
+        """
         if self._words_to_signatures is None:
             self._make_all_signature_objects()
         return self._words_to_signatures
 
     def words_to_sigtransforms(self):
+        """
+        Return a dict of words to signature transforms.
+
+        :rtype: dict(str: set(tuple))
+        """
         if self._words_to_sigtransforms is None:
             self._make_all_signature_objects()
         return self._words_to_sigtransforms
 
     def signatures(self):
+        """
+        Return a set of morphological signatures.
+
+        :rtype: set(tuple(str))
+        """
         if self._signatures is None:
             self._make_all_signature_objects()
         return self._signatures
 
     def affixes_to_signatures(self):
+        """
+        Return a dict of affixes to morphological signatures.
+
+        :rtype: dict(str: set(tuple(str)))
+        """
         if self._affixes_to_signatures is None:
             self._make_all_signature_objects()
         return self._affixes_to_signatures
 
     def words_in_signatures(self):
+        """
+        Return a set of words that are in at least one morphological signature.
+
+        :rtype: set(str)
+        """
         if self._words_in_signatures is None:
             self._make_all_signature_objects()
         return self._words_in_signatures
 
     def affixes(self):
+        """
+        Return a set of affixes.
+
+        :rtype: set(str)
+        """
         if self._affixes is None:
             self._make_all_signature_objects()
         return self._affixes
 
     def stems(self):
+        """
+        Return a set of stems.
+
+        :rtype: set(str)
+        """
         if self._stems is None:
             self._make_all_signature_objects()
         return self._stems
@@ -297,21 +439,41 @@ class Lexicon:
     # for the "manifold" module
 
     def words_to_neighbors(self):
+        """
+        Return a dict of words to syntactic neighbors.
+
+        :rtype: dict(word: list(str))
+        """
         if self._words_to_neighbors is None:
             self._make_all_manifold_objects()
         return self._words_to_neighbors
 
     def words_to_contexts(self):
+        """
+        Return a dict of words to contexts with counts.
+
+        :rtype: dict(str: dict(tuple(str): int))
+        """
         if self._words_to_contexts is None:
             self._make_all_manifold_objects()
         return self._words_to_contexts
 
     def contexts_to_words(self):
+        """
+        Return a dict of contexts to words with counts.
+
+        :rtype: dict(tuple(str): dict(str: int))
+        """
         if self._contexts_to_words is None:
             self._make_all_manifold_objects()
         return self._contexts_to_words
 
     def neighbor_graph(self):
+        """
+        Return the syntactic word neighborhood graph.
+
+        :rtype: networkx undirected graph
+        """
         if self._neighbor_graph is None:
             self._make_all_manifold_objects()
         return self._neighbor_graph
@@ -329,16 +491,31 @@ class Lexicon:
     # for the "phon" module
 
     def phone_unigram_counter(self):
+        """
+        Return a dict of phone unigrams with counts.
+
+        :rtype: dict(str: int)
+        """
         if self._phone_unigram_counter is None:
             self._make_all_phon_objects()
         return self._phone_unigram_counter
 
     def phone_bigram_counter(self):
+        """
+        Return a dict of phone bigrams with counts.
+
+        :rtype: dict(tuple(str): int)
+        """
         if self._phone_bigram_counter is None:
             self._make_all_phon_objects()
         return self._phone_bigram_counter
 
     def phone_trigram_counter(self):
+        """
+        Return a dict of phone trigrams with counts.
+
+        :rtype: dict(tuple(str): int)
+        """
         if self._phone_trigram_counter is None:
             self._make_all_phon_objects()
         return self._phone_trigram_counter
@@ -351,21 +528,41 @@ class Lexicon:
     # for the "trie" module
 
     def broken_words_left_to_right(self):
+        """
+        Return a dict of words to their left-to-right broken form.
+
+        :rtype: dict(str: list(str))
+        """
         if self._broken_words_left_to_right is None:
             self._make_all_trie_objects()
         return self._broken_words_left_to_right
 
     def broken_words_right_to_left(self):
+        """
+        Return a dict of words to their right-to-left broken form.
+
+        :rtype: dict(str: list(str))
+        """
         if self._broken_words_right_to_left is None:
             self._make_all_trie_objects()
         return self._broken_words_right_to_left
 
     def successors(self):
+        """
+        Return a dict of word (sub)strings to their successors.
+
+        :rtype: dict(str: set(str))
+        """
         if self._successors is None:
             self._make_all_trie_objects()
         return self._successors
 
     def predecessors(self):
+        """
+        Return a dict of word (sub)strings to their predecessors.
+
+        :rtype: dict(str: set(str))
+        """
         if self._predecessors is None:
             self._make_all_trie_objects()
         return self._predecessors
