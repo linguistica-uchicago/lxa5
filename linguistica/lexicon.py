@@ -4,7 +4,7 @@ import os
 import json
 from io import StringIO
 
-from linguistica import (ngram, signature, manifold, phon)
+from linguistica import (ngram, signature, manifold, phon, trie)
 from linguistica.util import (ENCODING, CONFIG_FILENAME, CONFIG,
                               double_sorted, fix_punctuations)
 
@@ -107,10 +107,16 @@ class Lexicon:
         self._contexts_to_words = None
         self._neighbor_graph = None
 
-        # phon-related objects
+        # phon objects
         self._phone_unigram_counter = None
         self._phone_bigram_counter = None
         self._phone_trigram_counter = None
+
+        # trie objects
+        self._broken_words_left_to_right = None
+        self._broken_words_right_to_left = None
+        self._successors = None
+        self._predecessors = None
 
     def reset(self):
         """
@@ -340,3 +346,31 @@ class Lexicon:
     def _make_all_phon_objects(self):
         self._phone_unigram_counter, self._phone_bigram_counter,\
             self._phone_trigram_counter = phon.run(self.word_unigram_counter())
+
+    # --------------------------------------------------------------------------
+    # for the "trie" module
+
+    def broken_words_left_to_right(self):
+        if self._broken_words_left_to_right is None:
+            self._make_all_trie_objects()
+        return self._broken_words_left_to_right
+
+    def broken_words_right_to_left(self):
+        if self._broken_words_right_to_left is None:
+            self._make_all_trie_objects()
+        return self._broken_words_right_to_left
+
+    def successors(self):
+        if self._successors is None:
+            self._make_all_trie_objects()
+        return self._successors
+
+    def predecessors(self):
+        if self._predecessors is None:
+            self._make_all_trie_objects()
+        return self._predecessors
+
+    def _make_all_trie_objects(self):
+        self._broken_words_left_to_right, self._broken_words_right_to_left,\
+            self._successors, self._predecessors = trie.run(
+                self.wordlist(), self.config['min_stem_length'])
