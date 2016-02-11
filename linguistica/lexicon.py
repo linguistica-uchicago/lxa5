@@ -4,7 +4,7 @@ import os
 import json
 from io import StringIO
 
-from linguistica import (ngrams, signatures, manifold)
+from linguistica import (ngrams, signatures, manifold, phon)
 from linguistica.util import (ENCODING, CONFIG_FILENAME, CONFIG,
                               double_sorted, fix_punctuations)
 
@@ -106,6 +106,11 @@ class Lexicon:
         self._words_to_contexts = None
         self._contexts_to_words = None
         self._neighbor_graph = None
+
+        # phon-related objects
+        self._phone_unigram_counter = None
+        self._phone_bigram_counter = None
+        self._phone_trigram_counter = None
 
     def reset(self):
         """
@@ -313,3 +318,25 @@ class Lexicon:
                 self.config['n_neighbors'], self.config['n_eigenvectors'],
                 self.config['min_context_count'])
         self._neighbor_graph = manifold.compute_graph(self._words_to_neighbors)
+
+    # --------------------------------------------------------------------------
+    # for the "phon" module
+
+    def phone_unigram_counter(self):
+        if self._phone_unigram_counter is None:
+            self._make_all_phon_objects()
+        return self._phone_unigram_counter
+
+    def phone_bigram_counter(self):
+        if self._phone_bigram_counter is None:
+            self._make_all_phon_objects()
+        return self._phone_bigram_counter
+
+    def phone_trigram_counter(self):
+        if self._phone_trigram_counter is None:
+            self._make_all_phon_objects()
+        return self._phone_trigram_counter
+
+    def _make_all_phon_objects(self):
+        self._phone_unigram_counter, self._phone_bigram_counter,\
+            self._phone_trigram_counter = phon.run(self.word_unigram_counter())
