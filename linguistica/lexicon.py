@@ -14,6 +14,8 @@ linguistic analysis:
 Word ngrams
 -----------
 
+Parameter: ``max_word_tokens``
+
 .. currentmodule:: linguistica.lexicon.Lexicon
 
 .. autosummary::
@@ -25,6 +27,8 @@ Word ngrams
 
 Morphological signatures
 ------------------------
+
+Parameters: ``min_stem_length``, ``max_affix_length``, ``min_sig_count``, ``suffixing``
 
 .. currentmodule:: linguistica.lexicon.Lexicon
 
@@ -44,6 +48,8 @@ Morphological signatures
 
 Word manifolds and syntactic word neighborhood
 ----------------------------------------------
+
+Parameters: ``max_word_types``, ``min_context_count``, ``n_neighbors``, ``n_eigenvectors``
 
 .. currentmodule:: linguistica.lexicon.Lexicon
 
@@ -67,6 +73,8 @@ Phonology
 
 Tries
 -----
+
+Parameter: ``min_stem_length``
 
 .. currentmodule:: linguistica.lexicon.Lexicon
 
