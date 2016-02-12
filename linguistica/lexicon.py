@@ -295,6 +295,10 @@ class Lexicon:
         self._word_unigram_counter = word_freq_dict
 
     def _make_word_ngrams_from_corpus_file_object(self):
+        if self.corpus_file_object is None:
+            raise ValueError('No corpus available. The ngram module cannot '
+                             'be run to get word ngrams.')
+
         unigrams, bigrams, trigrams = ngram.run(
             corpus_file_object=self.corpus_file_object,
             keep_case=self.keep_case,
