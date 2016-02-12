@@ -1,3 +1,5 @@
+# -*- encoding: utf-8 -*-
+
 from linguistica.util import NULL
 
 
@@ -67,6 +69,7 @@ def get_successors(wordlist, broken_words):
     successors = dict()
     for i, this_word in enumerate(wordlist):
         this_word_parsed = broken_words[this_word]
+
         number_of_pieces = len(this_word_parsed)
 
         if not this_word_parsed:
@@ -90,9 +93,6 @@ def get_successors(wordlist, broken_words):
 
         successors[word_being_built].add(NULL)
 
-    for word_begin in successors:  # turn these into an alphabetized list
-        successors[word_begin] = sorted(successors[word_begin])
-
     return successors
 
 
@@ -106,6 +106,34 @@ def common_prefix_length(s1, s2):
         if s1[i] != s2[i]:
             return i
     return length
+
+
+# noinspection PyPep8
+def reverse_direction(str_to_sequences_of_strings, is_list=False):
+    output_dict = dict()
+    for s, sequence_of_strings in str_to_sequences_of_strings.items():
+        if type(sequence_of_strings) is set:
+            new_sequence = set()
+            grow = lambda sequence_, new_item: sequence_.add(new_item)
+        else:  # sequences_of_strings is a list
+            new_sequence = list()
+            grow = lambda sequence_, new_item: sequence_.append(new_item)
+
+        for item in sequence_of_strings:
+            if item != NULL:
+                item = item[::-1]
+
+            grow(new_sequence, item)
+
+        if is_list:
+            new_sequence = new_sequence[::-1]
+
+        if s != NULL:
+            s = s[::-1]
+
+        output_dict[s] = new_sequence
+
+    return output_dict
 
 
 def run(wordlist=None, min_stem_length=4):
@@ -129,6 +157,13 @@ def run(wordlist=None, min_stem_length=4):
 
     successors = get_successors(wordlist, broken_words_left_to_right)
     predecessors = get_successors(reversed_wordlist, broken_words_right_to_left)
+
+    # --------------------------------------------------------------------------
+    # Reverse direction to right-to-left
+
+    broken_words_right_to_left = reverse_direction(broken_words_right_to_left,
+                                                   is_list=True)
+    predecessors = reverse_direction(predecessors)
 
     return (broken_words_left_to_right, broken_words_right_to_left,
             successors, predecessors)
