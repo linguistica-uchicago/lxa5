@@ -85,6 +85,17 @@ Parameter: ``min_stem_length``
    successors
    predecessors
 
+Other methods and attributes
+----------------------------
+
+For accessing and changing parameters, see :ref:`parameters`.
+
+.. currentmodule:: linguistica.lexicon.Lexicon
+
+.. autosummary::
+
+   reset
+
 """
 
 import sys
@@ -241,7 +252,9 @@ class Lexicon:
 
     def reset(self):
         """
-        Reset all attributes to be ``None``.
+        Reset the Linguistica object. While the file path information is
+        retained, all computed objects (ngrams, signatures, word neighbors, etc)
+        are reset to ``NULL``; if they are called again, they are re-computed.
         """
         self._initialize()
 

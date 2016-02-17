@@ -35,7 +35,7 @@ PARAMETERS = {'max_word_tokens': 0,  # zero means all word tokens
               'min_stem_length': 4,
               'max_affix_length': 4,
               'min_sig_count': 5,
-              'min_affix_length': 1,
+              # 'min_affix_length': 1,
               # 'min_sf_pf_count': 3,
               'n_neighbors': 9,
               'n_eigenvectors': 11,

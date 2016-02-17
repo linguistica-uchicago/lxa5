@@ -34,6 +34,8 @@ word).
 Use ``from_corpus()`` or ``from_wordlist()``
 if your data is an in-memory Python object (either a corpus text or a wordlist).
 
+.. _parameters:
+
 Parameters
 ----------
 
@@ -73,7 +75,6 @@ The method ``parameters()`` returns the parameters and their values as a dict:
    {'max_affix_length': 4,
     'max_word_tokens': 0,
     'max_word_types': 1000,
-    'min_affix_length': 1,
     'min_context_count': 3,
     'min_sig_count': 5,
     'min_stem_length': 4,
