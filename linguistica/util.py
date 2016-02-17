@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- encoding: utf8 -*-
 
 import json
 
@@ -20,62 +20,55 @@ SEP_NGRAM = '\t'        # separator between words in an ngram
 NULL = 'NULL'
 
 # ------------------------------------------------------------------------------
-# configuration, with the "factory settings"
+# parameters, with the "factory settings"
 
 # What programs use what parameters:
 #
-# ngrams:     max_word_tokens
-# signatures: min_stem_length, max_affix_length, min_sig_count
-# phon:       (no parameters so far)
-# tries:      min_stem_length, min_affix_length, min_sf_pf_count
-# manifold:   max_word_types, n_neighbors, n_eigenvectors, min_context_count
+# ngram:     max_word_tokens
+# signature: min_stem_length, max_affix_length, min_sig_count
+# phon:      (no parameters so far)
+# trie:      min_stem_length, min_affix_length, min_sf_pf_count
+# manifold:  max_word_types, n_neighbors, n_eigenvectors, min_context_count
 # (See the individual programs for what these parameters mean.)
 
-CONFIG = {'max_word_tokens': 0,  # zero means all word tokens
-          'min_stem_length': 4,
-          'max_affix_length': 4,
-          'min_sig_count': 5,
-          'min_affix_length': 1,
-          'min_sf_pf_count': 3,
-          'n_neighbors': 9,
-          'n_eigenvectors': 11,
-          'min_context_count': 3,
-          'max_word_types': 1000,
-          'suffixing': 1,
+PARAMETERS = {'max_word_tokens': 0,  # zero means all word tokens
+              'min_stem_length': 4,
+              'max_affix_length': 4,
+              'min_sig_count': 5,
+              'min_affix_length': 1,
+              # 'min_sf_pf_count': 3,
+              'n_neighbors': 9,
+              'n_eigenvectors': 11,
+              'min_context_count': 3,
+              'max_word_types': 1000,
+              'suffixing': 1,  # 1 means yes, 0 means no
+              }
 
-          'last_filename': '',
-          'filenames_run': list(),
-
-          'language': '',
-          'corpus': '',
-          'datafolder': '',
-          }
-
-CONFIG_FILENAME = 'config.json'
+PARAMETERS_FILENAME = 'parameters.json'
 
 # keep the following dicts for command line mode?
 
-PROGRAMS = {'all', 'signatures', 'ngrams', 'tries', 'phon', 'manifold'}
+PROGRAMS = {'all', 'signature', 'ngram', 'trie', 'phon', 'manifold'}
 
 PROGRAM_TO_DESCRIPTION = {
-    'ngrams': 'This program extracts word n-grams.',
-    'signatures': 'This program computes morphological signatures.',
+    'ngram': 'This program extracts word n-grams.',
+    'signature': 'This program computes morphological signatures.',
     'phon': 'This program extracts phon n-grams and works on phonotactics.',
-    'tries': 'This program computes tries and successor/predecessor '
-             'frequencies.',
+    'trie': 'This program computes tries and successor/predecessor '
+            'frequencies.',
     'manifold': 'This program computes word neighbors.',
 }
 
 PROGRAM_TO_PARAMETERS = {
-    'ngrams': ['max_word_tokens'],
+    'ngram': ['max_word_tokens'],
 
-    'signatures': ['max_word_tokens', 'min_stem_length', 'max_affix_length',
-                   'min_sig_count'],
+    'signature': ['max_word_tokens', 'min_stem_length', 'max_affix_length',
+                  'min_sig_count'],
 
     'phon': ['max_word_tokens'],
 
-    'tries': ['max_word_tokens', 'min_stem_length', 'min_affix_length',
-              'min_sf_pf_count'],
+    'trie': ['max_word_tokens', 'min_stem_length', 'min_affix_length',
+             'min_sf_pf_count'],
 
     'manifold': ['max_word_types', 'n_neighbors', 'n_eigenvectors',
                  'min_context_count'],

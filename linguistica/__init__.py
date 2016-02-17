@@ -69,7 +69,7 @@ Parameter              Meaning                                               Def
 import os
 
 from linguistica.lexicon import Lexicon
-from linguistica.util import (ENCODING, CONFIG_FILENAME)
+from linguistica.util import ENCODING
 
 # Version
 version_filename = os.path.join(os.path.dirname(__file__), 'VERSION')
@@ -80,26 +80,21 @@ except FileNotFoundError:
     __version__ = 'unknown version; VERSION file not found'
 
 
-def read_corpus(file_path, encoding=ENCODING,
-                configfile=CONFIG_FILENAME, keep_case=False,
-                **kwargs):
+def read_corpus(file_path, encoding=ENCODING, keep_case=False, **kwargs):
     """
     Create a Linguistica object with a corpus data file.
 
     :param file_path: path of input corpus file
     :param encoding: encoding of the file at *file_path*. Default: ``'utf8'``
-    :param configfile: configuration filename. Default: ``config.json``
     :param keep_case: whether to keep case distinction (e.g., "the" vs "The").
         Default: ``False``
-    :param kwargs: keyword arguments for configuration parameters.
+    :param kwargs: keyword arguments for parameters and their values.
     """
     return Lexicon(file_path=file_path, wordlist_file=False, encoding=encoding,
-                   configfile=configfile, keep_case=keep_case, **kwargs)
+                   keep_case=keep_case, **kwargs)
 
 
-def read_wordlist(file_path, encoding=ENCODING,
-                  configfile=CONFIG_FILENAME, keep_case=False,
-                  **kwargs):
+def read_wordlist(file_path, encoding=ENCODING, keep_case=False, **kwargs):
     """
     Create a Linguistica object with a wordlist file.
 
@@ -107,40 +102,35 @@ def read_wordlist(file_path, encoding=ENCODING,
         one word type (and, optionally, a whitespace plus the token count
         for that word).
     :param encoding: encoding of the file at *file_path*. Default: ``'utf8'``
-    :param configfile: configuration filename. Default: ``config.json``
     :param keep_case: whether to keep case distinction (e.g., "the" vs "The").
         Default: ``False``
-    :param kwargs: keyword arguments for configuration parameters.
+    :param kwargs: keyword arguments for parameters and their values.
     """
     return Lexicon(file_path=file_path, wordlist_file=True, encoding=encoding,
-                   configfile=configfile, keep_case=keep_case, **kwargs)
+                   keep_case=keep_case, **kwargs)
 
 
-def from_corpus(corpus_object, configfile=CONFIG_FILENAME, keep_case=False,
-                **kwargs):
+def from_corpus(corpus_object, keep_case=False, **kwargs):
     """
     Create a Linguistica object with a corpus object.
 
     :param corpus_object: a long string of text to which ``str()`` applies.
-    :param configfile: configuration filename. Default: ``config.json``
     :param keep_case: whether to keep case distinction (e.g., "the" vs "The").
         Default: ``False``
-    :param kwargs: keyword arguments for configuration parameters.
+    :param kwargs: keyword arguments for parameters and their values.
     """
     return Lexicon(corpus_object=corpus_object, wordlist_file=False,
-                   configfile=configfile, keep_case=keep_case, **kwargs)
+                   keep_case=keep_case, **kwargs)
 
 
-def from_wordlist(wordlist_object, configfile=CONFIG_FILENAME, keep_case=False,
-                  **kwargs):
+def from_wordlist(wordlist_object, keep_case=False, **kwargs):
     """
     Create a Linguistica object with a wordlist object.
 
     :param wordlist_object: a sequence of unique word types as str
-    :param configfile: configuration filename. Default: ``config.json``
     :param keep_case: whether to keep case distinction (e.g., "the" vs "The").
         Default: ``False``
-    :param kwargs: keyword arguments for configuration parameters.
+    :param kwargs: keyword arguments for parameters and their values.
     """
     return Lexicon(wordlist_object=wordlist_object, wordlist_file=False,
-                   configfile=configfile, keep_case=keep_case, **kwargs)
+                   keep_case=keep_case, **kwargs)

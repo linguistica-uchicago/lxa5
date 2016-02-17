@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- encoding: utf8 -*-
 
 """
 Once a Linguistica object (such as ``lxa_object`` below with the Brown corpus)
@@ -87,12 +87,12 @@ Parameter: ``min_stem_length``
 
 """
 
+import sys
 import os
-import json
 from io import StringIO
 
 from linguistica import (ngram, signature, manifold, phon, trie)
-from linguistica.util import (ENCODING, CONFIG_FILENAME, CONFIG,
+from linguistica.util import (ENCODING, PARAMETERS,
                               double_sorted, fix_punctuations)
 
 
@@ -104,7 +104,7 @@ class Lexicon:
     """
     def __init__(self, file_path=None, wordlist_file=False,
                  corpus_object=None, wordlist_object=None, encoding=ENCODING,
-                 configfile=CONFIG_FILENAME, keep_case=False, **kwargs):
+                 keep_case=False, **kwargs):
         self.file_abspath = self._check_file_path(file_path)
 
         if self.file_abspath is None:
@@ -116,8 +116,7 @@ class Lexicon:
         self.encoding = encoding
         self.corpus_object = corpus_object
         self.wordlist_object = wordlist_object
-        self.configfile = configfile
-        self.config = self._determine_config(**kwargs)
+        self.parameters_ = self._determine_parameters(**kwargs)
         self.keep_case = keep_case
 
         self._initialize()
@@ -130,27 +129,57 @@ class Lexicon:
         if file_path is None:
             return None
 
+        if type(file_path) != str:
+            raise ValueError('file path must be a str -- ' + file_path)
+
+        if sys.platform.startswith('win'):
+            file_path = file_path.replace('/', os.sep)
+        else:
+            file_path = file_path.replace('\\', os.sep)
+
         file_abspath = os.path.abspath(file_path)
         if not os.path.isfile(file_abspath):
-            raise ValueError('invalid file path -- ' + file_path)
+            raise FileNotFoundError(file_path)
         else:
             return file_abspath
 
-    def _determine_config(self, **kwargs):
+    @staticmethod
+    def _determine_parameters(**kwargs):
         """
-        Determine the configuration dict.
+        Determine the parameter dict.
         """
-        temp_config = CONFIG
-        if os.path.isfile(self.configfile):
-            temp_config.update(json.load(open(self.configfile)))
+        temp_parameters = PARAMETERS
 
         for parameter in kwargs.keys():
-            if parameter not in CONFIG:
-                raise ValueError('unknown config parameter -- ' + parameter)
+            if parameter not in PARAMETERS:
+                raise KeyError('unknown parameter -- ' + parameter)
             else:
-                temp_config[parameter] = kwargs[parameter]
+                temp_parameters[parameter] = kwargs[parameter]
 
-        return temp_config
+        return temp_parameters
+
+    def parameters(self):
+        """
+        Return the parameter dict.
+
+        :rtype: dict(str: int)
+        """
+        return self.parameters_
+
+    def change_parameters(self, **kwargs):
+        """
+        Change parameters specified by *kwargs*.
+
+        :param kwargs: keyword arguments for parameters and their new values
+        """
+        for parameter, new_value in kwargs.items():
+            if parameter not in self.parameters_:
+                raise KeyError('unknown parameter -- ' + parameter)
+
+            if type(new_value) != int:
+                raise ValueError('parameter value is not int -- ' + new_value)
+
+            self.parameters_[parameter] = new_value
 
     def _initialize(self):
         # word ngrams
@@ -310,7 +339,7 @@ class Lexicon:
         unigrams, bigrams, trigrams = ngram.run(
             corpus_file_object=self.corpus_file_object,
             keep_case=self.keep_case,
-            max_word_tokens=self.config['max_word_tokens'])
+            max_word_tokens=self.parameters_['max_word_tokens'])
 
         self._word_unigram_counter = unigrams
         self._word_bigram_counter = bigrams
@@ -421,13 +450,13 @@ class Lexicon:
 
     def _make_all_signature_objects(self):
         self._stems_to_words = signature.make_stems_to_words(
-            self.wordlist(), self.config['min_stem_length'],
-            self.config['max_affix_length'], self.config['suffixing'],
-            self.config['min_sig_count'])
+            self.wordlist(), self.parameters_['min_stem_length'],
+            self.parameters_['max_affix_length'], self.parameters_['suffixing'],
+            self.parameters_['min_sig_count'])
 
         self._signatures_to_stems = signature.make_signatures_to_stems(
-            self._stems_to_words, self.config['max_affix_length'],
-            self.config['min_sig_count'], self.config['suffixing'])
+            self._stems_to_words, self.parameters_['max_affix_length'],
+            self.parameters_['min_sig_count'], self.parameters_['suffixing'])
 
         self._stems_to_signatures = signature.make_stems_to_signatures(
             self._signatures_to_stems)
@@ -436,7 +465,7 @@ class Lexicon:
             self._stems_to_words, self._stems_to_signatures)
 
         self._words_to_sigtransforms = signature.make_words_to_sigtransforms(
-            self._words_to_signatures, self.config['suffixing'])
+            self._words_to_signatures, self.parameters_['suffixing'])
 
         self._signatures = set(self._signatures_to_stems.keys())
 
@@ -493,10 +522,13 @@ class Lexicon:
     def _make_all_manifold_objects(self):
         self._words_to_neighbors, self._words_to_contexts, \
             self._contexts_to_words = manifold.run(
-                self.word_unigram_counter(), self.word_bigram_counter(),
-                self.word_trigram_counter(), self.config['max_word_types'],
-                self.config['n_neighbors'], self.config['n_eigenvectors'],
-                self.config['min_context_count'])
+                self.word_unigram_counter(),
+                self.word_bigram_counter(),
+                self.word_trigram_counter(),
+                self.parameters_['max_word_types'],
+                self.parameters_['n_neighbors'],
+                self.parameters_['n_eigenvectors'],
+                self.parameters_['min_context_count'])
         self._neighbor_graph = manifold.compute_graph(self._words_to_neighbors)
 
     # --------------------------------------------------------------------------
@@ -582,4 +614,4 @@ class Lexicon:
     def _make_all_trie_objects(self):
         self._broken_words_left_to_right, self._broken_words_right_to_left,\
             self._successors, self._predecessors = trie.run(
-                self.wordlist(), self.config['min_stem_length'])
+                self.wordlist(), self.parameters_['min_stem_length'])

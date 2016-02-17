@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- encoding: utf8 -*-
 
 from itertools import (combinations, groupby)
 
