@@ -64,6 +64,34 @@ Parameter              Meaning                                               Def
 ``suffixing``          whether the language is suffixing                     1 (0 = no)
 =====================  ====================================================  ==========
 
+The method ``parameters()`` returns the parameters and their values as a dict:
+
+.. code-block:: python
+
+   >>> from pprint import pprint
+   >>> pprint(lxa_object.parameters())
+   {'max_affix_length': 4,
+    'max_word_tokens': 0,
+    'max_word_types': 1000,
+    'min_affix_length': 1,
+    'min_context_count': 3,
+    'min_sig_count': 5,
+    'min_stem_length': 4,
+    'n_eigenvectors': 11,
+    'n_neighbors': 9,
+    'suffixing': 1}
+
+To change one or multiple parameters of a Linguistica object,
+use ``change_parameters()`` with keyword arguments:
+
+.. code-block:: python
+
+   >>> lxa_object.parameters()['min_stem_length']  # before the change
+   4
+   >>> lxa_object.change_parameters(min_stem_length=3)
+   >>> lxa_object.parameters()['min_stem_length']  # after the change
+   3
+
 """
 
 import os
