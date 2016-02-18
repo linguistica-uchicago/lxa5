@@ -1,5 +1,11 @@
 # -*- encoding: utf8 -*-
 
+"""
+Representation of signatures: Ideally they are sets, but they are tuples instead
+because many return objects are dictionaries with signatures as keys, and
+sets cannot be keys.
+"""
+
 from itertools import (combinations, groupby)
 
 from linguistica.util import NULL

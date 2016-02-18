@@ -402,7 +402,7 @@ class Lexicon:
         """
         Return a dict of words to signature transforms.
 
-        :rtype: dict(str: set(tuple))
+        :rtype: dict(str: set(tuple(tuple(str), str))
         """
         if self._words_to_sigtransforms is None:
             self._make_all_signature_objects()
