@@ -187,9 +187,6 @@ class Lexicon:
             if parameter not in self.parameters_:
                 raise KeyError('unknown parameter -- ' + parameter)
 
-            if type(new_value) != int:
-                raise ValueError('parameter value is not int -- ' + new_value)
-
             self.parameters_[parameter] = new_value
 
     def _initialize(self):
