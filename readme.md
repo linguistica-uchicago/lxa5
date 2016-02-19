@@ -5,10 +5,8 @@ Full documentation: http://linguistica-uchicago.github.io/lxa5/
 
 This is the eventual new home of the *Linguistica 5* code.
 
-**Python library**: operational; see documentation
-
-**Graphical user interface**: currently at
-https://github.com/lxa2015/lxa-py/tree/gui-test
-and being moved to this present repository
+Code for both the **Python library** and **graphical user interface**
+is at this present repository.
+Both interfaces are operational; see documentation.
 
 Work by Jackson Lee and John Goldsmith
