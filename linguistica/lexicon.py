@@ -39,6 +39,7 @@ Parameters: ``min_stem_length``, ``max_affix_length``, ``min_sig_count``, ``suff
    affixes
 
    signatures_to_stems
+   signatures_to_words
    affixes_to_signatures
    stems_to_signatures
    stems_to_words
@@ -205,6 +206,7 @@ class Lexicon:
         self._signatures_to_stems = None
         self._stems_to_signatures = None
         self._words_to_signatures = None
+        self._signatures_to_words = None
         self._words_to_sigtransforms = None
 
         self._signatures = None
@@ -398,6 +400,16 @@ class Lexicon:
             self._make_all_signature_objects()
         return self._words_to_signatures
 
+    def signatures_to_words(self):
+        """
+        Return a dict of morphological signatures to words.
+
+        :rtype: dict(tuple(str): set(str))
+        """
+        if self._signatures_to_words is None:
+            self._make_all_signature_objects()
+        return self._signatures_to_words
+
     def words_to_sigtransforms(self):
         """
         Return a dict of words to signature transforms.
@@ -473,6 +485,9 @@ class Lexicon:
 
         self._words_to_signatures = signature.make_words_to_signatures(
             self._stems_to_words, self._stems_to_signatures)
+
+        self._signatures_to_words = signature.make_signatures_to_words(
+            self._words_to_signatures)
 
         self._words_to_sigtransforms = signature.make_words_to_sigtransforms(
             self._words_to_signatures, self.parameters_['suffixing'])

@@ -83,6 +83,21 @@ def make_words_to_signatures(stems_to_words, stems_to_sigs):
     return words_to_sigs
 
 
+def make_signatures_to_words(words_to_signatures):
+    sigs_to_words = dict()
+
+    for word in words_to_signatures.keys():
+        sigs = words_to_signatures[word]
+
+        for sig in sigs:
+            if sig not in sigs_to_words:
+                sigs_to_words[sig] = set()
+
+            sigs_to_words[sig].add(word)
+
+    return sigs_to_words
+
+
 def make_signatures_to_stems(stems_to_words, max_affix_length, min_sig_count,
                              suffixing):
     signatures_to_stems = dict()
