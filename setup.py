@@ -5,10 +5,13 @@ from os import path
 import sys
 from setuptools import (setup, find_packages)
 
-py_version = sys.version_info[:2]
-if py_version < (3, 0):
-    sys.exit('Error: Linguistica requires Python 3.\n'
-             'You are using Python {}.{}.'.format(*py_version))
+required_py_version = (3, 4)
+current_py_version = sys.version_info[:2]
+
+if current_py_version < required_py_version:
+    sys.exit('Error: Linguistica requires Python {}.{} or above.\n'
+             .format(*required_py_version) +
+             'You are using Python {}.{}.'.format(*current_py_version))
 
 version_path = path.join(path.dirname(__file__), 'linguistica', 'VERSION')
 with open(version_path) as f:
@@ -26,18 +29,19 @@ setup(name='linguistica',
       packages=find_packages(),
       keywords=['computational linguistics', 'natural language processing',
                 'NLP', 'linguistics', 'corpora', 'speech',
-                'language', 'machine learning', 'unsupervised learning'],
+                'language', 'machine learning', 'unsupervised learning',
+                'data visualization'],
 
       install_requires=['scipy', 'numpy', 'networkx'],
 
       package_data={
-          'linguistica': ['VERSION'],
+          'linguistica': ['VERSION', 'gui/d3.min.js'],
       },
 
       zip_safe=False,
 
       classifiers=[
-          'Development Status :: 5 - Production/Stable',
+          'Development Status :: 4 - Beta',
           'Intended Audience :: Developers',
           'Intended Audience :: Education',
           'Intended Audience :: Information Technology',
