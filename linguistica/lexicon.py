@@ -595,16 +595,31 @@ class Lexicon:
         return self._phone_trigram_counter
 
     def phone_dict(self):
+        """
+        Return a dict of phone unigrams to Phone objects.
+
+        :rtype: dict(str: Phone instance)
+        """
         if self._phone_dict is None:
             self._make_all_phon_objects()
         return self._phone_dict
 
     def biphone_dict(self):
+        """
+        Return a dict of phone bigrams to Biphone objects.
+
+        :rtype: dict((str, str): Biphone instance)
+        """
         if self._phone_dict is None:
             self._make_all_phon_objects()
         return self._biphone_dict
 
     def word_phonology_dict(self):
+        """
+        Return a dict of words to Word objects.
+
+        :rtype: dict(str: Word instance)
+        """
         if self._word_dict is None:
             self._make_all_phon_objects()
         return self._word_dict
