@@ -8,7 +8,7 @@ from PyQt5.QtCore import (Qt, QUrl, QCoreApplication)
 from PyQt5.QtWidgets import (QMainWindow, QWidget, QAction, QVBoxLayout,
                              QTreeWidget, QFileDialog, QLabel, QTreeWidgetItem,
                              QTableWidget, QTableWidgetItem, QSplitter,
-                             QProgressDialog)
+                             QProgressDialog, QDialog, QGridLayout)
 from PyQt5.QtWebKitWidgets import QWebView
 
 from linguistica import read_corpus
@@ -174,22 +174,25 @@ class MainWindow(QMainWindow):
         # the Linguistica components is ongoing.
 
         self.lxa_worker = LinguisticaWorker(self.lexicon)
-        self.lxa_worker.progress_signal.connect(self.update_progress)
+        # self.lxa_worker.progress_signal.connect(self.update_progress)
 
         # set up progress dialog
-        self.progressDialog = QProgressDialog()
-        self.progressDialog.setRange(0, 100)  # it's like from 0% to 100%
-        self.progressDialog.setLabelText('Extracting word ngrams...')
-        self.progressDialog.setValue(0)  # initialize as 0 (= 0%)
-        self.progressDialog.setWindowTitle(
-            'Processing {}'.format(self.corpus_name))
-        self.progressDialog.setCancelButton(None)
+
+        # self.progressDialog = QProgressDialog()
+        # self.progressDialog.setRange(0, 100)  # it's like from 0% to 100%
+        # self.progressDialog.setLabelText('Extracting word ngrams...')
+        # self.progressDialog.setValue(0)  # initialize as 0 (= 0%)
+        # self.progressDialog.setWindowTitle(
+        #     'Processing {}'.format(self.corpus_name))
+        # self.progressDialog.setCancelButton(None)
+        # self.progressDialog.show()
+
         # We disable the "cancel" button
         # Setting up a "cancel" mechanism may not be a good idea,
         # since it would probably involve killing the linguistica component
         # worker at *any* point of its processing.
         # This may have undesirable effects (e.g., freezing the GUI) -- BAD!
-        self.progressDialog.show()
+
 
         # make sure all GUI stuff up to this point has been processed before
         # doing the real work of running the Lxa components
@@ -198,8 +201,8 @@ class MainWindow(QMainWindow):
         # Now the real work begins here!
         self.lxa_worker.start()
 
-        if self.progressDialog.value() != 100:
-            self.progressDialog.setValue(100)
+        # if self.progressDialog.value() != 100:
+        #     self.progressDialog.setValue(100)
         process_all_gui_events()
 
         self.lexicon = self.lxa_worker.get_lexicon()
