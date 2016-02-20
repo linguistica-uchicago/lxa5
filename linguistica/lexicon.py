@@ -114,6 +114,7 @@ class Lexicon:
     reason that the same element in the C++ version of Linguistica 4 is also
     called as such.
     """
+
     def __init__(self, file_path=None, wordlist_file=False,
                  corpus_object=None, wordlist_object=None, encoding=ENCODING,
                  keep_case=False, **kwargs):
@@ -242,6 +243,10 @@ class Lexicon:
         self._phone_unigram_counter = None
         self._phone_bigram_counter = None
         self._phone_trigram_counter = None
+
+        self._phone_dict = None
+        self._biphone_dict = None
+        self._word_dict = None
 
         # trie objects
         self._broken_words_left_to_right = None
@@ -546,14 +551,14 @@ class Lexicon:
 
     def _make_all_manifold_objects(self):
         self._words_to_neighbors, self._words_to_contexts, \
-            self._contexts_to_words = manifold.run(
-                self.word_unigram_counter(),
-                self.word_bigram_counter(),
-                self.word_trigram_counter(),
-                self.parameters_['max_word_types'],
-                self.parameters_['n_neighbors'],
-                self.parameters_['n_eigenvectors'],
-                self.parameters_['min_context_count'])
+        self._contexts_to_words = manifold.run(
+            self.word_unigram_counter(),
+            self.word_bigram_counter(),
+            self.word_trigram_counter(),
+            self.parameters_['max_word_types'],
+            self.parameters_['n_neighbors'],
+            self.parameters_['n_eigenvectors'],
+            self.parameters_['min_context_count'])
         self._neighbor_graph = manifold.compute_graph(self._words_to_neighbors)
 
     # --------------------------------------------------------------------------
@@ -589,9 +594,32 @@ class Lexicon:
             self._make_all_phon_objects()
         return self._phone_trigram_counter
 
+    def phone_dict(self):
+        if self._phone_dict is None:
+            self._make_all_phon_objects()
+        return self._phone_dict
+
+    def biphone_dict(self):
+        if self._phone_dict is None:
+            self._make_all_phon_objects()
+        return self._biphone_dict
+
+    def word_phonology_dict(self):
+        if self._word_dict is None:
+            self._make_all_phon_objects()
+        return self._word_dict
+
     def _make_all_phon_objects(self):
-        self._phone_unigram_counter, self._phone_bigram_counter,\
-            self._phone_trigram_counter = phon.run(self.word_unigram_counter())
+        self._phone_unigram_counter, self._phone_bigram_counter, \
+        self._phone_trigram_counter = phon.make_word_ngrams(
+            self.word_unigram_counter())
+
+        self._phone_dict = phon.make_phone_dict(self._phone_unigram_counter)
+        self._biphone_dict = phon.make_biphone_dict(self._phone_bigram_counter,
+                                                    self._phone_dict)
+        self._word_dict = phon.make_word_dict(self.word_unigram_counter(),
+                                              self._phone_dict,
+                                              self._biphone_dict)
 
     # --------------------------------------------------------------------------
     # for the "trie" module
@@ -637,6 +665,6 @@ class Lexicon:
         return self._predecessors
 
     def _make_all_trie_objects(self):
-        self._broken_words_left_to_right, self._broken_words_right_to_left,\
-            self._successors, self._predecessors = trie.run(
-                self.wordlist(), self.parameters_['min_stem_length'])
+        self._broken_words_left_to_right, self._broken_words_right_to_left, \
+        self._successors, self._predecessors = trie.run(
+            self.wordlist(), self.parameters_['min_stem_length'])
