@@ -32,8 +32,8 @@ WORDS_TO_SIGS = "Words to signatures"
 
 TRIES = "Tries"
 WORDS_AS_TRIES = "Words as tries"
-SF_TRIES = "Successor frequencies"
-PF_TRIES = "Predecessor frequencies"
+SUCCESSORS = "Successors"
+PREDECESSORS = "Predecessors"
 
 PHONOLOGY = "Phonology"
 PHONES = "Phones"

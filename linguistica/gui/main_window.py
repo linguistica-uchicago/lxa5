@@ -22,7 +22,7 @@ from linguistica.gui.util import (MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT,
                                   TREEWIDGET_HEIGHT_MIN,
                                   WORDLIST, WORD_NGRAMS, BIGRAMS, TRIGRAMS,
                                   SIGNATURES, SIGS_TO_STEMS, WORDS_TO_SIGS,
-                                  TRIES, WORDS_AS_TRIES, SF_TRIES, PF_TRIES,
+                                  TRIES, WORDS_AS_TRIES, SUCCESSORS, PREDECESSORS,
                                   PHONOLOGY, PHONES, BIPHONES, TRIPHONES,
                                   MANIFOLDS, WORD_NEIGHBORS, VISUALIZED_GRAPH,
                                   SHOW_MANIFOLD_HTML)
@@ -236,7 +236,7 @@ class MainWindow(QMainWindow):
         # tries
         ancestor = QTreeWidgetItem(self.lexicon_tree, [TRIES])
         self.lexicon_tree.expandItem(ancestor)
-        for item in [WORDS_AS_TRIES, SF_TRIES, PF_TRIES]:
+        for item in [WORDS_AS_TRIES, SUCCESSORS, PREDECESSORS]:
             self.lexicon_tree.expandItem(QTreeWidgetItem(ancestor, [item]))
 
         # phonology
@@ -361,15 +361,13 @@ class MainWindow(QMainWindow):
         """
         item_str = item.text(0)
 
-        if item_str in {WORD_NGRAMS, SIGNATURES, TRIES, SF_TRIES, PF_TRIES,
-                        PHONOLOGY, MANIFOLDS}:
-            # TODO: work on the SF and PF tries... -- show them etc
+        if item_str in {WORD_NGRAMS, SIGNATURES, TRIES, PHONOLOGY, MANIFOLDS}:
             return
 
-        print("loading", item_str, flush=True)
+        print('loading', item_str, flush=True)
 
         self.status.clearMessage()
-        self.status.showMessage("Loading {}...".format(item_str))
+        self.status.showMessage('Loading {}...'.format(item_str))
 
         new_display = None
         new_parameter_window = None
@@ -377,7 +375,7 @@ class MainWindow(QMainWindow):
         if item_str == WORDLIST:
             new_display = self.create_major_display_table(
                 self.lexicon.word_unigram_counter().items(),
-                key=lambda x: x[1], reverse=True, headers=['Word', 'Frequency'],
+                key=lambda x: x[1], reverse=True, headers=['Word', 'Count'],
                 row_cell_functions=[lambda x: x[0], lambda x: x[1]],
                 cutoff=0)
 
@@ -385,7 +383,7 @@ class MainWindow(QMainWindow):
             new_display = self.create_major_display_table(
                 self.lexicon.word_bigram_counter().items(),
                 key=lambda x: x[1], reverse=True,
-                headers=['Bigram', 'Frequency'],
+                headers=['Bigram', 'Count'],
                 row_cell_functions=[lambda x: SEP_NGRAM.join(x[0]),
                                     lambda x: x[1]],
                 cutoff=2000)
@@ -394,7 +392,7 @@ class MainWindow(QMainWindow):
             new_display = self.create_major_display_table(
                 self.lexicon.word_trigram_counter().items(),
                 key=lambda x: x[1], reverse=True,
-                headers=['Trigram', 'Frequency'],
+                headers=['Trigram', 'Count'],
                 row_cell_functions=[lambda x: SEP_NGRAM.join(x[0]),
                                     lambda x: x[1]],
                 cutoff=2000)
@@ -447,11 +445,29 @@ class MainWindow(QMainWindow):
                                     lambda x: x[1][0], lambda x: x[1][1]],
                 cutoff=0, set_text_alignment=[(3, Qt.AlignRight)])
 
+        elif item_str == SUCCESSORS:
+            new_display = self.create_major_display_table(
+                self.lexicon.successors().items(),
+                key=lambda x: len(x[1]), reverse=True,
+                headers=['String', 'Successors'],
+                row_cell_functions=[lambda x: x[0],
+                                    lambda x: ', '.join(sorted(x[1]))],
+                cutoff=0)
+
+        elif item_str == PREDECESSORS:
+            new_display = self.create_major_display_table(
+                self.lexicon.predecessors().items(),
+                key=lambda x: len(x[1]), reverse=True,
+                headers=['String', 'Predecessors'],
+                row_cell_functions=[lambda x: x[0],
+                                    lambda x: ', '.join(sorted(x[1]))],
+                cutoff=0)
+
         elif item_str == PHONES:
             new_display = self.create_major_display_table(
                 self.lexicon.phone_unigram_counter().items(),
                 key=lambda x: x[1], reverse=True,
-                headers=['Phone', 'Frequency'],
+                headers=['Phone', 'Count'],
                 row_cell_functions=[lambda x: x[0], lambda x: x[1]],
                 cutoff=0)
 
@@ -459,7 +475,7 @@ class MainWindow(QMainWindow):
             new_display = self.create_major_display_table(
                 self.lexicon.phone_bigram_counter().items(),
                 key=lambda x: x[1], reverse=True,
-                headers=['Biphone', 'Frequency'],
+                headers=['Biphone', 'Count'],
                 row_cell_functions=[lambda x: SEP_NGRAM.join(x[0]),
                                     lambda x: x[1]],
                 cutoff=0)
@@ -468,7 +484,7 @@ class MainWindow(QMainWindow):
             new_display = self.create_major_display_table(
                 self.lexicon.phone_trigram_counter().items(),
                 key=lambda x: x[1], reverse=True,
-                headers=['Triphone', 'Frequency'],
+                headers=['Triphone', 'Count'],
                 row_cell_functions=[lambda x: SEP_NGRAM.join(x[0]),
                                     lambda x: x[1]],
                 cutoff=0)
@@ -478,7 +494,7 @@ class MainWindow(QMainWindow):
             new_display = self.create_major_display_table(
                 self.lexicon.words_to_neighbors().items(),
                 key=lambda x: word_to_freq[x[0]], reverse=True,
-                headers=['Word', 'Word Frequency', 'Neighbors'],
+                headers=['Word', 'Word count', 'Neighbors'],
                 row_cell_functions=[lambda x: x[0],
                                     lambda x: word_to_freq[x[0]],
                                     lambda x: ' '.join(x[1])],
