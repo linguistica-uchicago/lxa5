@@ -16,32 +16,45 @@ Download and install
 
 Linguistica 5 requires Python 3.4 or above.
 
-The graphical user interface requires
+Currently, Linguistica 5 is hosted on GitHub:
+
+```
+$ git clone https://github.com/linguistica-uchicago/lxa5.git
+$ cd lxa5
+$ python3 setup.py install
+```
+
+(`python3` is meant to point to your Python 3 interpreter.
+Administrative privileges (such as `sudo` on Unix-like systems) may be required.)
+
+
+Using Linguistica 5 as a Python library
+---------------------------------------
+
+Simply import `linguistica` in your Python programs:
+
+```python
+import linguistica as lxa
+```
+
+Using Linguistica 5 as a graphical user interface software
+----------------------------------------------------------
+
 [PyQt5](https://www.riverbankcomputing.com/software/pyqt/download5)
-(including the WebKit module).
+(including the WebKit module) is required.
 Ubuntu users can obtain it by running this:
 
 ```
 $ sudo apt-get install python3-sip python3-pyqt5 python3-pyqt5.qtwebkit
 ```
 
-Currently, Linguistica 5 is hosted on GitHub:
+After PyQt5 is installed, launch the Linguistica GUI with this command:
 
 ```
-$ git clone https://github.com/linguistica-uchicago/lxa5.git
-$ cd lxa5
+$ python3 -m linguistica gui
 ```
 
-To use Linguistica 5 as a **Python library**:
+Using Linguistica 5 as a command line tool
+------------------------------------------
 
-```
-python3 setup.py install
-```
-
-(`python3` is meant to point to your Python 3 interpreter. Administrative privileges (such as `sudo` on Unix-like systems) may be required.)
-
-To launch the **graphical user interface software**:
-
-```
-python3 run_gui.py
-```
+Forthcoming!
