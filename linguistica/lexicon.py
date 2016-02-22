@@ -262,8 +262,20 @@ class Lexicon:
         """
         self._initialize()
 
+    def run_all_modules(self, verbose=False):
+        """
+        Run all modules.
+        """
+        self.run_ngram_module(verbose=verbose)
+        self.run_phon_module(verbose=verbose)
+        self.run_signature_module(verbose=verbose)
+        self.run_trie_module(verbose=verbose)
+
+        if self.corpus_file_object:
+            self.run_manifold_module(verbose=verbose)
+
     # --------------------------------------------------------------------------
-    # for the "ngrams" module
+    # for the "ngram" module
 
     def word_unigram_counter(self):
         """
@@ -362,8 +374,18 @@ class Lexicon:
         self._word_bigram_counter = bigrams
         self._word_trigram_counter = trigrams
 
+    def run_ngram_module(self, verbose=False):
+        """
+        Run the ngram module.
+        """
+        if verbose:
+            print('Extracting word ngrams...', flush=True)
+        if self.corpus_file_object:
+            self._make_word_ngrams_from_corpus_file_object()
+        self._make_wordlist()
+
     # --------------------------------------------------------------------------
-    # for the "signatures" module
+    # for the "signature" module
 
     def stems_to_words(self):
         """
@@ -506,6 +528,14 @@ class Lexicon:
         self._affixes = set(self._affixes_to_signatures.keys())
         self._stems = set(self._stems_to_words.keys())
 
+    def run_signature_module(self, verbose=False):
+        """
+        Run the signature module.
+        """
+        if verbose:
+            print('Morphological signatures...', flush=True)
+        self._make_all_signature_objects()
+
     # --------------------------------------------------------------------------
     # for the "manifold" module
 
@@ -560,6 +590,15 @@ class Lexicon:
             self.parameters_['n_eigenvectors'],
             self.parameters_['min_context_count'])
         self._neighbor_graph = manifold.compute_graph(self._words_to_neighbors)
+
+    def run_manifold_module(self, verbose=False):
+        """
+        Run the phon module.
+        """
+        if verbose:
+            print('Syntactic word neighbors...', flush=True)
+        if self.corpus_file_object:
+            self._make_all_manifold_objects()
 
     # --------------------------------------------------------------------------
     # for the "phon" module
@@ -636,6 +675,14 @@ class Lexicon:
                                               self._phone_dict,
                                               self._biphone_dict)
 
+    def run_phon_module(self, verbose=False):
+        """
+        Run the phon module.
+        """
+        if verbose:
+            print('Phonology...', flush=True)
+        self._make_all_phon_objects()
+
     # --------------------------------------------------------------------------
     # for the "trie" module
 
@@ -683,3 +730,11 @@ class Lexicon:
         self._broken_words_left_to_right, self._broken_words_right_to_left, \
         self._successors, self._predecessors = trie.run(
             self.wordlist(), self.parameters_['min_stem_length'])
+
+    def run_trie_module(self, verbose=False):
+        """
+        Run the trie module.
+        """
+        if verbose:
+            print('Tries...', flush=True)
+        self._make_all_trie_objects()
