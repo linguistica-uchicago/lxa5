@@ -115,6 +115,9 @@ if lxa_mode == 'cmd':
 
         output_dir = new_output_dir
 
+    if not os.path.isdir(output_dir):
+        os.mkdir(output_dir)
+
     # --------------------------------------------------------------------------
     # create the Linguistica object
 
@@ -184,6 +187,8 @@ if lxa_mode == 'cmd':
     # --------------------------------------------------------------------------
     # output results as files
 
-    # TODO
+    print('\nGenerating output files...')
+
+    lxa_object.output_all_results(dir=output_dir)
 
     print('Results are in ' + output_dir)

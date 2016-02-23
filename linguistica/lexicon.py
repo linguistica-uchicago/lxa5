@@ -105,7 +105,8 @@ from io import StringIO
 
 from linguistica import (ngram, signature, manifold, phon, trie)
 from linguistica.util import (ENCODING, PARAMETERS,
-                              double_sorted, fix_punctuations)
+                              double_sorted, fix_punctuations,
+                              output_latex_table)
 
 
 class Lexicon:
@@ -273,6 +274,53 @@ class Lexicon:
 
         if self.corpus_file_object:
             self.run_manifold_module(verbose=verbose)
+
+    def output_all_results(self, dir=None):
+        """
+        Output all Linguistica results to the directory *dir*.
+
+        :param dir: output directory. If not specified, it defaults to
+            the current directory given by ``os.getcwd()``.
+        """
+        if not dir:
+            output_dir = os.getcwd()
+        else:
+            output_dir = os.path.abspath(dir)
+
+        # word unigrams
+        obj = double_sorted(self.word_unigram_counter().items(),
+                            key=lambda x: x[1], reverse=True)
+        f_path = os.path.join(output_dir, 'word_unigrams.txt')
+        output_latex_table(obj, open(f_path, 'w'),
+                           title='Word unigrams',
+                           headers=['Word', 'Count'],
+                           row_functions=[lambda x: x[0], lambda x: x[1]],
+                           column_widths=[25, 10]
+                           )
+
+        # word bigrams
+        obj = double_sorted(self.word_bigram_counter().items(),
+                            key=lambda x: x[1], reverse=True)
+        f_path = os.path.join(output_dir, 'word_bigrams.txt')
+        output_latex_table(obj, open(f_path, 'w'),
+                           title='Word bigrams',
+                           headers=['Word bigram', 'Count'],
+                           row_functions=[lambda x: ' '.join(x[0]),
+                                          lambda x: x[1]],
+                           column_widths=[50, 10]
+                           )
+
+        # word trigrams
+        obj = double_sorted(self.word_trigram_counter().items(),
+                            key=lambda x: x[1], reverse=True)
+        f_path = os.path.join(output_dir, 'word_trigrams.txt')
+        output_latex_table(obj, open(f_path, 'w'),
+                           title='Word trigrams',
+                           headers=['Word trigram', 'Count'],
+                           row_functions=[lambda x: ' '.join(x[0]),
+                                          lambda x: x[1]],
+                           column_widths=[75, 10]
+                           )
 
     # --------------------------------------------------------------------------
     # for the "ngram" module

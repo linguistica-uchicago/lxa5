@@ -118,7 +118,7 @@ def double_sorted(input_object, key=lambda x: x, reverse=False,
 
 
 def output_latex_table(iter_obj, file, title=None, headers=None,
-                       row_functions=None, index=True):
+                       row_functions=None, column_widths=None, index=True):
     """
     Output LaTeX table code for *iter_obj* to *file*.
 
@@ -128,39 +128,50 @@ def output_latex_table(iter_obj, file, title=None, headers=None,
     :param headers: list of headers
     :param row_functions: list of row cell rendering functions.
         Each function takes only one argument and returns a str.
+    :param column_widths: list of column widths.
     :param index: whether the table has an index column; defaults to True.
     """
     if not title:
-        title = 'Untitled table'
+        title = file.name
     if not headers:
         headers = ['header']
     if not row_functions:
         row_functions = [lambda x: str(x)]
+    if not column_widths:
+        column_widths = [0]
 
-    if len(headers) != len(row_functions):
-        raise ValueError('headers and row_format not of the same size')
+    if not (len(headers) == len(row_functions) == len(column_widths)):
+        raise ValueError('headers, row_format, and column_widths '
+                         'not of the same size')
 
+    header_list = list()
+
+    index_str_length = 10
     if index:
-        headers = ['Index'] + headers
+        header_list = ['Index'.ljust(index_str_length)]
 
-    number_of_columns = len(headers)
+    for header, col_width in zip(headers, column_widths):
+        header_list.append(header.ljust(col_width))
 
-    print(title, file=file)
+    number_of_columns = len(header_list)
+
+    print(title + '\n', file=file)
     print('\\begin{{tabular}}{{{}}}'.format('l' * number_of_columns), file=file)
     print('\\toprule', file=file)
-    print('{} \\\\'.format(' & '.join(headers)))
+
+    print('{} \\\\'.format(' & '.join(header_list)), file=file)
     print('\\midrule', file=file)
 
     for i, row_obj in enumerate(iter_obj, 1):
         if index:
-            row_list = [str(i)]
+            row_list = [str(i).ljust(index_str_length)]
         else:
             row_list = list()
 
-        for row_func in row_functions:
-            row_list.append(row_func(row_obj))
+        for row_func, col_width in zip(row_functions, column_widths):
+            row_list.append(str(row_func(row_obj)).ljust(col_width))
 
-        print(' & '.join(row_list), file=file)
+        print('{} \\\\'.format(' & '.join(row_list)), file=file)
 
     print('\\bottomrule', file=file)
     print('\\end{tabular}\n', file=file)
