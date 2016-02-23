@@ -117,6 +117,55 @@ def double_sorted(input_object, key=lambda x: x, reverse=False,
     return new_sorted_list
 
 
+def output_latex_table(iter_obj, file, title=None, headers=None,
+                       row_functions=None, index=True):
+    """
+    Output LaTeX table code for *iter_obj* to *file*.
+
+    :param iter_obj: an iterable object
+    :param file: a file object (e.g. open(...))
+    :param title: table title str
+    :param headers: list of headers
+    :param row_functions: list of row cell rendering functions.
+        Each function takes only one argument and returns a str.
+    :param index: whether the table has an index column; defaults to True.
+    """
+    if not title:
+        title = 'Untitled table'
+    if not headers:
+        headers = ['header']
+    if not row_functions:
+        row_functions = [lambda x: str(x)]
+
+    if len(headers) != len(row_functions):
+        raise ValueError('headers and row_format not of the same size')
+
+    if index:
+        headers = ['Index'] + headers
+
+    number_of_columns = len(headers)
+
+    print(title, file=file)
+    print('\\begin{{tabular}}{{{}}}'.format('l' * number_of_columns), file=file)
+    print('\\toprule', file=file)
+    print('{} \\\\'.format(' & '.join(headers)))
+    print('\\midrule', file=file)
+
+    for i, row_obj in enumerate(iter_obj, 1):
+        if index:
+            row_list = [str(i)]
+        else:
+            row_list = list()
+
+        for row_func in row_functions:
+            row_list.append(row_func(row_obj))
+
+        print(' & '.join(row_list), file=file)
+
+    print('\\bottomrule', file=file)
+    print('\\end{tabular}\n', file=file)
+
+
 def is_complex(s):
     """
     Test if string *s* is a complex number.

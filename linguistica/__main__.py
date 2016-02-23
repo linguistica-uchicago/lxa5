@@ -185,3 +185,5 @@ if lxa_mode == 'cmd':
     # output results as files
 
     # TODO
+
+    print('Results are in ' + output_dir)
