@@ -57,4 +57,8 @@ $ python3 -m linguistica gui
 Using Linguistica 5 as a command line tool
 ------------------------------------------
 
-Forthcoming!
+Run this:
+
+```
+$ python3 -m linguistica cmd
+```
