@@ -3,6 +3,7 @@
 
 import sys
 import os
+from pprint import pformat
 
 import linguistica as lxa
 from linguistica.gui import main as gui_main
@@ -125,7 +126,51 @@ if lxa_mode == 'cmd':
     # --------------------------------------------------------------------------
     # change parameters, if instructed
 
-    # TODO
+    print('\nParameters:\n{}'.format(pformat(lxa_object.parameters())))
+
+    change_parameters_ans = None
+    while change_parameters_ans is None:
+        change_parameters_ans = input('\nChange any parameters? [N/y] ')
+
+    new_parameter_value_pairs = list()
+
+    if change_parameters_ans and change_parameters_ans[0].lower() == 'y':
+        print('\nEnter parameter-value pairs\n'
+              '(e.g. "min_stem_length=3 max_affix_length=3" without quotes):')
+
+        parameter_value_str = None
+
+        while not parameter_value_str:
+            parameter_value_str = input()
+
+            for parameter_value in parameter_value_str.split():
+                try:
+                    parameter, value = parameter_value.split('=')
+                except ValueError:
+                    print('Invalud parameter-value pair: ' + parameter_value)
+                    parameter_value_str = None
+                    break
+
+                if parameter not in lxa_object.parameters():
+                    print('Unknown parameter: ', parameter)
+                    parameter_value_str = None
+                    break
+
+                try:
+                    value_int = int(value)
+                except ValueError:
+                    print('Cannot parse {} as an integer for parameter {}'
+                          .format(value, parameter))
+                    parameter_value_str = None
+                    break
+
+                new_parameter_value_pairs.append((parameter, value_int))
+
+    if new_parameter_value_pairs:
+        lxa_object.change_parameters(**dict(new_parameter_value_pairs))
+
+        print('\nParameters after the changes:\n{}'
+              .format(pformat(lxa_object.parameters())))
 
     # --------------------------------------------------------------------------
     # run all Linguistica modules on the given file
