@@ -189,6 +189,6 @@ if lxa_mode == 'cmd':
 
     print('\nGenerating output files...')
 
-    lxa_object.output_all_results(dir=output_dir)
+    lxa_object.output_all_results(directory=output_dir)
 
     print('Results are in ' + output_dir)

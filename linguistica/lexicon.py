@@ -104,7 +104,7 @@ import os
 from io import StringIO
 
 from linguistica import (ngram, signature, manifold, phon, trie)
-from linguistica.util import (ENCODING, PARAMETERS,
+from linguistica.util import (ENCODING, PARAMETERS, SEP_SIG, SEP_SIGTRANSFORM,
                               double_sorted, fix_punctuations,
                               output_latex_table)
 
@@ -275,17 +275,20 @@ class Lexicon:
         if self.corpus_file_object:
             self.run_manifold_module(verbose=verbose)
 
-    def output_all_results(self, dir=None):
+    def output_all_results(self, directory=None):
         """
         Output all Linguistica results to the directory *dir*.
 
-        :param dir: output directory. If not specified, it defaults to
+        :param directory: output directory. If not specified, it defaults to
             the current directory given by ``os.getcwd()``.
         """
-        if not dir:
+        if not directory:
             output_dir = os.getcwd()
         else:
-            output_dir = os.path.abspath(dir)
+            output_dir = os.path.abspath(directory)
+
+        # ----------------------------------------------------------------------
+        # ngram objects
 
         # word unigrams
         obj = double_sorted(self.word_unigram_counter().items(),
@@ -320,6 +323,142 @@ class Lexicon:
                            row_functions=[lambda x: ' '.join(x[0]),
                                           lambda x: x[1]],
                            column_widths=[75, 10]
+                           )
+
+        # ----------------------------------------------------------------------
+        # morphological signature objects
+
+        # stems to words
+        obj = double_sorted(self.stems_to_words().items(),
+                            key=lambda x: len(x[1]), reverse=True)
+        f_path = os.path.join(output_dir, 'stems_to_words.txt')
+        output_latex_table(obj, open(f_path, 'w'),
+                           title='Stems to words '
+                                 '(descending order of word count)',
+                           headers=['Stem', 'Words'],
+                           row_functions=[lambda x: x[0],
+                                          lambda x: ', '.join(sorted(x[1]))],
+                           column_widths=[15, 0]
+                           )
+
+        obj = double_sorted(self.stems_to_words().items(),
+                            key=lambda x: x[0], reverse=False)
+        f_path = os.path.join(output_dir, 'stems_to_words.txt')
+        output_latex_table(obj, open(f_path, 'a'),
+                           title='Stems to words '
+                                 '(alphabetical order of stems)',
+                           headers=['Stem', 'Words'],
+                           row_functions=[lambda x: x[0],
+                                          lambda x: ', '.join(sorted(x[1]))],
+                           column_widths=[15, 0]
+                           )
+
+        # signatures to stems
+        obj = double_sorted(self.signatures_to_stems().items(),
+                            key=lambda x: len(x[1]), reverse=True)
+        f_path = os.path.join(output_dir, 'signatures_to_stems.txt')
+        output_latex_table(obj, open(f_path, 'w'),
+                           title='Signatures to stems',
+                           headers=['Signature', 'Stems'],
+                           row_functions=[lambda x: SEP_SIG.join(x[0]),
+                                          lambda x: ', '.join(sorted(x[1]))],
+                           column_widths=[30, 0]
+                           )
+
+        obj = double_sorted(self.signatures_to_stems().items(),
+                            key=lambda x: len(x[1]), reverse=True)
+        f_path = os.path.join(output_dir, 'signatures_to_stems_truncated.txt')
+        output_latex_table(obj, open(f_path, 'w'),
+                           title='Signatures to stems '
+                                 '(first 10 stems for each sig)',
+                           headers=['Signature', 'Stems'],
+                           row_functions=[lambda x: SEP_SIG.join(x[0]),
+                                          lambda x:
+                                          ' '.join(sorted(x[1])[:10])],
+                           column_widths=[30, 0]
+                           )
+
+        # stems to signatures
+        obj = double_sorted(self.stems_to_signatures().items(),
+                            key=lambda x: len(x[1]), reverse=True)
+        f_path = os.path.join(output_dir, 'stems_to_signatures.txt')
+        output_latex_table(obj, open(f_path, 'w'),
+                           title='Stems to signatures',
+                           headers=['Stems', 'Signatures'],
+                           row_functions=[lambda x: x[0],
+                                          lambda x:
+                                          ', '.join(SEP_SIG.join(sig)
+                                                    for sig in sorted(x[1]))],
+                           column_widths=[15, 0]
+                           )
+
+        # words to signatures
+        obj = double_sorted(self.words_to_signatures().items(),
+                            key=lambda x: len(x[1]), reverse=True)
+        f_path = os.path.join(output_dir, 'words_to_signatures.txt')
+        output_latex_table(obj, open(f_path, 'w'),
+                           title='Words to signatures',
+                           headers=['Word', 'Signatures'],
+                           row_functions=[lambda x: x[0],
+                                          lambda x:
+                                          ', '.join(SEP_SIG.join(sig)
+                                                    for sig in sorted(x[1]))],
+                           column_widths=[25, 0]
+                           )
+
+        # signatures to words
+        obj = double_sorted(self.signatures_to_words().items(),
+                            key=lambda x: len(x[1]), reverse=True)
+        f_path = os.path.join(output_dir, 'signatures_to_words.txt')
+        output_latex_table(obj, open(f_path, 'w'),
+                           title='Signatures to words',
+                           headers=['Signature', 'Words'],
+                           row_functions=[lambda x: SEP_SIG.join(x[0]),
+                                          lambda x: ', '.join(sorted(x[1]))],
+                           column_widths=[20, 0]
+                           )
+
+        obj = double_sorted(self.signatures_to_words().items(),
+                            key=lambda x: len(x[1]), reverse=True)
+        f_path = os.path.join(output_dir, 'signatures_to_words_truncated.txt')
+        output_latex_table(obj, open(f_path, 'w'),
+                           title='Signatures to words '
+                                 '(first 10 words for each sig)',
+                           headers=['Signature', 'Words'],
+                           row_functions=[lambda x: SEP_SIG.join(x[0]),
+                                          lambda x:
+                                          ', '.join(sorted(x[1])[:10])],
+                           column_widths=[20, 0]
+                           )
+
+        # words to sigtransforms
+        obj = double_sorted(self.words_to_sigtransforms().items(),
+                            key=lambda x: len(x[1]), reverse=True)
+        f_path = os.path.join(output_dir, 'words_to_sigtransforms.txt')
+        output_latex_table(obj, open(f_path, 'w'),
+                           title='Words to sigtransforms',
+                           headers=['Word', 'Signature transforms'],
+                           row_functions=[lambda x: x[0],
+                                          lambda x:
+                                          ', '.join(
+                                              SEP_SIG.join(sig) +
+                                              SEP_SIGTRANSFORM + affix
+                                              for sig, affix in sorted(x[1]))],
+                           column_widths=[20, 0]
+                           )
+
+        # affixes to signatures
+        obj = double_sorted(self.affixes_to_signatures().items(),
+                            key=lambda x: len(x[1]), reverse=True)
+        f_path = os.path.join(output_dir, 'affixes_to_signatures.txt')
+        output_latex_table(obj, open(f_path, 'w'),
+                           title='Affixes to signatures',
+                           headers=['Affix', 'Signatures'],
+                           row_functions=[lambda x: x[0],
+                                          lambda x:
+                                          ', '.join(SEP_SIG.join(sig)
+                                                    for sig in sorted(x[1]))],
+                           column_widths=[15, 0]
                            )
 
     # --------------------------------------------------------------------------

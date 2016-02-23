@@ -31,7 +31,9 @@ def make_stems_to_signatures(sigs_to_stems):
 
     for sig in sigs_to_stems.keys():
         for stem in sigs_to_stems[sig]:
-            stems_to_sigs[stem] = sig
+            if stem not in stems_to_sigs:
+                stems_to_sigs[stem] = set()
+            stems_to_sigs[stem].add(sig)
 
     return stems_to_sigs
 
@@ -77,8 +79,8 @@ def make_words_to_signatures(stems_to_words, stems_to_sigs):
 
         for word in words:
             if word not in words_to_sigs:
-                words_to_sigs[word] = list()
-            words_to_sigs[word].append(stems_to_sigs[stem])
+                words_to_sigs[word] = set()
+            words_to_sigs[word].update(stems_to_sigs[stem])
 
     return words_to_sigs
 
