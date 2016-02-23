@@ -7,7 +7,15 @@ import os
 import linguistica as lxa
 from linguistica.gui import main as gui_main
 
-version = lxa.__version__
+required_py_version = (3, 4)
+current_py_version = sys.version_info[:2]
+
+if current_py_version < required_py_version:
+    sys.exit('Error: Linguistica requires Python {}.{} or above.\n'
+             .format(*required_py_version) +
+             'You are using Python {}.{}.'.format(*current_py_version))
+
+lxa_version = lxa.__version__
 
 # ------------------------------------------------------------------------------
 # ensure lxa_mode is one of the modes in MODES
@@ -33,14 +41,14 @@ if lxa_mode not in MODES:
 
 if lxa_mode == 'gui':
     print('Running the graphical user interface of Linguistica {}...'
-          .format(version))
+          .format(lxa_version))
     gui_main()
 
 # ------------------------------------------------------------------------------
 # command line mode
 
 if lxa_mode == 'cmd':
-    print('\nWelcome to Linguistica {}!'.format(version))
+    print('\nWelcome to Linguistica {}!'.format(lxa_version))
 
     # --------------------------------------------------------------------------
     # determine if file is a wordlist or a corpus text
