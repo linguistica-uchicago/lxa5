@@ -4,4 +4,4 @@
 /doc/
 
 /linguistica/*.pyc
-*.sh
+build-doc.sh.sh
