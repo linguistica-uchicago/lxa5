@@ -290,17 +290,6 @@ class Lexicon:
         # ----------------------------------------------------------------------
         # ngram objects
 
-        # word unigrams
-        obj = double_sorted(self.word_unigram_counter().items(),
-                            key=lambda x: x[1], reverse=True)
-        f_path = os.path.join(output_dir, 'word_unigrams.txt')
-        output_latex_table(obj, open(f_path, 'w'),
-                           title='Word unigrams',
-                           headers=['Word', 'Count'],
-                           row_functions=[lambda x: x[0], lambda x: x[1]],
-                           column_widths=[25, 10]
-                           )
-
         # word bigrams
         obj = double_sorted(self.word_bigram_counter().items(),
                             key=lambda x: x[1], reverse=True)
@@ -484,6 +473,102 @@ class Lexicon:
                                           lambda x: ' '.join(x[1])],
                            column_widths=[25, 0]
                            )
+
+        # ----------------------------------------------------------------------
+        # phon objects
+
+        def out_latex_table_for_phon_words(obj_, file_, title_):
+            output_latex_table(obj_, file_,
+                               title=title_,
+                               headers=['Word', 'Count', 'Frequency',
+                                        'Unigram plog', 'Avg unigram plog',
+                                        'Bigram plog', 'Avg bigram plog'],
+                               row_functions=[lambda x: x[0],
+                                              lambda x: x[1].count(),
+                                              lambda x:
+                                              '%.6f' % x[1].frequency(),
+                                              lambda x:
+                                              '%8.3f' % x[1].unigram_plog(),
+                                              lambda x:
+                                              '%8.3f' % x[1].avg_unigram_plog(),
+                                              lambda x:
+                                              '%8.3f' % x[1].bigram_plog(),
+                                              lambda x:
+                                              '%8.3f' % x[1].avg_bigram_plog(),
+                                              ],
+                               column_widths=[35, 10, 15, 15, 15, 15, 15]
+                               )
+
+        # wordlist
+        obj_word_phon = list()  # list of tuple(word, list of neighbor words)
+        for word in self.wordlist():
+            obj_word_phon.append((word, self.word_phonology_dict()[word]))
+        f_path = os.path.join(output_dir, 'wordlist.txt')
+        out_latex_table_for_phon_words(obj_word_phon, open(f_path, 'w'),
+                                       'Wordlist sorted by word count')
+
+        obj_unigram_plog = double_sorted(obj_word_phon,
+                                         key=lambda x: x[1].avg_unigram_plog(),
+                                         reverse=False)
+        f_path = os.path.join(output_dir, 'wordlist_by_avg_unigram_plog.txt')
+        out_latex_table_for_phon_words(obj_unigram_plog, open(f_path, 'w'),
+                                       'Wordlist sorted by avg unigram plog')
+
+        obj_bigram_plog = double_sorted(obj_word_phon,
+                                        key=lambda x: x[1].avg_bigram_plog(),
+                                        reverse=False)
+        f_path = os.path.join(output_dir, 'wordlist_by_avg_bigram_plog.txt')
+        out_latex_table_for_phon_words(obj_bigram_plog, open(f_path, 'w'),
+                                       'Wordlist sorted by avg bigram plog')
+
+        # phone dict
+        obj = double_sorted(self.phone_dict().items(),
+                            key=lambda x: x[1].count(), reverse=True)
+        f_path = os.path.join(output_dir, 'phones.txt')
+        output_latex_table(obj, open(f_path, 'w'),
+                           title='Phones',
+                           headers=['Phone', 'Count', 'Frequency', 'Plog'],
+                           row_functions=[lambda x: x[0],
+                                          lambda x: x[1].count(),
+                                          lambda x: '%.6f' % x[1].frequency(),
+                                          lambda x: '%8.3f' % x[1].plog(),
+                                          ],
+                           column_widths=[10, 10, 15, 15]
+                           )
+
+        # biphone dict
+        obj = double_sorted(self.biphone_dict().items(),
+                            key=lambda x: x[1].count(), reverse=True)
+        f_path = os.path.join(output_dir, 'biphones.txt')
+        output_latex_table(obj, open(f_path, 'w'),
+                           title='Biphones',
+                           headers=['Biphone', 'Count', 'Frequency',
+                                    'MI', 'Weighted MI'],
+                           row_functions=[lambda x: ' '.join(x[0]),
+                                          lambda x: x[1].count(),
+                                          lambda x:
+                                          '%.6f' % x[1].frequency(),
+                                          lambda x:
+                                          '%8.3f' % x[1].MI(),
+                                          lambda x:
+                                          '%8.3f' % x[1].weighted_MI(),
+                                          ],
+                           column_widths=[10, 10, 15, 15, 15]
+                           )
+
+        # phone trigram counter
+        obj = double_sorted(self.phone_trigram_counter().items(),
+                            key=lambda x: x[1], reverse=True)
+        f_path = os.path.join(output_dir, 'triphones.txt')
+        output_latex_table(obj, open(f_path, 'w'),
+                           title='Triphones',
+                           headers=['Triphone', 'Count'],
+                           row_functions=[lambda x: ' '.join(x[0]),
+                                          lambda x: x[1],
+                                          ],
+                           column_widths=[15, 10]
+                           )
+
 
     # --------------------------------------------------------------------------
     # for the "ngram" module
@@ -846,6 +931,8 @@ class Lexicon:
     def phone_dict(self):
         """
         Return a dict of phone unigrams to Phone objects.
+        A Phone instance has the methods
+        ``spelling()``, ``count()``, ``frequency()``, and ``plog()``.
 
         :rtype: dict(str: Phone instance)
         """
@@ -856,6 +943,9 @@ class Lexicon:
     def biphone_dict(self):
         """
         Return a dict of phone bigrams to Biphone objects.
+        A Biphone instance has the methods
+        ``spelling()``, ``count()``, ``frequency()``, ``MI()``, and
+        ``weighted_MI()``.
 
         :rtype: dict((str, str): Biphone instance)
         """
@@ -866,6 +956,10 @@ class Lexicon:
     def word_phonology_dict(self):
         """
         Return a dict of words to Word objects.
+        A Word instance has the methods
+        ``spelling()``, ``phones()``, ``count()``, ``frequency()``,
+        ``unigram_plog()``, ``avg_unigram_plog()``,
+        ``bigram_plog()``, and ``avg_bigram_plog()``.
 
         :rtype: dict(str: Word instance)
         """
