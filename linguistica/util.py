@@ -46,39 +46,6 @@ PARAMETERS = {'max_word_tokens': 0,  # zero means all word tokens
 
 PARAMETERS_FILENAME = 'parameters.json'
 
-# keep the following dicts for command line mode?
-
-PROGRAMS = {'all', 'signature', 'ngram', 'trie', 'phon', 'manifold'}
-
-PROGRAM_TO_DESCRIPTION = {
-    'ngram': 'This program extracts word n-grams.',
-    'signature': 'This program computes morphological signatures.',
-    'phon': 'This program extracts phon n-grams and works on phonotactics.',
-    'trie': 'This program computes tries and successor/predecessor '
-            'frequencies.',
-    'manifold': 'This program computes word neighbors.',
-}
-
-PROGRAM_TO_PARAMETERS = {
-    'ngram': ['max_word_tokens'],
-
-    'signature': ['max_word_tokens', 'min_stem_length', 'max_affix_length',
-                  'min_sig_count'],
-
-    'phon': ['max_word_tokens'],
-
-    'trie': ['max_word_tokens', 'min_stem_length', 'min_affix_length',
-             'min_sf_pf_count'],
-
-    'manifold': ['max_word_types', 'n_neighbors', 'n_eigenvectors',
-                 'min_context_count'],
-
-    'all': ['max_word_tokens', 'min_stem_length', 'max_affix_length',
-            'min_sig_count', 'min_affix_length', 'min_sf_pf_count',
-            'n_neighbors', 'n_eigenvectors', 'min_context_count',
-            'max_word_types'],
-}
-
 
 def fix_punctuations(line):
     line = line.replace('.', ' . ')
