@@ -335,10 +335,11 @@ class Lexicon:
         output_latex_table(obj, open(f_path, 'w'),
                            title='Stems to words '
                                  '(descending order of word count)',
-                           headers=['Stem', 'Words'],
+                           headers=['Stem', 'Word count', 'Words'],
                            row_functions=[lambda x: x[0],
+                                          lambda x: len(x[1]),
                                           lambda x: ', '.join(sorted(x[1]))],
-                           column_widths=[15, 0]
+                           column_widths=[15, 15, 0]
                            )
 
         obj = double_sorted(self.stems_to_words().items(),
@@ -347,10 +348,11 @@ class Lexicon:
         output_latex_table(obj, open(f_path, 'a'),
                            title='Stems to words '
                                  '(alphabetical order of stems)',
-                           headers=['Stem', 'Words'],
+                           headers=['Stem', 'Word count', '1st 10 words'],
                            row_functions=[lambda x: x[0],
+                                          lambda x: len(x[1]),
                                           lambda x: ', '.join(sorted(x[1]))],
-                           column_widths=[15, 0]
+                           column_widths=[15, 15, 0]
                            )
 
         # signatures to stems
@@ -359,10 +361,11 @@ class Lexicon:
         f_path = os.path.join(output_dir, 'signatures_to_stems.txt')
         output_latex_table(obj, open(f_path, 'w'),
                            title='Signatures to stems',
-                           headers=['Signature', 'Stems'],
+                           headers=['Signature', 'Stem count', 'Stems'],
                            row_functions=[lambda x: SEP_SIG.join(x[0]),
+                                          lambda x: len(x[1]),
                                           lambda x: ', '.join(sorted(x[1]))],
-                           column_widths=[30, 0]
+                           column_widths=[30, 15, 0]
                            )
 
         obj = double_sorted(self.signatures_to_stems().items(),
@@ -371,11 +374,12 @@ class Lexicon:
         output_latex_table(obj, open(f_path, 'w'),
                            title='Signatures to stems '
                                  '(first 10 stems for each sig)',
-                           headers=['Signature', 'Stems'],
+                           headers=['Signature', 'Stem count', '1st 10 stems'],
                            row_functions=[lambda x: SEP_SIG.join(x[0]),
+                                          lambda x: len(x[1]),
                                           lambda x:
                                           ' '.join(sorted(x[1])[:10])],
-                           column_widths=[30, 0]
+                           column_widths=[30, 15, 0]
                            )
 
         # stems to signatures
@@ -398,12 +402,13 @@ class Lexicon:
         f_path = os.path.join(output_dir, 'words_to_signatures.txt')
         output_latex_table(obj, open(f_path, 'w'),
                            title='Words to signatures',
-                           headers=['Word', 'Signatures'],
+                           headers=['Word', 'Sig count', 'Signatures'],
                            row_functions=[lambda x: x[0],
+                                          lambda x: len(x[1]),
                                           lambda x:
                                           ', '.join(SEP_SIG.join(sig)
                                                     for sig in sorted(x[1]))],
-                           column_widths=[25, 0]
+                           column_widths=[25, 15, 0]
                            )
 
         # signatures to words
@@ -412,10 +417,11 @@ class Lexicon:
         f_path = os.path.join(output_dir, 'signatures_to_words.txt')
         output_latex_table(obj, open(f_path, 'w'),
                            title='Signatures to words',
-                           headers=['Signature', 'Words'],
+                           headers=['Signature', 'Word count', 'Words'],
                            row_functions=[lambda x: SEP_SIG.join(x[0]),
+                                          lambda x: len(x[1]),
                                           lambda x: ', '.join(sorted(x[1]))],
-                           column_widths=[20, 0]
+                           column_widths=[20, 15, 0]
                            )
 
         obj = double_sorted(self.signatures_to_words().items(),
@@ -424,11 +430,12 @@ class Lexicon:
         output_latex_table(obj, open(f_path, 'w'),
                            title='Signatures to words '
                                  '(first 10 words for each sig)',
-                           headers=['Signature', 'Words'],
+                           headers=['Signature', 'Word count', '1st 10 words'],
                            row_functions=[lambda x: SEP_SIG.join(x[0]),
+                                          lambda x: len(x[1]),
                                           lambda x:
                                           ', '.join(sorted(x[1])[:10])],
-                           column_widths=[20, 0]
+                           column_widths=[20, 15, 0]
                            )
 
         # words to sigtransforms
@@ -453,12 +460,29 @@ class Lexicon:
         f_path = os.path.join(output_dir, 'affixes_to_signatures.txt')
         output_latex_table(obj, open(f_path, 'w'),
                            title='Affixes to signatures',
-                           headers=['Affix', 'Signatures'],
+                           headers=['Affix', 'Sig count', 'Signatures'],
                            row_functions=[lambda x: x[0],
+                                          lambda x: len(x[1]),
                                           lambda x:
                                           ', '.join(SEP_SIG.join(sig)
                                                     for sig in sorted(x[1]))],
-                           column_widths=[15, 0]
+                           column_widths=[15, 15, 0]
+                           )
+
+        # ----------------------------------------------------------------------
+        # manifold objects
+
+        # words to neighbors
+        obj = list()  # list of tuple(word, list of neighbor words)
+        for word in self.wordlist()[: self.parameters()['max_word_types']]:
+            obj.append((word, self.words_to_neighbors()[word]))
+        f_path = os.path.join(output_dir, 'words_to_neighbors.txt')
+        output_latex_table(obj, open(f_path, 'w'),
+                           title='Words to neighbors',
+                           headers=['Word', 'Neighbors'],
+                           row_functions=[lambda x: x[0],
+                                          lambda x: ' '.join(x[1])],
+                           column_widths=[25, 0]
                            )
 
     # --------------------------------------------------------------------------
@@ -567,9 +591,8 @@ class Lexicon:
         """
         if verbose:
             print('Extracting word ngrams...', flush=True)
-        if self.corpus_file_object:
-            self._make_word_ngrams_from_corpus_file_object()
-        self._make_wordlist()
+        if self._wordlist is None:
+            self._make_wordlist()
 
     # --------------------------------------------------------------------------
     # for the "signature" module

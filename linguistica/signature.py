@@ -165,10 +165,10 @@ def make_bisignatures(wordlist, min_stem_length, max_affix_length, suffixing):
     bisigs_to_tuples = dict()
 
     if not suffixing:
-        wordlist.sort(key=lambda x: x[::-1])
+        wordlist = sorted(wordlist, key=lambda x: x[::-1])
         group_key = lambda x: x[-min_stem_length:]
     else:
-        wordlist.sort()
+        wordlist = sorted(wordlist)
         group_key = lambda x: x[: min_stem_length]
 
     wordlist = filter(lambda x: len(x) >= min_stem_length, wordlist)
