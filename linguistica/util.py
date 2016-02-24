@@ -1,7 +1,5 @@
 # -*- encoding: utf8 -*-
 
-import json
-
 from itertools import groupby
 
 
@@ -152,44 +150,3 @@ def vprint(*objects, verbose=False, sep='', end='\n', flush=True):
         print(*objects, sep=sep, end=end, flush=flush)
     else:
         return
-
-
-def is_complex(s):
-    """
-    Test if string *s* is a complex number.
-    """
-    try:
-        test = complex(s)
-    except (ValueError, TypeError):
-        return False
-    else:
-        return True
-
-
-class LinguisticaJSONEncoder(json.JSONEncoder):
-    """
-    We define this custom JSONEncoder subclass to deal with what the standard
-    json encoder cannot deal with:
-
-    - set: change it into an array
-    - complex number: get the real part only
-    See example here: https://docs.python.org/3/library/json.html
-    """
-    def default(self, obj):
-        if type(obj) is set:
-            return sorted(obj)
-        elif type(obj) is tuple:
-            return list(obj)
-        elif type(obj) not in {int, float} and is_complex(obj):
-            return obj.real
-        return json.JSONEncoder.default(self, obj)
-
-
-def json_dump(obj, outfile_opened, ensure_ascii=False, indent=2,
-              separators=(',', ': '), sort_keys=True,
-              cls=LinguisticaJSONEncoder):
-    """
-    json.dump with our preferred parameters
-    """
-    json.dump(obj, outfile_opened, ensure_ascii=ensure_ascii, indent=indent,
-              sort_keys=sort_keys, separators=separators, cls=cls)
