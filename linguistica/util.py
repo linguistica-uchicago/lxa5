@@ -177,6 +177,16 @@ def output_latex_table(iter_obj, file, title=None, headers=None,
     print('\\end{tabular}\n', file=file)
 
 
+def vprint(*objects, verbose=False, sep='', end='\n', flush=True):
+    """
+    Verbose print; defaults to False.
+    """
+    if verbose:
+        print(*objects, sep=sep, end=end, flush=flush)
+    else:
+        return
+
+
 def is_complex(s):
     """
     Test if string *s* is a complex number.

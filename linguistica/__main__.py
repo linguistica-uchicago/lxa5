@@ -182,13 +182,11 @@ if lxa_mode == 'cmd':
 
     lxa_object.run_all_modules(verbose=True)
 
-    print('\nDone!')
-
     # --------------------------------------------------------------------------
     # output results as files
 
-    print('\nGenerating output files...')
+    print('\nGenerating output files...\n')
 
-    lxa_object.output_all_results(directory=output_dir)
+    lxa_object.output_all_results(directory=output_dir, verbose=True)
 
-    print('Results are in ' + output_dir)
+    print('\nResults are in ' + output_dir)
