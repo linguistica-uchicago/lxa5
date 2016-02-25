@@ -32,7 +32,7 @@ setup(name='linguistica',
                 'language', 'machine learning', 'unsupervised learning',
                 'data visualization'],
 
-      install_requires=['scipy', 'numpy', 'networkx'],
+      install_requires=['scipy>=0.17.0', 'numpy>=1.10.4', 'networkx>=1.11'],
 
       package_data={
           'linguistica': ['VERSION', 'gui/d3.min.js'],

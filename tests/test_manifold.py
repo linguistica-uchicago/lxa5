@@ -21,7 +21,7 @@ def test_words_to_neighbors():
     for word in test_object.keys():
         word_set1 = set(test_object[word])
         word_set2 = set(expected_object[word])
-        assert len(word_set1 & word_set2) >= (number_of_neighbors - 2)
+        assert len(word_set1 & word_set2) >= (number_of_neighbors - 3)
 
 
 def test_words_to_contexts():
