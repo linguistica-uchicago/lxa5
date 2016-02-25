@@ -9,13 +9,19 @@ lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
 
 
 def test_words_to_neighbors():
+    number_of_neighbors = lxa_object.parameters()['n_neighbors']
     test_object = lxa_object.words_to_neighbors()
 
     expected_object_path = os.path.join(data_dir, 'words_to_neighbors.txt')
     expected_object = eval(open(expected_object_path).read())
 
+    # test if each word has a *very* similar set of neighbor words
+    # across test_object and expected_object
+
     for word in test_object.keys():
-        assert test_object[word] == expected_object[word]
+        word_set1 = set(test_object[word])
+        word_set2 = set(expected_object[word])
+        assert len(word_set1 & word_set2) >= (number_of_neighbors - 2)
 
 
 def test_words_to_contexts():
