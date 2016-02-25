@@ -21,7 +21,7 @@ lxa_version = lxa.__version__
 # ------------------------------------------------------------------------------
 # ensure lxa_mode is one of the modes in MODES
 
-MODES = {'cmd', 'gui'}
+MODES = {'cli', 'gui'}
 
 try:
     lxa_mode = sys.argv[1].lower()
@@ -48,7 +48,7 @@ if lxa_mode == 'gui':
 # ------------------------------------------------------------------------------
 # command line mode
 
-if lxa_mode == 'cmd':
+if lxa_mode == 'cli':
     print('\nWelcome to Linguistica {}!'.format(lxa_version))
 
     # --------------------------------------------------------------------------

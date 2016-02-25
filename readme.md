@@ -65,8 +65,8 @@ To launch the Linguistica 5 graphical user interface:
 $ python3 -m linguistica gui
 ```
 
-To use Linguistica 5 as a command line tool:
+To launch the Linguistica 5 command line interface:
 
 ```
-$ python3 -m linguistica cmd
+$ python3 -m linguistica cli
 ```
