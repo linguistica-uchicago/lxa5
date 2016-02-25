@@ -1,5 +1,6 @@
 import os
 import time
+import json
 from pathlib import Path
 
 from networkx.readwrite import json_graph
@@ -13,7 +14,7 @@ from PyQt5.QtWebKitWidgets import QWebView
 
 from linguistica import read_corpus
 
-from linguistica.util import (SEP_SIG, SEP_NGRAM, double_sorted, json_dump)
+from linguistica.util import (SEP_SIG, SEP_NGRAM, double_sorted)
 
 from linguistica.gui.worker import LinguisticaWorker
 
@@ -540,7 +541,7 @@ class MainWindow(QMainWindow):
 
             manifold_json_data = json_graph.node_link_data(
                 self.lexicon.neighbor_graph())
-            json_dump(manifold_json_data, open(manifold_filename, 'w'))
+            json.dump(manifold_json_data, open(manifold_filename, 'w'))
 
             viz_html = os.path.join(os.getcwd(), html_name)
             print('viz_html', viz_html)
