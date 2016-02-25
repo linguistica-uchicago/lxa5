@@ -17,13 +17,13 @@ def test_words_to_neighbors():
     expected_object_path = os.path.join(data_dir, 'words_to_neighbors.txt')
     expected_object = eval(open(expected_object_path).read())
 
-    # test if each word has a *very* similar set of neighbor words
+    # test if each word has a similar set of neighbor words
     # across test_object and expected_object
 
     for word in test_object.keys():
         word_set1 = set(test_object[word])
         word_set2 = set(expected_object[word])
-        if len(word_set1 & word_set2) >= (number_of_neighbors - 3):
+        if len(word_set1 & word_set2) >= (number_of_neighbors - 4):
             correct_count += 1
 
     correct_ratio = correct_count / number_of_words
@@ -31,7 +31,7 @@ def test_words_to_neighbors():
     # test if the ratio of words having a similar set of neighbor words is
     # high enough to pass the test
 
-    assert correct_ratio > 0.8
+    assert correct_ratio >= 0.65
 
 
 def test_words_to_contexts():
