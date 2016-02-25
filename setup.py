@@ -17,11 +17,14 @@ version_path = path.join(path.dirname(__file__), 'linguistica', 'VERSION')
 with open(version_path) as f:
     package_version = f.read().strip()
 
+readme_path = path.join(path.dirname(__file__), 'readme.rst')
+with open(readme_path) as f:
+    long_description = f.read()
+
 setup(name='linguistica',
       version=package_version,
       description='Linguistica',
-      long_description='Linguistica: '
-                       'Unsupervised Learning of Linguistic Structure',
+      long_description=long_description,
       url='http://linguistica.uchicago.edu/',
       author='Jackson Lee',
       author_email='jsllee.phon@gmail.com',
