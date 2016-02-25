@@ -7,7 +7,11 @@ python:
 
 sudo: required
 
-# install dependencies
+# install dependencies for scipy
+before_install:
+  - sudo apt-get install libblas-dev liblapack-dev libatlas-base-dev gfortran
+
+# install linguistica
 install:
   - python setup.py install
 
