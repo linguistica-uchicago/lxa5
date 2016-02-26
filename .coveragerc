@@ -1,2 +1,7 @@
 [run]
 source = linguistica
+
+[report]
+omit =
+    */python?.?/*
+    */site-packages/*
