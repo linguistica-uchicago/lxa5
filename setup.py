@@ -13,13 +13,19 @@ if current_py_version < required_py_version:
              .format(*required_py_version) +
              'You are using Python {}.{}.'.format(*current_py_version))
 
-version_path = path.join(path.dirname(__file__), 'linguistica', 'VERSION')
+this_dir = path.dirname(__file__)
+
+version_path = path.join(this_dir, 'linguistica', 'VERSION')
 with open(version_path) as f:
     package_version = f.read().strip()
 
-readme_path = path.join(path.dirname(__file__), 'readme.rst')
+readme_path = path.join(this_dir, 'readme.rst')
 with open(readme_path) as f:
     long_description = f.read()
+
+requirements_path = path.join(this_dir, 'requirements.txt')
+with open(requirements_path) as f:
+    requirements = f.readlines()
 
 setup(name='linguistica',
       version=package_version,
@@ -35,7 +41,7 @@ setup(name='linguistica',
                 'language', 'machine learning', 'unsupervised learning',
                 'data visualization'],
 
-      install_requires=['scipy>=0.17.0', 'numpy>=1.10.4', 'networkx>=1.11'],
+      install_requires=requirements,
 
       package_data={
           'linguistica': ['VERSION', 'gui/d3.min.js'],
