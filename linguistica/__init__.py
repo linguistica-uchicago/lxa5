@@ -95,18 +95,9 @@ use ``change_parameters()`` with keyword arguments:
 
 """
 
-import os
-
 from linguistica.lexicon import Lexicon
 from linguistica.util import ENCODING
-
-# Version
-version_filename = os.path.join(os.path.dirname(__file__), 'VERSION')
-try:
-    with open(version_filename) as f:
-        __version__ = f.read().strip()
-except FileNotFoundError:
-    __version__ = 'unknown version; VERSION file not found'
+from linguistica.release import __version__
 
 
 def read_corpus(file_path, encoding=ENCODING, keep_case=False, **kwargs):
