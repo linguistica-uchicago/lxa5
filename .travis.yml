@@ -5,7 +5,6 @@ python:
 
 sudo: required
 
-# install dependencies: numpy, scipy, networkx
 # for scipy, {libblas-dev liblapack-dev libatlas-base-dev gfortran} are needed
 # test_requirements.txt packages for running tests and measuring coverage
 before_install:
@@ -16,7 +15,8 @@ before_install:
 install:
   - python setup.py install
 
-# run tests
+# run tests using nose
+# specify "--where=tests" as all tests are in the directory "tests"
 script:
   - nosetests --where=tests --with-coverage
 
