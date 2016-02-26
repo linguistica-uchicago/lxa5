@@ -5,12 +5,15 @@ python:
 
 sudo: required
 
-# install dependencies for scipy
+# install dependencies: numpy, scipy, networkx
+# for scipy, {libblas-dev liblapack-dev libatlas-base-dev gfortran} are needed
+# we use coveralls for measuring test coverage
 before_install:
   - sudo apt-get install libblas-dev liblapack-dev libatlas-base-dev gfortran
-  - pip install -I networkx>=1.11
-  - pip install -I scipy>=0.17.0
   - pip install -I numpy>=1.10.4
+  - pip install -I scipy>=0.17.0
+  - pip install -I networkx>=1.11
+  - pip install coveralls
 
 # install linguistica
 install:
@@ -19,3 +22,6 @@ install:
 # run tests
 script:
   - bash pytest_run.sh
+
+after_success:
+  - coveralls
