@@ -10,9 +10,6 @@ sudo: required
 # test_requirements.txt packages for running tests and measuring coverage
 before_install:
   - sudo apt-get install libblas-dev liblapack-dev libatlas-base-dev gfortran
-  - pip install -I numpy>=1.10.4
-  - pip install -I scipy>=0.17.0
-  - pip install -I networkx>=1.11
   - pip install -r test_requirements.txt
 
 # install linguistica
