@@ -1,7 +1,10 @@
 # -*- encoding: utf8 -*-
 
+import sys
+
 from itertools import groupby
 
+REQUIRED_PY_VERSION = (3, 4)
 
 ENCODING = 'utf8'
 
@@ -150,3 +153,14 @@ def vprint(*objects, verbose=False, sep='', end='\n', flush=True):
         print(*objects, sep=sep, end=end, flush=flush)
     else:
         return
+
+
+def check_py_version(required=REQUIRED_PY_VERSION):
+
+    required_py_version = required
+    current_py_version = sys.version_info[:2]
+
+    if current_py_version < required_py_version:
+        sys.exit('Error: Linguistica requires Python {}.{} or above.\n'
+                 .format(*required_py_version) +
+                 'You are using Python {}.{}.'.format(*current_py_version))
