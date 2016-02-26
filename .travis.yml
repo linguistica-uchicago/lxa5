@@ -21,7 +21,7 @@ install:
 
 # run tests
 script:
-  - nosetests --with-coverage
+  - nosetests --where=tests --with-coverage
 
 after_success:
   - coveralls
