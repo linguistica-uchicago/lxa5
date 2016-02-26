@@ -4,6 +4,9 @@ Linguistica 5
 .. image:: https://travis-ci.org/linguistica-uchicago/lxa5.svg?branch=master
     :target: https://travis-ci.org/linguistica-uchicago/lxa5
 
+.. image:: https://coveralls.io/repos/github/linguistica-uchicago/lxa5/badge.svg?branch=master
+    :target: https://coveralls.io/github/linguistica-uchicago/lxa5?branch=master
+
 Linguistica 5 is a Python library for unsupervised learning
 of linguistic structure, based on Goldsmith (2001, 2006) and all subsequent
 developments.
