@@ -1,15 +1,16 @@
+# -*- encoding: utf8 -*-
+
 import os
-import time
 import json
 from pathlib import Path
 
 from networkx.readwrite import json_graph
 
-from PyQt5.QtCore import (Qt, QUrl, QCoreApplication)
+from PyQt5.QtCore import (Qt, QUrl)
 from PyQt5.QtWidgets import (QMainWindow, QWidget, QAction, QVBoxLayout,
                              QTreeWidget, QFileDialog, QLabel, QTreeWidgetItem,
                              QTableWidget, QTableWidgetItem, QSplitter,
-                             QProgressDialog, QDialog, QGridLayout)
+                             QProgressDialog)
 from PyQt5.QtWebKitWidgets import QWebView
 
 from linguistica import read_corpus
@@ -26,11 +27,8 @@ from linguistica.gui.util import (MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT,
                                   TRIES, WORDS_AS_TRIES, SUCCESSORS, PREDECESSORS,
                                   PHONOLOGY, PHONES, BIPHONES, TRIPHONES,
                                   MANIFOLDS, WORD_NEIGHBORS, VISUALIZED_GRAPH,
-                                  SHOW_MANIFOLD_HTML)
-
-
-def process_all_gui_events():
-    QCoreApplication.processEvents()
+                                  SHOW_MANIFOLD_HTML,
+                                  process_all_gui_events)
 
 
 # noinspection PyAttributeOutsideInit
@@ -140,25 +138,20 @@ class MainWindow(QMainWindow):
         self.corpus_stem_name = Path(self.corpus_name).stem
 
         self.lexicon = read_corpus(self.corpus_filename)
+        process_all_gui_events()
 
         self.run_corpus()
 
-    def update_progress(self, progress_text, target_percentage, gradual=True):
+    def update_progress(self, progress_text, target_percentage):
         """
         Update the progress dialog. This function is triggered by the
         "progress_signal" emitted from the linguistica component worker thread.
         """
         self.progressDialog.setLabelText(progress_text)
-        if gradual:
-            current_percentage = self.progressDialog.value()
-            for percentage in range(current_percentage, target_percentage + 1):
-                self.progressDialog.setValue(percentage)
-                process_all_gui_events()
-                time.sleep(0.02)
-        else:
-            self.progressDialog.setValue(target_percentage)
-            process_all_gui_events()
+        self.progressDialog.setValue(target_percentage)
+        process_all_gui_events()
 
+    # noinspection PyProtectedMember
     def run_corpus(self):
         self.status.clearMessage()
         self.status.showMessage('Running the corpus {} now...'
@@ -175,25 +168,28 @@ class MainWindow(QMainWindow):
         # the Linguistica components is ongoing.
 
         self.lxa_worker = LinguisticaWorker(self.lexicon)
-        # self.lxa_worker.progress_signal.connect(self.update_progress)
+        self.lxa_worker.progress_signal.connect(self.update_progress)
 
         # set up progress dialog
 
-        # self.progressDialog = QProgressDialog()
-        # self.progressDialog.setRange(0, 100)  # it's like from 0% to 100%
-        # self.progressDialog.setLabelText('Extracting word ngrams...')
-        # self.progressDialog.setValue(0)  # initialize as 0 (= 0%)
-        # self.progressDialog.setWindowTitle(
-        #     'Processing {}'.format(self.corpus_name))
-        # self.progressDialog.setCancelButton(None)
-        # self.progressDialog.show()
+        process_all_gui_events()
+        self.progressDialog = QProgressDialog()
+        self.progressDialog.setRange(0, 100)  # it's like from 0% to 100%
+        self.progressDialog.setLabelText('Initializing...')
+        self.progressDialog.setValue(0)  # initialize as 0 (= 0%)
+        self.progressDialog.setWindowTitle(
+            'Processing {}'.format(self.corpus_name))
+        self.progressDialog.setCancelButton(None)
+        self.progressDialog.resize(400, 100)
+        process_all_gui_events()
+
+        self.progressDialog.show()
 
         # We disable the "cancel" button
         # Setting up a "cancel" mechanism may not be a good idea,
         # since it would probably involve killing the linguistica component
         # worker at *any* point of its processing.
         # This may have undesirable effects (e.g., freezing the GUI) -- BAD!
-
 
         # make sure all GUI stuff up to this point has been processed before
         # doing the real work of running the Lxa components
@@ -202,8 +198,6 @@ class MainWindow(QMainWindow):
         # Now the real work begins here!
         self.lxa_worker.start()
 
-        # if self.progressDialog.value() != 100:
-        #     self.progressDialog.setValue(100)
         process_all_gui_events()
 
         self.lexicon = self.lxa_worker.get_lexicon()

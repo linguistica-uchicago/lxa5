@@ -1,10 +1,13 @@
-# General "util" library for Linguistica 5 GUI
-# Jackson Lee, 2015
+# -*- encoding: utf8 -*-
 
-# This library is exclusively for the GUI,
-# nothing for the command line interface.
+from PyQt5.QtCore import QCoreApplication
 
-#------------------------------------------------------------------------------#
+# ------------------------------------------------------------------------------
+
+
+def process_all_gui_events():
+    QCoreApplication.processEvents()
+
 
 # constants for window sizes etc
 
@@ -15,7 +18,7 @@ TREEWIDGET_HEIGHT_MIN = 400
 MAIN_WINDOW_WIDTH = 1000
 MAIN_WINDOW_HEIGHT = 600
 
-#------------------------------------------------------------------------------#
+# ------------------------------------------------------------------------------
 
 # string names of lexicon tree objects
 # do NOT change the variable names! (strings themselves can be altered though)
@@ -44,7 +47,7 @@ MANIFOLDS = "Manifolds"
 WORD_NEIGHBORS = "Word neighbors"
 VISUALIZED_GRAPH = "Visualized graph"
 
-#------------------------------------------------------------------------------#
+# ------------------------------------------------------------------------------
 
 SHOW_MANIFOLD_HTML = """
 <!DOCTYPE html>
@@ -151,5 +154,3 @@ d3.json("{}", function(error, graph) {{
 
 </script>
 """
-
-

@@ -1,7 +1,6 @@
-import multiprocessing as mp
-import time
+# -*- encoding: utf8 -*-
 
-from PyQt5.QtCore import (QThread, pyqtSignal, QCoreApplication)
+from PyQt5.QtCore import (QThread, pyqtSignal)
 
 # We spawn another
 # thread to set up a "Linguistica component worker" using QThread.
@@ -15,7 +14,7 @@ class LinguisticaWorker(QThread):
     # progress_signal is a custom PyQt signal. It has to be defined within this
     # QThread subclass but *outside* __init__ here.
 
-    progress_signal = pyqtSignal(str, int, bool)
+    progress_signal = pyqtSignal(str, int)
     # str is for the progress label text
     # int is the progress percentage target, for updating the progress bar
     # bool (True or False) is whether the progress percentage increments
@@ -35,63 +34,22 @@ class LinguisticaWorker(QThread):
         # When a component is done, emit a signal with info to update the
         # progress dialog label text and progress bar
 
-        # we are using multiprocessing (specifically, the Process class)
-        # to parallelize the {signature, trie, phon} components
+        self.progress_signal.emit("Extracting word ngrams...", 0)
+        self.lexicon.run_phon_module(verbose=True)
 
-        self.progress_signal.emit("Extracting word ngrams...", 30, True)
-        self.run_ngram()
+        self.progress_signal.emit('Computing morphological signatures...', 20)
+        self.lexicon.run_signature_module(verbose=True)
 
-        # make sure that the progress bar has hit 20%
-        self.progress_signal.emit(
-            "Working on signatures, tries, phonology...", 30, False)
-        QCoreApplication.processEvents()
+        self.progress_signal.emit('Computing tries...', 40)
+        self.lexicon.run_trie_module(verbose=True)
 
-        self.progress_signal.emit(
-            "Working on signatures, tries, phonology...", 80, True)
-        signature_process = mp.Process(target=self.run_signature)
-        trie_process = mp.Process(target=self.run_trie)
-        phon_process = mp.Process(target=self.run_phon)
-        signature_process.start()
-        trie_process.start()
-        phon_process.start()
+        self.progress_signal.emit('Computing phonology...', 60)
+        self.lexicon.run_phon_module(verbose=True)
 
-        # the three "join" statements make sure that they are ALL finished
-        # before the manifold component is run
-        signature_process.join()
-        trie_process.join()
-        phon_process.join()
+        self.progress_signal.emit('Computing word neighbors...',  80)
+        self.lexicon.run_manifold_module(verbose=True)
 
-        # make sure that the progress bar has hit 80%
-        self.progress_signal.emit("Computing word neighbors...", 80, False)
-        QCoreApplication.processEvents()
-        time.sleep(0.5)
-
-        self.progress_signal.emit("Computing word neighbors...", 99, True)
-        self.run_manifold()
-
-        self.progress_signal.emit("Corpus processed", 100, False)
-        QCoreApplication.processEvents()
-
-    def run_ngram(self):
-        print('\tngrams...', flush=True)
-        self.lexicon._make_word_ngrams_from_corpus_file_object()
-        self.lexicon._make_wordlist()
-
-    def run_signature(self):
-        print('\tsignatures...', flush=True)
-        self.lexicon._make_all_signature_objects()
-
-    def run_trie(self):
-        print('\ttries...', flush=True)
-        self.lexicon._make_all_trie_objects()
-
-    def run_phon(self):
-        print('\tphonology...', flush=True)
-        self.lexicon._make_all_phon_objects()
-
-    def run_manifold(self):
-        print('\tmanifold...', flush=True)
-        self.lexicon._make_all_manifold_objects()
+        self.progress_signal.emit('All done!',  100)
 
     def get_lexicon(self):
         return self.lexicon
