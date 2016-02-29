@@ -73,8 +73,7 @@ def get_successors(wordlist, broken_words):
         number_of_pieces = len(this_word_parsed)
 
         if not this_word_parsed:
-            successors[this_word] = set()
-            successors[this_word].add(NULL)
+            successors[this_word] = {NULL}
             continue
         word_being_built = this_word_parsed[0]
 

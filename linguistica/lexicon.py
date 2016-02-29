@@ -144,7 +144,7 @@ class Lexicon:
             return None
 
         if type(file_path) != str:
-            raise ValueError('file path must be a str -- ' + file_path)
+            raise TypeError('file path must be a str -- ' + file_path)
 
         if sys.platform.startswith('win'):
             file_path = file_path.replace('/', os.sep)

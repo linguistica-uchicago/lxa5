@@ -1,30 +1,20 @@
 # -*- encoding: utf8 -*-
 
-import math
+
 from collections import Counter
 
 
 def plog(x):
+    import math
     return -1 * math.log2(x)
 
 
 class Phone:
     def __init__(self, spelling, count, freq):
-        self._spelling = spelling
-        self._count = count
-        self._frequency = freq
-
-    def spelling(self):
-        return self._spelling
-
-    def count(self):
-        return self._count
-
-    def frequency(self):
-        return self._frequency
-
-    def plog(self):
-        return plog(self._frequency)
+        self.spelling = spelling
+        self.count = count
+        self.frequency = freq
+        self.plog = plog(self.frequency)
 
 
 # noinspection PyPep8Naming
@@ -33,72 +23,30 @@ class Biphone:
         self.phone1 = phone1
         self.phone2 = phone2
 
-        self._spelling = (self.phone1.spelling, self.phone2.spelling)
-        self._count = count
-        self._frequency = freq
-
-    def spelling(self):
-        return self._spelling
-
-    def count(self):
-        return self._count
-
-    def frequency(self):
-        return self._frequency
-
-    def MI(self):
-        return self.phone1.plog() + self.phone2.plog() - plog(self._frequency)
-
-    def weighted_MI(self):
-        return self.MI() * self._count
+        self.spelling = (self.phone1.spelling, self.phone2.spelling)
+        self.count = count
+        self.frequency = freq
+        self.MI = self.phone1.plog + self.phone2.plog - plog(self.frequency)
+        self.weighted_MI = self.MI * self.count
 
 
 class Word:
     def __init__(self, spelling, phones, count, freq, phone_dict, biphone_dict):
-        self._spelling = spelling
-        self._phones = phones
-        self._count = count
-        self._frequency = freq
+        self.spelling = spelling
+        self.phones = phones
+        self.count = count
+        self.frequency = freq
 
-        self.phone_dict = phone_dict
-        self.biphone_dict = biphone_dict
+        self.unigram_plog = sum(phone_dict[phone].plog
+                                for phone in self.phones[1:])
+        self.avg_unigram_plog = self.unigram_plog / (len(self.phones) - 1)
 
-        if len(self._phones) < 3:
-            print(spelling, phones)
+        _bigram_plog = self.unigram_plog
+        for biphone in zip(*[self.phones[i:] for i in range(2)]):
+            _bigram_plog -= biphone_dict[biphone].MI
+        self.bigram_plog = _bigram_plog
 
-    def spelling(self):
-        return self._spelling
-
-    def phones(self):
-        return self._phones
-
-    def count(self):
-        return self._count
-
-    def frequency(self):
-        return self._frequency
-
-    def unigram_plog(self):
-        _unigram_plog = 0
-
-        for phone in self._phones[1:]:
-            _unigram_plog += self.phone_dict[phone].plog()
-
-        return _unigram_plog
-
-    def avg_unigram_plog(self):
-        return self.unigram_plog() / (len(self._phones) - 1)
-
-    def bigram_plog(self):
-        _bigram_plog = self.unigram_plog()
-
-        for biphone in zip(*[self._phones[i:] for i in range(2)]):
-            _bigram_plog -= self.biphone_dict[biphone].MI()
-
-        return _bigram_plog
-
-    def avg_bigram_plog(self):
-        return self.bigram_plog() / (len(self._phones) - 1)
+        self.avg_bigram_plog = self.bigram_plog / (len(self.phones) - 1)
 
 
 def make_word_ngrams(word_unigram_counter=None):

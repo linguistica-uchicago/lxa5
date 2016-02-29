@@ -373,18 +373,18 @@ class MainWindow(QMainWindow):
         if item_str == WORDLIST:
             new_display = self.create_major_display_table(
                 self.lexicon.word_phonology_dict().items(),
-                key=lambda x: x[1].count(), reverse=True,
+                key=lambda x: x[1].count, reverse=True,
                 headers=['Word', 'Count', 'Frequency', 'Phones',
                          'Unigram plog', 'Avg unigram plog',
                          'Bigram plog', 'Avg bigram plog'],
                 row_cell_functions=[
-                    lambda x: x[0], lambda x: x[1].count(),
-                    lambda x: x[1].frequency(),
-                    lambda x: ' '.join(x[1].phones()),
-                    lambda x: x[1].unigram_plog(),
-                    lambda x: x[1].avg_unigram_plog(),
-                    lambda x: x[1].bigram_plog(),
-                    lambda x: x[1].avg_bigram_plog()],
+                    lambda x: x[0], lambda x: x[1].count,
+                    lambda x: x[1].frequency,
+                    lambda x: ' '.join(x[1].phones),
+                    lambda x: x[1].unigram_plog,
+                    lambda x: x[1].avg_unigram_plog,
+                    lambda x: x[1].bigram_plog,
+                    lambda x: x[1].avg_bigram_plog],
                 cutoff=0)
 
         elif item_str == BIGRAMS:
@@ -457,8 +457,9 @@ class MainWindow(QMainWindow):
             new_display = self.create_major_display_table(
                 self.lexicon.successors().items(),
                 key=lambda x: len(x[1]), reverse=True,
-                headers=['String', 'Successors'],
+                headers=['String', 'Successor count', 'Successors'],
                 row_cell_functions=[lambda x: x[0],
+                                    lambda x: len(x[1]),
                                     lambda x: ', '.join(sorted(x[1]))],
                 cutoff=0)
 
@@ -466,33 +467,34 @@ class MainWindow(QMainWindow):
             new_display = self.create_major_display_table(
                 self.lexicon.predecessors().items(),
                 key=lambda x: len(x[1]), reverse=True,
-                headers=['String', 'Predecessors'],
+                headers=['String', 'Predecessor count', 'Predecessors'],
                 row_cell_functions=[lambda x: x[0],
+                                    lambda x: len(x[1]),
                                     lambda x: ', '.join(sorted(x[1]))],
                 cutoff=0)
 
         elif item_str == PHONES:
             new_display = self.create_major_display_table(
                 self.lexicon.phone_dict().items(),
-                key=lambda x: x[1].count(), reverse=True,
+                key=lambda x: x[1].count, reverse=True,
                 headers=['Phone', 'Count', 'Frequency', 'Plog'],
                 row_cell_functions=[lambda x: x[0],
-                                    lambda x: x[1].count(),
-                                    lambda x: x[1].frequency(),
-                                    lambda x: x[1].plog()],
+                                    lambda x: x[1].count,
+                                    lambda x: x[1].frequency,
+                                    lambda x: x[1].plog],
                 cutoff=0)
 
         elif item_str == BIPHONES:
             new_display = self.create_major_display_table(
                 self.lexicon.biphone_dict().items(),
-                key=lambda x: x[1].count(), reverse=True,
+                key=lambda x: x[1].count, reverse=True,
                 headers=['Biphone', 'Count', 'Frequency',
                          'Mutual information (MI)', 'Weighted MI'],
                 row_cell_functions=[lambda x: SEP_NGRAM.join(x[0]),
-                                    lambda x: x[1].count(),
-                                    lambda x: x[1].frequency(),
-                                    lambda x: x[1].MI(),
-                                    lambda x: x[1].weighted_MI()],
+                                    lambda x: x[1].count,
+                                    lambda x: x[1].frequency,
+                                    lambda x: x[1].MI,
+                                    lambda x: x[1].weighted_MI],
                 cutoff=0)
 
         elif item_str == TRIPHONES:

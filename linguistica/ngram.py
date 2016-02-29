@@ -18,8 +18,6 @@ def run(corpus_file_object=None, keep_case=False, max_word_tokens=0):
             break
 
         line = fix_punctuations(line).strip()
-        if not line:
-            continue
 
         if not keep_case:
             line = line.casefold()

@@ -49,6 +49,7 @@ PARAMETERS_FILENAME = 'parameters.json'
 
 
 def fix_punctuations(line):
+    import re
     line = line.replace('.', ' . ')
     line = line.replace(',', ' , ')
     line = line.replace(';', ' ; ')
@@ -57,15 +58,11 @@ def fix_punctuations(line):
     line = line.replace(':', ' : ')
     line = line.replace(')', ' ) ')
     line = line.replace('(', ' ( ')
-    return line
+    return re.sub('\s', ' ', line)
 
 
 def double_sorted(input_object, key=lambda x: x, reverse=False,
                   subkey=lambda x: x, subreverse=False):
-    if not input_object:
-        print("Warning: object is empty. Sorting aborted.")
-        return
-
     new_sorted_list = list()
     sorted_list = sorted(input_object, key=key, reverse=reverse)
 
@@ -85,8 +82,8 @@ def double_sorted(input_object, key=lambda x: x, reverse=False,
     return new_sorted_list
 
 
-def output_latex_table(iter_obj, file, title=None, headers=None,
-                       row_functions=None, column_widths=None, index=True):
+def output_latex_table(iter_obj, file, title, headers,
+                       row_functions, column_widths, index=True):
     """
     Output LaTeX table code for *iter_obj* to *file*.
 
@@ -99,15 +96,6 @@ def output_latex_table(iter_obj, file, title=None, headers=None,
     :param column_widths: list of column widths.
     :param index: whether the table has an index column; defaults to True.
     """
-    if not title:
-        title = file.name
-    if not headers:
-        headers = ['header']
-    if not row_functions:
-        row_functions = [lambda x: str(x)]
-    if not column_widths:
-        column_widths = [0]
-
     if not (len(headers) == len(row_functions) == len(column_widths)):
         raise ValueError('headers, row_format, and column_widths '
                          'not of the same size')
@@ -145,12 +133,13 @@ def output_latex_table(iter_obj, file, title=None, headers=None,
     print('\\end{tabular}\n', file=file)
 
 
-def vprint(*objects, verbose=False, sep='', end='\n', flush=True):
+def vprint(*objects, verbose=False, sep='', end='\n', file=sys.stdout,
+           flush=True):
     """
     Verbose print; defaults to False.
     """
     if verbose:
-        print(*objects, sep=sep, end=end, flush=flush)
+        print(*objects, sep=sep, end=end, file=file, flush=flush)
     else:
         return
 

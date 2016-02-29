@@ -1,4 +1,8 @@
+# -*- encoding: utf8 -*-
+
 import os
+
+from nose.tools import assert_raises
 
 import linguistica as lxa
 
@@ -30,3 +34,12 @@ def test_phone_trigram_counter():
     expected_object_path = os.path.join(data_dir, 'phone_trigram_counter.txt')
     expected_object = eval(open(expected_object_path).read())
     assert test_object == expected_object
+
+
+def test_plog():
+    from linguistica.phon import plog
+    assert plog(1) == 0
+    assert plog(2) == -1.0
+    assert plog(0.5) == 1.0
+    assert plog(0.25) == 2.0
+    assert_raises(ValueError, plog, 0)
