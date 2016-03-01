@@ -7,10 +7,9 @@ import linguistica as lxa
 data_dir = os.path.join(os.path.dirname(__file__), 'data')
 corpus_path = os.path.join(data_dir, 'english-brown.txt')
 
-lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
-
 
 def test_broken_words_left_to_right():
+    lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
     test_object = lxa_object.broken_words_left_to_right()
 
     expected_object_path = os.path.join(data_dir,
@@ -20,6 +19,7 @@ def test_broken_words_left_to_right():
 
 
 def test_broken_words_right_to_left():
+    lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
     test_object = lxa_object.broken_words_right_to_left()
 
     expected_object_path = os.path.join(data_dir,
@@ -29,6 +29,7 @@ def test_broken_words_right_to_left():
 
 
 def test_successors():
+    lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
     test_object = lxa_object.successors()
 
     expected_object_path = os.path.join(data_dir, 'successors.txt')
@@ -37,6 +38,7 @@ def test_successors():
 
 
 def test_predecessors():
+    lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
     test_object = lxa_object.predecessors()
 
     expected_object_path = os.path.join(data_dir, 'predecessors.txt')

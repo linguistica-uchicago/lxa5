@@ -4,6 +4,7 @@ import os
 
 from nose.tools import assert_raises
 
+import linguistica as lxa
 from linguistica import (Lexicon,
                          read_corpus, read_wordlist, from_corpus, from_wordlist)
 
@@ -54,3 +55,45 @@ def test_reset():
     test_object = read_corpus(corpus_path)
     assert test_object.reset() is None
 
+
+def test_run_all_modules():
+    lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
+    lxa_object.run_all_modules()
+    assert True  # test if there are errors
+
+
+def test_run_ngram_module():
+    lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
+    lxa_object.run_ngram_module()
+    assert True  # test if there are errors
+
+
+def test_run_signature_module():
+    lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
+    lxa_object.run_signature_module()
+    assert True  # test if there are errors
+
+
+def test_run_phon_module():
+    lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
+    lxa_object.run_phon_module()
+    assert True  # test if there are errors
+
+
+def test_run_trie_module():
+    lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
+    lxa_object.run_trie_module()
+    assert True  # test if there are errors
+
+
+def test_run_manifold_module():
+    lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
+    lxa_object.run_manifold_module()
+    assert True  # test if there are errors
+
+
+def test_output_all_results():
+    lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
+    lxa_object.run_all_modules()
+    lxa_object.output_all_results()
+    assert True  # test if there are errors

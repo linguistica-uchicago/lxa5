@@ -9,10 +9,9 @@ import linguistica as lxa
 data_dir = os.path.join(os.path.dirname(__file__), 'data')
 corpus_path = os.path.join(data_dir, 'english-brown.txt')
 
-lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
-
 
 def test_phone_unigram_counter():
+    lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
     test_object = lxa_object.phone_unigram_counter()
 
     expected_object_path = os.path.join(data_dir, 'phone_unigram_counter.txt')
@@ -21,6 +20,7 @@ def test_phone_unigram_counter():
 
 
 def test_phone_bigram_counter():
+    lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
     test_object = lxa_object.phone_bigram_counter()
 
     expected_object_path = os.path.join(data_dir, 'phone_bigram_counter.txt')
@@ -29,6 +29,7 @@ def test_phone_bigram_counter():
 
 
 def test_phone_trigram_counter():
+    lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
     test_object = lxa_object.phone_trigram_counter()
 
     expected_object_path = os.path.join(data_dir, 'phone_trigram_counter.txt')
@@ -43,3 +44,22 @@ def test_plog():
     assert plog(0.5) == 1.0
     assert plog(0.25) == 2.0
     assert_raises(ValueError, plog, 0)
+
+
+def test_phone_dict():
+    lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
+    test_object = lxa_object.phone_dict()
+    assert True  # TODO: only testing if there are errors for now...
+
+
+def test_biphone_dict():
+    lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
+    test_object = lxa_object.biphone_dict()
+    assert True  # TODO: only testing if there are errors for now...
+
+
+def test_word_phonology_dict():
+    lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
+    test_object = lxa_object.word_phonology_dict()
+    assert True  # TODO: only testing if there are errors for now...
+

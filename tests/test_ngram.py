@@ -6,11 +6,11 @@ import linguistica as lxa
 
 data_dir = os.path.join(os.path.dirname(__file__), 'data')
 corpus_path = os.path.join(data_dir, 'english-brown.txt')
+wordlist_path = os.path.join(data_dir, 'english.dx1')
 
-lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
 
-
-def test_wordlist():
+def test_wordlist_from_corpus_file():
+    lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
     test_object = lxa_object.wordlist()
 
     expected_object_path = os.path.join(data_dir, 'wordlist.txt')
@@ -18,7 +18,15 @@ def test_wordlist():
     assert test_object == expected_object
 
 
+def test_wordlist_from_wordlist_file():
+    lxa_object = lxa.read_wordlist(wordlist_path)
+    test_object = lxa_object.wordlist()
+
+    assert type(test_object) == list  # TODO: not actually testing contents...
+
+
 def test_word_unigram_counter():
+    lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
     test_object = lxa_object.word_unigram_counter()
 
     expected_object_path = os.path.join(data_dir, 'word_unigram_counter.txt')
@@ -27,6 +35,7 @@ def test_word_unigram_counter():
 
 
 def test_word_bigram_counter():
+    lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
     test_object = lxa_object.word_bigram_counter()
 
     expected_object_path = os.path.join(data_dir, 'word_bigram_counter.txt')
@@ -35,6 +44,7 @@ def test_word_bigram_counter():
 
 
 def test_word_trigram_counter():
+    lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
     test_object = lxa_object.word_trigram_counter()
 
     expected_object_path = os.path.join(data_dir, 'word_trigram_counter.txt')

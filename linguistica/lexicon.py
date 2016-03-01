@@ -275,9 +275,9 @@ class Lexicon:
         if self.corpus_file_object:
             self.run_manifold_module(verbose=verbose)
 
-    def output_all_results(self, directory=None, verbose=False):
+    def output_all_results(self, directory=None, verbose=False, file=None):
         """
-        Output all Linguistica results to the directory *dir*.
+        Output all Linguistica results to *directory*.
 
         :param directory: output directory. If not specified, it defaults to
             the current directory given by ``os.getcwd()``.
@@ -294,7 +294,11 @@ class Lexicon:
         obj = double_sorted(self.word_bigram_counter().items(),
                             key=lambda x: x[1], reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        if not file:
+            f = open(f_path, 'w')
+        else:
+            f = file
+        output_latex_table(obj, f,
                            title='Word bigrams',
                            headers=['Word bigram', 'Count'],
                            row_functions=[lambda x: ' '.join(x[0]),
@@ -307,7 +311,11 @@ class Lexicon:
         obj = double_sorted(self.word_trigram_counter().items(),
                             key=lambda x: x[1], reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        if not file:
+            f = open(f_path, 'w')
+        else:
+            f = file
+        output_latex_table(obj, f,
                            title='Word trigrams',
                            headers=['Word trigram', 'Count'],
                            row_functions=[lambda x: ' '.join(x[0]),
@@ -323,7 +331,11 @@ class Lexicon:
         obj = double_sorted(self.stems_to_words().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        if not file:
+            f = open(f_path, 'w')
+        else:
+            f = file
+        output_latex_table(obj, f,
                            title='Stems to words '
                                  '(descending order of word count)',
                            headers=['Stem', 'Word count', 'Words'],
@@ -338,7 +350,11 @@ class Lexicon:
         obj = double_sorted(self.stems_to_words().items(),
                             key=lambda x: x[0], reverse=False)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'a'),
+        if not file:
+            f = open(f_path, 'a')
+        else:
+            f = file
+        output_latex_table(obj, f,
                            title='Stems to words '
                                  '(alphabetical order of stems)',
                            headers=['Stem', 'Word count', '1st 10 words'],
@@ -353,7 +369,11 @@ class Lexicon:
         obj = double_sorted(self.signatures_to_stems().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        if not file:
+            f = open(f_path, 'w')
+        else:
+            f = file
+        output_latex_table(obj, f,
                            title='Signatures to stems',
                            headers=['Signature', 'Stem count', 'Stems'],
                            row_functions=[lambda x: SEP_SIG.join(x[0]),
@@ -367,7 +387,11 @@ class Lexicon:
         obj = double_sorted(self.signatures_to_stems().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        if not file:
+            f = open(f_path, 'w')
+        else:
+            f = file
+        output_latex_table(obj, f,
                            title='Signatures to stems '
                                  '(first 10 stems for each sig)',
                            headers=['Signature', 'Stem count', '1st 10 stems'],
@@ -383,7 +407,11 @@ class Lexicon:
         obj = double_sorted(self.stems_to_signatures().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        if not file:
+            f = open(f_path, 'w')
+        else:
+            f = file
+        output_latex_table(obj, f,
                            title='Stems to signatures',
                            headers=['Stems', 'Signatures'],
                            row_functions=[lambda x: x[0],
@@ -398,7 +426,11 @@ class Lexicon:
         obj = double_sorted(self.words_to_signatures().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        if not file:
+            f = open(f_path, 'w')
+        else:
+            f = file
+        output_latex_table(obj, f,
                            title='Words to signatures',
                            headers=['Word', 'Sig count', 'Signatures'],
                            row_functions=[lambda x: x[0],
@@ -414,7 +446,11 @@ class Lexicon:
         obj = double_sorted(self.signatures_to_words().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        if not file:
+            f = open(f_path, 'w')
+        else:
+            f = file
+        output_latex_table(obj, f,
                            title='Signatures to words',
                            headers=['Signature', 'Word count', 'Words'],
                            row_functions=[lambda x: SEP_SIG.join(x[0]),
@@ -428,7 +464,11 @@ class Lexicon:
         obj = double_sorted(self.signatures_to_words().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        if not file:
+            f = open(f_path, 'w')
+        else:
+            f = file
+        output_latex_table(obj, f,
                            title='Signatures to words '
                                  '(first 10 words for each sig)',
                            headers=['Signature', 'Word count', '1st 10 words'],
@@ -444,7 +484,11 @@ class Lexicon:
         obj = double_sorted(self.words_to_sigtransforms().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        if not file:
+            f = open(f_path, 'w')
+        else:
+            f = file
+        output_latex_table(obj, f,
                            title='Words to sigtransforms',
                            headers=['Word', 'Signature transforms'],
                            row_functions=[lambda x: x[0],
@@ -461,7 +505,11 @@ class Lexicon:
         obj = double_sorted(self.affixes_to_signatures().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        if not file:
+            f = open(f_path, 'w')
+        else:
+            f = file
+        output_latex_table(obj, f,
                            title='Affixes to signatures',
                            headers=['Affix', 'Sig count', 'Signatures'],
                            row_functions=[lambda x: x[0],
@@ -481,7 +529,11 @@ class Lexicon:
         for word in self.wordlist()[: self.parameters()['max_word_types']]:
             obj.append((word, self.words_to_neighbors()[word]))
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        if not file:
+            f = open(f_path, 'w')
+        else:
+            f = file
+        output_latex_table(obj, f,
                            title='Words to neighbors',
                            headers=['Word', 'Neighbors'],
                            row_functions=[lambda x: x[0],
@@ -500,17 +552,17 @@ class Lexicon:
                                         'Unigram plog', 'Avg unigram plog',
                                         'Bigram plog', 'Avg bigram plog'],
                                row_functions=[lambda x: x[0],
-                                              lambda x: x[1].count(),
+                                              lambda x: x[1].count,
                                               lambda x:
-                                              '%.6f' % x[1].frequency(),
+                                              '%.6f' % x[1].frequency,
                                               lambda x:
-                                              '%8.3f' % x[1].unigram_plog(),
+                                              '%8.3f' % x[1].unigram_plog,
                                               lambda x:
-                                              '%8.3f' % x[1].avg_unigram_plog(),
+                                              '%8.3f' % x[1].avg_unigram_plog,
                                               lambda x:
-                                              '%8.3f' % x[1].bigram_plog(),
+                                              '%8.3f' % x[1].bigram_plog,
                                               lambda x:
-                                              '%8.3f' % x[1].avg_bigram_plog(),
+                                              '%8.3f' % x[1].avg_bigram_plog,
                                               ],
                                column_widths=[35, 10, 15, 15, 15, 15, 15]
                                )
@@ -520,39 +572,55 @@ class Lexicon:
         for word in self.wordlist():
             obj_word_phon.append((word, self.word_phonology_dict()[word]))
         f_path = os.path.join(output_dir, 'wordlist.txt')
-        out_latex_table_for_phon_words(obj_word_phon, open(f_path, 'w'),
+        if not file:
+            f = open(f_path, 'w')
+        else:
+            f = file
+        out_latex_table_for_phon_words(obj_word_phon, f,
                                        'Wordlist sorted by word count')
         vprint('\t' + fname, verbose=verbose)
 
         fname = 'wordlist_by_avg_unigram_plog.txt'
         obj_unigram_plog = double_sorted(obj_word_phon,
-                                         key=lambda x: x[1].avg_unigram_plog(),
+                                         key=lambda x: x[1].avg_unigram_plog,
                                          reverse=False)
         f_path = os.path.join(output_dir, fname)
-        out_latex_table_for_phon_words(obj_unigram_plog, open(f_path, 'w'),
+        if not file:
+            f = open(f_path, 'w')
+        else:
+            f = file
+        out_latex_table_for_phon_words(obj_unigram_plog, f,
                                        'Wordlist sorted by avg unigram plog')
         vprint('\t' + fname, verbose=verbose)
 
         fname = 'wordlist_by_avg_bigram_plog.txt'
         obj_bigram_plog = double_sorted(obj_word_phon,
-                                        key=lambda x: x[1].avg_bigram_plog(),
+                                        key=lambda x: x[1].avg_bigram_plog,
                                         reverse=False)
         f_path = os.path.join(output_dir, fname)
-        out_latex_table_for_phon_words(obj_bigram_plog, open(f_path, 'w'),
+        if not file:
+            f = open(f_path, 'w')
+        else:
+            f = file
+        out_latex_table_for_phon_words(obj_bigram_plog, f,
                                        'Wordlist sorted by avg bigram plog')
         vprint('\t' + fname, verbose=verbose)
 
         fname = 'phones.txt'
         obj = double_sorted(self.phone_dict().items(),
-                            key=lambda x: x[1].count(), reverse=True)
+                            key=lambda x: x[1].count, reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        if not file:
+            f = open(f_path, 'w')
+        else:
+            f = file
+        output_latex_table(obj, f,
                            title='Phones',
                            headers=['Phone', 'Count', 'Frequency', 'Plog'],
                            row_functions=[lambda x: x[0],
-                                          lambda x: x[1].count(),
-                                          lambda x: '%.6f' % x[1].frequency(),
-                                          lambda x: '%8.3f' % x[1].plog(),
+                                          lambda x: x[1].count,
+                                          lambda x: '%.6f' % x[1].frequency,
+                                          lambda x: '%8.3f' % x[1].plog,
                                           ],
                            column_widths=[10, 10, 15, 15]
                            )
@@ -560,20 +628,24 @@ class Lexicon:
 
         fname = 'biphones.txt'
         obj = double_sorted(self.biphone_dict().items(),
-                            key=lambda x: x[1].count(), reverse=True)
+                            key=lambda x: x[1].count, reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        if not file:
+            f = open(f_path, 'w')
+        else:
+            f = file
+        output_latex_table(obj, f,
                            title='Biphones',
                            headers=['Biphone', 'Count', 'Frequency',
                                     'MI', 'Weighted MI'],
                            row_functions=[lambda x: ' '.join(x[0]),
-                                          lambda x: x[1].count(),
+                                          lambda x: x[1].count,
                                           lambda x:
-                                          '%.6f' % x[1].frequency(),
+                                          '%.6f' % x[1].frequency,
                                           lambda x:
-                                          '%8.3f' % x[1].MI(),
+                                          '%8.3f' % x[1].MI,
                                           lambda x:
-                                          '%8.3f' % x[1].weighted_MI(),
+                                          '%8.3f' % x[1].weighted_MI,
                                           ],
                            column_widths=[10, 10, 15, 15, 15]
                            )
@@ -583,7 +655,11 @@ class Lexicon:
         obj = double_sorted(self.phone_trigram_counter().items(),
                             key=lambda x: x[1], reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        if not file:
+            f = open(f_path, 'w')
+        else:
+            f = file
+        output_latex_table(obj, f,
                            title='Triphones',
                            headers=['Triphone', 'Count'],
                            row_functions=[lambda x: ' '.join(x[0]),
@@ -603,7 +679,11 @@ class Lexicon:
                         self.broken_words_left_to_right()[word],
                         self.broken_words_right_to_left()[word]))
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        if not file:
+            f = open(f_path, 'w')
+        else:
+            f = file
+        output_latex_table(obj, f,
                            title='Words as tries',
                            headers=['Word', 'Left-to-right trie',
                                     'Right-to-left trie'],
@@ -619,7 +699,11 @@ class Lexicon:
         obj = double_sorted(self.successors().items(),
                             key=lambda x: len(x[1]), reverse=False)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        if not file:
+            f = open(f_path, 'w')
+        else:
+            f = file
+        output_latex_table(obj, f,
                            title='Successors',
                            headers=['String', 'Successors'],
                            row_functions=[lambda x: x[0],
@@ -633,7 +717,11 @@ class Lexicon:
         obj = double_sorted(self.predecessors().items(),
                             key=lambda x: len(x[1]), reverse=False)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        if not file:
+            f = open(f_path, 'w')
+        else:
+            f = file
+        output_latex_table(obj, f,
                            title='Predecessors',
                            headers=['String', 'Predecessors'],
                            row_functions=[lambda x: x[0],
@@ -657,9 +745,7 @@ class Lexicon:
                 self._make_word_ngrams_from_corpus_file_object()
             elif self.wordlist_file_object:
                 self._make_word_unigram_counter_from_wordlist_file_object()
-            else:
-                raise ValueError('no corpus/wordlist file object '
-                                 'or wordlist object')
+
         return self._word_unigram_counter
 
     def word_bigram_counter(self):
@@ -705,10 +791,6 @@ class Lexicon:
 
     def _make_word_unigram_counter_from_wordlist_file_object(self):
         word_freq_dict = dict()
-
-        if self.wordlist_file_object is None:
-            self._word_unigram_counter = dict()
-            return
 
         for line in self.wordlist_file_object:
             line = line.strip()
