@@ -18,9 +18,8 @@ install:
   - python setup.py install
 
 # run tests using nose
-# specify "--where=tests" as all tests are in the directory "tests"
 script:
-  - nosetests --where=tests --with-coverage
+  - python nosetests_run.py
 
 after_success:
   - coveralls
