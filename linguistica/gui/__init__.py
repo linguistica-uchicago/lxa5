@@ -40,13 +40,6 @@
 
 import sys
 
-try:
-    import PyQt5
-except ImportError:
-    PyQt5 = None
-    sys.exit('PyQt5 cannot be imported.\n'
-             'Be sure it is properly installed for your Python 3 distribution.')
-
 from PyQt5.QtWidgets import QApplication
 
 from linguistica.gui.main_window import MainWindow

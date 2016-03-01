@@ -4,9 +4,15 @@
 import sys
 
 import linguistica as lxa
-from linguistica.gui import main as gui_main
 from linguistica.cli import main as cli_main
 from linguistica.util import check_py_version
+
+try:
+    from linguistica.gui import main as gui_main
+    pyqt5_available = True
+except ImportError:
+    gui_main = None
+    pyqt5_available = False
 
 check_py_version()
 
@@ -35,9 +41,15 @@ if lxa_mode not in MODES:
 # launch graphical user interface
 
 if lxa_mode == 'gui':
-    print('Running the graphical user interface of Linguistica {}...'
-          .format(lxa_version))
-    gui_main()
+
+    if pyqt5_available:
+        print('Running the graphical user interface of Linguistica {}...'
+              .format(lxa_version))
+        gui_main()
+
+    else:
+        sys.exit('Unable to import PyQt5. '
+                 'Graphical user interface cannot be launched.')
 
 # ------------------------------------------------------------------------------
 # launch command line interface
