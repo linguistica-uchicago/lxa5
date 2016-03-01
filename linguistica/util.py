@@ -3,6 +3,20 @@
 import sys
 
 from itertools import groupby
+from time import strftime
+from pprint import pformat
+import platform
+
+import linguistica
+import scipy
+import numpy
+import networkx
+
+
+lxa_version = linguistica.__version__
+scipy_version = scipy.__version__
+numpy_version = numpy.__version__
+networkx_version = networkx.__version__
 
 REQUIRED_PY_VERSION = (3, 4)
 
@@ -83,7 +97,8 @@ def double_sorted(input_object, key=lambda x: x, reverse=False,
 
 
 def output_latex_table(iter_obj, file, title, headers,
-                       row_functions, column_widths, index=True):
+                       row_functions, column_widths, index=True,
+                       lxa_parameters=None):
     """
     Output LaTeX table code for *iter_obj* to *file*.
 
@@ -99,6 +114,37 @@ def output_latex_table(iter_obj, file, title, headers,
     if not (len(headers) == len(row_functions) == len(column_widths)):
         raise ValueError('headers, row_format, and column_widths '
                          'not of the same size')
+
+    print('Time:', strftime('%Y-%m-%d %H:%M:%S'), file=file)
+    print(file=file)
+
+    print('System info:\n'
+          '=============================================', file=file)
+
+    uname = platform.uname()
+    print('System:', uname.system, file=file)
+    print('Node:', uname.node, file=file)
+    print('Release:', uname.release, file=file)
+    print('Version:', uname.version, file=file)
+    print('Machine:', uname.machine, file=file)
+    print('Processor:', uname.processor, file=file)
+    print('Python version:', platform.python_version(), file=file)
+    print(file=file)
+
+    print('Packages:\n=============================================', file=file)
+
+    print('Linguistica', lxa_version, file=file)
+    print('SciPy', scipy_version, file=file)
+    print('NumPy', numpy_version, file=file)
+    print('NetworkX', networkx_version, file=file)
+    print(file=file)
+
+    print('Linguistica parameters:\n'
+          '=============================================', file=file)
+    print(pformat(lxa_parameters), file=file)
+    print(file=file)
+
+    print('Results:\n=============================================', file=file)
 
     header_list = list()
 

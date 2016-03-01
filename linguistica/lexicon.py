@@ -303,7 +303,8 @@ class Lexicon:
                            headers=['Word bigram', 'Count'],
                            row_functions=[lambda x: ' '.join(x[0]),
                                           lambda x: x[1]],
-                           column_widths=[50, 10]
+                           column_widths=[50, 10],
+                           lxa_parameters=self.parameters()
                            )
         vprint('\t' + fname, verbose=verbose)
 
@@ -320,7 +321,8 @@ class Lexicon:
                            headers=['Word trigram', 'Count'],
                            row_functions=[lambda x: ' '.join(x[0]),
                                           lambda x: x[1]],
-                           column_widths=[75, 10]
+                           column_widths=[75, 10],
+                           lxa_parameters=self.parameters()
                            )
         vprint('\t' + fname, verbose=verbose)
 
@@ -342,7 +344,8 @@ class Lexicon:
                            row_functions=[lambda x: x[0],
                                           lambda x: len(x[1]),
                                           lambda x: ', '.join(sorted(x[1]))],
-                           column_widths=[15, 15, 0]
+                           column_widths=[15, 15, 0],
+                           lxa_parameters=self.parameters()
                            )
         vprint('\t' + fname, verbose=verbose)
 
@@ -361,7 +364,8 @@ class Lexicon:
                            row_functions=[lambda x: x[0],
                                           lambda x: len(x[1]),
                                           lambda x: ', '.join(sorted(x[1]))],
-                           column_widths=[15, 15, 0]
+                           column_widths=[15, 15, 0],
+                           lxa_parameters=self.parameters()
                            )
         vprint('\t' + fname, verbose=verbose)
 
@@ -379,7 +383,8 @@ class Lexicon:
                            row_functions=[lambda x: SEP_SIG.join(x[0]),
                                           lambda x: len(x[1]),
                                           lambda x: ', '.join(sorted(x[1]))],
-                           column_widths=[30, 15, 0]
+                           column_widths=[30, 15, 0],
+                           lxa_parameters=self.parameters()
                            )
         vprint('\t' + fname, verbose=verbose)
 
@@ -399,7 +404,8 @@ class Lexicon:
                                           lambda x: len(x[1]),
                                           lambda x:
                                           ' '.join(sorted(x[1])[:10])],
-                           column_widths=[30, 15, 0]
+                           column_widths=[30, 15, 0],
+                           lxa_parameters=self.parameters()
                            )
         vprint('\t' + fname, verbose=verbose)
 
@@ -418,7 +424,8 @@ class Lexicon:
                                           lambda x:
                                           ', '.join(SEP_SIG.join(sig)
                                                     for sig in sorted(x[1]))],
-                           column_widths=[15, 0]
+                           column_widths=[15, 0],
+                           lxa_parameters=self.parameters()
                            )
         vprint('\t' + fname, verbose=verbose)
 
@@ -438,7 +445,8 @@ class Lexicon:
                                           lambda x:
                                           ', '.join(SEP_SIG.join(sig)
                                                     for sig in sorted(x[1]))],
-                           column_widths=[25, 15, 0]
+                           column_widths=[25, 15, 0],
+                           lxa_parameters=self.parameters()
                            )
         vprint('\t' + fname, verbose=verbose)
 
@@ -456,7 +464,8 @@ class Lexicon:
                            row_functions=[lambda x: SEP_SIG.join(x[0]),
                                           lambda x: len(x[1]),
                                           lambda x: ', '.join(sorted(x[1]))],
-                           column_widths=[20, 15, 0]
+                           column_widths=[20, 15, 0],
+                           lxa_parameters=self.parameters()
                            )
         vprint('\t' + fname, verbose=verbose)
 
@@ -476,7 +485,8 @@ class Lexicon:
                                           lambda x: len(x[1]),
                                           lambda x:
                                           ', '.join(sorted(x[1])[:10])],
-                           column_widths=[20, 15, 0]
+                           column_widths=[20, 15, 0],
+                           lxa_parameters=self.parameters()
                            )
         vprint('\t' + fname, verbose=verbose)
 
@@ -497,7 +507,8 @@ class Lexicon:
                                               SEP_SIG.join(sig) +
                                               SEP_SIGTRANSFORM + affix
                                               for sig, affix in sorted(x[1]))],
-                           column_widths=[20, 0]
+                           column_widths=[20, 0],
+                           lxa_parameters=self.parameters()
                            )
         vprint('\t' + fname, verbose=verbose)
 
@@ -517,7 +528,8 @@ class Lexicon:
                                           lambda x:
                                           ', '.join(SEP_SIG.join(sig)
                                                     for sig in sorted(x[1]))],
-                           column_widths=[15, 15, 0]
+                           column_widths=[15, 15, 0],
+                           lxa_parameters=self.parameters()
                            )
         vprint('\t' + fname, verbose=verbose)
 
@@ -538,14 +550,16 @@ class Lexicon:
                            headers=['Word', 'Neighbors'],
                            row_functions=[lambda x: x[0],
                                           lambda x: ' '.join(x[1])],
-                           column_widths=[25, 0]
+                           column_widths=[25, 0],
+                           lxa_parameters=self.parameters()
                            )
         vprint('\t' + fname, verbose=verbose)
 
         # ----------------------------------------------------------------------
         vprint('phon objects', verbose=verbose)
 
-        def out_latex_table_for_phon_words(obj_, file_, title_):
+        def out_latex_table_for_phon_words(obj_, file_, title_,
+                                           lxa_parameters_):
             output_latex_table(obj_, file_,
                                title=title_,
                                headers=['Word', 'Count', 'Frequency',
@@ -564,7 +578,8 @@ class Lexicon:
                                               lambda x:
                                               '%8.3f' % x[1].avg_bigram_plog,
                                               ],
-                               column_widths=[35, 10, 15, 15, 15, 15, 15]
+                               column_widths=[35, 10, 15, 15, 15, 15, 15],
+                               lxa_parameters=lxa_parameters_
                                )
 
         fname = 'wordlist.txt'
@@ -577,7 +592,8 @@ class Lexicon:
         else:
             f = file
         out_latex_table_for_phon_words(obj_word_phon, f,
-                                       'Wordlist sorted by word count')
+                                       'Wordlist sorted by word count',
+                                       self.parameters())
         vprint('\t' + fname, verbose=verbose)
 
         fname = 'wordlist_by_avg_unigram_plog.txt'
@@ -590,7 +606,8 @@ class Lexicon:
         else:
             f = file
         out_latex_table_for_phon_words(obj_unigram_plog, f,
-                                       'Wordlist sorted by avg unigram plog')
+                                       'Wordlist sorted by avg unigram plog',
+                                       self.parameters())
         vprint('\t' + fname, verbose=verbose)
 
         fname = 'wordlist_by_avg_bigram_plog.txt'
@@ -603,7 +620,8 @@ class Lexicon:
         else:
             f = file
         out_latex_table_for_phon_words(obj_bigram_plog, f,
-                                       'Wordlist sorted by avg bigram plog')
+                                       'Wordlist sorted by avg bigram plog',
+                                       self.parameters())
         vprint('\t' + fname, verbose=verbose)
 
         fname = 'phones.txt'
@@ -622,7 +640,8 @@ class Lexicon:
                                           lambda x: '%.6f' % x[1].frequency,
                                           lambda x: '%8.3f' % x[1].plog,
                                           ],
-                           column_widths=[10, 10, 15, 15]
+                           column_widths=[10, 10, 15, 15],
+                           lxa_parameters=self.parameters()
                            )
         vprint('\t' + fname, verbose=verbose)
 
@@ -647,7 +666,8 @@ class Lexicon:
                                           lambda x:
                                           '%8.3f' % x[1].weighted_MI,
                                           ],
-                           column_widths=[10, 10, 15, 15, 15]
+                           column_widths=[10, 10, 15, 15, 15],
+                           lxa_parameters=self.parameters()
                            )
         vprint('\t' + fname, verbose=verbose)
 
@@ -665,7 +685,8 @@ class Lexicon:
                            row_functions=[lambda x: ' '.join(x[0]),
                                           lambda x: x[1],
                                           ],
-                           column_widths=[15, 10]
+                           column_widths=[15, 10],
+                           lxa_parameters=self.parameters()
                            )
         vprint('\t' + fname, verbose=verbose)
 
@@ -691,7 +712,8 @@ class Lexicon:
                                           lambda x: ' '.join(x[1]),
                                           lambda x: ' '.join(x[2]),
                                           ],
-                           column_widths=[35, 50, 50]
+                           column_widths=[35, 50, 50],
+                           lxa_parameters=self.parameters()
                            )
         vprint('\t' + fname, verbose=verbose)
 
@@ -709,7 +731,8 @@ class Lexicon:
                            row_functions=[lambda x: x[0],
                                           lambda x: ' '.join(sorted(x[1])),
                                           ],
-                           column_widths=[35, 0]
+                           column_widths=[35, 0],
+                           lxa_parameters=self.parameters()
                            )
         vprint('\t' + fname, verbose=verbose)
 
@@ -727,7 +750,8 @@ class Lexicon:
                            row_functions=[lambda x: x[0],
                                           lambda x: ' '.join(sorted(x[1])),
                                           ],
-                           column_widths=[35, 0]
+                           column_widths=[35, 0],
+                           lxa_parameters=self.parameters()
                            )
         vprint('\t' + fname, verbose=verbose)
 

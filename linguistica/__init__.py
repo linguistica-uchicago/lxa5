@@ -95,9 +95,9 @@ use ``change_parameters()`` with keyword arguments:
 
 """
 
-from linguistica.lexicon import Lexicon
-from linguistica.util import ENCODING
 from linguistica.release import __version__
+from linguistica.util import ENCODING
+from linguistica.lexicon import Lexicon
 
 
 def read_corpus(file_path, encoding=ENCODING, keep_case=False, **kwargs):
