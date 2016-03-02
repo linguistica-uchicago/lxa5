@@ -29,21 +29,36 @@ Dependencies:
 * `NumPy <http://www.numpy.org/>`_
 * `SciPy <http://scipy.org/>`_
 * `NetworkX <https://networkx.github.io/>`_
-* `PyQt5 <https://www.riverbankcomputing.com/software/pyqt/download5>`_
-  (for the graphical user interface; including the WebKit module)
+* `SIP <https://www.riverbankcomputing.com/software/sip/download>`_
+  and
+  `PyQt5 <https://www.riverbankcomputing.com/software/pyqt/download5>`_
+  (both are optional; required for the graphical user interface)
 
 .. note::
-   Linux users -- SciPy has its own dependencies. If you are on Ubuntu,
-   run this before installing SciPy:
-   ``sudo apt-get install libblas-dev liblapack-dev libatlas-base-dev gfortran``
+   **SciPy dependencies** --
+   SciPy itself depends on NumPy, so it is recommended that NumPy is installed
+   before SciPy.
+   Depending on how you try to install SciPy,
+   the installation may also require other tools (e.g. a Fortran compiler):
+
+   * **Linux:** (for Ubuntu) run
+     ``sudo apt-get install libblas-dev liblapack-dev libatlas-base-dev gfortran``
+   * **Mac:** (assuming you have installed `Homebrew <http://brew.sh/>`_) run
+     ``brew install gcc``
+   * **Windows:** Consider simply using the
+     `pre-built Windows installer for SciPy <http://www.lfd.uci.edu/~gohlke/pythonlibs/#scipy>`_
+     by Christoph Gohlke so that you don't have to worry about the dependencies
 
 .. note::
-   PyQt5 -- Ubuntu users can install it by running this:
-   ``sudo apt-get install python3-sip python3-pyqt5 python3-pyqt5.qtwebkit``
+   **SIP and PyQt5 installation** --
 
-NumPy, SciPy, and NetworkX are conveniently available via ``pip``
-(and will be automatically installed when Linguistica 5 is installed,
-if they are absent on your system).
+   * **Linux:** (for Ubuntu) run
+     ``sudo apt-get install python3-sip python3-pyqt5 python3-pyqt5.qtwebkit``
+   * **Mac:** [notes forthcoming]
+   * **Windows:** [notes forthcoming]
+
+Be sure that all these packages are installed for the Python 3
+distribution with which you plan to use Linguistica 5.
 
 Currently, Linguistica 5 is hosted on GitHub:
 
