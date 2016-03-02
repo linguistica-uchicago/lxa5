@@ -294,7 +294,7 @@ class Lexicon:
         obj = double_sorted(self.word_bigram_counter().items(),
                             key=lambda x: x[1], reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        output_latex_table(obj, f_path,
                            title='Word bigrams',
                            headers=['Word bigram', 'Count'],
                            row_functions=[lambda x: ' '.join(x[0]),
@@ -308,7 +308,7 @@ class Lexicon:
         obj = double_sorted(self.word_trigram_counter().items(),
                             key=lambda x: x[1], reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        output_latex_table(obj, f_path,
                            title='Word trigrams',
                            headers=['Word trigram', 'Count'],
                            row_functions=[lambda x: ' '.join(x[0]),
@@ -326,7 +326,7 @@ class Lexicon:
         obj = double_sorted(self.stems_to_words().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        output_latex_table(obj, f_path,
                            title='Stems to words '
                                  '(descending order of word count)',
                            headers=['Stem', 'Word count', 'Words'],
@@ -343,7 +343,7 @@ class Lexicon:
         obj = double_sorted(self.stems_to_words().items(),
                             key=lambda x: x[0], reverse=False)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        output_latex_table(obj, f_path,
                            title='Stems to words '
                                  '(alphabetical order of stems)',
                            headers=['Stem', 'Word count', '1st 10 words'],
@@ -360,7 +360,7 @@ class Lexicon:
         obj = double_sorted(self.signatures_to_stems().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        output_latex_table(obj, f_path,
                            title='Signatures to stems',
                            headers=['Signature', 'Stem count', 'Stems'],
                            row_functions=[lambda x: SEP_SIG.join(x[0]),
@@ -376,7 +376,7 @@ class Lexicon:
         obj = double_sorted(self.signatures_to_stems().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        output_latex_table(obj, f_path,
                            title='Signatures to stems '
                                  '(first 10 stems for each sig)',
                            headers=['Signature', 'Stem count', '1st 10 stems'],
@@ -394,7 +394,7 @@ class Lexicon:
         obj = double_sorted(self.stems_to_signatures().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        output_latex_table(obj, f_path,
                            title='Stems to signatures',
                            headers=['Stems', 'Signatures'],
                            row_functions=[lambda x: x[0],
@@ -411,7 +411,7 @@ class Lexicon:
         obj = double_sorted(self.words_to_signatures().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        output_latex_table(obj, f_path,
                            title='Words to signatures',
                            headers=['Word', 'Sig count', 'Signatures'],
                            row_functions=[lambda x: x[0],
@@ -429,7 +429,7 @@ class Lexicon:
         obj = double_sorted(self.signatures_to_words().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        output_latex_table(obj, f_path,
                            title='Signatures to words',
                            headers=['Signature', 'Word count', 'Words'],
                            row_functions=[lambda x: SEP_SIG.join(x[0]),
@@ -445,7 +445,7 @@ class Lexicon:
         obj = double_sorted(self.signatures_to_words().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        output_latex_table(obj, f_path,
                            title='Signatures to words '
                                  '(first 10 words for each sig)',
                            headers=['Signature', 'Word count', '1st 10 words'],
@@ -463,7 +463,7 @@ class Lexicon:
         obj = double_sorted(self.words_to_sigtransforms().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        output_latex_table(obj, f_path,
                            title='Words to sigtransforms',
                            headers=['Word', 'Signature transforms'],
                            row_functions=[lambda x: x[0],
@@ -482,7 +482,7 @@ class Lexicon:
         obj = double_sorted(self.affixes_to_signatures().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        output_latex_table(obj, f_path,
                            title='Affixes to signatures',
                            headers=['Affix', 'Sig count', 'Signatures'],
                            row_functions=[lambda x: x[0],
@@ -504,7 +504,7 @@ class Lexicon:
         for word in self.wordlist()[: self.parameters()['max_word_types']]:
             obj.append((word, self.words_to_neighbors()[word]))
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        output_latex_table(obj, f_path,
                            title='Words to neighbors',
                            headers=['Word', 'Neighbors'],
                            row_functions=[lambda x: x[0],
@@ -518,9 +518,9 @@ class Lexicon:
         # ----------------------------------------------------------------------
         vprint('phon objects', verbose=verbose)
 
-        def out_latex_table_for_phon_words(obj_, file_, title_,
+        def out_latex_table_for_phon_words(obj_, f_path_, title_,
                                            lxa_parameters_, test_):
-            output_latex_table(obj_, file_,
+            output_latex_table(obj_, f_path_,
                                title=title_,
                                headers=['Word', 'Count', 'Frequency',
                                         'Unigram plog', 'Avg unigram plog',
@@ -548,7 +548,7 @@ class Lexicon:
         for word in self.wordlist():
             obj_word_phon.append((word, self.word_phonology_dict()[word]))
         f_path = os.path.join(output_dir, 'wordlist.txt')
-        out_latex_table_for_phon_words(obj_word_phon, open(f_path, 'w'),
+        out_latex_table_for_phon_words(obj_word_phon, f_path,
                                        'Wordlist sorted by word count',
                                        self.parameters(), test)
         vprint('\t' + fname, verbose=verbose)
@@ -558,7 +558,7 @@ class Lexicon:
                                          key=lambda x: x[1].avg_unigram_plog,
                                          reverse=False)
         f_path = os.path.join(output_dir, fname)
-        out_latex_table_for_phon_words(obj_unigram_plog, open(f_path, 'w'),
+        out_latex_table_for_phon_words(obj_unigram_plog, f_path,
                                        'Wordlist sorted by avg unigram plog',
                                        self.parameters(), test)
         vprint('\t' + fname, verbose=verbose)
@@ -568,7 +568,7 @@ class Lexicon:
                                         key=lambda x: x[1].avg_bigram_plog,
                                         reverse=False)
         f_path = os.path.join(output_dir, fname)
-        out_latex_table_for_phon_words(obj_bigram_plog, open(f_path, 'w'),
+        out_latex_table_for_phon_words(obj_bigram_plog, f_path,
                                        'Wordlist sorted by avg bigram plog',
                                        self.parameters(), test)
         vprint('\t' + fname, verbose=verbose)
@@ -577,7 +577,7 @@ class Lexicon:
         obj = double_sorted(self.phone_dict().items(),
                             key=lambda x: x[1].count, reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        output_latex_table(obj, f_path,
                            title='Phones',
                            headers=['Phone', 'Count', 'Frequency', 'Plog'],
                            row_functions=[lambda x: x[0],
@@ -595,7 +595,7 @@ class Lexicon:
         obj = double_sorted(self.biphone_dict().items(),
                             key=lambda x: x[1].count, reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        output_latex_table(obj, f_path,
                            title='Biphones',
                            headers=['Biphone', 'Count', 'Frequency',
                                     'MI', 'Weighted MI'],
@@ -618,7 +618,7 @@ class Lexicon:
         obj = double_sorted(self.phone_trigram_counter().items(),
                             key=lambda x: x[1], reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        output_latex_table(obj, f_path,
                            title='Triphones',
                            headers=['Triphone', 'Count'],
                            row_functions=[lambda x: ' '.join(x[0]),
@@ -640,7 +640,7 @@ class Lexicon:
                         self.broken_words_left_to_right()[word],
                         self.broken_words_right_to_left()[word]))
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        output_latex_table(obj, f_path,
                            title='Words as tries',
                            headers=['Word', 'Left-to-right trie',
                                     'Right-to-left trie'],
@@ -658,7 +658,7 @@ class Lexicon:
         obj = double_sorted(self.successors().items(),
                             key=lambda x: len(x[1]), reverse=False)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        output_latex_table(obj, f_path,
                            title='Successors',
                            headers=['String', 'Successors'],
                            row_functions=[lambda x: x[0],
@@ -674,7 +674,7 @@ class Lexicon:
         obj = double_sorted(self.predecessors().items(),
                             key=lambda x: len(x[1]), reverse=False)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, open(f_path, 'w'),
+        output_latex_table(obj, f_path,
                            title='Predecessors',
                            headers=['String', 'Predecessors'],
                            row_functions=[lambda x: x[0],

@@ -97,23 +97,29 @@ def double_sorted(input_object, key=lambda x: x, reverse=False,
     return new_sorted_list
 
 
-def output_latex_table(iter_obj, file, title, headers,
+def output_latex_table(iter_obj, file_path, title, headers,
                        row_functions, column_widths, index=True,
                        lxa_parameters=None, test=False):
     """
     Output LaTeX table code for *iter_obj* to *file*.
 
     :param iter_obj: an iterable object
-    :param file: a file object (e.g. open(...))
+    :param file_path: file path
     :param title: table title str
     :param headers: list of headers
     :param row_functions: list of row cell rendering functions.
         Each function takes only one argument and returns a str.
     :param column_widths: list of column widths.
     :param index: whether the table has an index column; defaults to True.
+    :param lxa_parameters: the parameter dict
+    :param test: whether nosetests are being run; defaults to False.
+        If True, *file_path* is overridden by `os.devnull`` so that no
+        text files are produced.
     """
     if test:
-        file = open(os.devnull, 'w')
+        file_path = os.devnull
+
+    file = open(file_path, 'w')
 
     if not (len(headers) == len(row_functions) == len(column_widths)):
         raise ValueError('headers, row_format, and column_widths '
