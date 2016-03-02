@@ -95,5 +95,5 @@ def test_run_manifold_module():
 def test_output_all_results():
     lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
     lxa_object.run_all_modules()
-    lxa_object.output_all_results()
+    lxa_object.output_all_results(test=True)
     assert True  # test if there are errors

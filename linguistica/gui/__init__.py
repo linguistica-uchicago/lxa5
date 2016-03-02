@@ -1,3 +1,5 @@
+# -*- encoding: utf8 -*-
+
 # ------------------------------------------------------------------------------
 #
 #   major windows:
@@ -40,9 +42,13 @@
 
 import sys
 
-from PyQt5.QtWidgets import QApplication
+try:
+    from PyQt5.QtWidgets import QApplication
+    from linguistica.gui.main_window import MainWindow
+except ImportError:
+    QApplication = None
+    MainWindow = None
 
-from linguistica.gui.main_window import MainWindow
 from linguistica import __version__
 
 

@@ -1,6 +1,7 @@
 # -*- encoding: utf8 -*-
 
 import sys
+import os
 
 from itertools import groupby
 from time import strftime
@@ -98,7 +99,7 @@ def double_sorted(input_object, key=lambda x: x, reverse=False,
 
 def output_latex_table(iter_obj, file, title, headers,
                        row_functions, column_widths, index=True,
-                       lxa_parameters=None):
+                       lxa_parameters=None, test=False):
     """
     Output LaTeX table code for *iter_obj* to *file*.
 
@@ -111,6 +112,9 @@ def output_latex_table(iter_obj, file, title, headers,
     :param column_widths: list of column widths.
     :param index: whether the table has an index column; defaults to True.
     """
+    if test:
+        file = open(os.devnull, 'w')
+
     if not (len(headers) == len(row_functions) == len(column_widths)):
         raise ValueError('headers, row_format, and column_widths '
                          'not of the same size')
