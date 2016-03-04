@@ -99,7 +99,7 @@ def double_sorted(input_object, key=lambda x: x, reverse=False,
 
 def output_latex_table(iter_obj, file_path, title, headers,
                        row_functions, column_widths, index=True,
-                       lxa_parameters=None, test=False):
+                       lxa_parameters=None, test=False, encoding=ENCODING):
     """
     Output LaTeX table code for *iter_obj* to *file*.
 
@@ -119,7 +119,7 @@ def output_latex_table(iter_obj, file_path, title, headers,
     if test:
         file_path = os.devnull
 
-    file = open(file_path, 'w')
+    file = open(file_path, 'w', encoding=encoding)
 
     if not (len(headers) == len(row_functions) == len(column_widths)):
         raise ValueError('headers, row_format, and column_widths '
