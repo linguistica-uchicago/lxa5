@@ -5,6 +5,7 @@ import os
 from pprint import pformat
 
 import linguistica as lxa
+from linguistica.util import ENCODING
 
 lxa_version = lxa.__version__
 
@@ -80,12 +81,30 @@ def main():
         os.mkdir(output_dir)
 
     # --------------------------------------------------------------------------
+    # change encoding, if instructed
+
+    encoding = ENCODING
+    print('\nDefault encoding for input and output files:', encoding)
+
+    change_encoding_ans = None
+    while change_encoding_ans is None:
+        change_encoding_ans = input('Change encoding? [N/y] ')
+
+    if change_encoding_ans and change_encoding_ans[0].lower() == 'y':
+        new_encoding = None
+        while new_encoding is None:
+            new_encoding = input('New encoding: ')
+            if not new_encoding:
+                new_encoding = None
+        encoding = new_encoding
+
+    # --------------------------------------------------------------------------
     # create the Linguistica object
 
     if use_wordlist:
-        lxa_object = lxa.read_wordlist(file_abspath)
+        lxa_object = lxa.read_wordlist(file_abspath, encoding=encoding)
     else:
-        lxa_object = lxa.read_corpus(file_abspath)
+        lxa_object = lxa.read_corpus(file_abspath, encoding=encoding)
 
     # --------------------------------------------------------------------------
     # change parameters, if instructed
