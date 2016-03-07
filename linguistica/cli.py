@@ -99,12 +99,28 @@ def main():
         encoding = new_encoding
 
     # --------------------------------------------------------------------------
+    # change case-sensitivity, if instructed
+
+    keep_case = False
+    print('\nDefault behavior for case sensitivity: False\n'
+          '(e.g. "the" and "The" are collapsed)')
+
+    change_case_ans = None
+    while change_case_ans is None:
+        change_case_ans = input('Switch to "True" for case sensitivity? [N/y] ')
+
+    if change_case_ans and change_case_ans[0].lower() == 'y':
+        keep_case = True
+
+    # --------------------------------------------------------------------------
     # create the Linguistica object
 
     if use_wordlist:
-        lxa_object = lxa.read_wordlist(file_abspath, encoding=encoding)
+        lxa_object = lxa.read_wordlist(file_abspath, encoding=encoding,
+                                       keep_case=keep_case)
     else:
-        lxa_object = lxa.read_corpus(file_abspath, encoding=encoding)
+        lxa_object = lxa.read_corpus(file_abspath, encoding=encoding,
+                                     keep_case=keep_case)
 
     # --------------------------------------------------------------------------
     # change parameters, if instructed
