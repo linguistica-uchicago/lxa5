@@ -13,7 +13,7 @@ from PyQt5.QtWidgets import (QMainWindow, QWidget, QAction, QVBoxLayout,
                              QProgressDialog)
 from PyQt5.QtWebKitWidgets import QWebView
 
-from linguistica import read_corpus
+from linguistica import (read_corpus, read_wordlist)
 
 from linguistica.util import (SEP_SIG, SEP_NGRAM, double_sorted)
 
@@ -24,7 +24,8 @@ from linguistica.gui.util import (MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT,
                                   TREEWIDGET_HEIGHT_MIN,
                                   WORDLIST, WORD_NGRAMS, BIGRAMS, TRIGRAMS,
                                   SIGNATURES, SIGS_TO_STEMS, WORDS_TO_SIGS,
-                                  TRIES, WORDS_AS_TRIES, SUCCESSORS, PREDECESSORS,
+                                  TRIES, WORDS_AS_TRIES,
+                                  SUCCESSORS, PREDECESSORS,
                                   PHONOLOGY, PHONES, BIPHONES, TRIPHONES,
                                   MANIFOLDS, WORD_NEIGHBORS, VISUALIZED_GRAPH,
                                   SHOW_MANIFOLD_HTML,
@@ -61,24 +62,30 @@ class MainWindow(QMainWindow):
         self.load_main_window()
 
         # 'File' menu and actions
-        file_read_corpus_action = self.create_action(text='&Read corpus...',
-                                                     slot=self.file_new_corpus_dialog,
-                                                     tip='Open a corpus file',
-                                                     shortcut='Ctrl+N')
-        file_run_corpus_action = self.create_action(text='&Rerun corpus...',
-                                                    slot=self.run_corpus,
-                                                    tip='Rerun a corpus file',
-                                                    shortcut='Ctrl+D')
+        read_corpus_action = self.create_action(text='&Read corpus...',
+                                                slot=self.corpus_dir_dialog,
+                                                tip='Open a corpus file',
+                                                shortcut='Ctrl+N')
+        read_wordlist_action = self.create_action(text='&Read wordlist...',
+                                                  slot=self.wordlist_dir_dialog,
+                                                  tip='Open a wordlist file',
+                                                  shortcut='Ctrl+W')
+        run_file_action = self.create_action(text='&Rerun...',
+                                             slot=self.run_file,
+                                             tip='Rerun the input file',
+                                             shortcut='Ctrl+D')
         # file_preferences_action = self.create_action(text='&Preferences',
         #     slot=self.filePreferencesDialog, tip='Preferences')
 
         file_menu = self.menuBar().addMenu('&File')
-        file_menu.addActions((file_read_corpus_action, file_run_corpus_action))
+        file_menu.addActions((read_corpus_action, read_wordlist_action,
+                              run_file_action))
 
         self.status = self.statusBar()
         self.status.setSizeGripEnabled(False)
-        self.status.showMessage('No corpus text file loaded. '
-                                'To select one: File --> Read corpus...')
+        self.status.showMessage('No input file loaded. '
+                                'To select one: '
+                                'File --> Read corpus... or Read wordlist...')
 
     def create_action(self, text=None, slot=None, tip=None, shortcut=None,
                       checkable=False):
@@ -99,14 +106,11 @@ class MainWindow(QMainWindow):
             action.setCheckable(True)
         return action
 
-    def file_new_corpus_dialog(self):
-        """
-        Pop up the "open a file" dialog and ask for which corpus text file
-        to use
-        """
+    def _get_filename_from_dialog(self, ftype='input'):
         open_dir = os.getcwd()
         # noinspection PyTypeChecker,PyCallByClass
-        fname = QFileDialog.getOpenFileName(self, 'Open a new corpus data file',
+        fname = QFileDialog.getOpenFileName(self,
+                                            'Select the {} file'.format(ftype),
                                             open_dir)
         process_all_gui_events()
 
@@ -123,10 +127,17 @@ class MainWindow(QMainWindow):
         # -- Jackson Lee, 2015/08/24
 
         if fname and any(fname) and (type(fname) is tuple):
-            self.corpus_filename = fname[0]
+            return fname[0]
         else:
             # if this hack isn't needed somehow...
-            self.corpus_filename = fname
+            return fname
+
+    def corpus_dir_dialog(self):
+        """
+        Pop up the "open a file" dialog and ask for which corpus text file
+        to use
+        """
+        self.corpus_filename = self._get_filename_from_dialog(ftype='corpus')
 
         process_all_gui_events()
 
@@ -140,7 +151,28 @@ class MainWindow(QMainWindow):
         self.lexicon = read_corpus(self.corpus_filename)
         process_all_gui_events()
 
-        self.run_corpus()
+        self.run_file()
+
+    def wordlist_dir_dialog(self):
+        """
+        Pop up the "open a file" dialog and ask for which corpus text file
+        to use
+        """
+        self.corpus_filename = self._get_filename_from_dialog(ftype='wordlist')
+
+        process_all_gui_events()
+
+        if type(self.corpus_filename) != str:
+            return
+
+        # note that self.corpus_filename is an absolute full path
+        self.corpus_name = os.path.basename(self.corpus_filename)
+        self.corpus_stem_name = Path(self.corpus_name).stem
+
+        self.lexicon = read_wordlist(self.corpus_filename)
+        process_all_gui_events()
+
+        self.run_file()
 
     def update_progress(self, progress_text, target_percentage):
         """
@@ -152,12 +184,12 @@ class MainWindow(QMainWindow):
         process_all_gui_events()
 
     # noinspection PyProtectedMember
-    def run_corpus(self):
+    def run_file(self):
         self.status.clearMessage()
-        self.status.showMessage('Running the corpus {} now...'
+        self.status.showMessage('Running the file {} now...'
                                 .format(self.corpus_name))
 
-        print('\nCorpus text file in use:\n{}\n'.format(self.corpus_filename),
+        print('\nInput file in use:\n{}\n'.format(self.corpus_filename),
               flush=True)
 
         # set up the Linguistica components worker
@@ -202,7 +234,7 @@ class MainWindow(QMainWindow):
 
         self.lexicon = self.lxa_worker.get_lexicon()
 
-        print('\nAll Linguistica components run for the corpus', flush=True)
+        print('\nAll Linguistica components run for the file', flush=True)
         self.status.clearMessage()
         self.status.showMessage('{} processed'.format(self.corpus_name))
 
@@ -212,7 +244,7 @@ class MainWindow(QMainWindow):
         self.lexicon_tree.clear()
 
         # corpus name (in the tree header label)
-        self.lexicon_tree.setHeaderLabel('Corpus: ' + self.corpus_name)
+        self.lexicon_tree.setHeaderLabel('File: ' + self.corpus_name)
 
         # wordlist
         ancestor = QTreeWidgetItem(self.lexicon_tree, [WORDLIST])
