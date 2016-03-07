@@ -192,6 +192,12 @@ class Lexicon:
 
             self.parameters_[parameter] = new_value
 
+    def use_default_parameters(self):
+        """
+        Reset parameters to their default values.
+        """
+        self.parameters_ = PARAMETERS
+
     def _initialize(self):
         # word ngrams
         self._word_unigram_counter = None

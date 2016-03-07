@@ -45,6 +45,11 @@ def test_change_parameters():
     assert test_object.change_parameters(min_stem_length=4) is None
 
 
+def test_use_default_parameters():
+    test_object = read_corpus(corpus_path)
+    assert test_object.use_default_parameters() is None
+
+
 def test_change_parameters_with_error():
     test_object = read_corpus(corpus_path)
     assert_raises(KeyError, test_object.change_parameters,
