@@ -106,7 +106,7 @@ from io import StringIO
 from linguistica import (ngram, signature, manifold, phon, trie)
 from linguistica.util import (ENCODING, PARAMETERS, SEP_SIG, SEP_SIGTRANSFORM,
                               double_sorted, fix_punctuations,
-                              output_latex_table, vprint)
+                              output_latex, vprint)
 
 
 class Lexicon:
@@ -199,6 +199,10 @@ class Lexicon:
         self.parameters_ = PARAMETERS
 
     def _initialize(self):
+        # number of word types and tokens
+        self._number_of_word_types = None
+        self._number_of_word_tokens = None
+
         # word ngrams
         self._word_unigram_counter = None
         self._word_bigram_counter = None
@@ -254,6 +258,7 @@ class Lexicon:
         self._phone_dict = None
         self._biphone_dict = None
         self._word_dict = None
+        self._words_to_phones = None
 
         # trie objects
         self._broken_words_left_to_right = None
@@ -294,36 +299,42 @@ class Lexicon:
             output_dir = os.path.abspath(directory)
 
         # ----------------------------------------------------------------------
-        vprint('ngram objects', verbose=verbose)
+        if self.corpus_file_object:
+            vprint('ngram objects', verbose=verbose)
 
-        fname = 'word_bigrams.txt'
-        obj = double_sorted(self.word_bigram_counter().items(),
-                            key=lambda x: x[1], reverse=True)
-        f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, f_path,
-                           title='Word bigrams',
-                           headers=['Word bigram', 'Count'],
-                           row_functions=[lambda x: ' '.join(x[0]),
-                                          lambda x: x[1]],
-                           column_widths=[50, 10],
-                           lxa_parameters=self.parameters(),
-                           test=test, encoding=self.encoding)
-        vprint('\t' + fname, verbose=verbose)
+            fname = 'word_bigrams.txt'
+            obj = double_sorted(self.word_bigram_counter().items(),
+                                key=lambda x: x[1], reverse=True)
+            f_path = os.path.join(output_dir, fname)
+            output_latex(obj, f_path,
+                         title='Word bigrams',
+                         headers=['Word bigram', 'Count'],
+                         row_functions=[lambda x: ' '.join(x[0]),
+                                        lambda x: x[1]],
+                         column_widths=[50, 10],
+                         lxa_parameters=self.parameters(),
+                         test=test, encoding=self.encoding,
+                         number_of_word_types=self.number_of_word_types(),
+                         number_of_word_tokens=self.number_of_word_tokens(),
+                         input_file_path=self.file_abspath)
+            vprint('\t' + fname, verbose=verbose)
 
-        fname = 'word_trigrams.txt'
-        obj = double_sorted(self.word_trigram_counter().items(),
-                            key=lambda x: x[1], reverse=True)
-        f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, f_path,
-                           title='Word trigrams',
-                           headers=['Word trigram', 'Count'],
-                           row_functions=[lambda x: ' '.join(x[0]),
-                                          lambda x: x[1]],
-                           column_widths=[75, 10],
-                           lxa_parameters=self.parameters(),
-                           test=test, encoding=self.encoding
-                           )
-        vprint('\t' + fname, verbose=verbose)
+            fname = 'word_trigrams.txt'
+            obj = double_sorted(self.word_trigram_counter().items(),
+                                key=lambda x: x[1], reverse=True)
+            f_path = os.path.join(output_dir, fname)
+            output_latex(obj, f_path,
+                         title='Word trigrams',
+                         headers=['Word trigram', 'Count'],
+                         row_functions=[lambda x: ' '.join(x[0]),
+                                        lambda x: x[1]],
+                         column_widths=[75, 10],
+                         lxa_parameters=self.parameters(),
+                         test=test, encoding=self.encoding,
+                         number_of_word_types=self.number_of_word_types(),
+                         number_of_word_tokens=self.number_of_word_tokens(),
+                         input_file_path=self.file_abspath)
+            vprint('\t' + fname, verbose=verbose)
 
         # ----------------------------------------------------------------------
         vprint('morphological signature objects', verbose=verbose)
@@ -332,231 +343,262 @@ class Lexicon:
         obj = double_sorted(self.stems_to_words().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, f_path,
-                           title='Stems to words '
-                                 '(descending order of word count)',
-                           headers=['Stem', 'Word count', 'Words'],
-                           row_functions=[lambda x: x[0],
-                                          lambda x: len(x[1]),
-                                          lambda x: ', '.join(sorted(x[1]))],
-                           column_widths=[15, 15, 0],
-                           lxa_parameters=self.parameters(),
-                           test=test, encoding=self.encoding
-                           )
+        output_latex(obj, f_path,
+                     title='Stems to words '
+                           '(descending order of word count)',
+                     headers=['Stem', 'Word count', 'Words'],
+                     row_functions=[lambda x: x[0],
+                                    lambda x: len(x[1]),
+                                    lambda x: ', '.join(sorted(x[1]))],
+                     column_widths=[15, 15, 0],
+                     lxa_parameters=self.parameters(),
+                     test=test, encoding=self.encoding,
+                     number_of_word_types=self.number_of_word_types(),
+                     number_of_word_tokens=self.number_of_word_tokens(),
+                     input_file_path=self.file_abspath)
         vprint('\t' + fname, verbose=verbose)
 
         fname = 'stems_to_words.txt'
         obj = double_sorted(self.stems_to_words().items(),
                             key=lambda x: x[0], reverse=False)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, f_path,
-                           title='Stems to words '
-                                 '(alphabetical order of stems)',
-                           headers=['Stem', 'Word count', '1st 10 words'],
-                           row_functions=[lambda x: x[0],
-                                          lambda x: len(x[1]),
-                                          lambda x: ', '.join(sorted(x[1]))],
-                           column_widths=[15, 15, 0],
-                           lxa_parameters=self.parameters(),
-                           test=test, encoding=self.encoding
-                           )
+        output_latex(obj, f_path,
+                     title='Stems to words '
+                           '(alphabetical order of stems)',
+                     headers=['Stem', 'Word count', '1st 10 words'],
+                     row_functions=[lambda x: x[0],
+                                    lambda x: len(x[1]),
+                                    lambda x: ', '.join(sorted(x[1]))],
+                     column_widths=[15, 15, 0],
+                     lxa_parameters=self.parameters(),
+                     test=test, encoding=self.encoding,
+                     number_of_word_types=self.number_of_word_types(),
+                     number_of_word_tokens=self.number_of_word_tokens(),
+                     input_file_path=self.file_abspath)
         vprint('\t' + fname, verbose=verbose)
 
         fname = 'signatures_to_stems.txt'
         obj = double_sorted(self.signatures_to_stems().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, f_path,
-                           title='Signatures to stems',
-                           headers=['Signature', 'Stem count', 'Stems'],
-                           row_functions=[lambda x: SEP_SIG.join(x[0]),
-                                          lambda x: len(x[1]),
-                                          lambda x: ', '.join(sorted(x[1]))],
-                           column_widths=[30, 15, 0],
-                           lxa_parameters=self.parameters(),
-                           test=test, encoding=self.encoding
-                           )
+        output_latex(obj, f_path,
+                     title='Signatures to stems',
+                     headers=['Signature', 'Stem count', 'Stems'],
+                     row_functions=[lambda x: SEP_SIG.join(x[0]),
+                                    lambda x: len(x[1]),
+                                    lambda x: ', '.join(sorted(x[1]))],
+                     column_widths=[30, 15, 0],
+                     lxa_parameters=self.parameters(),
+                     test=test, encoding=self.encoding,
+                     number_of_word_types=self.number_of_word_types(),
+                     number_of_word_tokens=self.number_of_word_tokens(),
+                     input_file_path=self.file_abspath)
         vprint('\t' + fname, verbose=verbose)
 
         fname = 'signatures_to_stems_truncated.txt'
         obj = double_sorted(self.signatures_to_stems().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, f_path,
-                           title='Signatures to stems '
-                                 '(first 10 stems for each sig)',
-                           headers=['Signature', 'Stem count', '1st 10 stems'],
-                           row_functions=[lambda x: SEP_SIG.join(x[0]),
-                                          lambda x: len(x[1]),
-                                          lambda x:
-                                          ' '.join(sorted(x[1])[:10])],
-                           column_widths=[30, 15, 0],
-                           lxa_parameters=self.parameters(),
-                           test=test, encoding=self.encoding
-                           )
+        output_latex(obj, f_path,
+                     title='Signatures to stems '
+                           '(first 10 stems for each sig)',
+                     headers=['Signature', 'Stem count', '1st 10 stems'],
+                     row_functions=[lambda x: SEP_SIG.join(x[0]),
+                                    lambda x: len(x[1]),
+                                    lambda x:
+                                    ' '.join(sorted(x[1])[:10])],
+                     column_widths=[30, 15, 0],
+                     lxa_parameters=self.parameters(),
+                     test=test, encoding=self.encoding,
+                     number_of_word_types=self.number_of_word_types(),
+                     number_of_word_tokens=self.number_of_word_tokens(),
+                     input_file_path=self.file_abspath)
         vprint('\t' + fname, verbose=verbose)
 
         fname = 'stems_to_signatures.txt'
         obj = double_sorted(self.stems_to_signatures().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, f_path,
-                           title='Stems to signatures',
-                           headers=['Stems', 'Signatures'],
-                           row_functions=[lambda x: x[0],
-                                          lambda x:
-                                          ', '.join(SEP_SIG.join(sig)
-                                                    for sig in sorted(x[1]))],
-                           column_widths=[15, 0],
-                           lxa_parameters=self.parameters(),
-                           test=test, encoding=self.encoding
-                           )
+        output_latex(obj, f_path,
+                     title='Stems to signatures',
+                     headers=['Stems', 'Signatures'],
+                     row_functions=[lambda x: x[0],
+                                    lambda x:
+                                    ', '.join(SEP_SIG.join(sig)
+                                              for sig in sorted(x[1]))],
+                     column_widths=[15, 0],
+                     lxa_parameters=self.parameters(),
+                     test=test, encoding=self.encoding,
+                     number_of_word_types=self.number_of_word_types(),
+                     number_of_word_tokens=self.number_of_word_tokens(),
+                     input_file_path=self.file_abspath)
         vprint('\t' + fname, verbose=verbose)
 
         fname = 'words_to_signatures.txt'
         obj = double_sorted(self.words_to_signatures().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, f_path,
-                           title='Words to signatures',
-                           headers=['Word', 'Sig count', 'Signatures'],
-                           row_functions=[lambda x: x[0],
-                                          lambda x: len(x[1]),
-                                          lambda x:
-                                          ', '.join(SEP_SIG.join(sig)
-                                                    for sig in sorted(x[1]))],
-                           column_widths=[25, 15, 0],
-                           lxa_parameters=self.parameters(),
-                           test=test, encoding=self.encoding
-                           )
+        output_latex(obj, f_path,
+                     title='Words to signatures',
+                     headers=['Word', 'Sig count', 'Signatures'],
+                     row_functions=[lambda x: x[0],
+                                    lambda x: len(x[1]),
+                                    lambda x:
+                                    ', '.join(SEP_SIG.join(sig)
+                                              for sig in sorted(x[1]))],
+                     column_widths=[25, 15, 0],
+                     lxa_parameters=self.parameters(),
+                     test=test, encoding=self.encoding,
+                     number_of_word_types=self.number_of_word_types(),
+                     number_of_word_tokens=self.number_of_word_tokens(),
+                     input_file_path=self.file_abspath)
         vprint('\t' + fname, verbose=verbose)
 
         fname = 'signatures_to_words.txt'
         obj = double_sorted(self.signatures_to_words().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, f_path,
-                           title='Signatures to words',
-                           headers=['Signature', 'Word count', 'Words'],
-                           row_functions=[lambda x: SEP_SIG.join(x[0]),
-                                          lambda x: len(x[1]),
-                                          lambda x: ', '.join(sorted(x[1]))],
-                           column_widths=[20, 15, 0],
-                           lxa_parameters=self.parameters(),
-                           test=test, encoding=self.encoding
-                           )
+        output_latex(obj, f_path,
+                     title='Signatures to words',
+                     headers=['Signature', 'Word count', 'Words'],
+                     row_functions=[lambda x: SEP_SIG.join(x[0]),
+                                    lambda x: len(x[1]),
+                                    lambda x: ', '.join(sorted(x[1]))],
+                     column_widths=[20, 15, 0],
+                     lxa_parameters=self.parameters(),
+                     test=test, encoding=self.encoding,
+                     number_of_word_types=self.number_of_word_types(),
+                     number_of_word_tokens=self.number_of_word_tokens(),
+                     input_file_path=self.file_abspath)
         vprint('\t' + fname, verbose=verbose)
 
         fname = 'signatures_to_words_truncated.txt'
         obj = double_sorted(self.signatures_to_words().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, f_path,
-                           title='Signatures to words '
-                                 '(first 10 words for each sig)',
-                           headers=['Signature', 'Word count', '1st 10 words'],
-                           row_functions=[lambda x: SEP_SIG.join(x[0]),
-                                          lambda x: len(x[1]),
-                                          lambda x:
-                                          ', '.join(sorted(x[1])[:10])],
-                           column_widths=[20, 15, 0],
-                           lxa_parameters=self.parameters(),
-                           test=test, encoding=self.encoding
-                           )
+        output_latex(obj, f_path,
+                     title='Signatures to words '
+                           '(first 10 words for each sig)',
+                     headers=['Signature', 'Word count', '1st 10 words'],
+                     row_functions=[lambda x: SEP_SIG.join(x[0]),
+                                    lambda x: len(x[1]),
+                                    lambda x:
+                                    ', '.join(sorted(x[1])[:10])],
+                     column_widths=[20, 15, 0],
+                     lxa_parameters=self.parameters(),
+                     test=test, encoding=self.encoding,
+                     number_of_word_types=self.number_of_word_types(),
+                     number_of_word_tokens=self.number_of_word_tokens(),
+                     input_file_path=self.file_abspath)
         vprint('\t' + fname, verbose=verbose)
 
         fname = 'words_to_sigtransforms.txt'
         obj = double_sorted(self.words_to_sigtransforms().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, f_path,
-                           title='Words to sigtransforms',
-                           headers=['Word', 'Signature transforms'],
-                           row_functions=[lambda x: x[0],
-                                          lambda x:
-                                          ', '.join(
-                                              SEP_SIG.join(sig) +
+        output_latex(obj, f_path,
+                     title='Words to sigtransforms',
+                     headers=['Word', 'Signature transforms'],
+                     row_functions=[lambda x: x[0],
+                                    lambda x:
+                                    ', '.join(SEP_SIG.join(sig) +
                                               SEP_SIGTRANSFORM + affix
                                               for sig, affix in sorted(x[1]))],
-                           column_widths=[20, 0],
-                           lxa_parameters=self.parameters(),
-                           test=test, encoding=self.encoding
-                           )
+                     column_widths=[20, 0],
+                     lxa_parameters=self.parameters(),
+                     test=test, encoding=self.encoding,
+                     number_of_word_types=self.number_of_word_types(),
+                     number_of_word_tokens=self.number_of_word_tokens(),
+                     input_file_path=self.file_abspath)
         vprint('\t' + fname, verbose=verbose)
 
         fname = 'affixes_to_signatures.txt'
         obj = double_sorted(self.affixes_to_signatures().items(),
                             key=lambda x: len(x[1]), reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, f_path,
-                           title='Affixes to signatures',
-                           headers=['Affix', 'Sig count', 'Signatures'],
-                           row_functions=[lambda x: x[0],
-                                          lambda x: len(x[1]),
-                                          lambda x:
-                                          ', '.join(SEP_SIG.join(sig)
-                                                    for sig in sorted(x[1]))],
-                           column_widths=[15, 15, 0],
-                           lxa_parameters=self.parameters(),
-                           test=test, encoding=self.encoding
-                           )
+        output_latex(obj, f_path,
+                     title='Affixes to signatures',
+                     headers=['Affix', 'Sig count', 'Signatures'],
+                     row_functions=[lambda x: x[0],
+                                    lambda x: len(x[1]),
+                                    lambda x:
+                                    ', '.join(SEP_SIG.join(sig)
+                                              for sig in sorted(x[1]))],
+                     column_widths=[15, 15, 0],
+                     lxa_parameters=self.parameters(),
+                     test=test, encoding=self.encoding,
+                     number_of_word_types=self.number_of_word_types(),
+                     number_of_word_tokens=self.number_of_word_tokens(),
+                     input_file_path=self.file_abspath)
         vprint('\t' + fname, verbose=verbose)
 
         # ----------------------------------------------------------------------
-        vprint('manifold objects', verbose=verbose)
+        if self.corpus_file_object:
+            vprint('manifold objects', verbose=verbose)
 
-        fname = 'words_to_neighbors.txt'
-        obj = list()  # list of tuple(word, list of neighbor words)
-        for word in self.wordlist()[: self.parameters()['max_word_types']]:
-            obj.append((word, self.words_to_neighbors()[word]))
-        f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, f_path,
-                           title='Words to neighbors',
-                           headers=['Word', 'Neighbors'],
-                           row_functions=[lambda x: x[0],
-                                          lambda x: ' '.join(x[1])],
-                           column_widths=[25, 0],
-                           lxa_parameters=self.parameters(),
-                           test=test, encoding=self.encoding
-                           )
-        vprint('\t' + fname, verbose=verbose)
+            fname = 'words_to_neighbors.txt'
+            obj = list()  # list of tuple(word, list of neighbor words)
+            for word in self.wordlist()[: self.parameters()['max_word_types']]:
+                obj.append((word, self.words_to_neighbors()[word]))
+            f_path = os.path.join(output_dir, fname)
+            output_latex(obj, f_path,
+                         title='Words to neighbors',
+                         headers=['Word', 'Neighbors'],
+                         row_functions=[lambda x: x[0],
+                                        lambda x: ' '.join(x[1])],
+                         column_widths=[25, 0],
+                         lxa_parameters=self.parameters(),
+                         test=test, encoding=self.encoding,
+                         number_of_word_types=self.number_of_word_types(),
+                         number_of_word_tokens=self.number_of_word_tokens(),
+                         input_file_path=self.file_abspath)
+            vprint('\t' + fname, verbose=verbose)
 
         # ----------------------------------------------------------------------
         vprint('phon objects', verbose=verbose)
 
-        def out_latex_table_for_phon_words(obj_, f_path_, title_,
-                                           lxa_parameters_, test_, encoding_):
-            output_latex_table(obj_, f_path_,
-                               title=title_,
-                               headers=['Word', 'Count', 'Frequency',
-                                        'Unigram plog', 'Avg unigram plog',
-                                        'Bigram plog', 'Avg bigram plog'],
-                               row_functions=[lambda x: x[0],
-                                              lambda x: x[1].count,
-                                              lambda x:
-                                              '%.6f' % x[1].frequency,
-                                              lambda x:
-                                              '%8.3f' % x[1].unigram_plog,
-                                              lambda x:
-                                              '%8.3f' % x[1].avg_unigram_plog,
-                                              lambda x:
-                                              '%8.3f' % x[1].bigram_plog,
-                                              lambda x:
-                                              '%8.3f' % x[1].avg_bigram_plog,
-                                              ],
-                               column_widths=[35, 10, 15, 15, 15, 15, 15],
-                               lxa_parameters=lxa_parameters_,
-                               test=test_, encoding=encoding_
-                               )
+        def output_latex_for_phon_words(obj_, f_path_, title_, lxa_parameters_,
+                                        test_, encoding_, number_of_word_types_,
+                                        number_of_word_tokens_,
+                                        input_file_path_):
+            output_latex(obj_, f_path_,
+                         title=title_,
+                         headers=['Word', 'Count', 'Frequency', 'Phones',
+                                  'Unigram plog', 'Avg unigram plog',
+                                  'Bigram plog', 'Avg bigram plog'],
+                         row_functions=[lambda x: x[0],
+                                        lambda x: x[1].count,
+                                        lambda x:
+                                        '%.6f' % x[1].frequency,
+                                        lambda x:
+                                        ' '.join(x[1].phones),
+                                        lambda x:
+                                        '%8.3f' % x[1].unigram_plog,
+                                        lambda x:
+                                        '%8.3f' % x[1].avg_unigram_plog,
+                                        lambda x:
+                                        '%8.3f' % x[1].bigram_plog,
+                                        lambda x:
+                                        '%8.3f' % x[1].avg_bigram_plog,
+                                        ],
+                         column_widths=[35, 10, 15, 60, 15, 15, 15, 15],
+                         lxa_parameters=lxa_parameters_,
+                         test=test_, encoding=encoding_,
+                         number_of_word_types=number_of_word_types_,
+                         number_of_word_tokens=number_of_word_tokens_,
+                         input_file_path=input_file_path_)
 
         fname = 'wordlist.txt'
         obj_word_phon = list()  # list of tuple(word, list of neighbor words)
         for word in self.wordlist():
             obj_word_phon.append((word, self.word_phonology_dict()[word]))
         f_path = os.path.join(output_dir, 'wordlist.txt')
-        out_latex_table_for_phon_words(obj_word_phon, f_path,
-                                       'Wordlist sorted by word count',
-                                       self.parameters(), test, self.encoding)
+        output_latex_for_phon_words(obj_word_phon, f_path,
+                                    'Wordlist sorted by word count',
+                                    self.parameters(), test, self.encoding,
+                                    self.number_of_word_types(),
+                                    self.number_of_word_tokens(),
+                                    self.file_abspath)
         vprint('\t' + fname, verbose=verbose)
 
         fname = 'wordlist_by_avg_unigram_plog.txt'
@@ -564,9 +606,12 @@ class Lexicon:
                                          key=lambda x: x[1].avg_unigram_plog,
                                          reverse=False)
         f_path = os.path.join(output_dir, fname)
-        out_latex_table_for_phon_words(obj_unigram_plog, f_path,
-                                       'Wordlist sorted by avg unigram plog',
-                                       self.parameters(), test, self.encoding)
+        output_latex_for_phon_words(obj_unigram_plog, f_path,
+                                    'Wordlist sorted by avg unigram plog',
+                                    self.parameters(), test, self.encoding,
+                                    self.number_of_word_types(),
+                                    self.number_of_word_tokens(),
+                                    self.file_abspath)
         vprint('\t' + fname, verbose=verbose)
 
         fname = 'wordlist_by_avg_bigram_plog.txt'
@@ -574,66 +619,75 @@ class Lexicon:
                                         key=lambda x: x[1].avg_bigram_plog,
                                         reverse=False)
         f_path = os.path.join(output_dir, fname)
-        out_latex_table_for_phon_words(obj_bigram_plog, f_path,
-                                       'Wordlist sorted by avg bigram plog',
-                                       self.parameters(), test, self.encoding)
+        output_latex_for_phon_words(obj_bigram_plog, f_path,
+                                    'Wordlist sorted by avg bigram plog',
+                                    self.parameters(), test, self.encoding,
+                                    self.number_of_word_types(),
+                                    self.number_of_word_tokens(),
+                                    self.file_abspath)
         vprint('\t' + fname, verbose=verbose)
 
         fname = 'phones.txt'
         obj = double_sorted(self.phone_dict().items(),
                             key=lambda x: x[1].count, reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, f_path,
-                           title='Phones',
-                           headers=['Phone', 'Count', 'Frequency', 'Plog'],
-                           row_functions=[lambda x: x[0],
-                                          lambda x: x[1].count,
-                                          lambda x: '%.6f' % x[1].frequency,
-                                          lambda x: '%8.3f' % x[1].plog,
-                                          ],
-                           column_widths=[10, 10, 15, 15],
-                           lxa_parameters=self.parameters(),
-                           test=test, encoding=self.encoding
-                           )
+        output_latex(obj, f_path,
+                     title='Phones',
+                     headers=['Phone', 'Count', 'Frequency', 'Plog'],
+                     row_functions=[lambda x: x[0],
+                                    lambda x: x[1].count,
+                                    lambda x: '%.6f' % x[1].frequency,
+                                    lambda x: '%8.3f' % x[1].plog,
+                                    ],
+                     column_widths=[10, 10, 15, 15],
+                     lxa_parameters=self.parameters(),
+                     test=test, encoding=self.encoding,
+                     number_of_word_types=self.number_of_word_types(),
+                     number_of_word_tokens=self.number_of_word_tokens(),
+                     input_file_path=self.file_abspath)
         vprint('\t' + fname, verbose=verbose)
 
         fname = 'biphones.txt'
         obj = double_sorted(self.biphone_dict().items(),
                             key=lambda x: x[1].count, reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, f_path,
-                           title='Biphones',
-                           headers=['Biphone', 'Count', 'Frequency',
-                                    'MI', 'Weighted MI'],
-                           row_functions=[lambda x: ' '.join(x[0]),
-                                          lambda x: x[1].count,
-                                          lambda x:
-                                          '%.6f' % x[1].frequency,
-                                          lambda x:
-                                          '%8.3f' % x[1].MI,
-                                          lambda x:
-                                          '%8.3f' % x[1].weighted_MI,
-                                          ],
-                           column_widths=[10, 10, 15, 15, 15],
-                           lxa_parameters=self.parameters(),
-                           test=test, encoding=self.encoding
-                           )
+        output_latex(obj, f_path,
+                     title='Biphones',
+                     headers=['Biphone', 'Count', 'Frequency',
+                              'MI', 'Weighted MI'],
+                     row_functions=[lambda x: ' '.join(x[0]),
+                                    lambda x: x[1].count,
+                                    lambda x:
+                                    '%.6f' % x[1].frequency,
+                                    lambda x:
+                                    '%8.3f' % x[1].MI,
+                                    lambda x:
+                                    '%8.3f' % x[1].weighted_MI,
+                                    ],
+                     column_widths=[10, 10, 15, 15, 15],
+                     lxa_parameters=self.parameters(),
+                     test=test, encoding=self.encoding,
+                     number_of_word_types=self.number_of_word_types(),
+                     number_of_word_tokens=self.number_of_word_tokens(),
+                     input_file_path=self.file_abspath)
         vprint('\t' + fname, verbose=verbose)
 
         fname = 'triphones.txt'
         obj = double_sorted(self.phone_trigram_counter().items(),
                             key=lambda x: x[1], reverse=True)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, f_path,
-                           title='Triphones',
-                           headers=['Triphone', 'Count'],
-                           row_functions=[lambda x: ' '.join(x[0]),
-                                          lambda x: x[1],
-                                          ],
-                           column_widths=[15, 10],
-                           lxa_parameters=self.parameters(),
-                           test=test, encoding=self.encoding
-                           )
+        output_latex(obj, f_path,
+                     title='Triphones',
+                     headers=['Triphone', 'Count'],
+                     row_functions=[lambda x: ' '.join(x[0]),
+                                    lambda x: x[1],
+                                    ],
+                     column_widths=[15, 10],
+                     lxa_parameters=self.parameters(),
+                     test=test, encoding=self.encoding,
+                     number_of_word_types=self.number_of_word_types(),
+                     number_of_word_tokens=self.number_of_word_tokens(),
+                     input_file_path=self.file_abspath)
         vprint('\t' + fname, verbose=verbose)
 
         # ----------------------------------------------------------------------
@@ -646,51 +700,81 @@ class Lexicon:
                         self.broken_words_left_to_right()[word],
                         self.broken_words_right_to_left()[word]))
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, f_path,
-                           title='Words as tries',
-                           headers=['Word', 'Left-to-right trie',
-                                    'Right-to-left trie'],
-                           row_functions=[lambda x: x[0],
-                                          lambda x: ' '.join(x[1]),
-                                          lambda x: ' '.join(x[2]),
-                                          ],
-                           column_widths=[35, 50, 50],
-                           lxa_parameters=self.parameters(),
-                           test=test, encoding=self.encoding
-                           )
+        output_latex(obj, f_path,
+                     title='Words as tries',
+                     headers=['Word', 'Left-to-right trie',
+                              'Right-to-left trie'],
+                     row_functions=[lambda x: x[0],
+                                    lambda x: ' '.join(x[1]),
+                                    lambda x: ' '.join(x[2]),
+                                    ],
+                     column_widths=[35, 50, 50],
+                     lxa_parameters=self.parameters(),
+                     test=test, encoding=self.encoding,
+                     number_of_word_types=self.number_of_word_types(),
+                     number_of_word_tokens=self.number_of_word_tokens(),
+                     input_file_path=self.file_abspath)
         vprint('\t' + fname, verbose=verbose)
 
         fname = 'successors.txt'
         obj = double_sorted(self.successors().items(),
                             key=lambda x: len(x[1]), reverse=False)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, f_path,
-                           title='Successors',
-                           headers=['String', 'Successors'],
-                           row_functions=[lambda x: x[0],
-                                          lambda x: ' '.join(sorted(x[1])),
-                                          ],
-                           column_widths=[35, 0],
-                           lxa_parameters=self.parameters(),
-                           test=test, encoding=self.encoding
-                           )
+        output_latex(obj, f_path,
+                     title='Successors',
+                     headers=['String', 'Successors'],
+                     row_functions=[lambda x: x[0],
+                                    lambda x: ' '.join(sorted(x[1])),
+                                    ],
+                     column_widths=[35, 0],
+                     lxa_parameters=self.parameters(),
+                     test=test, encoding=self.encoding,
+                     number_of_word_types=self.number_of_word_types(),
+                     number_of_word_tokens=self.number_of_word_tokens(),
+                     input_file_path=self.file_abspath)
         vprint('\t' + fname, verbose=verbose)
 
         fname = 'predecessors.txt'
         obj = double_sorted(self.predecessors().items(),
                             key=lambda x: len(x[1]), reverse=False)
         f_path = os.path.join(output_dir, fname)
-        output_latex_table(obj, f_path,
-                           title='Predecessors',
-                           headers=['String', 'Predecessors'],
-                           row_functions=[lambda x: x[0],
-                                          lambda x: ' '.join(sorted(x[1])),
-                                          ],
-                           column_widths=[35, 0],
-                           lxa_parameters=self.parameters(),
-                           test=test, encoding=self.encoding
-                           )
+        output_latex(obj, f_path,
+                     title='Predecessors',
+                     headers=['String', 'Predecessors'],
+                     row_functions=[lambda x: x[0],
+                                    lambda x: ' '.join(sorted(x[1])),
+                                    ],
+                     column_widths=[35, 0],
+                     lxa_parameters=self.parameters(),
+                     test=test, encoding=self.encoding,
+                     number_of_word_types=self.number_of_word_types(),
+                     number_of_word_tokens=self.number_of_word_tokens(),
+                     input_file_path=self.file_abspath)
         vprint('\t' + fname, verbose=verbose)
+
+    # --------------------------------------------------------------------------
+    # for number of word types and tokens
+
+    def number_of_word_types(self):
+        """
+        Return the number of word types.
+
+        :rtype: int
+        """
+        if self._number_of_word_types is None:
+            self._number_of_word_types = len(self.word_unigram_counter())
+        return self._number_of_word_types
+
+    def number_of_word_tokens(self):
+        """
+        Return the number of word tokens.
+
+        :rtype: int
+        """
+        if self._number_of_word_tokens is None:
+            self._number_of_word_tokens = sum(self.word_unigram_counter()
+                                              .values())
+        return self._number_of_word_tokens
 
     # --------------------------------------------------------------------------
     # for the "ngram" module
@@ -705,7 +789,7 @@ class Lexicon:
             if self.corpus_file_object:
                 self._make_word_ngrams_from_corpus_file_object()
             elif self.wordlist_file_object:
-                self._make_word_unigram_counter_from_wordlist_file_object()
+                self._read_from_wordlist_file_object()
 
         return self._word_unigram_counter
 
@@ -750,32 +834,40 @@ class Lexicon:
             self._make_wordlist()
         return self._wordlist
 
-    def _make_word_unigram_counter_from_wordlist_file_object(self):
+    def _read_from_wordlist_file_object(self):
         word_freq_dict = dict()
+        words_to_phones = dict()
 
         for line in self.wordlist_file_object:
             line = line.strip()
-            if not line:
+            if not line or line.startswith('#'):
                 continue
 
-            if not self.keep_case:
-                line = line.lower()
-
             word, *rest = line.split()
+
+            if not self.keep_case:
+                word = word.lower()
 
             try:
                 freq = int(rest[0])
             except (ValueError, IndexError):
                 freq = 1
 
+            phones = rest[1:]
+            if not phones:
+                phones = list(word)
+
             word_freq_dict[word] = freq
+            words_to_phones[word] = phones
 
         self._word_unigram_counter = word_freq_dict
+        self._words_to_phones = words_to_phones
 
     def _make_word_ngrams_from_corpus_file_object(self):
         if self.corpus_file_object is None:
-            raise ValueError('No corpus available. The ngram module cannot '
-                             'be run to get word ngrams.')
+            self._word_bigram_counter = dict()
+            self._word_trigram_counter = dict()
+            return
 
         unigrams, bigrams, trigrams = ngram.run(
             corpus_file_object=self.corpus_file_object,
@@ -1080,17 +1172,29 @@ class Lexicon:
             self._make_all_phon_objects()
         return self._word_dict
 
+    def words_to_phones(self):
+        """
+        Return a dict of words with their phones.
+
+        :rtype: dict(str: list(str))
+        """
+        return self._words_to_phones
+
     def _make_all_phon_objects(self):
+        word_unigram_counter = self.word_unigram_counter()
+        words_to_phones = self.words_to_phones()
+
         self._phone_unigram_counter, self._phone_bigram_counter, \
         self._phone_trigram_counter = phon.make_word_ngrams(
-            self.word_unigram_counter())
+            word_unigram_counter, words_to_phones)
 
         self._phone_dict = phon.make_phone_dict(self._phone_unigram_counter)
         self._biphone_dict = phon.make_biphone_dict(self._phone_bigram_counter,
                                                     self._phone_dict)
         self._word_dict = phon.make_word_dict(self.word_unigram_counter(),
-                                              self._phone_dict,
-                                              self._biphone_dict)
+                                              self.phone_dict(),
+                                              self.biphone_dict(),
+                                              self.words_to_phones())
 
     def run_phon_module(self, verbose=False):
         """

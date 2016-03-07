@@ -49,15 +49,18 @@ class Word:
         self.avg_bigram_plog = self.bigram_plog / (len(self.phones) - 1)
 
 
-def make_word_ngrams(word_unigram_counter=None):
+def make_word_ngrams(word_unigram_counter, words_to_phones=None):
     uniphone_counter = Counter()
     biphone_counter = Counter()
     triphone_counter = Counter()
 
     for word, freq in word_unigram_counter.items():
-        word = '#' + word + '#'  # add word boundaries
+        if not words_to_phones:
+            word = '#' + word + '#'  # add word boundaries
+            uniphones = list(word)
+        else:
+            uniphones = ['#'] + words_to_phones[word] + ['#']
 
-        uniphones = list(word)
         biphones = zip(*[uniphones[i:] for i in range(2)])
         triphones = zip(*[uniphones[i:] for i in range(3)])
 
@@ -108,7 +111,7 @@ def make_word_dict(word_unigram_counter, phone_dict, biphone_dict,
     for word, count_ in word_unigram_counter.items():
         freq = count_ / total_count
 
-        if words_to_phones is None:
+        if not words_to_phones:
             phones = list(word)
         else:
             phones = words_to_phones[word]

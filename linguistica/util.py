@@ -97,9 +97,11 @@ def double_sorted(input_object, key=lambda x: x, reverse=False,
     return new_sorted_list
 
 
-def output_latex_table(iter_obj, file_path, title, headers,
-                       row_functions, column_widths, index=True,
-                       lxa_parameters=None, test=False, encoding=ENCODING):
+def output_latex(iter_obj, file_path, title, headers,
+                 row_functions, column_widths, index=True,
+                 lxa_parameters=None, test=False, encoding=ENCODING,
+                 number_of_word_types=0, number_of_word_tokens=0,
+                 input_file_path=''):
     """
     Output LaTeX table code for *iter_obj* to *file*.
 
@@ -116,6 +118,9 @@ def output_latex_table(iter_obj, file_path, title, headers,
         If True, *file_path* is overridden by `os.devnull`` so that no
         text files are produced.
     """
+    if not iter_obj:
+        return
+
     if test:
         file_path = os.devnull
 
@@ -126,6 +131,7 @@ def output_latex_table(iter_obj, file_path, title, headers,
                          'not of the same size')
 
     print('Time:', strftime('%Y-%m-%d %H:%M:%S'), file=file)
+    print('Path of this file:', file_path, file=file)
     print(file=file)
 
     print('System info:\n'
@@ -152,6 +158,13 @@ def output_latex_table(iter_obj, file_path, title, headers,
     print('Linguistica parameters:\n'
           '=============================================', file=file)
     print(pformat(lxa_parameters), file=file)
+    print(file=file)
+
+    print('Input file information:\n'
+          '=============================================', file=file)
+    print('Path:', input_file_path, file=file)
+    print('Number of word types:', number_of_word_types, file=file)
+    print('Number of word tokens:', number_of_word_tokens, file=file)
     print(file=file)
 
     print('Results:\n=============================================', file=file)
@@ -187,6 +200,8 @@ def output_latex_table(iter_obj, file_path, title, headers,
 
     print('\\bottomrule', file=file)
     print('\\end{tabular}\n', file=file)
+
+    file.close()
 
 
 def vprint(*objects, verbose=False, sep='', end='\n', file=sys.stdout,
