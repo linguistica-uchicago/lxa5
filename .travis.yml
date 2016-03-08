@@ -8,10 +8,11 @@ python:
 sudo: required
 
 # for scipy, {libblas-dev liblapack-dev libatlas-base-dev gfortran} are needed
-# test_requirements.txt packages for running tests and measuring coverage
+# test_requirements.txt packages + python-coveralls for tests and measuring coverage
 before_install:
   - sudo apt-get install libblas-dev liblapack-dev libatlas-base-dev gfortran
   - pip install -r test_requirements.txt
+  - pip install python-coveralls
 
 # install linguistica
 install:
