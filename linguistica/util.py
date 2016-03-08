@@ -60,7 +60,27 @@ PARAMETERS = {'max_word_tokens': 0,  # zero means all word tokens
               'suffixing': 1,  # 1 means yes, 0 means no
               }
 
-PARAMETERS_FILENAME = 'parameters.json'
+PARAMETERS_RANGES = {'max_word_tokens': (0, 1000000000),
+                     'min_stem_length': (1, 10),
+                     'max_affix_length': (1, 10),
+                     'min_sig_count': (5, 50),
+                     'n_neighbors': (5, 20),
+                     'n_eigenvectors': (5, 20),
+                     'min_context_count': (1, 10),
+                     'max_word_types': (0, 1000000000),
+                     'suffixing': (0, 1),  # 1 means yes, 0 means no
+                     }
+
+PARAMETERS_HINTS = {'max_word_tokens': '0 = all word tokens',
+                    'min_stem_length': '',
+                    'max_affix_length': '',
+                    'min_sig_count': '',
+                    'n_neighbors': '',
+                    'n_eigenvectors': '',
+                    'min_context_count': '',
+                    'max_word_types': '',
+                    'suffixing': '1 = yes; 0 = no',
+                    }
 
 
 def fix_punctuations(line):

@@ -10,12 +10,15 @@ from PyQt5.QtCore import (Qt, QUrl)
 from PyQt5.QtWidgets import (QMainWindow, QWidget, QAction, QVBoxLayout,
                              QTreeWidget, QFileDialog, QLabel, QTreeWidgetItem,
                              QTableWidget, QTableWidgetItem, QSplitter,
-                             QProgressDialog)
+                             QProgressDialog, QMessageBox, QDialog, QGridLayout,
+                             QSpinBox, QSizePolicy, QHBoxLayout, QPushButton)
 from PyQt5.QtWebKitWidgets import QWebView
 
 from linguistica import (read_corpus, read_wordlist)
 
-from linguistica.util import (SEP_SIG, SEP_NGRAM, double_sorted)
+from linguistica.util import (SEP_SIG, SEP_NGRAM,
+                              PARAMETERS_RANGES, PARAMETERS_HINTS,
+                              double_sorted)
 
 from linguistica.gui.worker import LinguisticaWorker
 
@@ -46,6 +49,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle('Linguistica {}'.format(self.version))
 
         # lexicon and lexicon tree
+        self.lexicon = None
         self.lexicon_tree = QTreeWidget()
         self.lexicon_tree.setEnabled(True)
         self.lexicon_tree.setMinimumWidth(TREEWIDGET_WIDTH_MIN)
@@ -62,30 +66,31 @@ class MainWindow(QMainWindow):
         self.load_main_window()
 
         # 'File' menu and actions
-        read_corpus_action = self.create_action(text='&Read corpus...',
-                                                slot=self.corpus_dir_dialog,
-                                                tip='Open a corpus file',
-                                                shortcut='Ctrl+N')
-        read_wordlist_action = self.create_action(text='&Read wordlist...',
-                                                  slot=self.wordlist_dir_dialog,
-                                                  tip='Open a wordlist file',
-                                                  shortcut='Ctrl+W')
-        run_file_action = self.create_action(text='&Rerun...',
+        select_corpus_action = self.create_action(text='&Select corpus...',
+                                                  slot=self.corpus_dir_dialog,
+                                                  tip='Select a corpus file',
+                                                  shortcut='Ctrl+N')
+        select_wordlist_action = self.create_action(text='&Select wordlist...',
+                                                    slot=self.wordlist_dir_dialog,
+                                                    tip='Select a wordlist file',
+                                                    shortcut='Ctrl+W')
+        run_file_action = self.create_action(text='&Run...',
                                              slot=self.run_file,
-                                             tip='Rerun the input file',
+                                             tip='Run the input file',
                                              shortcut='Ctrl+D')
-        # file_preferences_action = self.create_action(text='&Preferences',
-        #     slot=self.filePreferencesDialog, tip='Preferences')
+        parameters_action = self.create_action(text='&Parameters...',
+                                               slot=self.parameters_dialog,
+                                               tip='Change parameters',
+                                               shortcut='Ctrl+P')
 
         file_menu = self.menuBar().addMenu('&File')
-        file_menu.addActions((read_corpus_action, read_wordlist_action,
-                              run_file_action))
+        file_menu.addActions((select_corpus_action, select_wordlist_action,
+                              run_file_action, parameters_action))
 
         self.status = self.statusBar()
         self.status.setSizeGripEnabled(False)
-        self.status.showMessage('No input file loaded. '
-                                'To select one: '
-                                'File --> Read corpus... or Read wordlist...')
+        self.status.showMessage('No input file loaded. To select one: File --> '
+                                'Select corpus... or Select wordlist...')
 
     def create_action(self, text=None, slot=None, tip=None, shortcut=None,
                       checkable=False):
@@ -151,7 +156,9 @@ class MainWindow(QMainWindow):
         self.lexicon = read_corpus(self.corpus_filename)
         process_all_gui_events()
 
-        self.run_file()
+        self.status.clearMessage()
+        self.status.showMessage(
+            'Corpus selected: {}'.format(self.corpus_filename))
 
     def wordlist_dir_dialog(self):
         """
@@ -172,7 +179,81 @@ class MainWindow(QMainWindow):
         self.lexicon = read_wordlist(self.corpus_filename)
         process_all_gui_events()
 
-        self.run_file()
+        self.status.clearMessage()
+        self.status.showMessage(
+            'Wordlist selected: {}'.format(self.corpus_filename))
+
+    def parameters_dialog(self):
+        if self.lexicon is None:
+            warning = QMessageBox()
+            warning.setIcon(QMessageBox.Warning)
+            warning.setText('Parameters can only be accessed when an input '
+                            'file is specified.')
+            warning.setWindowTitle('No input file selected')
+            warning.setStandardButtons(QMessageBox.Ok)
+            warning.exec_()
+            return
+
+        process_all_gui_events()
+
+        parameters = self.lexicon.parameters()
+        dialog = QDialog()
+        layout = QVBoxLayout()
+        layout.addWidget(
+            QLabel('Filename: {}'.format(Path(self.corpus_filename).name)))
+        file_type = 'Wordlist' if self.lexicon.file_is_wordlist else 'Corpus'
+        layout.addWidget(QLabel('Type: {}'.format(file_type)))
+
+        grid = QGridLayout()
+        self.parameter_spinboxes = [QSpinBox() for i in range(len(parameters))]
+
+        for i, parameter_name in enumerate(sorted(parameters.keys())):
+            self.parameter_spinboxes[i].setObjectName(parameter_name)
+            self.parameter_spinboxes[i].setRange(
+                *PARAMETERS_RANGES[parameter_name])
+            self.parameter_spinboxes[i].setValue(parameters[parameter_name])
+            self.parameter_spinboxes[i].setSingleStep(1)
+            # noinspection PyUnresolvedReferences
+            self.parameter_spinboxes[i].valueChanged.connect(
+                self.update_parameter)
+
+            grid.addWidget(QLabel(parameter_name), i, 0)
+            grid.addWidget(self.parameter_spinboxes[i], i, 1)
+            grid.addWidget(QLabel(PARAMETERS_HINTS[parameter_name]), i, 2)
+
+        layout.addLayout(grid)
+
+        reset_button = QPushButton()
+        reset_button.setText('&Reset')
+        # noinspection PyUnresolvedReferences
+        reset_button.clicked.connect(self.reset_parameters)
+
+        spacer = QWidget()  # just for padding in tool_bar
+        spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+
+        tool_bar = QHBoxLayout()
+        tool_bar.addWidget(spacer)  # so that the buttons are right-aligned
+        tool_bar.addWidget(reset_button)
+
+        layout.addLayout(tool_bar)
+
+        dialog.setLayout(layout)
+        dialog.setWindowTitle('Parameters')
+        dialog.exec_()
+
+    def reset_parameters(self):
+        self.lexicon.use_default_parameters()
+
+        for i, (parameter, value) in \
+                enumerate(sorted(self.lexicon.parameters().items())):
+            self.parameter_spinboxes[i].setValue(value)
+
+    def update_parameter(self):
+        for i in range(len(self.lexicon.parameters())):
+            parameter_name, new_value = \
+                self.parameter_spinboxes[i].objectName(), \
+                self.parameter_spinboxes[i].value()
+            self.lexicon.change_parameters(**{parameter_name: new_value})
 
     def update_progress(self, progress_text, target_percentage):
         """

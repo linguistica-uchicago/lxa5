@@ -162,7 +162,7 @@ class Lexicon:
         """
         Determine the parameter dict.
         """
-        temp_parameters = PARAMETERS
+        temp_parameters = dict(PARAMETERS)
 
         for parameter in kwargs.keys():
             if parameter not in PARAMETERS:
@@ -196,7 +196,7 @@ class Lexicon:
         """
         Reset parameters to their default values.
         """
-        self.parameters_ = PARAMETERS
+        self.parameters_ = dict(PARAMETERS)
 
     def _initialize(self):
         # number of word types and tokens
