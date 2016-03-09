@@ -1,22 +1,24 @@
 # After changing this file, check it on:
 #   http://lint.travis-ci.org/
 language: python
-python:
-  - "3.4"
-  - "3.5"
 
-sudo: required
+virtualenv:
+  system_site_packages: true
 
-before_install:
+env:
+  matrix:
+    - PYTHON_VERSION="3.4"
+    - PYTHON_VERSION="3.5"
+
+install:
   - bash ci/travis_install.sh
 
-# install linguistica
-install:
-  - python setup.py install
-
-# run tests using nose
 script:
   - python nosetests_run.py
 
 after_success:
   - coveralls
+
+cache: apt
+
+sudo: false
