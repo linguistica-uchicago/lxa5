@@ -159,7 +159,8 @@ def from_wordlist(wordlist_object, keep_case=False, **kwargs):
     """
     Create a Linguistica object with a wordlist object.
 
-    :param wordlist_object: a sequence of unique word types as str
+    :param wordlist_object: either a list of word types as strings
+        or a dict of word types mapped to their token counts
     :param keep_case: whether to keep case distinction (e.g., "the" vs "The").
         Default: ``False``
     :param kwargs: keyword arguments for parameters and their values.

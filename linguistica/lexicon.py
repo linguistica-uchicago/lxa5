@@ -222,7 +222,37 @@ class Lexicon:
         # wordlist
         self._wordlist = None
         if self.wordlist_object is not None:
-            self._wordlist = list(set(self.wordlist_object))
+            # self.wordlist_object is
+            # either a list of str or a dict of word-count pairs
+            if type(self.wordlist_object) is list:
+                if self.keep_case:
+                    wordlist = sorted(set(self.wordlist_object))
+                else:
+                    wordlist = sorted(
+                        set(w.lower() for w in self.wordlist_object))
+                self._wordlist = wordlist
+                self._word_unigram_counter = {word: 1 for word in wordlist}
+
+            elif type(self.wordlist_object) is dict:
+                word_count_dict = dict()
+                if self.keep_case:
+                    word_count_dict = self.wordlist_object
+                else:
+                    for word, count in self.wordlist_object:
+                        word = word.lower()
+                        if word not in word_count_dict:
+                            word_count_dict[word] = 0
+                        word_count_dict[word] += count
+
+                self._wordlist = [word for word, _ in
+                                  double_sorted(word_count_dict.items(),
+                                                key=lambda x: x[1],
+                                                reverse=True)]
+                self._word_unigram_counter = word_count_dict
+
+            else:
+                raise TypeError('wordlist object must be '
+                                'either a list or a dict')
 
         # signature-related objects
         self._stems_to_words = None
@@ -243,8 +273,10 @@ class Lexicon:
             # self.corpus_object is either a list of strings or a long str
             if type(self.corpus_object) is list:
                 corpus_str = fix_punctuations(' '.join(self.corpus_object))
+            elif type(self.corpus_object) is str:
+                corpus_str = fix_punctuations(self.corpus_object)
             else:
-                corpus_str = fix_punctuations(str(self.corpus_object))
+                raise TypeError('corpus object must be either a str or a list')
             self.corpus_file_object = StringIO(corpus_str)
         elif self.file_abspath and not self.file_is_wordlist:
             self.corpus_file_object = open(self.file_abspath,
