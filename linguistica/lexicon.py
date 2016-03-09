@@ -11,6 +11,16 @@ linguistic analysis:
    >>> lxa_object = lxa.read_corpus('path/to/english-brown.txt')
    >>> words = lxa_object.wordlist()  # using wordlist()
 
+Basic information
+-----------------
+
+.. currentmodule:: linguistica.lexicon.Lexicon
+
+.. autosummary::
+
+   number_of_word_tokens
+   number_of_word_types
+
 Word ngrams
 -----------
 
@@ -89,12 +99,13 @@ Parameter: ``min_stem_length``
 Other methods and attributes
 ----------------------------
 
-For accessing and changing parameters, see :ref:`parameters`.
-
 .. currentmodule:: linguistica.lexicon.Lexicon
 
 .. autosummary::
 
+   parameters
+   change_parameters
+   use_default_parameters
    reset
 
 """

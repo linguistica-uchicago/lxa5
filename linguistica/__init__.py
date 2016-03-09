@@ -18,18 +18,17 @@ Data source
    from_corpus
    from_wordlist
 
-For instance, if the Brown corpus (Kučera and Francis 1967) is available on
-your local drive:
+For instance, if the Brown corpus is available on
+your local drive (see :ref:`rawtext`):
 
 .. code-block:: python
 
    >>> import linguistica as lxa
-   >>> lxa_object = lxa.read_corpus('path/to/english.brown.txt')
+   >>> lxa_object = lxa.read_corpus('path/to/english-brown.txt')
 
 Use ``read_wordlist()``
-if you have a wordlist text file instead (where each line contains
-one word type, optionally followed by whitespace plus frequency count for that
-word).
+if you have a wordlist text file instead
+(see :ref:`wordlist`).
 
 Use ``from_corpus()`` or ``from_wordlist()``
 if your data is an in-memory Python object (either a corpus text or a wordlist).
@@ -41,7 +40,7 @@ Parameters
 
 The functions introduced in :ref:`source` all allow optional keyword
 arguments which are parameters for the Linguistica object.
-Different Linguistica modules make use of different paramters;
+Different Linguistica modules make use of different parameters;
 see :ref:`lexicon`.
 
 For example, to deal with only the first 500,000 word tokens in the Brown
@@ -92,6 +91,17 @@ use ``change_parameters()`` with keyword arguments:
    >>> lxa_object.change_parameters(min_stem_length=3)
    >>> lxa_object.parameters()['min_stem_length']  # after the change
    3
+
+To reset all parameters to their default values,
+use ``use_default_parameters()``:
+
+.. code-block:: python
+
+   >>> lxa_object.parameters()['min_stem_length']  # non-default value
+   3
+   >>> lxa_object.use_default_parameters()
+   >>> lxa_object.parameters()['min_stem_length']
+   4
 
 """
 
