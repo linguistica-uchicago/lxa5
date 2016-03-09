@@ -144,7 +144,9 @@ def from_corpus(corpus_object, keep_case=False, **kwargs):
     """
     Create a Linguistica object with a corpus object.
 
-    :param corpus_object: a long string of text to which ``str()`` applies.
+    :param corpus_object: either a long string of text
+        (with spaces separating word tokens) or a list of strings as word
+        tokens
     :param keep_case: whether to keep case distinction (e.g., "the" vs "The").
         Default: ``False``
     :param kwargs: keyword arguments for parameters and their values.

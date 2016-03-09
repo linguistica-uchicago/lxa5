@@ -240,7 +240,11 @@ class Lexicon:
 
         # corpus file object
         if self.corpus_object is not None:
-            corpus_str = fix_punctuations(str(self.corpus_object))
+            # self.corpus_object is either a list of strings or a long str
+            if type(self.corpus_object) is list:
+                corpus_str = fix_punctuations(' '.join(self.corpus_object))
+            else:
+                corpus_str = fix_punctuations(str(self.corpus_object))
             self.corpus_file_object = StringIO(corpus_str)
         elif self.file_abspath and not self.file_is_wordlist:
             self.corpus_file_object = open(self.file_abspath,
