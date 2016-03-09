@@ -266,6 +266,15 @@ class MainWindow(QMainWindow):
 
     # noinspection PyProtectedMember
     def run_file(self):
+        if self.lexicon is None:
+            warning = QMessageBox()
+            warning.setIcon(QMessageBox.Warning)
+            warning.setText('No input file is selected.')
+            warning.setWindowTitle('Error')
+            warning.setStandardButtons(QMessageBox.Ok)
+            warning.exec_()
+            return
+
         self.status.clearMessage()
         self.status.showMessage('Running the file {} now...'
                                 .format(self.corpus_name))
