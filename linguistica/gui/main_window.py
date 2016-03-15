@@ -50,15 +50,8 @@ class MainWindow(QMainWindow):
 
         # lexicon and lexicon tree
         self.lexicon = None
-        self.lexicon_tree = QTreeWidget()
-        self.lexicon_tree.setEnabled(True)
-        self.lexicon_tree.setMinimumWidth(TREEWIDGET_WIDTH_MIN)
-        self.lexicon_tree.setMaximumWidth(TREEWIDGET_WIDTH_MAX)
-        self.lexicon_tree.setMinimumHeight(TREEWIDGET_HEIGHT_MIN)
-        self.lexicon_tree.setHeaderLabel('')
-        self.lexicon_tree.setItemsExpandable(True)
-        # noinspection PyUnresolvedReferences
-        self.lexicon_tree.itemClicked.connect(self.tree_item_clicked)
+        self.lexicon_tree = None
+        self.initialize_lexicon_tree()
 
         # set up major display, parameter window, then load main window
         self.majorDisplay = QWidget()
@@ -91,6 +84,17 @@ class MainWindow(QMainWindow):
         self.status.setSizeGripEnabled(False)
         self.status.showMessage('No input file loaded. To select one: File --> '
                                 'Select corpus... or Select wordlist...')
+
+    def initialize_lexicon_tree(self):
+        self.lexicon_tree = QTreeWidget()
+        self.lexicon_tree.setEnabled(True)
+        self.lexicon_tree.setMinimumWidth(TREEWIDGET_WIDTH_MIN)
+        self.lexicon_tree.setMaximumWidth(TREEWIDGET_WIDTH_MAX)
+        self.lexicon_tree.setMinimumHeight(TREEWIDGET_HEIGHT_MIN)
+        self.lexicon_tree.setHeaderLabel('')
+        self.lexicon_tree.setItemsExpandable(True)
+        # noinspection PyUnresolvedReferences
+        self.lexicon_tree.itemClicked.connect(self.tree_item_clicked)
 
     def create_action(self, text=None, slot=None, tip=None, shortcut=None,
                       checkable=False):
@@ -154,6 +158,9 @@ class MainWindow(QMainWindow):
         self.corpus_stem_name = Path(self.corpus_name).stem
 
         self.lexicon = read_corpus(self.corpus_filename)
+        self.initialize_lexicon_tree()
+        self.load_main_window(major_display=QWidget(),
+                              parameter_window=QWidget())
         process_all_gui_events()
 
         self.status.clearMessage()
@@ -177,6 +184,9 @@ class MainWindow(QMainWindow):
         self.corpus_stem_name = Path(self.corpus_name).stem
 
         self.lexicon = read_wordlist(self.corpus_filename)
+        self.initialize_lexicon_tree()
+        self.load_main_window(major_display=QWidget(),
+                              parameter_window=QWidget())
         process_all_gui_events()
 
         self.status.clearMessage()
