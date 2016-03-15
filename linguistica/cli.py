@@ -11,7 +11,10 @@ lxa_version = lxa.__version__
 
 
 def main():
-    print('\nWelcome to Linguistica {}!'.format(lxa_version))
+    print('\n================================================================\n'
+          'Welcome to Linguistica {}!\n'
+          '================================================================'
+          .format(lxa_version))
 
     # --------------------------------------------------------------------------
     # determine if file is a wordlist or a corpus text
@@ -24,6 +27,8 @@ def main():
         use_wordlist = True
     else:
         use_wordlist = False
+
+    print('--------------------------------------------')
 
     # --------------------------------------------------------------------------
     # get file path
@@ -44,6 +49,7 @@ def main():
             file_abspath = None
 
     print('\nFull file path:\n{}'.format(file_abspath))
+    print('--------------------------------------------')
 
     # --------------------------------------------------------------------------
     # determine output directory
@@ -80,6 +86,8 @@ def main():
     if not os.path.isdir(output_dir):
         os.mkdir(output_dir)
 
+    print('--------------------------------------------')
+
     # --------------------------------------------------------------------------
     # change encoding, if instructed
 
@@ -97,6 +105,8 @@ def main():
             if not new_encoding:
                 new_encoding = None
         encoding = new_encoding
+
+    print('--------------------------------------------')
 
     # --------------------------------------------------------------------------
     # create the Linguistica object
@@ -155,12 +165,16 @@ def main():
         print('\nParameters after the changes:\n{}'
               .format(pformat(lxa_object.parameters())))
 
+    print('--------------------------------------------')
+
     # --------------------------------------------------------------------------
     # run all Linguistica modules on the given file
 
     print('\nRunning all Linguistica modules on the given file:')
 
     lxa_object.run_all_modules(verbose=True)
+
+    print('--------------------------------------------')
 
     # --------------------------------------------------------------------------
     # output results as files
