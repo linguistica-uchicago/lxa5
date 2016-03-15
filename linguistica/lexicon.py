@@ -127,9 +127,8 @@ class Lexicon:
     called as such.
     """
 
-    def __init__(self, file_path=None, wordlist_file=False,
-                 corpus_object=None, wordlist_object=None, encoding=ENCODING,
-                 keep_case=False, **kwargs):
+    def __init__(self, file_path=None, wordlist_file=False, corpus_object=None,
+                 wordlist_object=None, encoding=ENCODING, **kwargs):
         self.file_abspath = self._check_file_path(file_path)
 
         if self.file_abspath is None:
@@ -142,7 +141,6 @@ class Lexicon:
         self.corpus_object = corpus_object
         self.wordlist_object = wordlist_object
         self.parameters_ = self._determine_parameters(**kwargs)
-        self.keep_case = keep_case
 
         self._initialize()
 
@@ -225,7 +223,7 @@ class Lexicon:
             # self.wordlist_object is
             # either a list of str or a dict of word-count pairs
             if type(self.wordlist_object) is list:
-                if self.keep_case:
+                if self.parameters_['keep_case']:
                     wordlist = sorted(set(self.wordlist_object))
                 else:
                     wordlist = sorted(
@@ -235,7 +233,7 @@ class Lexicon:
 
             elif type(self.wordlist_object) is dict:
                 word_count_dict = dict()
-                if self.keep_case:
+                if self.parameters_['keep_case']:
                     word_count_dict = self.wordlist_object
                 else:
                     for word, count in self.wordlist_object:
@@ -892,7 +890,7 @@ class Lexicon:
 
             word, *rest = line.split()
 
-            if not self.keep_case:
+            if not self.parameters_['keep_case']:
                 word = word.lower()
 
             try:
@@ -918,7 +916,7 @@ class Lexicon:
 
         unigrams, bigrams, trigrams = ngram.run(
             corpus_file_object=self.corpus_file_object,
-            keep_case=self.keep_case,
+            keep_case=self.parameters_['keep_case'],
             max_word_tokens=self.parameters_['max_word_tokens'])
 
         self._word_unigram_counter = unigrams

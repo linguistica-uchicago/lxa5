@@ -49,7 +49,7 @@ corpus:
 .. code-block:: python
 
    >>> import linguistica as lxa
-   >>> lxa_object = lxa.read_corpus('path/to/english.brown.txt', max_word_tokens=500000)
+   >>> lxa_object = lxa.read_corpus('path/to/english-brown.txt', max_word_tokens=500000)
 
 =====================  ====================================================  ==========
 Parameter              Meaning                                               Default
@@ -110,21 +110,19 @@ from linguistica.util import ENCODING
 from linguistica.lexicon import Lexicon
 
 
-def read_corpus(file_path, encoding=ENCODING, keep_case=False, **kwargs):
+def read_corpus(file_path, encoding=ENCODING, **kwargs):
     """
     Create a Linguistica object with a corpus data file.
 
     :param file_path: path of input corpus file
     :param encoding: encoding of the file at *file_path*. Default: ``'utf8'``
-    :param keep_case: whether to keep case distinction (e.g., "the" vs "The").
-        Default: ``False``
     :param kwargs: keyword arguments for parameters and their values.
     """
     return Lexicon(file_path=file_path, wordlist_file=False, encoding=encoding,
-                   keep_case=keep_case, **kwargs)
+                   **kwargs)
 
 
-def read_wordlist(file_path, encoding=ENCODING, keep_case=False, **kwargs):
+def read_wordlist(file_path, encoding=ENCODING, **kwargs):
     """
     Create a Linguistica object with a wordlist file.
 
@@ -132,38 +130,31 @@ def read_wordlist(file_path, encoding=ENCODING, keep_case=False, **kwargs):
         one word type (and, optionally, a whitespace plus the token count
         for that word).
     :param encoding: encoding of the file at *file_path*. Default: ``'utf8'``
-    :param keep_case: whether to keep case distinction (e.g., "the" vs "The").
-        Default: ``False``
     :param kwargs: keyword arguments for parameters and their values.
     """
     return Lexicon(file_path=file_path, wordlist_file=True, encoding=encoding,
-                   keep_case=keep_case, **kwargs)
+                   **kwargs)
 
 
-def from_corpus(corpus_object, keep_case=False, **kwargs):
+def from_corpus(corpus_object, **kwargs):
     """
     Create a Linguistica object with a corpus object.
 
     :param corpus_object: either a long string of text
         (with spaces separating word tokens) or a list of strings as word
         tokens
-    :param keep_case: whether to keep case distinction (e.g., "the" vs "The").
-        Default: ``False``
     :param kwargs: keyword arguments for parameters and their values.
     """
-    return Lexicon(corpus_object=corpus_object, wordlist_file=False,
-                   keep_case=keep_case, **kwargs)
+    return Lexicon(corpus_object=corpus_object, wordlist_file=False, **kwargs)
 
 
-def from_wordlist(wordlist_object, keep_case=False, **kwargs):
+def from_wordlist(wordlist_object, **kwargs):
     """
     Create a Linguistica object with a wordlist object.
 
     :param wordlist_object: either a list of word types as strings
         or a dict of word types mapped to their token counts
-    :param keep_case: whether to keep case distinction (e.g., "the" vs "The").
-        Default: ``False``
     :param kwargs: keyword arguments for parameters and their values.
     """
     return Lexicon(wordlist_object=wordlist_object, wordlist_file=False,
-                   keep_case=keep_case, **kwargs)
+                   **kwargs)

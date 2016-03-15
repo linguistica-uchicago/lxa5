@@ -58,6 +58,7 @@ PARAMETERS = {'max_word_tokens': 0,  # zero means all word tokens
               'min_context_count': 3,
               'max_word_types': 1000,
               'suffixing': 1,  # 1 means yes, 0 means no
+              'keep_case': 0,  # 1 means yes, 0 means no
               }
 
 PARAMETERS_RANGES = {'max_word_tokens': (0, 1000000000),
@@ -69,6 +70,7 @@ PARAMETERS_RANGES = {'max_word_tokens': (0, 1000000000),
                      'min_context_count': (1, 10),
                      'max_word_types': (0, 1000000000),
                      'suffixing': (0, 1),  # 1 means yes, 0 means no
+                     'keep_case': (0, 1),  # 1 means yes, 0 means no
                      }
 
 PARAMETERS_HINTS = {'max_word_tokens': '0 = all word tokens',
@@ -80,6 +82,7 @@ PARAMETERS_HINTS = {'max_word_tokens': '0 = all word tokens',
                     'min_context_count': '',
                     'max_word_types': '',
                     'suffixing': '1 = yes; 0 = no',
+                    'keep_case': '1 = yes; 0 = no',
                     }
 
 
