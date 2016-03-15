@@ -99,7 +99,7 @@ def common_prefix_length(s1, s2):
     # ensure that s1 is not longer than s2
     length = len(s1)
     if length > len(s2):
-        common_prefix_length(s2, s1)
+        return common_prefix_length(s2, s1)
 
     for i in range(length):
         if s1[i] != s2[i]:
