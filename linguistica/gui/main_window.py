@@ -344,7 +344,9 @@ class MainWindow(QMainWindow):
         self.lexicon_tree.clear()
 
         # corpus name (in the tree header label)
-        self.lexicon_tree.setHeaderLabel('File: ' + self.corpus_name)
+        file_type = 'wordlist' if self.lexicon.file_is_wordlist else 'corpus'
+        self.lexicon_tree.setHeaderLabel('File: {}\nFile type: {}'
+                                         .format(self.corpus_name, file_type))
 
         # wordlist
         ancestor = QTreeWidgetItem(self.lexicon_tree, [WORDLIST])
@@ -484,6 +486,17 @@ class MainWindow(QMainWindow):
         self.status.clearMessage()
         self.status.showMessage('{} selected'.format(signature))
 
+    def unavailable_for_wordlist(self):
+        self.load_main_window(major_display=QWidget(),
+                              parameter_window=QWidget())
+        self.status.showMessage('')
+        warning = QMessageBox()
+        warning.setIcon(QMessageBox.Warning)
+        warning.setText('Unavailable for a wordlist')
+        warning.setWindowTitle('Error')
+        warning.setStandardButtons(QMessageBox.Ok)
+        warning.exec_()
+
     def tree_item_clicked(self, item):
         """
         Trigger the appropriate action when something in the lexicon tree
@@ -520,6 +533,9 @@ class MainWindow(QMainWindow):
                 cutoff=0)
 
         elif item_str == BIGRAMS:
+            if self.lexicon.file_is_wordlist:
+                self.unavailable_for_wordlist()
+                return
             new_display = self.create_major_display_table(
                 self.lexicon.word_bigram_counter().items(),
                 key=lambda x: x[1], reverse=True,
@@ -529,6 +545,9 @@ class MainWindow(QMainWindow):
                 cutoff=2000)
 
         elif item_str == TRIGRAMS:
+            if self.lexicon.file_is_wordlist:
+                self.unavailable_for_wordlist()
+                return
             new_display = self.create_major_display_table(
                 self.lexicon.word_trigram_counter().items(),
                 key=lambda x: x[1], reverse=True,
@@ -639,6 +658,9 @@ class MainWindow(QMainWindow):
                 cutoff=0)
 
         elif item_str == WORD_NEIGHBORS:
+            if self.lexicon.file_is_wordlist:
+                self.unavailable_for_wordlist()
+                return
             word_to_freq = self.lexicon.word_unigram_counter()
             new_display = self.create_major_display_table(
                 self.lexicon.words_to_neighbors().items(),
@@ -650,6 +672,9 @@ class MainWindow(QMainWindow):
                 cutoff=0)
 
         elif item_str == VISUALIZED_GRAPH:
+            if self.lexicon.file_is_wordlist:
+                self.unavailable_for_wordlist()
+                return
 
             # TODO: Reorganize the visualization-related files
             # where should the "visualization" be? (rename it to "viz"?)
