@@ -51,9 +51,9 @@ corpus:
    >>> import linguistica as lxa
    >>> lxa_object = lxa.read_corpus('path/to/english-brown.txt', max_word_tokens=500000)
 
-=====================  ====================================================  ==========
+=====================  ====================================================  =========
 Parameter              Meaning                                               Default
-=====================  ====================================================  ==========
+=====================  ====================================================  =========
 ``max_word_tokens``    maximum number of word tokens to be handled           0 (= all)
 ``max_word_types``     maximum number of word types to be handled            1000
 ``min_stem_length``    minimum stem length                                   4
@@ -62,8 +62,9 @@ Parameter              Meaning                                               Def
 ``min_context_count``  minimum number of occurrences for a valid context     3
 ``n_neighbors``        number of syntactic word neighbors                    9
 ``n_eigenvectors``     number of eigenvectors (in dimensionality reduction)  11
-``suffixing``          whether the language is suffixing                     1 (0 = no)
-=====================  ====================================================  ==========
+``suffixing``          whether the language is suffixing                     1 (= yes)
+``keep_case``          whether case distinctions ("the" vs "The") are kept   0 (= no)
+=====================  ====================================================  =========
 
 The method ``parameters()`` returns the parameters and their values as a dict:
 
@@ -71,7 +72,8 @@ The method ``parameters()`` returns the parameters and their values as a dict:
 
    >>> from pprint import pprint
    >>> pprint(lxa_object.parameters())
-   {'max_affix_length': 4,
+   {'keep_case': 0,
+    'max_affix_length': 4,
     'max_word_tokens': 0,
     'max_word_types': 1000,
     'min_context_count': 3,
