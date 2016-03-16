@@ -1,7 +1,8 @@
 # -*- encoding: utf8 -*-
 
 """
-A Linguistica object is initialized with some data.
+To use Linguistica 5 as a Python library,
+an essential step is to initialize a Linguistica object.
 The way this can be done depends on the nature of your data source:
 
 .. _source:
