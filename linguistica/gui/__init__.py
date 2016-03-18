@@ -41,12 +41,19 @@
 # -- Jackson Lee, 2015-08-19
 
 import sys
+import os
+import time
 
 try:
-    from PyQt5.QtWidgets import QApplication
+    from PyQt5.QtCore import Qt
+    from PyQt5.QtWidgets import (QApplication, QSplashScreen)
+    from PyQt5.QtGui import QPixmap
     from linguistica.gui.main_window import MainWindow
 except ImportError:
+    Qt = None
     QApplication = None
+    QSplashScreen = None
+    QPixmap = None
     MainWindow = None
 
 from linguistica import __version__
@@ -66,7 +73,18 @@ def main():
     screen_width = resolution.width()
     screen_height = resolution.height()
 
+    # create and display splash screen
+    splash_image_path = os.path.join(os.path.dirname(__file__),
+                                     'lxa_splash_screen.png')
+    splash_image = QPixmap(splash_image_path)
+    splash_screen = QSplashScreen(splash_image, Qt.WindowStaysOnTopHint)
+    splash_screen.setMask(splash_image.mask())
+    splash_screen.show()
+    app.processEvents()
+    time.sleep(2)
+
     # launch graphical user interface
     form = MainWindow(screen_height, screen_width, __version__)
     form.show()
+    splash_screen.finish(form)
     app.exec_()

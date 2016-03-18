@@ -44,7 +44,8 @@ setup(name='linguistica',
       install_requires=requirements,
 
       package_data={
-          'linguistica': ['VERSION', 'gui/d3.min.js'],
+          'linguistica': ['VERSION', 'gui/d3.min.js',
+                          'gui/lxa_splash_screen.png'],
       },
 
       zip_safe=False,
