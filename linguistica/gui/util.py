@@ -1,5 +1,7 @@
 # -*- encoding: utf8 -*-
 
+import os
+
 from PyQt5.QtCore import QCoreApplication
 
 # ------------------------------------------------------------------------------
@@ -8,6 +10,14 @@ from PyQt5.QtCore import QCoreApplication
 def process_all_gui_events():
     QCoreApplication.processEvents()
 
+# ------------------------------------------------------------------------------
+
+# configuration file
+
+CONFIG_DIR = os.path.join(os.path.expanduser('~'), '.linguistica')
+CONFIG_LAST_FILE = os.path.join(CONFIG_DIR, 'last_file.json')
+
+# ------------------------------------------------------------------------------
 
 # constants for window sizes etc
 

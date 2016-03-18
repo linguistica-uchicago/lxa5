@@ -11,7 +11,9 @@ from PyQt5.QtWidgets import (QMainWindow, QWidget, QAction, QVBoxLayout,
                              QTreeWidget, QFileDialog, QLabel, QTreeWidgetItem,
                              QTableWidget, QTableWidgetItem, QSplitter,
                              QProgressDialog, QMessageBox, QDialog, QGridLayout,
-                             QSpinBox, QSizePolicy, QHBoxLayout, QPushButton)
+                             QSpinBox, QSizePolicy, QHBoxLayout, QPushButton,
+                             QShortcut)
+from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWebKitWidgets import QWebView
 
 from linguistica import (read_corpus, read_wordlist)
@@ -32,6 +34,7 @@ from linguistica.gui.util import (MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT,
                                   PHONOLOGY, PHONES, BIPHONES, TRIPHONES,
                                   MANIFOLDS, WORD_NEIGHBORS, VISUALIZED_GRAPH,
                                   SHOW_MANIFOLD_HTML,
+                                  CONFIG_DIR, CONFIG_LAST_FILE,
                                   process_all_gui_events)
 
 
@@ -77,8 +80,10 @@ class MainWindow(QMainWindow):
                                                shortcut='Ctrl+P')
 
         file_menu = self.menuBar().addMenu('&File')
-        file_menu.addActions((select_corpus_action, select_wordlist_action,
-                              run_file_action, parameters_action))
+        file_menu.addAction(select_corpus_action)
+        file_menu.addAction(select_wordlist_action)
+        file_menu.addAction(run_file_action)
+        file_menu.addAction(parameters_action)
 
         self.status = self.statusBar()
         self.status.setSizeGripEnabled(False)
@@ -96,8 +101,7 @@ class MainWindow(QMainWindow):
         # noinspection PyUnresolvedReferences
         self.lexicon_tree.itemClicked.connect(self.tree_item_clicked)
 
-    def create_action(self, text=None, slot=None, tip=None, shortcut=None,
-                      checkable=False):
+    def create_action(self, text=None, slot=None, tip=None, shortcut=None):
         """
         This create actions for the File menu, things like
         Read Corpus, Rerun Corpus etc
@@ -111,12 +115,17 @@ class MainWindow(QMainWindow):
         if slot:
             # noinspection PyUnresolvedReferences
             action.triggered.connect(slot)
-        if checkable:
-            action.setCheckable(True)
+        if shortcut:
+            # noinspection PyUnresolvedReferences
+            QShortcut(QKeySequence(shortcut), self).activated.connect(slot)
         return action
 
     def _get_filename_from_dialog(self, ftype='input'):
-        open_dir = os.getcwd()
+        self.determine_last_file()
+        if self.last_file_path and self.last_file_type == ftype:
+            open_dir = self.last_file_path
+        else:
+            open_dir = os.getcwd()
         # noinspection PyTypeChecker,PyCallByClass
         fname = QFileDialog.getOpenFileName(self,
                                             'Select the {} file'.format(ftype),
@@ -215,7 +224,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(QLabel('Type: {}'.format(file_type)))
 
         grid = QGridLayout()
-        self.parameter_spinboxes = [QSpinBox() for i in range(len(parameters))]
+        self.parameter_spinboxes = [QSpinBox() for _ in range(len(parameters))]
 
         for i, parameter_name in enumerate(sorted(parameters.keys())):
             self.parameter_spinboxes[i].setObjectName(parameter_name)
@@ -338,7 +347,45 @@ class MainWindow(QMainWindow):
         self.status.clearMessage()
         self.status.showMessage('{} processed'.format(self.corpus_name))
 
+        self.load_main_window(major_display=QWidget(),
+                              parameter_window=QWidget())
         self.populate_lexicon_tree()
+        self.update_last_file()
+
+    @staticmethod
+    def ensure_config_dir_exists():
+        if not os.path.isdir(CONFIG_DIR):
+            os.mkdir(CONFIG_DIR)
+
+    def determine_last_file(self):
+        self.last_file_path = None
+        self.last_file_type = None
+        self.last_file_encoding = None
+
+        if not os.path.isfile(CONFIG_LAST_FILE):
+            return
+
+        with open(CONFIG_LAST_FILE, encoding='utf8') as f:
+            config_last_file = json.load(f)
+
+        self.last_file_path = config_last_file['last_file_path']
+        self.last_file_type = config_last_file['last_file_type']
+        self.last_file_encoding = config_last_file['last_file_encoding']
+
+    def update_last_file(self):
+        self.ensure_config_dir_exists()
+        with open(CONFIG_LAST_FILE, 'w', encoding='utf8') as f:
+            if self.lexicon.file_is_wordlist:
+                file_type = 'wordlist'
+            else:
+                file_type = 'corpus'
+
+            config = {'last_file_path': self.lexicon.file_abspath,
+                      'last_file_type': file_type,
+                      'last_file_encoding': self.lexicon.encoding,
+                      }
+
+            json.dump(config, f)
 
     def populate_lexicon_tree(self):
         self.lexicon_tree.clear()
