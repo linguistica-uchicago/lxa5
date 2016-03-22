@@ -5,20 +5,12 @@ import os
 from pprint import pformat
 
 import linguistica as lxa
-from linguistica.util import ENCODING
+from linguistica.util import (ENCODING, PARAMETERS)
 
 lxa_version = lxa.__version__
 
 
-def main():
-    print('\n================================================================\n'
-          'Welcome to Linguistica {}!\n'
-          '================================================================'
-          .format(lxa_version))
-
-    # --------------------------------------------------------------------------
-    # determine if file is a wordlist or a corpus text
-
+def determine_use_wordlist():
     use_wordlist_response = None
     while use_wordlist_response is None:
         use_wordlist_response = input('\nAre you using a wordlist file? [N/y] ')
@@ -28,11 +20,10 @@ def main():
     else:
         use_wordlist = False
 
-    print('--------------------------------------------')
+    return use_wordlist
 
-    # --------------------------------------------------------------------------
-    # get file path
 
+def get_file_abspath():
     file_abspath = None
     while file_abspath is None:
         file_path = input('\nPath to your file: ')
@@ -48,16 +39,10 @@ def main():
             print('Invalid file path!')
             file_abspath = None
 
-    print('\nFull file path:\n{}'.format(file_abspath))
-    print('--------------------------------------------')
+    return file_abspath
 
-    # --------------------------------------------------------------------------
-    # determine output directory
 
-    output_dir = os.path.join(os.path.dirname(file_abspath), 'lxa_outputs')
-
-    print('\nDefault output directory:\n{}'.format(output_dir))
-
+def get_output_dir(output_dir_):
     change_dir_response = None
     while change_dir_response is None:
         change_dir_response = input('Change it? [N/y] ')
@@ -81,16 +66,12 @@ def main():
                     print('Cannot make a new directory in a non-existing one!')
                     new_output_dir = None
 
-        output_dir = new_output_dir
+        output_dir_ = new_output_dir
 
-    if not os.path.isdir(output_dir):
-        os.mkdir(output_dir)
+    return output_dir_
 
-    print('--------------------------------------------')
 
-    # --------------------------------------------------------------------------
-    # change encoding, if instructed
-
+def get_encoding():
     encoding = ENCODING
     print('\nDefault encoding for input and output files:', encoding)
 
@@ -106,21 +87,10 @@ def main():
                 new_encoding = None
         encoding = new_encoding
 
-    print('--------------------------------------------')
+    return encoding
 
-    # --------------------------------------------------------------------------
-    # create the Linguistica object
 
-    if use_wordlist:
-        lxa_object = lxa.read_wordlist(file_abspath, encoding=encoding)
-    else:
-        lxa_object = lxa.read_corpus(file_abspath, encoding=encoding)
-
-    # --------------------------------------------------------------------------
-    # change parameters, if instructed
-
-    print('\nParameters:\n{}'.format(pformat(lxa_object.parameters())))
-
+def get_new_parameters():
     change_parameters_ans = None
     while change_parameters_ans is None:
         change_parameters_ans = input('\nChange any parameters? [N/y] ')
@@ -144,7 +114,7 @@ def main():
                     parameter_value_str = None
                     break
 
-                if parameter not in lxa_object.parameters():
+                if parameter not in PARAMETERS:
                     print('Unknown parameter: ', parameter)
                     parameter_value_str = None
                     break
@@ -158,6 +128,66 @@ def main():
                     break
 
                 new_parameter_value_pairs.append((parameter, value_int))
+
+    return new_parameter_value_pairs
+
+
+def main():
+    print('\n================================================================\n'
+          'Welcome to Linguistica {}!\n'
+          '================================================================'
+          .format(lxa_version))
+
+    # --------------------------------------------------------------------------
+    # determine if file is a wordlist or a corpus text
+
+    use_wordlist = determine_use_wordlist()
+
+    print('--------------------------------------------')
+
+    # --------------------------------------------------------------------------
+    # get file path
+
+    file_abspath = get_file_abspath()
+
+    print('\nFull file path:\n{}'.format(file_abspath))
+    print('--------------------------------------------')
+
+    # --------------------------------------------------------------------------
+    # determine output directory
+
+    output_dir = os.path.join(os.path.dirname(file_abspath), 'lxa_outputs')
+
+    print('\nDefault output directory:\n{}'.format(output_dir))
+
+    output_dir = get_output_dir(output_dir)
+
+    if not os.path.isdir(output_dir):
+        os.mkdir(output_dir)
+
+    print('--------------------------------------------')
+
+    # --------------------------------------------------------------------------
+    # change encoding, if instructed
+
+    encoding = get_encoding()
+
+    print('--------------------------------------------')
+
+    # --------------------------------------------------------------------------
+    # create the Linguistica object
+
+    if use_wordlist:
+        lxa_object = lxa.read_wordlist(file_abspath, encoding=encoding)
+    else:
+        lxa_object = lxa.read_corpus(file_abspath, encoding=encoding)
+
+    # --------------------------------------------------------------------------
+    # change parameters, if instructed
+
+    print('\nParameters:\n{}'.format(pformat(lxa_object.parameters())))
+
+    new_parameter_value_pairs = get_new_parameters()
 
     if new_parameter_value_pairs:
         lxa_object.change_parameters(**dict(new_parameter_value_pairs))
