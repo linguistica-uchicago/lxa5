@@ -263,7 +263,7 @@ class MainWindow(QMainWindow):
     def reset_parameters(self):
         self.lexicon.use_default_parameters()
 
-        for i, (parameter, value) in \
+        for i, (_, value) in \
                 enumerate(sorted(self.lexicon.parameters().items())):
             self.parameter_spinboxes[i].setValue(value)
 

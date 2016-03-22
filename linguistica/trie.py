@@ -67,7 +67,7 @@ def break_words(wordlist, break_dict):
 
 def get_successors(wordlist, broken_words):
     successors = dict()
-    for i, this_word in enumerate(wordlist):
+    for this_word in wordlist:
         this_word_parsed = broken_words[this_word]
 
         number_of_pieces = len(this_word_parsed)

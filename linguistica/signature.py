@@ -173,7 +173,7 @@ def make_bisignatures(wordlist, min_stem_length, max_affix_length, suffixing):
 
     wordlist = filter(lambda x: len(x) >= min_stem_length, wordlist)
 
-    for k, group in groupby(wordlist, key=group_key):  # groupby from itertools
+    for _, group in groupby(wordlist, key=group_key):  # groupby from itertools
         wordlist_for_analysis = list(group)  # must use list() here!
         # see python 3.4 documentation:
         # https://docs.python.org/3/library/itertools.html#itertools.groupby

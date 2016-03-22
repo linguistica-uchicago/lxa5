@@ -113,6 +113,9 @@ from linguistica.util import ENCODING
 from linguistica.lexicon import Lexicon
 
 
+assert type(__version__) is str
+
+
 def read_corpus(file_path, encoding=ENCODING, **kwargs):
     """
     Create a Linguistica object with a corpus data file.

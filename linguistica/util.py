@@ -104,7 +104,7 @@ def double_sorted(input_object, key=lambda x: x, reverse=False,
     new_sorted_list = list()
     sorted_list = sorted(input_object, key=key, reverse=reverse)
 
-    for k, group in groupby(sorted_list, key=key):  # groupby from itertools
+    for _, group in groupby(sorted_list, key=key):  # groupby from itertools
 
         # must use "list(group)", cannot use just "group"!
         sublist = sorted(list(group), key=subkey, reverse=subreverse)
