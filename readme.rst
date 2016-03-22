@@ -119,3 +119,29 @@ To launch the Linguistica 5 command line interface:
 .. code-block:: bash
 
    $ python3 -m linguistica cli
+
+
+Citation
+--------
+
+If you use Linguistica 5, please cite this paper::
+
+   @InProceedings{lee-goldsmith:2016:lxa5,
+     author    = {Lee, Jackson L. and Goldsmith, John A.},
+     title     = {Linguistica 5: Unsupervised Learning of Linguistic Structure},
+     booktitle = {Proceedings of the 2016 Conference of the North American Chapter of the Association for Computational Linguistics},
+     month     = {June},
+     year      = {2016},
+     address   = {San Diego, California},
+     publisher = {Association for Computational Linguistics},
+   }
+
+
+Technical support
+-----------------
+
+Please `open issues <https://github.com/linguistica-uchicago/lxa5/issues/new>`_
+for questions and bug reports.
+Alternatively, please feel free to contact
+`Jackson Lee <http://jacksonllee.com/>`_ and
+`John Goldsmith <http://people.cs.uchicago.edu/~jagoldsm/>`_.
