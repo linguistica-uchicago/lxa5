@@ -134,7 +134,7 @@ d3.json("{}", function(error, graph) {{
     .enter().append("text")
     .attr("class", "label")
     .attr("fill", "black")
-    .attr("font-size", "7pt")
+    .attr("font-size", "3pt")
     .text(function(d) {{  return d.id;  }});
 
   node.append("title")
