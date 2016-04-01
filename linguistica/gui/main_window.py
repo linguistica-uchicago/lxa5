@@ -723,27 +723,19 @@ class MainWindow(QMainWindow):
                 self.unavailable_for_wordlist()
                 return
 
-            # TODO: Reorganize the visualization-related files
-            # where should the "visualization" be? (rename it to "viz"?)
-            # is there a way to generate what d3 needs without having to
-            # generate the html/javascript code and file
-
             graph_width = self.screen_width - TREEWIDGET_WIDTH_MAX - 50
             graph_height = self.screen_height - 70
             html_name = 'show_manifold.html'
-            # html_name = '_test_show_manifold.html"
 
-            manifold_name = '{}_{}_{}_manifold.json'.format(
-                self.corpus_stem_name, 1000, 9)
-            manifold_dir = os.getcwd()
-            manifold_filename = os.path.join(manifold_dir, manifold_name)
+            manifold_name = '{}_manifold.json'.format(self.corpus_stem_name)
+            manifold_filename = os.path.join(CONFIG_DIR, manifold_name)
             print('manifold_filename', manifold_filename)
 
             manifold_json_data = json_graph.node_link_data(
                 self.lexicon.neighbor_graph())
             json.dump(manifold_json_data, open(manifold_filename, 'w'))
 
-            viz_html = os.path.join(os.getcwd(), html_name)
+            viz_html = os.path.join(CONFIG_DIR, html_name)
             print('viz_html', viz_html)
 
             # write the show_manifold html file
