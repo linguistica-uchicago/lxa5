@@ -4,9 +4,9 @@ import os
 import networkx as nx
 
 import linguistica as lxa
+from linguistica.datasets import brown as corpus_path
 
 data_dir = os.path.join(os.path.dirname(__file__), 'data')
-corpus_path = os.path.join(data_dir, 'english-brown.txt')
 
 
 def test_words_to_neighbors():
