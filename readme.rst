@@ -28,7 +28,7 @@ Download and install
 
 Linguistica 5 requires Python 3.4 or above.
 
-Dependencies (see :ref:`deps` below for notes):
+Dependencies (see *Installing dependencies* below for notes):
 
 * `NumPy <http://www.numpy.org/>`_
 * `SciPy <http://scipy.org/>`_
@@ -103,8 +103,8 @@ Alternatively, please feel free to contact
 
 .. _deps:
 
-Dependencies
-------------
+Installing dependencies
+-----------------------
 
 **NumPy, SciPy, and NetworkX**:
 Naturally, it is possible to install these packages one by one on your own,
