@@ -45,7 +45,8 @@ setup(name='linguistica',
 
       package_data={
           'linguistica': ['VERSION', 'gui/d3.min.js',
-                          'gui/lxa_splash_screen.png'],
+                          'gui/lxa_splash_screen.png',
+                          'datasets/*.txt', 'datasets/*.dx1'],
       },
 
       zip_safe=False,
