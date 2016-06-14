@@ -2,6 +2,7 @@
 
 import os
 import json
+import time
 from pathlib import Path
 
 from networkx.readwrite import json_graph
@@ -390,10 +391,21 @@ class MainWindow(QMainWindow):
     def populate_lexicon_tree(self):
         self.lexicon_tree.clear()
 
+        # make sure that lxa_worker is completely done
+        # before we get word type/token counts from self.lexicon
+        # TODO: GUI seems less responsive -- not nicely showing progressive bar
+        while not self.lxa_worker.isFinished():
+            time.sleep(1)
+        process_all_gui_events()
+
         # corpus name (in the tree header label)
         file_type = 'wordlist' if self.lexicon.file_is_wordlist else 'corpus'
-        self.lexicon_tree.setHeaderLabel('File: {}\nFile type: {}'
-                                         .format(self.corpus_name, file_type))
+        header_label = 'File: {}\nFile type: {}\n\n# word types: {:,}\n'.format(
+            self.corpus_name, file_type, self.lexicon.number_of_word_types())
+        if file_type == 'corpus':
+            header_label += '# word tokens: {:,}\n'.format(
+                self.lexicon.number_of_word_tokens())
+        self.lexicon_tree.setHeaderLabel(header_label)
 
         # wordlist
         ancestor = QTreeWidgetItem(self.lexicon_tree, [WORDLIST])
