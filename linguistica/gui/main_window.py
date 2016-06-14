@@ -478,7 +478,7 @@ class MainWindow(QMainWindow):
         print(signature)
         signature = tuple(signature.split(SEP_SIG))
 
-        stems = self.lexicon.signatures_to_stems()[signature]
+        stems = sorted(self.lexicon.signatures_to_stems()[signature])
         number_of_stems_per_column = 5
 
         # create a master list of sublists, where each sublist contains k stems
