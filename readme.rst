@@ -89,6 +89,8 @@ If you use Linguistica 5, please cite this paper::
      year      = {2016},
      address   = {San Diego, California},
      publisher = {Association for Computational Linguistics},
+     pages     = {22--26},
+     url       = {http://www.aclweb.org/anthology/N16-3005}
    }
 
 
