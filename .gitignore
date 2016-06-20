@@ -1,7 +1,5 @@
 /.idea/
 /test_dev/
 /linguistica.egg-info/
-/doc/
 
 /linguistica/*.pyc
-build-doc.sh
