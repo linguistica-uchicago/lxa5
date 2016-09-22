@@ -221,17 +221,8 @@ class Lexicon:
         self._wordlist = None
         if self.wordlist_object is not None:
             # self.wordlist_object is
-            # either a list of str or a dict of word-count pairs
-            if type(self.wordlist_object) is list:
-                if self.parameters_['keep_case']:
-                    wordlist = sorted(set(self.wordlist_object))
-                else:
-                    wordlist = sorted(
-                        set(w.lower() for w in self.wordlist_object))
-                self._wordlist = wordlist
-                self._word_unigram_counter = {word: 1 for word in wordlist}
-
-            elif type(self.wordlist_object) is dict:
+            # either an iterable or a dict of word-count pairs
+            if type(self.wordlist_object) is dict:
                 word_count_dict = dict()
                 if self.parameters_['keep_case']:
                     word_count_dict = self.wordlist_object
@@ -248,9 +239,17 @@ class Lexicon:
                                                 reverse=True)]
                 self._word_unigram_counter = word_count_dict
 
+            elif hasattr(self.wordlist_object, '__iter__'):
+                if self.parameters_['keep_case']:
+                    self._wordlist = sorted(set(self.wordlist_object))
+                else:
+                    self._wordlist = sorted(
+                        set(w.lower() for w in self.wordlist_object))
+                self._word_unigram_counter = {w: 1 for w in self._wordlist}
+
             else:
-                raise TypeError('wordlist object must be '
-                                'either a list or a dict')
+                raise TypeError('wordlist object must be a dict of word-count'
+                                'pairs or an iterable of words')
 
         # signature-related objects
         self._stems_to_words = None

@@ -158,8 +158,8 @@ def from_wordlist(wordlist_object, **kwargs):
     """
     Create a Linguistica object with a wordlist object.
 
-    :param wordlist_object: either a list of word types as strings
-        or a dict of word types mapped to their token counts
+    :param wordlist_object: either a dict of word types (as strings) mapped to
+        their token counts or an iterable of word types (as strings).
     :param kwargs: keyword arguments for parameters and their values.
     """
     return Lexicon(wordlist_object=wordlist_object, wordlist_file=False,
