@@ -1,0 +1,374 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Quick demonstration &mdash; Linguistica 5.1.0-dev documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Linguistica 5.1.0-dev documentation" href="index.html"/>
+        <link rel="next" title="Data" href="data.html"/>
+        <link rel="prev" title="Download and install" href="download.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Linguistica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                5.1.0-dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="download.html">Download and install</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quick demonstration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-basics">The Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#methods-with-a-linguistica-object">Methods with a Linguistica object</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#word-trigrams">(1) Word trigrams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#signatures-to-stems">(2) Signatures to stems</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="read.html">Python library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui.html">Graphical user interface (GUI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command line interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lexicon.html">Full API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev.html">For developers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="codebase.html">Code base</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Linguistica</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Quick demonstration</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="quick-demonstration">
+<span id="demo"></span><h1>Quick demonstration<a class="headerlink" href="#quick-demonstration" title="Permalink to this headline">¶</a></h1>
+<p>This demonstration focuses on Linguistica 5 as a Python library.
+There are two other use modes: <a class="reference internal" href="gui.html#gui"><span class="std std-ref">Graphical user interface (GUI)</span></a> and <a class="reference internal" href="cli.html#cli"><span class="std std-ref">Command line interface (CLI)</span></a>.</p>
+<p>For the nature and format of datasets: <a class="reference internal" href="data.html#data"><span class="std std-ref">Data</span></a></p>
+<p>For more details about Linguistica 5 as a Python library: <a class="reference internal" href="read.html#read"><span class="std std-ref">Python library</span></a> and <a class="reference internal" href="lexicon.html#lexicon"><span class="std std-ref">Full API documentation</span></a></p>
+<div class="section" id="the-basics">
+<h2>The Basics<a class="headerlink" href="#the-basics" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Importing the <code class="docutils literal"><span class="pre">linguistica</span></code> library</li>
+<li>Using a built-in dataset (the English Brown corpus)</li>
+<li>Creating a Linguistica object for a given dataset</li>
+</ul>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">linguistica</span> <span class="k">as</span> <span class="nn">lxa</span>
+<span class="kn">from</span> <span class="nn">linguistica.datasets</span> <span class="k">import</span> <span class="n">brown</span>
+
+<span class="n">lxa_object</span> <span class="o">=</span> <span class="n">lxa</span><span class="o">.</span><span class="n">read_corpus</span><span class="p">(</span><span class="n">brown</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">brown</span></code> (str) is the file path of the English Brown corpus text file
+built in the Linguistica 5 library. If you would like to use a corpus
+text from the local drive, the argument for <code class="docutils literal"><span class="pre">read_corpus()</span></code> should
+take the file path (as a str) of your desired text file.</p>
+</div>
+<div class="section" id="methods-with-a-linguistica-object">
+<h2>Methods with a Linguistica object<a class="headerlink" href="#methods-with-a-linguistica-object" title="Permalink to this headline">¶</a></h2>
+<p>Sample uses: (1) word trigrams, (2) signatures to stems</p>
+<div class="section" id="word-trigrams">
+<h3>(1) Word trigrams<a class="headerlink" href="#word-trigrams" title="Permalink to this headline">¶</a></h3>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">trigrams</span> <span class="o">=</span> <span class="n">lxa_object</span><span class="o">.</span><span class="n">word_trigram_counter</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">trigrams</span></code> is a dict with word trigrams (each as a tuple) mapped to
+their respective counts.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">trigram</span><span class="p">,</span> <span class="n">count_</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">trigrams</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">trigram</span><span class="p">,</span> <span class="n">count_</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">count_</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">:</span>
+        <span class="k">break</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">)</span> <span class="mi">662</span>
+<span class="p">(</span><span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="s1">&#39;of&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">)</span> <span class="mi">403</span>
+<span class="p">(</span><span class="s1">&#39;the&#39;</span><span class="p">,</span> <span class="s1">&#39;united&#39;</span><span class="p">,</span> <span class="s1">&#39;states&#39;</span><span class="p">)</span> <span class="mi">328</span>
+<span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;however&#39;</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="mi">321</span>
+<span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">)</span> <span class="mi">266</span>
+<span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="mi">266</span>
+<span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;he&#39;</span><span class="p">,</span> <span class="s1">&#39;said&#39;</span><span class="p">)</span> <span class="mi">257</span>
+<span class="p">(</span><span class="s1">&#39;as&#39;</span><span class="p">,</span> <span class="s1">&#39;well&#39;</span><span class="p">,</span> <span class="s1">&#39;as&#39;</span><span class="p">)</span> <span class="mi">238</span>
+<span class="p">(</span><span class="s1">&#39;u&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span> <span class="mi">235</span>
+<span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;it&#39;</span><span class="p">,</span> <span class="s1">&#39;is&#39;</span><span class="p">)</span> <span class="mi">234</span>
+<span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;he&#39;</span><span class="p">)</span> <span class="mi">225</span>
+<span class="p">(</span><span class="s1">&#39;of&#39;</span><span class="p">,</span> <span class="s1">&#39;course&#39;</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="mi">220</span>
+<span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;of&#39;</span><span class="p">,</span> <span class="s1">&#39;course&#39;</span><span class="p">)</span> <span class="mi">189</span>
+<span class="p">(</span><span class="s1">&#39;some&#39;</span><span class="p">,</span> <span class="s1">&#39;of&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">)</span> <span class="mi">179</span>
+<span class="p">(</span><span class="s1">&#39;the&#39;</span><span class="p">,</span> <span class="s1">&#39;u&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="mi">176</span>
+<span class="p">(</span><span class="s1">&#39;out&#39;</span><span class="p">,</span> <span class="s1">&#39;of&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">)</span> <span class="mi">174</span>
+<span class="p">(</span><span class="s1">&#39;the&#39;</span><span class="p">,</span> <span class="s1">&#39;fact&#39;</span><span class="p">,</span> <span class="s1">&#39;that&#39;</span><span class="p">)</span> <span class="mi">167</span>
+<span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;but&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">)</span> <span class="mi">161</span>
+<span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;mr&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="mi">159</span>
+<span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="mi">158</span>
+<span class="p">(</span><span class="s1">&#39;for&#39;</span><span class="p">,</span> <span class="s1">&#39;example&#39;</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="mi">153</span>
+<span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="mi">153</span>
+<span class="p">(</span><span class="s1">&#39;the&#39;</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="s1">&#39;of&#39;</span><span class="p">)</span> <span class="mi">149</span>
+<span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;but&#39;</span><span class="p">,</span> <span class="s1">&#39;he&#39;</span><span class="p">)</span> <span class="mi">148</span>
+<span class="p">(</span><span class="s1">&#39;part&#39;</span><span class="p">,</span> <span class="s1">&#39;of&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">)</span> <span class="mi">144</span>
+<span class="p">(</span><span class="s1">&#39;he&#39;</span><span class="p">,</span> <span class="s1">&#39;said&#39;</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="mi">143</span>
+<span class="p">(</span><span class="s1">&#39;it&#39;</span><span class="p">,</span> <span class="s1">&#39;was&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="mi">143</span>
+<span class="p">(</span><span class="s1">&#39;there&#39;</span><span class="p">,</span> <span class="s1">&#39;was&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="mi">142</span>
+<span class="p">(</span><span class="s1">&#39;it&#39;</span><span class="p">,</span> <span class="s1">&#39;is&#39;</span><span class="p">,</span> <span class="s1">&#39;not&#39;</span><span class="p">)</span> <span class="mi">136</span>
+<span class="p">(</span><span class="s1">&#39;to&#39;</span><span class="p">,</span> <span class="s1">&#39;be&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="mi">133</span>
+<span class="p">(</span><span class="s1">&#39;there&#39;</span><span class="p">,</span> <span class="s1">&#39;was&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">)</span> <span class="mi">132</span>
+<span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;i&#39;</span><span class="p">)</span> <span class="mi">132</span>
+<span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;too&#39;</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="mi">131</span>
+<span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;it&#39;</span><span class="p">,</span> <span class="s1">&#39;was&#39;</span><span class="p">)</span> <span class="mi">129</span>
+<span class="p">(</span><span class="s1">&#39;there&#39;</span><span class="p">,</span> <span class="s1">&#39;is&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="mi">128</span>
+<span class="p">(</span><span class="s1">&#39;of&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">,</span> <span class="s1">&#39;united&#39;</span><span class="p">)</span> <span class="mi">127</span>
+<span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;with&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">)</span> <span class="mi">124</span>
+<span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;number&#39;</span><span class="p">,</span> <span class="s1">&#39;of&#39;</span><span class="p">)</span> <span class="mi">123</span>
+<span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;mrs&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="mi">121</span>
+<span class="p">(</span><span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="s1">&#39;order&#39;</span><span class="p">,</span> <span class="s1">&#39;to&#39;</span><span class="p">)</span> <span class="mi">120</span>
+<span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;that&#39;</span><span class="p">)</span> <span class="mi">120</span>
+<span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;but&#39;</span><span class="p">,</span> <span class="s1">&#39;it&#39;</span><span class="p">)</span> <span class="mi">120</span>
+<span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;in&#39;</span><span class="p">)</span> <span class="mi">119</span>
+<span class="p">(</span><span class="s1">&#39;it&#39;</span><span class="p">,</span> <span class="s1">&#39;is&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="mi">114</span>
+<span class="p">(</span><span class="s1">&#39;most&#39;</span><span class="p">,</span> <span class="s1">&#39;of&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">)</span> <span class="mi">114</span>
+<span class="p">(</span><span class="s1">&#39;members&#39;</span><span class="p">,</span> <span class="s1">&#39;of&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">)</span> <span class="mi">110</span>
+<span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;it&#39;</span><span class="p">)</span> <span class="mi">109</span>
+<span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;he&#39;</span><span class="p">,</span> <span class="s1">&#39;was&#39;</span><span class="p">)</span> <span class="mi">109</span>
+<span class="p">(</span><span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="s1">&#39;of&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">)</span> <span class="mi">108</span>
+<span class="p">(</span><span class="s1">&#39;of&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">,</span> <span class="s1">&#39;new&#39;</span><span class="p">)</span> <span class="mi">107</span>
+<span class="p">(</span><span class="s1">&#39;it&#39;</span><span class="p">,</span> <span class="s1">&#39;would&#39;</span><span class="p">,</span> <span class="s1">&#39;be&#39;</span><span class="p">)</span> <span class="mi">107</span>
+<span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;for&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">)</span> <span class="mi">106</span>
+<span class="p">(</span><span class="s1">&#39;the&#39;</span><span class="p">,</span> <span class="s1">&#39;number&#39;</span><span class="p">,</span> <span class="s1">&#39;of&#39;</span><span class="p">)</span> <span class="mi">104</span>
+<span class="p">(</span><span class="s1">&#39;there&#39;</span><span class="p">,</span> <span class="s1">&#39;is&#39;</span><span class="p">,</span> <span class="s1">&#39;no&#39;</span><span class="p">)</span> <span class="mi">104</span>
+<span class="p">(</span><span class="s1">&#39;he&#39;</span><span class="p">,</span> <span class="s1">&#39;did&#39;</span><span class="p">,</span> <span class="s1">&#39;not&#39;</span><span class="p">)</span> <span class="mi">103</span>
+<span class="p">(</span><span class="s1">&#39;at&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">,</span> <span class="s1">&#39;same&#39;</span><span class="p">)</span> <span class="mi">103</span>
+<span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="mi">102</span>
+<span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;then&#39;</span><span class="p">)</span> <span class="mi">102</span>
+<span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;she&#39;</span><span class="p">,</span> <span class="s1">&#39;said&#39;</span><span class="p">)</span> <span class="mi">102</span>
+<span class="p">(</span><span class="s1">&#39;the&#39;</span><span class="p">,</span> <span class="s1">&#39;use&#39;</span><span class="p">,</span> <span class="s1">&#39;of&#39;</span><span class="p">)</span> <span class="mi">102</span>
+<span class="p">(</span><span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="s1">&#39;fact&#39;</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="mi">101</span>
+<span class="p">(</span><span class="s1">&#39;on&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">,</span> <span class="s1">&#39;other&#39;</span><span class="p">)</span> <span class="mi">100</span>
+<span class="p">(</span><span class="s1">&#39;he&#39;</span><span class="p">,</span> <span class="s1">&#39;said&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="mi">100</span>
+<span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;on&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">)</span> <span class="mi">99</span>
+</pre></div>
+</div>
+<p>Given <code class="docutils literal"><span class="pre">trigrams</span></code> is a dict that maps something to counts, it is
+natural to convert it to a Counter instance (via the <code class="docutils literal"><span class="pre">collections</span></code>
+module in the standard library) and take advantage of the methods
+available (e.g., <code class="docutils literal"><span class="pre">most_common(k)</span></code> for accessible the most common k
+items).</p>
+</div>
+<div class="section" id="signatures-to-stems">
+<h3>(2) Signatures to stems<a class="headerlink" href="#signatures-to-stems" title="Permalink to this headline">¶</a></h3>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">sigs_to_stems</span> <span class="o">=</span> <span class="n">lxa_object</span><span class="o">.</span><span class="n">signatures_to_stems</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">sig</span><span class="p">,</span> <span class="n">stems</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">sigs_to_stems</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">stems</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stems</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">50</span><span class="p">:</span>
+        <span class="k">break</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span> <span class="mi">2327</span>
+<span class="p">(</span><span class="s2">&quot;&#39;s&quot;</span><span class="p">,</span> <span class="s1">&#39;NULL&#39;</span><span class="p">)</span> <span class="mi">813</span>
+<span class="p">(</span><span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;ly&#39;</span><span class="p">)</span> <span class="mi">587</span>
+<span class="p">(</span><span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span> <span class="mi">346</span>
+<span class="p">(</span><span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">)</span> <span class="mi">314</span>
+<span class="p">(</span><span class="s1">&#39;ed&#39;</span><span class="p">,</span> <span class="s1">&#39;ing&#39;</span><span class="p">)</span> <span class="mi">197</span>
+<span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s1">&#39;NULL&#39;</span><span class="p">)</span> <span class="mi">190</span>
+<span class="p">(</span><span class="s2">&quot;&#39;s&quot;</span><span class="p">,</span> <span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span> <span class="mi">181</span>
+<span class="p">(</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span> <span class="mi">175</span>
+<span class="p">(</span><span class="s1">&#39;ies&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">)</span> <span class="mi">173</span>
+<span class="p">(</span><span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;ed&#39;</span><span class="p">,</span> <span class="s1">&#39;ing&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span> <span class="mi">151</span>
+<span class="p">(</span><span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;ed&#39;</span><span class="p">)</span> <span class="mi">134</span>
+<span class="p">(</span><span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;ed&#39;</span><span class="p">,</span> <span class="s1">&#39;ing&#39;</span><span class="p">)</span> <span class="mi">130</span>
+<span class="p">(</span><span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="s1">&#39;ed&#39;</span><span class="p">,</span> <span class="s1">&#39;es&#39;</span><span class="p">,</span> <span class="s1">&#39;ing&#39;</span><span class="p">)</span> <span class="mi">130</span>
+<span class="p">(</span><span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;ing&#39;</span><span class="p">)</span> <span class="mi">105</span>
+<span class="p">(</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="mi">98</span>
+<span class="p">(</span><span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">)</span> <span class="mi">95</span>
+<span class="p">(</span><span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="s1">&#39;ed&#39;</span><span class="p">,</span> <span class="s1">&#39;ing&#39;</span><span class="p">)</span> <span class="mi">88</span>
+<span class="p">(</span><span class="s1">&#39;ng&#39;</span><span class="p">,</span> <span class="s1">&#39;on&#39;</span><span class="p">)</span> <span class="mi">85</span>
+<span class="p">(</span><span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;ed&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span> <span class="mi">82</span>
+<span class="p">(</span><span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;ly&#39;</span><span class="p">,</span> <span class="s1">&#39;ness&#39;</span><span class="p">)</span> <span class="mi">74</span>
+<span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">)</span> <span class="mi">72</span>
+<span class="p">(</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;rs&#39;</span><span class="p">)</span> <span class="mi">66</span>
+<span class="p">(</span><span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;es&#39;</span><span class="p">)</span> <span class="mi">63</span>
+<span class="p">(</span><span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;ness&#39;</span><span class="p">)</span> <span class="mi">60</span>
+<span class="p">(</span><span class="s1">&#39;ng&#39;</span><span class="p">,</span> <span class="s1">&#39;on&#39;</span><span class="p">,</span> <span class="s1">&#39;ons&#39;</span><span class="p">)</span> <span class="mi">57</span>
+<span class="p">(</span><span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">)</span> <span class="mi">51</span>
+<span class="p">(</span><span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;ally&#39;</span><span class="p">)</span> <span class="mi">47</span>
+</pre></div>
+</div>
+<p>For all methods available to a Linguistica
+objects: <a class="reference internal" href="lexicon.html#lexicon"><span class="std std-ref">Full API documentation</span></a></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="data.html" class="btn btn-neutral float-right" title="Data" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="download.html" class="btn btn-neutral" title="Download and install" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015-2016, Jackson Lee.
+      Last updated on Sep 22, 2016.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'5.1.0-dev',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

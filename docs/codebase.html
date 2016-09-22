@@ -1,0 +1,269 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Code base &mdash; Linguistica 5.1.0-dev documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Linguistica 5.1.0-dev documentation" href="index.html"/>
+        <link rel="prev" title="For developers" href="dev.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Linguistica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                5.1.0-dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="download.html">Download and install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo.html">Quick demonstration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="read.html">Python library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui.html">Graphical user interface (GUI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command line interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lexicon.html">Full API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev.html">For developers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Code base</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#linguistica-main-py"><code class="docutils literal"><span class="pre">linguistica/__main__.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linguistica-init-py"><code class="docutils literal"><span class="pre">linguistica/__init__.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linguistica-release-py"><code class="docutils literal"><span class="pre">linguistica/release.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linguistica-util-py"><code class="docutils literal"><span class="pre">linguistica/util.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linguistica-lexicon-py"><code class="docutils literal"><span class="pre">linguistica/lexicon.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linguistica-ngram-py"><code class="docutils literal"><span class="pre">linguistica/ngram.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linguistica-signature-py"><code class="docutils literal"><span class="pre">linguistica/signature.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linguistica-phon-py"><code class="docutils literal"><span class="pre">linguistica/phon.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linguistica-trie-py"><code class="docutils literal"><span class="pre">linguistica/trie.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linguistica-manifold-py"><code class="docutils literal"><span class="pre">linguistica/manifold.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linguistica-fsm-py"><code class="docutils literal"><span class="pre">linguistica/fsm.py</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Linguistica</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Code base</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="code-base">
+<span id="codebase"></span><h1>Code base<a class="headerlink" href="#code-base" title="Permalink to this headline">¶</a></h1>
+<p>Notes on the code base</p>
+<div class="section" id="linguistica-main-py">
+<h2><code class="docutils literal"><span class="pre">linguistica/__main__.py</span></code><a class="headerlink" href="#linguistica-main-py" title="Permalink to this headline">¶</a></h2>
+<p>For running GUI and CLI</p>
+</div>
+<div class="section" id="linguistica-init-py">
+<h2><code class="docutils literal"><span class="pre">linguistica/__init__.py</span></code><a class="headerlink" href="#linguistica-init-py" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">__init__.py</span></code> sets up the functions for reading data.</p>
+</div>
+<div class="section" id="linguistica-release-py">
+<h2><code class="docutils literal"><span class="pre">linguistica/release.py</span></code><a class="headerlink" href="#linguistica-release-py" title="Permalink to this headline">¶</a></h2>
+<p>Metadata of the library (version etc)</p>
+</div>
+<div class="section" id="linguistica-util-py">
+<h2><code class="docutils literal"><span class="pre">linguistica/util.py</span></code><a class="headerlink" href="#linguistica-util-py" title="Permalink to this headline">¶</a></h2>
+<p>Constants and various utility functions.</p>
+</div>
+<div class="section" id="linguistica-lexicon-py">
+<h2><code class="docutils literal"><span class="pre">linguistica/lexicon.py</span></code><a class="headerlink" href="#linguistica-lexicon-py" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal"><span class="pre">Lexicon</span></code> class.</p>
+</div>
+<div class="section" id="linguistica-ngram-py">
+<h2><code class="docutils literal"><span class="pre">linguistica/ngram.py</span></code><a class="headerlink" href="#linguistica-ngram-py" title="Permalink to this headline">¶</a></h2>
+<p>This <code class="docutils literal"><span class="pre">ngram</span></code> module is to get the word ngrams.</p>
+</div>
+<div class="section" id="linguistica-signature-py">
+<h2><code class="docutils literal"><span class="pre">linguistica/signature.py</span></code><a class="headerlink" href="#linguistica-signature-py" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Morphological signatures should really be sets, but they are tuples
+(e.g. <code class="docutils literal"><span class="pre">('NULL',</span> <span class="pre">'s')</span></code>) with affixes ordered alphabetically.
+The signatures are very often the keys in some dicts, and Python doesn&#8217;t
+allow sets to be dict keys...</li>
+</ul>
+</div>
+<div class="section" id="linguistica-phon-py">
+<h2><code class="docutils literal"><span class="pre">linguistica/phon.py</span></code><a class="headerlink" href="#linguistica-phon-py" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal"><span class="pre">phon</span></code> module is to perform various phonology-related computations.</p>
+</div>
+<div class="section" id="linguistica-trie-py">
+<h2><code class="docutils literal"><span class="pre">linguistica/trie.py</span></code><a class="headerlink" href="#linguistica-trie-py" title="Permalink to this headline">¶</a></h2>
+<p>Left-to-right and right-to-left tries. Successors. Predecessors.</p>
+</div>
+<div class="section" id="linguistica-manifold-py">
+<h2><code class="docutils literal"><span class="pre">linguistica/manifold.py</span></code><a class="headerlink" href="#linguistica-manifold-py" title="Permalink to this headline">¶</a></h2>
+<p>Syntactic word neighbors</p>
+</div>
+<div class="section" id="linguistica-fsm-py">
+<h2><code class="docutils literal"><span class="pre">linguistica/fsm.py</span></code><a class="headerlink" href="#linguistica-fsm-py" title="Permalink to this headline">¶</a></h2>
+<p>(Forthcoming)</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="dev.html" class="btn btn-neutral" title="For developers" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015-2016, Jackson Lee.
+      Last updated on Sep 22, 2016.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'5.1.0-dev',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

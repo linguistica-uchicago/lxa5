@@ -1,0 +1,298 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Command line interface (CLI) &mdash; Linguistica 5.1.0-dev documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Linguistica 5.1.0-dev documentation" href="index.html"/>
+        <link rel="next" title="Full API documentation" href="lexicon.html"/>
+        <link rel="prev" title="Graphical user interface (GUI)" href="gui.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Linguistica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                5.1.0-dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="download.html">Download and install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo.html">Quick demonstration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="read.html">Python library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui.html">Graphical user interface (GUI)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Command line interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lexicon.html">Full API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev.html">For developers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="codebase.html">Code base</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Linguistica</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Command line interface (CLI)</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="command-line-interface-cli">
+<span id="cli"></span><h1>Command line interface (CLI)<a class="headerlink" href="#command-line-interface-cli" title="Permalink to this headline">¶</a></h1>
+<p>To launch the Linguistica CLI:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python3 -m linguistica cli
+</pre></div>
+</div>
+<p>The command line interface works for either a corpus text file or a wordlist
+file. Parameter changes are supported. Results are saved as text files.</p>
+<p>A sample CLI session,
+with a corpus text file as input and default settings for all parameters and
+options:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ python3 -m linguistica cli
+
+================================================================
+Welcome to Linguistica 5.1.0-dev!
+================================================================
+
+Are you using a wordlist file? [N/y] n
+--------------------------------------------
+
+Path to your file: path/to/english-brown.txt
+
+Full file path:
+path/to/english-brown.txt
+--------------------------------------------
+
+Default output directory:
+path/to/lxa_outputs
+Change it? [N/y] n
+--------------------------------------------
+
+Default encoding for input and output files: utf8
+Change encoding? [N/y] n
+--------------------------------------------
+
+Parameters:
+{&#39;keep_case&#39;: 0,
+ &#39;max_affix_length&#39;: 4,
+ &#39;max_word_tokens&#39;: 0,
+ &#39;max_word_types&#39;: 1000,
+ &#39;min_context_count&#39;: 3,
+ &#39;min_sig_count&#39;: 5,
+ &#39;min_stem_length&#39;: 4,
+ &#39;n_eigenvectors&#39;: 11,
+ &#39;n_neighbors&#39;: 9,
+ &#39;suffixing&#39;: 1}
+
+Change any parameters? [N/y] n
+--------------------------------------------
+
+Running all Linguistica modules on the given file:
+Extracting word ngrams...
+Phonology...
+Morphological signatures...
+Tries...
+Syntactic word neighbors...
+--------------------------------------------
+
+Generating output files...
+
+ngram objects
+    word_bigrams.txt
+    word_trigrams.txt
+morphological signature objects
+    stems_to_words.txt
+    stems_to_words.txt
+    signatures_to_stems.txt
+    signatures_to_stems_truncated.txt
+    stems_to_signatures.txt
+    words_to_signatures.txt
+    signatures_to_words.txt
+    signatures_to_words_truncated.txt
+    words_to_sigtransforms.txt
+    affixes_to_signatures.txt
+manifold objects
+    words_to_neighbors.txt
+phon objects
+    wordlist.txt
+    wordlist_by_avg_unigram_plog.txt
+    wordlist_by_avg_bigram_plog.txt
+    phones.txt
+    biphones.txt
+    triphones.txt
+trie objects
+    words_as_tries.txt
+    successors.txt
+    predecessors.txt
+
+Results are in path/to/lxa_outputs
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="lexicon.html" class="btn btn-neutral float-right" title="Full API documentation" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="gui.html" class="btn btn-neutral" title="Graphical user interface (GUI)" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015-2016, Jackson Lee.
+      Last updated on Sep 22, 2016.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'5.1.0-dev',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

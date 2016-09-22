@@ -1,14 +1,14 @@
 #!/usr/bin/env sh
 
-BUILDPATH=../lxa5-gh-pages
-SOURCEPATH=doc
+BUILDPATH=docs
+SOURCEPATH=docs-rst-sources
 
-if [ -d "$BUILDPATH" ]; then
-  rm -rf $BUILDPATH/*
-else
-  mkdir $BUILDPATH
-fi
+rm -rf $BUILDPATH/_static/*
+rm -rf $BUILDPATH/_sources/*
+rm -rf $BUILDPATH/_images/*
+rm -rf $BUILDPATH/*.html
+rm -rf $BUILDPATH/*.js
 
 touch $BUILDPATH/.nojekyll
 sphinx-build -b html $SOURCEPATH $BUILDPATH
-echo 'Doc HTML files in '$BUILDPATH
+echo 'Documentation website in '$BUILDPATH

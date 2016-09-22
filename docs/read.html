@@ -1,0 +1,430 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Python library &mdash; Linguistica 5.1.0-dev documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Linguistica 5.1.0-dev documentation" href="index.html"/>
+        <link rel="next" title="Graphical user interface (GUI)" href="gui.html"/>
+        <link rel="prev" title="Data" href="data.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Linguistica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                5.1.0-dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="download.html">Download and install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo.html">Quick demonstration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Python library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#data-source">Data source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#parameters">Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gui.html">Graphical user interface (GUI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command line interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lexicon.html">Full API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev.html">For developers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="codebase.html">Code base</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Linguistica</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Python library</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-linguistica">
+<span id="python-library"></span><span id="read"></span><h1>Python library<a class="headerlink" href="#module-linguistica" title="Permalink to this headline">¶</a></h1>
+<p>To use Linguistica 5 as a Python library,
+an essential step is to initialize a Linguistica object.
+The way this can be done depends on the nature of your data source:</p>
+<div class="section" id="data-source">
+<span id="source"></span><h2>Data source<a class="headerlink" href="#data-source" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#linguistica.read_corpus" title="linguistica.read_corpus"><code class="xref py py-obj docutils literal"><span class="pre">read_corpus</span></code></a>(file_path[,&nbsp;encoding])</td>
+<td>Create a Linguistica object with a corpus data file.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#linguistica.read_wordlist" title="linguistica.read_wordlist"><code class="xref py py-obj docutils literal"><span class="pre">read_wordlist</span></code></a>(file_path[,&nbsp;encoding])</td>
+<td>Create a Linguistica object with a wordlist file.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#linguistica.from_corpus" title="linguistica.from_corpus"><code class="xref py py-obj docutils literal"><span class="pre">from_corpus</span></code></a>(corpus_object,&nbsp;**kwargs)</td>
+<td>Create a Linguistica object with a corpus object.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#linguistica.from_wordlist" title="linguistica.from_wordlist"><code class="xref py py-obj docutils literal"><span class="pre">from_wordlist</span></code></a>(wordlist_object,&nbsp;**kwargs)</td>
+<td>Create a Linguistica object with a wordlist object.</td>
+</tr>
+</tbody>
+</table>
+<p>For instance, if the Brown corpus is available on
+your local drive (see <a class="reference internal" href="data.html#rawtext"><span class="std std-ref">Raw corpus text</span></a>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">linguistica</span> <span class="kn">as</span> <span class="nn">lxa</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lxa_object</span> <span class="o">=</span> <span class="n">lxa</span><span class="o">.</span><span class="n">read_corpus</span><span class="p">(</span><span class="s1">&#39;path/to/english-brown.txt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Use <code class="docutils literal"><span class="pre">read_wordlist()</span></code>
+if you have a wordlist text file instead
+(see <a class="reference internal" href="data.html#wordlist"><span class="std std-ref">Wordlist</span></a>).</p>
+<p>Use <code class="docutils literal"><span class="pre">from_corpus()</span></code> or <code class="docutils literal"><span class="pre">from_wordlist()</span></code>
+if your data is an in-memory Python object (either a corpus text or a wordlist).</p>
+</div>
+<div class="section" id="parameters">
+<span id="id1"></span><h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<p>The functions introduced in <a class="reference internal" href="#source"><span class="std std-ref">Data source</span></a> all allow optional keyword
+arguments which are parameters for the Linguistica object.
+Different Linguistica modules make use of different parameters;
+see <a class="reference internal" href="lexicon.html#lexicon"><span class="std std-ref">Full API documentation</span></a>.</p>
+<p>For example, to deal with only the first 500,000 word tokens in the Brown
+corpus:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">linguistica</span> <span class="kn">as</span> <span class="nn">lxa</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lxa_object</span> <span class="o">=</span> <span class="n">lxa</span><span class="o">.</span><span class="n">read_corpus</span><span class="p">(</span><span class="s1">&#39;path/to/english-brown.txt&#39;</span><span class="p">,</span> <span class="n">max_word_tokens</span><span class="o">=</span><span class="mi">500000</span><span class="p">)</span>
+</pre></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="63%" />
+<col width="11%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Meaning</th>
+<th class="head">Default</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">max_word_tokens</span></code></td>
+<td>maximum number of word tokens to be handled</td>
+<td>0 (= all)</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">max_word_types</span></code></td>
+<td>maximum number of word types to be handled</td>
+<td>1000</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">min_stem_length</span></code></td>
+<td>minimum stem length</td>
+<td>4</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">max_affix_length</span></code></td>
+<td>maximum affix length</td>
+<td>4</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">min_sig_count</span></code></td>
+<td>minimum number of stems for a valid signature</td>
+<td>5</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">min_context_count</span></code></td>
+<td>minimum number of occurrences for a valid context</td>
+<td>3</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">n_neighbors</span></code></td>
+<td>number of syntactic word neighbors</td>
+<td>9</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">n_eigenvectors</span></code></td>
+<td>number of eigenvectors (in dimensionality reduction)</td>
+<td>11</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">suffixing</span></code></td>
+<td>whether the language is suffixing</td>
+<td>1 (= yes)</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">keep_case</span></code></td>
+<td>whether case distinctions (&#8220;the&#8221; vs &#8220;The&#8221;) are kept</td>
+<td>0 (= no)</td>
+</tr>
+</tbody>
+</table>
+<p>The method <code class="docutils literal"><span class="pre">parameters()</span></code> returns the parameters and their values as a dict:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pprint</span><span class="p">(</span><span class="n">lxa_object</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+<span class="go">{&#39;keep_case&#39;: 0,</span>
+<span class="go"> &#39;max_affix_length&#39;: 4,</span>
+<span class="go"> &#39;max_word_tokens&#39;: 0,</span>
+<span class="go"> &#39;max_word_types&#39;: 1000,</span>
+<span class="go"> &#39;min_context_count&#39;: 3,</span>
+<span class="go"> &#39;min_sig_count&#39;: 5,</span>
+<span class="go"> &#39;min_stem_length&#39;: 4,</span>
+<span class="go"> &#39;n_eigenvectors&#39;: 11,</span>
+<span class="go"> &#39;n_neighbors&#39;: 9,</span>
+<span class="go"> &#39;suffixing&#39;: 1}</span>
+</pre></div>
+</div>
+<p>To change one or multiple parameters of a Linguistica object,
+use <code class="docutils literal"><span class="pre">change_parameters()</span></code> with keyword arguments:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lxa_object</span><span class="o">.</span><span class="n">parameters</span><span class="p">()[</span><span class="s1">&#39;min_stem_length&#39;</span><span class="p">]</span>  <span class="c1"># before the change</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lxa_object</span><span class="o">.</span><span class="n">change_parameters</span><span class="p">(</span><span class="n">min_stem_length</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lxa_object</span><span class="o">.</span><span class="n">parameters</span><span class="p">()[</span><span class="s1">&#39;min_stem_length&#39;</span><span class="p">]</span>  <span class="c1"># after the change</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+<p>To reset all parameters to their default values,
+use <code class="docutils literal"><span class="pre">use_default_parameters()</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lxa_object</span><span class="o">.</span><span class="n">parameters</span><span class="p">()[</span><span class="s1">&#39;min_stem_length&#39;</span><span class="p">]</span>  <span class="c1"># non-default value</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lxa_object</span><span class="o">.</span><span class="n">use_default_parameters</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lxa_object</span><span class="o">.</span><span class="n">parameters</span><span class="p">()[</span><span class="s1">&#39;min_stem_length&#39;</span><span class="p">]</span>
+<span class="go">4</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="linguistica.from_corpus">
+<code class="descclassname">linguistica.</code><code class="descname">from_corpus</code><span class="sig-paren">(</span><em>corpus_object</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#linguistica.from_corpus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Linguistica object with a corpus object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>corpus_object</strong> &#8211; either a long string of text
+(with spaces separating word tokens) or a list of strings as word
+tokens</li>
+<li><strong>kwargs</strong> &#8211; keyword arguments for parameters and their values.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="linguistica.from_wordlist">
+<code class="descclassname">linguistica.</code><code class="descname">from_wordlist</code><span class="sig-paren">(</span><em>wordlist_object</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#linguistica.from_wordlist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Linguistica object with a wordlist object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>wordlist_object</strong> &#8211; either a list of word types as strings
+or a dict of word types mapped to their token counts</li>
+<li><strong>kwargs</strong> &#8211; keyword arguments for parameters and their values.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="linguistica.read_corpus">
+<code class="descclassname">linguistica.</code><code class="descname">read_corpus</code><span class="sig-paren">(</span><em>file_path</em>, <em>encoding='utf8'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#linguistica.read_corpus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Linguistica object with a corpus data file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>file_path</strong> &#8211; path of input corpus file</li>
+<li><strong>encoding</strong> &#8211; encoding of the file at <em>file_path</em>. Default: <code class="docutils literal"><span class="pre">'utf8'</span></code></li>
+<li><strong>kwargs</strong> &#8211; keyword arguments for parameters and their values.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="linguistica.read_wordlist">
+<code class="descclassname">linguistica.</code><code class="descname">read_wordlist</code><span class="sig-paren">(</span><em>file_path</em>, <em>encoding='utf8'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#linguistica.read_wordlist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Linguistica object with a wordlist file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>file_path</strong> &#8211; path of input wordlist file where each line contains
+one word type (and, optionally, a whitespace plus the token count
+for that word).</li>
+<li><strong>encoding</strong> &#8211; encoding of the file at <em>file_path</em>. Default: <code class="docutils literal"><span class="pre">'utf8'</span></code></li>
+<li><strong>kwargs</strong> &#8211; keyword arguments for parameters and their values.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="gui.html" class="btn btn-neutral float-right" title="Graphical user interface (GUI)" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="data.html" class="btn btn-neutral" title="Data" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015-2016, Jackson Lee.
+      Last updated on Sep 22, 2016.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'5.1.0-dev',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

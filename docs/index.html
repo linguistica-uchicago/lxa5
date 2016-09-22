@@ -1,0 +1,309 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Linguistica 5 &mdash; Linguistica 5.1.0-dev documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Linguistica 5.1.0-dev documentation" href="#"/>
+        <link rel="next" title="Download and install" href="download.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="#" class="icon icon-home"> Linguistica
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                5.1.0-dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="download.html">Download and install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo.html">Quick demonstration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="read.html">Python library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gui.html">Graphical user interface (GUI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command line interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lexicon.html">Full API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev.html">For developers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="codebase.html">Code base</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="#">Linguistica</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="#">Docs</a> &raquo;</li>
+      
+    <li>Linguistica 5</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="linguistica-5">
+<span id="index"></span><h1>Linguistica 5<a class="headerlink" href="#linguistica-5" title="Permalink to this headline">¶</a></h1>
+<p>Linguistica 5 is a Python library for unsupervised learning of linguistic
+structure, based on Goldsmith (2001, 2006) and all subsequent developments.</p>
+<p>Linguistica 5 is available in three modes:</p>
+<ul class="simple">
+<li>Python library</li>
+<li>Graphical user interface (GUI)</li>
+<li>Command line interface (CLI)</li>
+</ul>
+<p>The GUI and CLI modes use the Python library as the backend.</p>
+<img alt="_images/gui_manifold.png" src="_images/gui_manifold.png" />
+<div class="section" id="citation">
+<h2>Citation<a class="headerlink" href="#citation" title="Permalink to this headline">¶</a></h2>
+<p>If you use Linguistica 5, please cite this paper:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nd">@InProceedings</span><span class="p">{</span><span class="n">lee</span><span class="o">-</span><span class="n">goldsmith</span><span class="p">:</span><span class="mi">2016</span><span class="p">:</span><span class="n">lxa5</span><span class="p">,</span>
+  <span class="n">author</span>    <span class="o">=</span> <span class="p">{</span><span class="n">Lee</span><span class="p">,</span> <span class="n">Jackson</span> <span class="n">L</span><span class="o">.</span> <span class="ow">and</span> <span class="n">Goldsmith</span><span class="p">,</span> <span class="n">John</span> <span class="n">A</span><span class="o">.</span><span class="p">},</span>
+  <span class="n">title</span>     <span class="o">=</span> <span class="p">{</span><span class="n">Linguistica</span> <span class="mi">5</span><span class="p">:</span> <span class="n">Unsupervised</span> <span class="n">Learning</span> <span class="n">of</span> <span class="n">Linguistic</span> <span class="n">Structure</span><span class="p">},</span>
+  <span class="n">booktitle</span> <span class="o">=</span> <span class="p">{</span><span class="n">Proceedings</span> <span class="n">of</span> <span class="n">the</span> <span class="mi">2016</span> <span class="n">Conference</span> <span class="n">of</span> <span class="n">the</span> <span class="n">North</span> <span class="n">American</span> <span class="n">Chapter</span> <span class="n">of</span> <span class="n">the</span> <span class="n">Association</span> <span class="k">for</span> <span class="n">Computational</span> <span class="n">Linguistics</span><span class="p">},</span>
+  <span class="n">month</span>     <span class="o">=</span> <span class="p">{</span><span class="n">June</span><span class="p">},</span>
+  <span class="n">year</span>      <span class="o">=</span> <span class="p">{</span><span class="mi">2016</span><span class="p">},</span>
+  <span class="n">address</span>   <span class="o">=</span> <span class="p">{</span><span class="n">San</span> <span class="n">Diego</span><span class="p">,</span> <span class="n">California</span><span class="p">},</span>
+  <span class="n">publisher</span> <span class="o">=</span> <span class="p">{</span><span class="n">Association</span> <span class="k">for</span> <span class="n">Computational</span> <span class="n">Linguistics</span><span class="p">},</span>
+  <span class="n">pages</span>     <span class="o">=</span> <span class="p">{</span><span class="mi">22</span><span class="o">--</span><span class="mi">26</span><span class="p">},</span>
+  <span class="n">url</span>       <span class="o">=</span> <span class="p">{</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">aclweb</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">anthology</span><span class="o">/</span><span class="n">N16</span><span class="o">-</span><span class="mi">3005</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="technical-support">
+<h2>Technical support<a class="headerlink" href="#technical-support" title="Permalink to this headline">¶</a></h2>
+<p>Please <a class="reference external" href="https://github.com/linguistica-uchicago/lxa5/issues/new">open issues</a>
+for questions and bug reports.
+Alternatively, please feel free to contact
+<a class="reference external" href="http://jacksonllee.com/">Jackson Lee</a> and
+<a class="reference external" href="http://people.cs.uchicago.edu/~jagoldsm/">John Goldsmith</a>.</p>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="download.html">Download and install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="download.html#installing-dependencies">Installing dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="demo.html">Quick demonstration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demo.html#the-basics">The Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demo.html#methods-with-a-linguistica-object">Methods with a Linguistica object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data.html#raw-corpus-text">Raw corpus text</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data.html#wordlist">Wordlist</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="read.html">Python library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="read.html#data-source">Data source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="read.html#parameters">Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gui.html">Graphical user interface (GUI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command line interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lexicon.html">Full API documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lexicon.html#basic-information">Basic information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lexicon.html#word-ngrams">Word ngrams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lexicon.html#morphological-signatures">Morphological signatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lexicon.html#word-manifolds-and-syntactic-word-neighborhood">Word manifolds and syntactic word neighborhood</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lexicon.html#phonology">Phonology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lexicon.html#tries">Tries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lexicon.html#other-methods-and-attributes">Other methods and attributes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dev.html">For developers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dev.html#first-steps">First steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev.html#general-remarks">General remarks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev.html#continuous-integration">Continuous integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev.html#commits-and-pushes">Commits and pushes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev.html#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev.html#setup-py"><code class="docutils literal"><span class="pre">setup.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev.html#readme-rst"><code class="docutils literal"><span class="pre">readme.rst</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev.html#changelog-md"><code class="docutils literal"><span class="pre">changelog.md</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev.html#graphical-user-interface">Graphical user interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev.html#command-line-interface">Command line interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev.html#linguistica-version"><code class="docutils literal"><span class="pre">linguistica/VERSION</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev.html#codebase">Codebase</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="codebase.html">Code base</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="codebase.html#linguistica-main-py"><code class="docutils literal"><span class="pre">linguistica/__main__.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="codebase.html#linguistica-init-py"><code class="docutils literal"><span class="pre">linguistica/__init__.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="codebase.html#linguistica-release-py"><code class="docutils literal"><span class="pre">linguistica/release.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="codebase.html#linguistica-util-py"><code class="docutils literal"><span class="pre">linguistica/util.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="codebase.html#linguistica-lexicon-py"><code class="docutils literal"><span class="pre">linguistica/lexicon.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="codebase.html#linguistica-ngram-py"><code class="docutils literal"><span class="pre">linguistica/ngram.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="codebase.html#linguistica-signature-py"><code class="docutils literal"><span class="pre">linguistica/signature.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="codebase.html#linguistica-phon-py"><code class="docutils literal"><span class="pre">linguistica/phon.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="codebase.html#linguistica-trie-py"><code class="docutils literal"><span class="pre">linguistica/trie.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="codebase.html#linguistica-manifold-py"><code class="docutils literal"><span class="pre">linguistica/manifold.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="codebase.html#linguistica-fsm-py"><code class="docutils literal"><span class="pre">linguistica/fsm.py</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="download.html" class="btn btn-neutral float-right" title="Download and install" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015-2016, Jackson Lee.
+      Last updated on Sep 22, 2016.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'5.1.0-dev',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
