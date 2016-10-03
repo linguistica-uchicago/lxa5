@@ -114,17 +114,16 @@ import sys
 import os
 from io import StringIO
 
-from linguistica import (ngram, signature, manifold, phon, trie)
+#JG added clexicon
+from linguistica import (ngram, signature, manifold, phon, trie,clexicon)
 from linguistica.util import (ENCODING, PARAMETERS, SEP_SIG, SEP_SIGTRANSFORM,
                               double_sorted, fix_punctuations,
                               output_latex, vprint)
-
+ 
 
 class Lexicon:
     """
-    A class for a Linguistica object. It is called "Lexicon" for the historical
-    reason that the same element in the C++ version of Linguistica 4 is also
-    called as such.
+    A class for a Linguistica object. 
     """
 
     def __init__(self, file_path=None, wordlist_file=False, corpus_object=None,
@@ -139,8 +138,47 @@ class Lexicon:
         self.file_is_wordlist = wordlist_file
         self.encoding = encoding
         self.corpus_object = corpus_object
-        self.wordlist_object = wordlist_object
+        self.wordlist_object = wordlist_object   #remove this JG.
         self.parameters_ = self._determine_parameters(**kwargs)
+# JG added July 2016:
+        self.FindSuffixesFlag = True
+        self.WordList = clexicon.CWordList()
+        self.WordDictCounts = dict()
+
+        self.Signatures = {}
+        self.SignatureToStems = {}
+        self.WordToSig = {}
+        self.StemToWord = {}
+        self.StemToAffixDict = {}
+        self.StemCounts = {}
+        self.StemToSig = {}
+        self.Suffixes={}
+        self.Prefixes = {}
+        self.MinimumStemsInaSignature = 1
+        self.MinimumStemLength = 5
+        self.MaximumAffixLength =3
+        self.MaximumNumberOfAffixesInASignature = 10
+        self.NumberOfAnalyzedWords = 0
+        self.LettersInAnalyzedWords = 0
+        self.NumberOfUnanalyzedWords = 0
+        self.LettersInUnanalyzedWords = 0
+        self.TotalLetterCountInWords = 0
+        self.LettersInStems = 0
+        self.AffixLettersInSignatures = 0
+        self.TotalRobustInSignatures = 0
+        self.FileDict = dict()
+
+        fname = "lxalogfile.txt"
+        f_path= "/home/john/Dropbox/data/english/lxa/" + fname
+        self.FileDict[fname] = open(f_path, "w")
+
+        fname = "outfile_Rebalancing_Signatures.txt"
+        f_path= "/home/john/Dropbox/data/english/lxa/" + fname
+        self.FileDict[fname] = open(f_path, "w")
+
+
+
+
 
         self._initialize()
 
@@ -218,11 +256,23 @@ class Lexicon:
         self._word_trigram_counter = None
 
         # wordlist
+#JG July 2016. An object whose name is wordlist should always be a list (and never a dict). It is fine
+# to have two members of lexicon, wordlist and worddict (and worddict could be called wordfrequency).
+
         self._wordlist = None
         if self.wordlist_object is not None:
             # self.wordlist_object is
-            # either an iterable or a dict of word-count pairs
-            if type(self.wordlist_object) is dict:
+            # either a list of str or a dict of word-count pairs
+            if type(self.wordlist_object) is list:
+                if self.parameters_['keep_case']:
+                    wordlist = sorted(set(self.wordlist_object))
+                else:
+                    wordlist = sorted(
+                        set(w.lower() for w in self.wordlist_object))
+                self._wordlist = wordlist
+                self._word_unigram_counter = {word: 1 for word in wordlist}
+
+            elif type(self.wordlist_object) is dict:
                 word_count_dict = dict()
                 if self.parameters_['keep_case']:
                     word_count_dict = self.wordlist_object
@@ -239,17 +289,9 @@ class Lexicon:
                                                 reverse=True)]
                 self._word_unigram_counter = word_count_dict
 
-            elif hasattr(self.wordlist_object, '__iter__'):
-                if self.parameters_['keep_case']:
-                    self._wordlist = sorted(set(self.wordlist_object))
-                else:
-                    self._wordlist = sorted(
-                        set(w.lower() for w in self.wordlist_object))
-                self._word_unigram_counter = {w: 1 for w in self._wordlist}
-
-            else:
-                raise TypeError('wordlist object must be a dict of word-count'
-                                'pairs or an iterable of words')
+#            else:
+#                raise TypeError('wordlist object must be '
+                                'either a list or a dict')
 
         # signature-related objects
         self._stems_to_words = None
@@ -309,6 +351,9 @@ class Lexicon:
         self._broken_words_right_to_left = None
         self._successors = None
         self._predecessors = None
+
+ 
+   
 
     def reset(self):
         """
@@ -1042,12 +1087,261 @@ class Lexicon:
         if self._stems is None:
             self._make_all_signature_objects()
         return self._stems
+	# JG July 2016
+	# ----------------------------------------------------------------------------------------------------------------------------#
+    def MakeSignatures(self):
+	# ----------------------------------------------------------------------------------------------------------------------------#
+	# Protostems are candidate stems made during the algorithm, but not kept afterwards.
+        Protostems = dict()
+        Lexicon.NumberOfAnalyzedWords = 0
+        Lexicon.LettersInAnalyzedWords = 0
+        Lexicon.NumberOfUnanalyzedWords = 0
+        Lexicon.LettersInUnanalyzedWords = 0
+        previousword = ""
+        AnalyzedWords = dict()
+        lxalogfile = self.FileDict["lxalogfile.txt"]
+        outfile_Rebalancing_Signatures = self.FileDict["outfile_Rebalancing_Signatures.txt"]
+        FindSuffixesFlag = self.FindSuffixesFlag
+        MinimumStemLength= self.MinimumStemLength
+
+	#Lexicon.TotalLetterCountInWords = 0
+
+        Lexicon.TotalRobustnessInSignatures = 0
+        Lexicon.LettersInStems = 0
+        Lexicon.TotalLetterCostOfAffixesInSignatures = 0
+
+        wordlist = self.wordlist.keys()
+        if FindSuffixesFlag:
+                for i in range(len(wordlist)):
+                        word = self.wordlist[i]
+                        differencefoundflag = False
+                        if previousword == "":  # only on first iteration
+                                previousword = word
+                                continue
+                        span = min(len(word), len(previousword))
+                        for i in range(span):
+                                if word[i] != previousword[i]: #will a stem be found in the very first word?
+                                        differencefoundflag = True
+                                        stem = word[:i]
+                                        if len(stem) >= Lexicon.MinimumStemLength:
+                                                if stem not in Protostems:
+                                                        Protostems[stem] = 1
+                                                else:
+                                                        Protostems[stem] += 1
+                                        previousword = word
+                                        break
+                        if differencefoundflag:
+                                continue
+                        if len(previousword) > i + 1:
+                                previousword = word
+                                continue
+                        if (len(word)) >= i:
+                                if len(previousword) >= Lexicon.MinimumStemLength:
+                                        if (previousword not in Protostems):
+                                                Protostems[previousword] = 1
+                                        else:
+                                                Protostems[previousword] += 1
+                        previousword = word
+
+        else:
+                print ("prefixes")
+                ReversedList = list()
+                TempList = list()
+                for word in self.wordlist:
+                        key = word
+                        key = key[::-1]
+                        TempList.append(key)
+                TempList.sort()
+                for word in TempList:
+                        ReversedList.append(word[::-1])
+                        i = 0
+                        for word in ReversedList:
+                                differencefoundflag = False
+                                if previousword == "":  # only on first iteration
+                                        previousword = word
+                                        continue
+                                span = min(len(word), len(previousword))
+                                for i in range(1,span,):
+                                        if word[-1*i] != previousword[-1*i]:
+                                                differencefoundflag = True
+                                                stem = word[-1*i+1:]
+						
+                                                if len(stem) >= Lexicon.MinimumStemLength:
+                                                        if stem not in Protostems:
+                                                                Protostems[stem] = 1
+                                                        else:
+                                                                Protostems[stem] += 1
+                                                previousword = word
+                                                break
+                                if differencefoundflag:
+                                        continue
+                                if len(previousword) > i + 1:
+                                        previousword = word
+                                        continue
+                                if (len(word)) >= i:
+                                        if len(previousword) >= Lexicon.MinimumStemLength:
+                                                if (previousword not in Protostems):
+                                                        Protostems[previousword] = 1
+                                                else:
+                                                        Protostems[previousword] += 1
+                                previousword = word
+
+
+
+ 
+        print ("{:45s}{:10,d}".format("  2a. Finished finding proto-stems.", len(Protostems)) )
+        if FindSuffixesFlag:  
+                for i in range(len(self.wordlist)):
+                        word = self.wordlist[i]
+                        WordAnalyzedFlag = False
+                        for i in range(len(word)-1 , Lexicon.MinimumStemLength-1, -1):
+                                stem = word[:i]
+                                if stem in Protostems:
+                                        suffix = word[i:]
+                                        if len(suffix) > Lexicon.MaximumAffixLength:
+                                                continue
+                                        if stem not in Lexicon.StemToWord:
+                                                Lexicon.StemToWord[stem] = dict()
+                                        Lexicon.StemToWord[stem][word]=1
+                                        if stem not in Lexicon.StemToAffixDict:
+                                                Lexicon.StemToAffixDict[stem] = dict()
+                                        Lexicon.StemToAffixDict[stem][suffix] = 1 
+                                        if stem in Lexicon.WordDictCounts:
+                                                #print "P stem is a word", stem
+                                                Lexicon.StemToWord[stem][word] = 1
+                                                Lexicon.StemToAffixDict[stem]["NULL"] = 1
+						
+ 
+ 
+
+        else:
+                for i in range(len(self.wordlist)):
+                        word = self.wordlist[i]
+                        WordAnalyzedFlag = False
+                        for i in range(Lexicon.MinimumStemLength-1, len(word)-1):
+                                stem = word[-1*i:]
+                                #print "F", word, stem, i
+                                if stem in Protostems:
+                                        j = len(word) - i 
+                                        prefix = word[:j]
+ 
+                                        if len(prefix) > Lexicon.MaximumAffixLength:
+                                                continue
+                                        if stem not in Lexicon.StemToWord:
+                                                Lexicon.StemToWord[stem] = dict()
+                                        Lexicon.StemToWord[stem][word]=1	
+                                        if stem not in Lexicon.StemToAffixDict:
+                                                Lexicon.StemToAffixDict[stem] = dict()	
+                                        Lexicon.StemToAffixDict[stem][prefix]=1		
+
+                                        if stem in Lexicon.WordDictCounts:
+                                                Lexicon.StemToWord[stem][word] = 1
+                                                Lexicon.StemToAffixDict[stem]["NULL"]=1
+ 
+ 
+ 	#print "Finished finding affixes for each stem."
+# It is possible for a stem to have only one affix at this point. We must eliminate those analyses.
+
+        ListOfStemsToRemove = list()
+        for stem in Lexicon.StemToAffixDict:
+                if len(Lexicon.StemToAffixDict[stem]) < Lexicon.MinimumStemsInaSignature:
+                         ListOfStemsToRemove.append(stem)
+
+
+			#print "J", stem
+        for stem in ListOfStemsToRemove:
+                del Lexicon.StemToWord[stem]
+                del Lexicon.StemToAffixDict[stem]
+	  
+        print ("  {:45s}{:10,d}".format("2b. Removed stems with too few affixes.", len(Lexicon.StemToWord)) )
+
+
+
+
+
+
+
+
+        print ("  2b. Finished finding initial signatures.")
+        Lexicon.LettersInStems =0
+        Lexicon.TotalLetterCostOfAffixesInSignatures =0
+        for stem in Lexicon.StemToWord:
+                Lexicon.LettersInStems += len(stem)
+                signature = list(Lexicon.StemToAffixDict[stem])
+                signature.sort()
+                signature_tuple = tuple(signature)
+		#print "A", stem, signature_tuple
+                for affix in signature:
+                        if affix not in Lexicon.Suffixes:
+                                Lexicon.Suffixes[affix] = 0
+                        Lexicon.Suffixes[affix] += 1
+                if signature_tuple not in Lexicon.SignatureToStems:
+                        Lexicon.SignatureToStems[signature_tuple] = dict()
+                        for affix in signature:
+                                Lexicon.TotalLetterCostOfAffixesInSignatures += len(affix)
+                Lexicon.SignatureToStems[signature_tuple][stem] = 1
+                Lexicon.StemToSig[stem] = signature_tuple
+                for word in Lexicon.StemToWord[stem]:
+                        if word not in Lexicon.WordToSig:
+                                Lexicon.WordToSig[word] = list()
+                        Lexicon.WordToSig[word].append(signature_tuple)
+
+ 
+        print ("{:45s}{:10,d}".format("  2d. Finished finding signatures.", len(Lexicon.SignatureToStems) ) )
+
+        print ("  2d. Rebalance signature breaks.")
+	# We look for a stem-final sequence that appears on all or almost all the stems, and shift it to affixes.
+	# Make changes in Lexicon.SignatureToStems, and .StemToSig, and .WordToSig, and .StemToWord, and .StemToAffixDict  and signature_tuples....
+        threshold = 0.80
+        RebalanceSignatureBreaks2 (Lexicon, threshold, outfile_Rebalancing_Signatures)
+	 	
+
+ 
+        print ("  2e. Find signature structure again.")
+        FindSignatureStructure (Lexicon, lxalogfile, Lexicon.Suffixes, affix_threshold=3)
+ 
+
+
+ 
+        Lexicon.NumberOfAnalyzedWords= len(Lexicon.WordToSig)
+        Lexicon.NumberOfUnanalyzedWords= Lexicon.WordList.GetCount() - Lexicon.NumberOfAnalyzedWords  
+        for sig in Lexicon.SignatureToStems:
+                numberofaffixes = len(sig)
+                mystems = Lexicon.SignatureToStems[sig]
+                numberofstems = len(mystems)
+                AffixListLetterLength = 0
+                for affix in signature:
+                        if affix == "NULL":
+                                continue
+                        AffixListLetterLength += len(affix)
+                StemListLetterLength = 0
+                for stem in mystems:
+                        StemListLetterLength += len(stem)
+
+                Lexicon.TotalRobustnessInSignatures +=  getrobustness(mystems,signature)
+                Lexicon.AffixLettersInSignatures += AffixListLetterLength
+
+        print ("  2f. Finished computing robustness.")
+
+        print ("{:40s}{:10,d}".format("Number of analyzed words", Lexicon.NumberOfAnalyzedWords), file=lxalogfile )
+        print ("{:40s}{:10,d}".format("Number of unanalyzed words", Lexicon.NumberOfUnanalyzedWords), file=lxalogfile )
+        print ("{:40s}{:10,d}".format("Letters in stems", Lexicon.LettersInStems), file=lxalogfile )
+        print ("{:40s}{:10,d}".format("Letters in affixes", Lexicon.AffixLettersInSignatures), file=lxalogfile )
+        print ("{:40s}{:10,d}".format("Total robustness in signatures", Lexicon.TotalRobustnessInSignatures), file=lxalogfile )
+        lxalogfile.flush()
+        return
+
+# ----------------------------------------------------------------------------------------------------------------------------#
+
+
 
     def _make_all_signature_objects(self):
-        self._stems_to_words = signature.make_stems_to_words(
-            self.wordlist(), self.parameters_['min_stem_length'],
-            self.parameters_['max_affix_length'], self.parameters_['suffixing'],
-            self.parameters_['min_sig_count'])
+        #self._stems_to_words = signature.make_stems_to_words(
+        #    self.wordlist(), self.parameters_['min_stem_length'],
+        #    self.parameters_['max_affix_length'], self.parameters_['suffixing'],
+        #    self.parameters_['min_sig_count'])
+
+        self.MakeSignatures()
 
         self._signatures_to_stems = signature.make_signatures_to_stems(
             self._stems_to_words, self.parameters_['max_affix_length'],

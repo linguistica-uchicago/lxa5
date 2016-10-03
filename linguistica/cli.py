@@ -37,6 +37,7 @@ def get_file_abspath():
 
         if not os.path.isfile(file_abspath):
             print('Invalid file path!')
+            
             file_abspath = None
 
     return file_abspath
@@ -134,22 +135,22 @@ def get_new_parameters():
 
 def main():
     print('\n================================================================\n'
-          'Welcome to Linguistica {}!\n'
+          'Welcome to Linguistica {}.\n'
           '================================================================'
           .format(lxa_version))
 
     # --------------------------------------------------------------------------
     # determine if file is a wordlist or a corpus text
 
-    use_wordlist = determine_use_wordlist()
-
+    #use_wordlist = determine_use_wordlist()
+    use_wordlist = False
     print('--------------------------------------------')
 
     # --------------------------------------------------------------------------
     # get file path
 
-    file_abspath = get_file_abspath()
-
+    #file_abspath = get_file_abspath()
+    file_abspath = "/home/john/Dropbox/data/english/browncorpus.txt"
     print('\nFull file path:\n{}'.format(file_abspath))
     print('--------------------------------------------')
 
