@@ -12,7 +12,6 @@ if current_py_version < required_py_version:
     sys.exit('Error: Linguistica requires Python {}.{} or above.\n'
              .format(*required_py_version) +
              'You are using Python {}.{}.'.format(*current_py_version))
-
 this_dir = path.dirname(__file__)
 
 version_path = path.join(this_dir, 'linguistica', 'VERSION')
@@ -34,7 +33,7 @@ setup(name='linguistica',
       url='http://linguistica.uchicago.edu/',
       author='Jackson Lee',
       author_email='jsllee.phon@gmail.com',
-      # license='Apache License, Version 2.0',
+      license='MIT License',
       packages=find_packages(),
       keywords=['computational linguistics', 'natural language processing',
                 'NLP', 'linguistics', 'corpora', 'speech',
@@ -57,7 +56,7 @@ setup(name='linguistica',
           'Intended Audience :: Education',
           'Intended Audience :: Information Technology',
           'Intended Audience :: Science/Research',
-          # 'License :: OSI Approved :: Apache Software License',
+          'License :: OSI Approved :: MIT License',
           'Operating System :: OS Independent',
           'Programming Language :: Python :: 3',
           'Programming Language :: Python :: 3.4',
