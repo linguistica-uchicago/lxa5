@@ -9,12 +9,13 @@ env:
   matrix:
     - PYTHON_VERSION="3.4"
     - PYTHON_VERSION="3.5"
+    - PYTHON_VERSION="3.6"
 
 install:
   - source ci/travis_install.sh
 
 script:
-  - python nosetests_run.py
+  - pytest -v
 
 after_success:
   - coveralls
