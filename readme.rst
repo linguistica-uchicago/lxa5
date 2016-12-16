@@ -120,3 +120,11 @@ for questions and bug reports.
 Alternatively, please feel free to contact
 `Jackson Lee <http://jacksonllee.com/>`_ and
 `John Goldsmith <http://people.cs.uchicago.edu/~jagoldsm/>`_.
+
+
+License
+-------
+
+MIT License
+
+See ``LICENSE.txt`` for details.
