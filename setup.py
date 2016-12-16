@@ -14,25 +14,31 @@ if current_py_version < required_py_version:
              'You are using Python {}.{}.'.format(*current_py_version))
 this_dir = path.dirname(__file__)
 
+package_version = None
 version_path = path.join(this_dir, 'linguistica', 'VERSION')
 with open(version_path) as f:
     package_version = f.read().strip()
+assert type(package_version) == str
 
+long_description = None
 readme_path = path.join(this_dir, 'readme.rst')
 with open(readme_path) as f:
     long_description = f.read()
+assert type(long_description) == str
 
+requirements = None
 requirements_path = path.join(this_dir, 'requirements.txt')
 with open(requirements_path) as f:
-    requirements = f.readlines()
+    requirements = [x.strip() for x in f.readlines()]
+assert type(requirements) == list
 
 setup(name='linguistica',
       version=package_version,
-      description='Linguistica',
+      description='Linguistica 5: Unsupervised Learning of Linguistic Structure',
       long_description=long_description,
       url='http://linguistica.uchicago.edu/',
       author='Jackson Lee',
-      author_email='jsllee.phon@gmail.com',
+      author_email='jacksonlunlee@gmail.com',
       license='MIT License',
       packages=find_packages(),
       keywords=['computational linguistics', 'natural language processing',
