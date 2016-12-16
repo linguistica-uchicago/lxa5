@@ -45,25 +45,6 @@ To use the graphical user interface, PyQt5 and SIP are required:
    $ pip install -r requirements-gui.txt
 
 
-For development
----------------
-
-The Linguistica 5 code that may contain work in progress is hosted on GitHub:
-
-.. code-block:: bash
-
-    $ git clone https://github.com/linguistica-uchicago/lxa5.git
-    $ cd lxa5
-    $ python setup.py install
-
-For development, you may probably want to use the ``develop`` option instead of ``install``
-when running ``setup.py``. Also, install the dependencies for testing and documentation:
-
-.. code-block:: bash
-
-   $ pip install -r requirements-dev.txt
-
-
 Using Linguistica 5
 -------------------
 
@@ -86,6 +67,31 @@ To launch the Linguistica 5 command line interface:
 .. code-block:: bash
 
    $ python -m linguistica cli
+
+
+For development
+---------------
+
+The Linguistica 5 code that may contain work in progress is hosted on GitHub:
+
+.. code-block:: bash
+
+    $ git clone https://github.com/linguistica-uchicago/lxa5.git
+    $ cd lxa5
+    $ python setup.py install
+
+For development, you may probably want to use the ``develop`` option instead of ``install``
+when running ``setup.py``. Also, install the dependencies for testing and documentation:
+
+.. code-block:: bash
+
+   $ pip install -r requirements-dev.txt
+
+To run tests:
+
+.. code-block:: bash
+
+   $ pytest -v --cov
 
 
 Citation
