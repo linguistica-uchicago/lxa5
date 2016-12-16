@@ -28,7 +28,7 @@ with open(requirements_path) as f:
 
 setup(name='linguistica',
       version=package_version,
-      description='Linguistica',
+      description='Linguistica 5: Unsupervised Learning of Linguistic Structure',
       long_description=long_description,
       url='http://linguistica.uchicago.edu/',
       author='Jackson Lee',
