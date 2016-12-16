@@ -33,7 +33,7 @@ conda create -q -n testenv --yes python=$PYTHON_VERSION numpy scipy networkx
 source activate testenv
 
 # Install packages for running tests and measuring test coverage
-python -m pip install python-coveralls coverage nose
+python -m pip install python-coveralls coverage pytest
 
 # Install Linguistica
 python --version

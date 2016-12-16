@@ -2,7 +2,7 @@
 
 import os
 
-from nose.tools import assert_raises
+import pytest
 
 import linguistica as lxa
 from linguistica import (Lexicon,
@@ -15,15 +15,18 @@ data_dir = os.path.join(os.path.dirname(__file__), 'data')
 
 
 def test_file_path_type_error():
-    assert_raises(TypeError, read_corpus, 123)
+    with pytest.raises(TypeError):
+        read_corpus(123)
 
 
 def test_unfound_parameter_error():
-    assert_raises(KeyError, read_corpus, corpus_path, non_existing_parameter=3)
+    with pytest.raises(KeyError):
+        read_corpus(corpus_path, non_existing_parameter=3)
 
 
 def test_unfound_file_error():
-    assert_raises(FileNotFoundError, read_corpus, 'blahblahblah')
+    with pytest.raises(FileNotFoundError):
+        read_corpus("foo")
 
 
 def test_read_wordlist():
@@ -52,8 +55,8 @@ def test_use_default_parameters():
 
 def test_change_parameters_with_error():
     test_object = read_corpus(corpus_path)
-    assert_raises(KeyError, test_object.change_parameters,
-                  non_existing_parameter=4)
+    with pytest.raises(KeyError):
+        test_object.change_parameters(non_existing_parameter=4)
 
 
 def test_reset():

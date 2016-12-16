@@ -14,7 +14,7 @@ install:
   - source ci/travis_install.sh
 
 script:
-  - python nosetests_run.py
+  - pytest -v
 
 after_success:
   - coveralls
