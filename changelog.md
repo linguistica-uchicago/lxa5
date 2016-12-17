@@ -1,17 +1,17 @@
 Change log
 ==========
 
-Current version: 5.1.0-dev
+Version 5.2.0 under development. Planned modules/features:
+  - `fsm`
 
-* Putting together various major modules that have been developed as the core
-  Linguistica 5 Python library plus graphical user interface (GUI) and command line interface (CLI):
+Version 5.1.0 (December 2016)
+
+* Put together the major modules:
   - `lexicon`
   - `ngram`
   - `signature`
-  - `fsm`
   - `manifold`
   - `trie`
   - `phon`
-  - `gui`
 
-* Test deployment
+* Include graphical user interface (GUI) and command line interface (CLI)
