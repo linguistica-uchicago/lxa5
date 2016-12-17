@@ -41,6 +41,7 @@ Sample uses: (1) word trigrams, (2) signatures to stems
 .. code:: python
 
     trigrams = lxa_object.word_trigram_counter()
+
 ``trigrams`` is a dict with word trigrams (each as a tuple) mapped to
 their respective counts.
 

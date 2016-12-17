@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Download and install &mdash; Linguistica 5.1.0-dev documentation</title>
+  <title>Download and install &mdash; Linguistica 5.1.0 documentation</title>
   
 
   
@@ -30,7 +30,8 @@
   
 
   
-    <link rel="top" title="Linguistica 5.1.0-dev documentation" href="index.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Linguistica 5.1.0 documentation" href="index.html"/>
         <link rel="next" title="Quick demonstration" href="demo.html"/>
         <link rel="prev" title="Linguistica 5" href="index.html"/> 
 
@@ -60,7 +61,7 @@
             
             
               <div class="version">
-                5.1.0-dev
+                5.1.0
               </div>
             
           
@@ -82,10 +83,7 @@
             
             
                 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Download and install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#installing-dependencies">Installing dependencies</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Download and install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo.html">Quick demonstration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="read.html">Python library</a></li>
@@ -138,72 +136,23 @@
             
   <div class="section" id="download-and-install">
 <span id="download"></span><h1>Download and install<a class="headerlink" href="#download-and-install" title="Permalink to this headline">¶</a></h1>
-<p>Linguistica 5 requires Python 3.4 or above.</p>
-<p>Dependencies (see <a class="reference internal" href="#deps"><span class="std std-ref">Installing dependencies</span></a> below for notes):</p>
-<ul class="simple">
-<li><a class="reference external" href="http://www.numpy.org/">NumPy</a></li>
-<li><a class="reference external" href="http://scipy.org/">SciPy</a></li>
-<li><a class="reference external" href="https://networkx.github.io/">NetworkX</a></li>
-<li><a class="reference external" href="https://www.riverbankcomputing.com/software/sip/download">SIP</a>
-and
-<a class="reference external" href="https://www.riverbankcomputing.com/software/pyqt/download5">PyQt5</a>
-(both are optional; required for the graphical user interface)</li>
-</ul>
-<p>Currently, Linguistica 5 is hosted on GitHub:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ git clone https://github.com/linguistica-uchicago/lxa5.git
-$ <span class="nb">cd</span> lxa5
-$ python setup.py install
+<p>Linguistica 5 is available through <code class="docutils literal"><span class="pre">pip</span></code>:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ pip install linguistica
 </pre></div>
 </div>
-<p>The command <code class="docutils literal"><span class="pre">python</span></code> is meant to point to your Python 3 interpreter
-(the one with NumPy, SciPy, and NetworkX installed).
-Administrative privileges (such as <code class="docutils literal"><span class="pre">sudo</span></code> on Unix-like systems)
-may be required.</p>
+<p>Linguistica 5 requires Python 3.4 or above. Core dependencies are NumPy, SciPy, and NetworkX.
+If you encounter issues in installing these dependencies,
+consider using the Python distribution <a class="reference external" href="https://www.continuum.io/downloads">Anaconda</a>
+(or <a class="reference external" href="http://conda.pydata.org/miniconda.html">Miniconda</a>)
+with these dependencies installed.</p>
+<p>To use the graphical user interface, PyQt5 and SIP are required:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ pip install sip PyQt5
+</pre></div>
+</div>
 <p>To test the installation:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">linguistica</span> <span class="kn">as</span> <span class="nn">lxa</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">lxa</span><span class="o">.</span><span class="n">__version__</span>  <span class="c1"># show version number</span>
 </pre></div>
-</div>
-<div class="section" id="installing-dependencies">
-<span id="deps"></span><h2>Installing dependencies<a class="headerlink" href="#installing-dependencies" title="Permalink to this headline">¶</a></h2>
-<p><strong>NumPy, SciPy, and NetworkX</strong>:
-Naturally, it is possible to install these packages one by one on your own,
-though the installation process might be convoluted with
-various potential issues regarding other dependencies, paths etc.</p>
-<p>If you do not have any of these packages installed
-(and especially if you do not have Python 3, either),
-then we recommend using a Python distribution shipped with these required packages.
-If you have
-<a class="reference external" href="https://www.continuum.io/downloads">Anaconda</a> installed,
-then these three packages are already available to you.
-Due to the large size of Anaconda
-(download &gt; 300 MB; about 1.5 GB after installation),
-<a class="reference external" href="http://conda.pydata.org/miniconda.html">Miniconda</a>
-(with Python and the <code class="docutils literal"><span class="pre">conda</span></code> program only without other packages)
-is available.
-With Miniconda installed, run <code class="docutils literal"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">numpy</span> <span class="pre">scipy</span> <span class="pre">networkx</span></code>.</p>
-<p>More notes regarding specific platforms or packages:</p>
-<p><strong>Ubuntu</strong> (for Linux users) already has the command <code class="docutils literal"><span class="pre">python3</span></code> pointing
-to the Python 3 interpreter shipped with the operating system.
-NumPy, SciPy, NetworkX, SIP, and PyQt5 are available through <code class="docutils literal"><span class="pre">apt-get</span></code>:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ sudo apt-get install python3-numpy python3-scipy python3-networkx python3-sip python3-pyqt5 python3-pyqt5.qtwebkit
-</pre></div>
-</div>
-<p><strong>SciPy dependencies</strong>:
-If you install the packages separately,
-SciPy itself depends on NumPy, so it is recommended that NumPy is installed
-before SciPy.
-Depending on how you try to install SciPy,
-the installation may also require other tools (e.g. a Fortran compiler):</p>
-<ul class="simple">
-<li><strong>Ubuntu:</strong> Run
-<code class="docutils literal"><span class="pre">sudo</span> <span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">libblas-dev</span> <span class="pre">liblapack-dev</span> <span class="pre">libatlas-base-dev</span> <span class="pre">gfortran</span></code></li>
-<li><strong>Mac:</strong> (assuming you have installed <a class="reference external" href="http://brew.sh/">Homebrew</a>) Run
-<code class="docutils literal"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">gcc</span></code></li>
-<li><strong>Windows:</strong> Consider using the
-<a class="reference external" href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#scipy">pre-built Windows installer for SciPy</a>
-by Christoph Gohlke.</li>
-</ul>
 </div>
 </div>
 
@@ -227,7 +176,7 @@ by Christoph Gohlke.</li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015-2016, Jackson Lee.
-      Last updated on Sep 22, 2016.
+      Last updated on Dec 17, 2016.
 
     </p>
   </div>
@@ -249,7 +198,7 @@ by Christoph Gohlke.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5.1.0-dev',
+            VERSION:'5.1.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
