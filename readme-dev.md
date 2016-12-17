@@ -20,18 +20,26 @@ $ cd lxa5
 $ python setup.py develop
 ```
 
-## Install the dependencies for development
+## Install the dependencies for development and documentation
 
 ```
-$ pip install Sphinx flake8 pytest pytest-cov
+$ pip install Sphinx flake8 pytest pytest-cov sphinx_rtd_theme
 ```
 
 ## Run tests
 
-To run tests:
+At the root directory of the project:
 
 ```
 $ pytest -v --cov
+```
+
+## Build documentation
+
+At the root directory of the project:
+
+```
+$ sh build-doc.sh
 ```
 
 ## Package the library for PyPI release
