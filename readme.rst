@@ -55,6 +55,8 @@ in your Python programs:
 
    import linguistica as lxa
 
+Quick library demo `here <http://linguistica-uchicago.github.io/lxa5/demo.html>`_.
+
 To launch the Linguistica 5 graphical user interface
 (with SIP and PyQt5 installed):
 
@@ -87,6 +89,14 @@ If you use Linguistica 5, please cite this paper::
    }
 
 
+Source code
+-----------
+
+The source code of Linguistica 5 is officially released on PyPI: https://pypi.python.org/pypi/linguistica
+
+It is also hosted on GitHub, possibly with work in progress: https://github.com/linguistica-uchicago/lxa5
+
+
 Technical support
 -----------------
 
@@ -102,4 +112,4 @@ License
 
 MIT License
 
-See ``LICENSE.txt`` for details.
+See ``LICENSE.txt`` on the `GitHub repository <https://github.com/linguistica-uchicago/lxa5>`_.
