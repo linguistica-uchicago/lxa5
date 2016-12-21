@@ -91,6 +91,7 @@
 <li class="toctree-l1"><a class="reference internal" href="lexicon.html">Full API documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dev.html">For developers</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Code base</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#linguistica-main-py"><code class="docutils literal"><span class="pre">linguistica/__main__.py</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#linguistica-init-py"><code class="docutils literal"><span class="pre">linguistica/__init__.py</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#linguistica-release-py"><code class="docutils literal"><span class="pre">linguistica/release.py</span></code></a></li>
@@ -148,7 +149,116 @@
             
   <div class="section" id="code-base">
 <span id="codebase"></span><h1>Code base<a class="headerlink" href="#code-base" title="Permalink to this headline">¶</a></h1>
-<p>Notes on the code base</p>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>How does the Linguistica 5 code work in general?
+We get a good sense of it by understanding how the code gets us a dictionary of
+signatures to stems:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">linguistica</span> <span class="k">as</span> <span class="nn">lxa</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">linguistica.datasets</span> <span class="k">import</span> <span class="n">brown</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lxa_object</span> <span class="o">=</span> <span class="n">lxa</span><span class="o">.</span><span class="n">read_corpus</span><span class="p">(</span><span class="n">brown</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sigs_to_stems</span> <span class="o">=</span> <span class="n">lxa_object</span><span class="o">.</span><span class="n">signatures_to_stems</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This overview walks through what happens under the hood
+when this code snippet is run.</p>
+<p><code class="docutils literal"><span class="pre">brown</span></code> is a string which is the path pointing to the Brown corpus that comes
+with the Linguistica 5 library on your local disk.</p>
+<p><code class="docutils literal"><span class="pre">lxa_object</span></code> (created by <code class="docutils literal"><span class="pre">lxa.read_corpus(brown)</span></code>) is an instance of the class
+<code class="docutils literal"><span class="pre">Lexicon</span></code> defined in <code class="docutils literal"><span class="pre">linguistica/lexicon.py</span></code>.
+<code class="docutils literal"><span class="pre">Lexicon</span></code> has many methods, one of which is <code class="docutils literal"><span class="pre">signatures_to_stems()</span></code>.</p>
+<p>What is the magic behind <code class="docutils literal"><span class="pre">lxa_object.signatures_to_stems()</span></code>
+which returns a dict of signatures to stems?
+The answer lies in the design of the class <code class="docutils literal"><span class="pre">Lexicon</span></code>.
+Given the definition of the class is fairly long, we will examine it step by step,
+unfolding only the relevant bits as we move along:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Lexicon</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">...</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initialize</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c1"># signature-related objects</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_signatures_to_stems</span> <span class="o">=</span> <span class="kc">None</span>
+</pre></div>
+</div>
+<p>When we create a Linguistica object by the line <code class="docutils literal"><span class="pre">lxa_object</span> <span class="pre">=</span> <span class="pre">lxa.read_corpus(brown)</span></code>,
+an instance of the class <code class="docutils literal"><span class="pre">Lexicon</span></code> is created.
+When this instance is created, <code class="docutils literal"><span class="pre">__init__()</span></code> is called.
+<code class="docutils literal"><span class="pre">__init__()</span></code> initializes several attributes (those in the form of <code class="docutils literal"><span class="pre">self.X</span></code>)
+and triggers the method <code class="docutils literal"><span class="pre">_initialize()</span></code>.</p>
+<p>What does <code class="docutils literal"><span class="pre">_initialize()</span></code> do? It initializes all objects of interest.
+Most of them are initialized as <code class="docutils literal"><span class="pre">None</span></code>, like <code class="docutils literal"><span class="pre">_signatures_to_stems</span></code>
+as shown here. Very soon we will see why we need <code class="docutils literal"><span class="pre">_signatures_to_stems</span></code>
+(named with a leading underscore so that it is a private attribute),
+and why it is default to <code class="docutils literal"><span class="pre">None</span></code>.</p>
+<p>Now that all initialization work is done and <code class="docutils literal"><span class="pre">lxa_object</span></code> is ready in the memory,
+we examine what happens when the final line
+<code class="docutils literal"><span class="pre">sigs_to_stems</span> <span class="pre">=</span> <span class="pre">lxa_object.signatures_to_stems()</span></code> in the code snippet is run.</p>
+<p>When <code class="docutils literal"><span class="pre">lxa_object.signatures_to_stems()</span></code> is called, the method
+<code class="docutils literal"><span class="pre">signatures_to_stems()</span></code> of the <code class="docutils literal"><span class="pre">Lexicon</span></code> class is called.
+What does this method do? Let&#8217;s check out the code:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Lexicon</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">signatures_to_stems</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a dict of morphological signatures to stems.</span>
+
+<span class="sd">        :rtype: dict(tuple(str): set(str))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_signatures_to_stems</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_make_all_signature_objects</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_signatures_to_stems</span>
+
+    <span class="k">def</span> <span class="nf">_make_all_signature_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stems_to_words</span> <span class="o">=</span> <span class="n">signature</span><span class="o">.</span><span class="n">make_stems_to_words</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wordlist</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters_</span><span class="p">[</span><span class="s1">&#39;min_stem_length&#39;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parameters_</span><span class="p">[</span><span class="s1">&#39;max_affix_length&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters_</span><span class="p">[</span><span class="s1">&#39;suffixing&#39;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parameters_</span><span class="p">[</span><span class="s1">&#39;min_sig_count&#39;</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_signatures_to_stems</span> <span class="o">=</span> <span class="n">signature</span><span class="o">.</span><span class="n">make_signatures_to_stems</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stems_to_words</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters_</span><span class="p">[</span><span class="s1">&#39;max_affix_length&#39;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parameters_</span><span class="p">[</span><span class="s1">&#39;min_sig_count&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters_</span><span class="p">[</span><span class="s1">&#39;suffixing&#39;</span><span class="p">])</span>
+
+        <span class="o">...</span>
+</pre></div>
+</div>
+<p>When <code class="docutils literal"><span class="pre">signatures_to_stems()</span></code> is called, an if statement is first executed.
+The condition of this if statement, <code class="docutils literal"><span class="pre">self._signatures_to_stems</span> <span class="pre">is</span> <span class="pre">None</span></code>,
+evaluates to <code class="docutils literal"><span class="pre">True</span></code>, because <code class="docutils literal"><span class="pre">self._signatures_to_stems</span></code> has just been
+initialized to be <code class="docutils literal"><span class="pre">None</span></code>. Then <code class="docutils literal"><span class="pre">self._make_all_signature_objects()</span></code> is
+executed (more on this below).
+When it finishes, <code class="docutils literal"><span class="pre">self._signatures_to_stems</span></code> holds the expected
+dict (no longer <code class="docutils literal"><span class="pre">None</span></code>) and is returned.
+(If <code class="docutils literal"><span class="pre">signatures_to_stems()</span></code> is called again, <code class="docutils literal"><span class="pre">self._signatures_to_stems</span></code>
+is not <code class="docutils literal"><span class="pre">None</span></code> anymore and the expensive computation at <code class="docutils literal"><span class="pre">self._make_all_signature_objects()</span></code>
+is avoided. This explains why in general the Linguistica 5 code has the distinction
+between the private attribute <code class="docutils literal"><span class="pre">self._x</span></code> and the public method <code class="docutils literal"><span class="pre">self.x()</span></code>
+for most objects of interest).</p>
+<p>So, what is the method <code class="docutils literal"><span class="pre">self._make_all_signature_objects()</span></code>? As its name suggests,
+it makes all signature-related <code class="docutils literal"><span class="pre">self._x</span></code>. In the code shown above,
+two of these <code class="docutils literal"><span class="pre">self._x</span></code> are shown, including <code class="docutils literal"><span class="pre">self._signatures_to_stems</span></code>.
+The order by which these <code class="docutils literal"><span class="pre">self._x</span></code> is computed matters,
+because there is dependency among them. For example, <code class="docutils literal"><span class="pre">self._signatures_to_stems</span></code>
+depends on <code class="docutils literal"><span class="pre">self._stems_to_words</span></code> just computed in the same method.</p>
+<p>We are potentially interested in many of the intermediate objects for
+research purposes. In our example, <code class="docutils literal"><span class="pre">self._stems_to_words</span></code> is intermediate
+for the computation of <code class="docutils literal"><span class="pre">self._signatures_to_stems</span></code>, but we expose it
+(by making it <code class="docutils literal"><span class="pre">self._x</span></code> as well as allowing the <code class="docutils literal"><span class="pre">self.x()</span></code> API access)
+because a mapping from stems to words is of interest.</p>
+<p>To compute <code class="docutils literal"><span class="pre">self._x</span></code> in <code class="docutils literal"><span class="pre">_make_all_signature_objects()</span></code>, many function calls
+in the form of <code class="docutils literal"><span class="pre">signature.make_x()</span></code> are made. Here, <code class="docutils literal"><span class="pre">signature</span></code> refers
+to the imported module, and all the function calls <code class="docutils literal"><span class="pre">make_x()</span></code> are defined
+in <code class="docutils literal"><span class="pre">linguistica/signature.py</span></code>.</p>
+<p>So this is essentially how objects of interest are created via the <code class="docutils literal"><span class="pre">Lexicon</span></code>
+class. They are initialized in some way and are <em>not</em> actually
+computed until necessary. Once computed, they are available in memory for
+immediate retrieval. All heavy lifting is only called but not done within
+the class <code class="docutils literal"><span class="pre">Lexicon</span></code> &#8211; the real work is done in the respective modules
+such as <code class="docutils literal"><span class="pre">signature</span></code>, <code class="docutils literal"><span class="pre">manifold</span></code>, and and so on.</p>
+</div>
 <div class="section" id="linguistica-main-py">
 <h2><code class="docutils literal"><span class="pre">linguistica/__main__.py</span></code><a class="headerlink" href="#linguistica-main-py" title="Permalink to this headline">¶</a></h2>
 <p>For running GUI and CLI</p>
@@ -218,7 +328,7 @@ allow sets to be dict keys...</li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015-2016, Jackson Lee.
-      Last updated on Dec 17, 2016.
+      Last updated on Dec 21, 2016.
 
     </p>
   </div>
