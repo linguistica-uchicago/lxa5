@@ -91,6 +91,10 @@
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command line interface (CLI)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lexicon.html">Full API documentation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">For developers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#setting-up-the-development-environment">Setting up the development environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-linguistica-5">Getting Linguistica 5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#workflow">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#old-intro">(old intro)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#first-steps">First steps</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#general-remarks">General remarks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#commits-and-pushes">Commits and pushes</a></li>
@@ -147,6 +151,56 @@
 <p>This page provides technical notes for the developers of the Linguistica 5
 group. For introductory background about the Linguistica 5 codebase,
 please consult <a class="reference internal" href="codebase.html#codebase"><span class="std std-ref">Codebase</span></a>.</p>
+<div class="section" id="setting-up-the-development-environment">
+<h2>Setting up the development environment<a class="headerlink" href="#setting-up-the-development-environment" title="Permalink to this headline">¶</a></h2>
+<p>need the correct python version plus numpy scipy networkx</p>
+<p>use miniconda</p>
+<p>use an environment</p>
+</div>
+<div class="section" id="getting-linguistica-5">
+<h2>Getting Linguistica 5<a class="headerlink" href="#getting-linguistica-5" title="Permalink to this headline">¶</a></h2>
+<p>Each person working on the code has to have their own fork under their GitHub account. Steps for each person:</p>
+<ol class="arabic simple">
+<li>Make a personal GitHub account (if not done already).</li>
+<li>Log on to GitHub and go to <a class="reference external" href="https://github.com/linguistica-uchicago/lxa5">https://github.com/linguistica-uchicago/lxa5</a></li>
+<li>At the top right hand corner, click &#8220;Fork&#8221;. (If prompted for &#8220;where should we fork this repository&#8221;, choose your own personal GitHub name.)</li>
+<li>Now under your personal GitHub, you see a new repository called &#8220;lxa5&#8221;.</li>
+<li>Clone this repository (i.e. &lt;your-github-name&gt;/lxa5, not linguistica-chicago/lxa5) onto your local disk using git, and also install the linguistica library:</li>
+</ol>
+<p>$ git clone <a class="reference external" href="https://github.com">https://github.com</a>/&lt;your-github-name&gt;/lxa5.git
+$ cd lxa5
+$ python setup.py develop</p>
+<p>(If you&#8217;re on linux, you will likely need &#8220;sudo&#8221; for the last command above).</p>
+<ol class="arabic simple" start="6">
+<li>Test if you have the library installed. Fire up your python interpreter:</li>
+</ol>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">linguistica</span>  <span class="c1"># there should be no ImportError</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="workflow">
+<h2>Workflow<a class="headerlink" href="#workflow" title="Permalink to this headline">¶</a></h2>
+<p>Now you have the python library &#8220;linguistica&#8221; installed in development mode (i.e. changes in source code are immediately effective &#8211; no need to uninstall and reinstall to try out new code). And you&#8217;re ready to do awesome work by changing the source code:</p>
+<ol class="arabic simple">
+<li>Never ever work from the &#8220;master&#8221; branch. (Run &#8220;git branch&#8221; to see what branches you have and which branch you&#8217;re on.)</li>
+<li>Instead, work on a different branch whose name indicates what you are doing, e.g. &#8220;fix-bug-in-stems-to-signatures&#8221;, &#8220;update-docs&#8221;. You can create a branch by &#8220;git checkout -b &lt;branch-name&gt;&#8221;</li>
+<li>Now (and finally!) you can actually make changes to the source code. Make changes incrementally and commit them with git. Run this pair of commands for each commit:</li>
+</ol>
+<p>$ git add &lt;files-changed&gt;
+$ git commit -m &#8220;&lt;commit-message&gt;&#8221;</p>
+<p>Write brief and meaningful commit messages.</p>
+<ol class="arabic simple" start="4">
+<li>Repeat step 3 above as many time as needed for making the new feature you&#8217;re working on great. If possible, please limit the number of lines changes to below 300, so that it won&#8217;t take forever to review your changes.</li>
+<li>When you&#8217;re ready to get comments on your changes, you will push your code to your fork on github and make a pull request.</li>
+<li>To push your code to your fork:</li>
+</ol>
+<p>$ git push origin &lt;branch-name&gt;</p>
+<ol class="arabic simple" start="7">
+<li>To make a pull request (i.e. you want linguistica-chicago/lxa5 to get the changes from &lt;your-github-name&gt;/lxa5, as it were), go to your GitHub page and then to the forked &#8220;lxa5&#8221; repository. Click &#8220;Pull request&#8221; (or something like &#8220;Make pull request&#8221; &#8211; should be something fairly prominent visually). Now you&#8217;ll wait for feedback.</li>
+</ol>
+</div>
+<div class="section" id="old-intro">
+<h2>(old intro)<a class="headerlink" href="#old-intro" title="Permalink to this headline">¶</a></h2>
 <p>These notes record various details and potential gotchas regarding
 the source code of Linguistica 5.
 They should be helpful for the core developers of
@@ -163,6 +217,7 @@ $ <span class="nb">cd</span> lxa5
 <p>The command <code class="docutils literal"><span class="pre">python3</span></code> as referred to throughout is meant to point to your
 Python 3 interpreter. Depending on your setup, the command might simply be
 <code class="docutils literal"><span class="pre">python</span></code> for you. (In any event, Linguistica 5 requires Python 3.4 or above.)</p>
+</div>
 <div class="section" id="first-steps">
 <h2>First steps<a class="headerlink" href="#first-steps" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
