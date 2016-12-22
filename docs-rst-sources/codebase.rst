@@ -1,7 +1,38 @@
 .. _codebase:
 
-Code base
-=========
+Codebase
+========
+
+.. _codebase_structure:
+
+Structure of the project repository
+-----------------------------------
+
+The Linguistica 5 codebase is hosted at https://github.com/linguistica-uchicago/lxa5.
+The codebase can be concretely considered as a directory containing several
+components:
+
+* The Python library source code in the directory ``linguistica``.
+  This is arguably the core of the codebase where most of the research and development
+  efforts go.
+  To get a sense of how the code works,
+  please see both :ref:`demo` and :ref:`codebase_overview`.
+
+* Documentation, changelog.md, build-doc.sh
+
+* Continuous integration, .travis.yml, .coveragerc
+
+* Tests
+
+* setup.py, requirements.txt, LICENSE.txt
+
+* readme.rst
+
+Developers of the Linguistica project shall consult the page :ref:`dev` for
+setting up their environment.
+
+
+.. _codebase_overview:
 
 Overview
 --------
@@ -128,7 +159,7 @@ class. They are initialized in some way and are *not* actually
 computed until necessary. Once computed, they are available in memory for
 immediate retrieval. All heavy lifting is only called but not done within
 the class ``Lexicon`` -- the real work is done in the respective modules
-such as ``signature``, ``manifold``, and and so on.
+such as ``signature``, ``manifold``, and so on.
 
 
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Code base &mdash; Linguistica 5.1.0 documentation</title>
+  <title>Codebase &mdash; Linguistica 5.1.0 documentation</title>
   
 
   
@@ -90,7 +90,8 @@
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command line interface (CLI)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lexicon.html">Full API documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dev.html">For developers</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Code base</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Codebase</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#structure-of-the-project-repository">Structure of the project repository</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#linguistica-main-py"><code class="docutils literal"><span class="pre">linguistica/__main__.py</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#linguistica-init-py"><code class="docutils literal"><span class="pre">linguistica/__init__.py</span></code></a></li>
@@ -135,7 +136,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>Code base</li>
+    <li>Codebase</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -147,10 +148,30 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="code-base">
-<span id="codebase"></span><h1>Code base<a class="headerlink" href="#code-base" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="codebase">
+<span id="id1"></span><h1>Codebase<a class="headerlink" href="#codebase" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="structure-of-the-project-repository">
+<span id="codebase-structure"></span><h2>Structure of the project repository<a class="headerlink" href="#structure-of-the-project-repository" title="Permalink to this headline">¶</a></h2>
+<p>The Linguistica 5 codebase is hosted at <a class="reference external" href="https://github.com/linguistica-uchicago/lxa5">https://github.com/linguistica-uchicago/lxa5</a>.
+The codebase can be concretely considered as a directory containing several
+components:</p>
+<ul class="simple">
+<li>The Python library source code in the directory <code class="docutils literal"><span class="pre">linguistica</span></code>.
+This is arguably the core of the codebase where most of the research and development
+efforts go.
+To get a sense of how the code works,
+please see both <a class="reference internal" href="demo.html#demo"><span class="std std-ref">Quick demonstration</span></a> and <a class="reference internal" href="#codebase-overview"><span class="std std-ref">Overview</span></a>.</li>
+<li>Documentation, changelog.md, build-doc.sh</li>
+<li>Continuous integration, .travis.yml, .coveragerc</li>
+<li>Tests</li>
+<li>setup.py, requirements.txt, LICENSE.txt</li>
+<li>readme.rst</li>
+</ul>
+<p>Developers of the Linguistica project shall consult the page <a class="reference internal" href="dev.html#dev"><span class="std std-ref">For developers</span></a> for
+setting up their environment.</p>
+</div>
 <div class="section" id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<span id="codebase-overview"></span><h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>How does the Linguistica 5 code work in general?
 We get a good sense of it by understanding how the code gets us a dictionary of
 signatures to stems:</p>
@@ -257,7 +278,7 @@ class. They are initialized in some way and are <em>not</em> actually
 computed until necessary. Once computed, they are available in memory for
 immediate retrieval. All heavy lifting is only called but not done within
 the class <code class="docutils literal"><span class="pre">Lexicon</span></code> &#8211; the real work is done in the respective modules
-such as <code class="docutils literal"><span class="pre">signature</span></code>, <code class="docutils literal"><span class="pre">manifold</span></code>, and and so on.</p>
+such as <code class="docutils literal"><span class="pre">signature</span></code>, <code class="docutils literal"><span class="pre">manifold</span></code>, and so on.</p>
 </div>
 <div class="section" id="linguistica-main-py">
 <h2><code class="docutils literal"><span class="pre">linguistica/__main__.py</span></code><a class="headerlink" href="#linguistica-main-py" title="Permalink to this headline">¶</a></h2>
