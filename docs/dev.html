@@ -93,17 +93,10 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">For developers</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#first-steps">First steps</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#general-remarks">General remarks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#continuous-integration">Continuous integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#commits-and-pushes">Commits and pushes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#testing">Testing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#setup-py"><code class="docutils literal"><span class="pre">setup.py</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#readme-rst"><code class="docutils literal"><span class="pre">readme.rst</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#changelog-md"><code class="docutils literal"><span class="pre">changelog.md</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#graphical-user-interface">Graphical user interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#command-line-interface">Command line interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#linguistica-version"><code class="docutils literal"><span class="pre">linguistica/VERSION</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#codebase">Codebase</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="codebase.html">Codebase</a></li>
@@ -151,6 +144,9 @@
             
   <div class="section" id="for-developers">
 <span id="dev"></span><h1>For developers<a class="headerlink" href="#for-developers" title="Permalink to this headline">¶</a></h1>
+<p>This page provides technical notes for the developers of the Linguistica 5
+group. For introductory background about the Linguistica 5 codebase,
+please consult <a class="reference internal" href="codebase.html#codebase"><span class="std std-ref">Codebase</span></a>.</p>
 <p>These notes record various details and potential gotchas regarding
 the source code of Linguistica 5.
 They should be helpful for the core developers of
@@ -255,37 +251,6 @@ library, and all <code class="docutils literal"><span class="pre">open()</span><
 <code class="docutils literal"><span class="pre">open(file_path,</span> <span class="pre">encoding=ENCODING)</span></code> or equivalent.</li>
 </ul>
 </div>
-<div class="section" id="continuous-integration">
-<span id="ci"></span><h2>Continuous integration<a class="headerlink" href="#continuous-integration" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>We take advantage of continuous integration to:<ul>
-<li>test whether the Linguistica 5 library can be successfully installed</li>
-<li>check if all tests pass</li>
-<li>measure test coverage</li>
-<li>ensure that the codebase is compliant with PEP 8 coding style conventions</li>
-</ul>
-</li>
-<li>The images for various continuous integration elements are directly shown
-at the top of <code class="docutils literal"><span class="pre">readme.rst</span></code>. So be sure everything works and looks great
-at all times!</li>
-<li>We use <a class="reference external" href="https://travis-ci.org/">Travis-CI</a> to test the library installation
-as hosted on GitHub.
-<code class="docutils literal"><span class="pre">.travis.yml</span></code> in the repository provides the instructions for Travis CI to
-run the tests whenever a commit is pushed to the <code class="docutils literal"><span class="pre">master</span></code> branch.
-Under no circumstances can build tests be marked as &#8220;fail&#8221;.</li>
-<li>We use <a class="reference external" href="https://coveralls.io/">coveralls</a> to measure test coverage.
-<code class="docutils literal"><span class="pre">.travis.yml</span></code> and <code class="docutils literal"><span class="pre">.coveragerc</span></code> configure the measurement and reportage.
-Under no circumstances can test coverage drop below 95%.</li>
-<li><code class="docutils literal"><span class="pre">.travis.yml</span></code> runs <code class="docutils literal"><span class="pre">ci/travis_install.sh</span></code> to install all library
-dependencies and packages for testing. We use Miniconda for faster
-downloading
-(apt-get is sometimes too slow and there&#8217;s a 50-minute cap for build tests
-on Travis CI).</li>
-<li>We use <a class="reference external" href="https://landscape.io">landscape.io</a> to check code health for
-ensuring the codebase abides by the PEP 8 coding style conventions.
-Under no circumstances can code health drop below 95%.</li>
-</ul>
-</div>
 <div class="section" id="commits-and-pushes">
 <h2>Commits and pushes<a class="headerlink" href="#commits-and-pushes" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
@@ -300,67 +265,13 @@ no more than 50 characters. The message body explains what the commit
 is about. (If the commit is for something minor, e.g. &#8220;Tweak readme format&#8221;,
 then the message body can be omitted.)</li>
 <li>No need to push code to GitHub for every single commit.
-This is because the repository is connected to <a class="reference internal" href="#ci"><span class="std std-ref">Continuous integration</span></a>, and therefore we
+This is because the repository is connected to <span class="xref std std-ref">ci</span>, and therefore we
 don&#8217;t need to waste web resources to trigger the tests etc all the time,
 especially for minor commits. Also, before and after every commit,
 we run tests locally (i.e., running <code class="docutils literal"><span class="pre">python3</span> <span class="pre">nosetests_run.py</span></code>) to ensure
 nothing breaks anyway. So the practice of <strong>not</strong> pushing code for every
 commit is fine.</li>
 </ul>
-</div>
-<div class="section" id="testing">
-<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Install the packages needed for testing. Run
-<code class="docutils literal"><span class="pre">sudo</span> <span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">-r</span> <span class="pre">test_requirements.txt</span></code>.</li>
-<li>We use <code class="docutils literal"><span class="pre">nose</span></code> as the testing framework.
-To run tests, run <code class="docutils literal"><span class="pre">python3</span> <span class="pre">nosetests_run.py</span></code>.</li>
-<li>Run <code class="docutils literal"><span class="pre">python3</span> <span class="pre">nosetests_run.py</span></code>
-as often as possible to ensure nothing has broken.
-In particular, it must be run before <em>and</em> after each coding session.</li>
-<li>All testing-related files and scripts are in the directory <code class="docutils literal"><span class="pre">tests</span></code>.</li>
-<li><code class="docutils literal"><span class="pre">tests/data</span></code> contains all expected outputs rendered
-as Python literals, plus the corpus file <code class="docutils literal"><span class="pre">english-brown.txt</span></code>.
-All scripts in <code class="docutils literal"><span class="pre">tests</span></code> are named <code class="docutils literal"><span class="pre">test_X.py</span></code> so that <code class="docutils literal"><span class="pre">nose</span></code> can
-recognize them. All tests are functions named <code class="docutils literal"><span class="pre">test_X()</span></code>.</li>
-<li>All tests must be explicitly written as the <code class="docutils literal"><span class="pre">test_X()</span></code> functions in the
-<code class="docutils literal"><span class="pre">test_X.py</span></code> scripts.
-We do <em>NOT</em> use docstrings in the library code for the
-purposes of library testing.</li>
-<li>Note that <code class="docutils literal"><span class="pre">tests</span></code> are <strong>NOT</strong> included in the library under the directory
-<code class="docutils literal"><span class="pre">linguistica</span></code>. This means that <code class="docutils literal"><span class="pre">tests</span></code> is available only through
-the GitHub repository and is not included in the library installation.
-This structure is intentional, because <code class="docutils literal"><span class="pre">tests</span></code> is only for the developers
-but not the users, and <code class="docutils literal"><span class="pre">tests</span></code> contains large files that the users
-wouldn&#8217;t need.</li>
-<li><code class="docutils literal"><span class="pre">words_to_neighbors</span></code>:
-Syntactic word neighbor computation appears to be sensitive to the precise
-versions of NumPy and SciPy being used.
-This affects the precise word
-neighbors found. Since an exact match of neighbors between the test and
-expected results is <em>not</em> critical (&#8220;close enough&#8221; would do), the
-test for <code class="docutils literal"><span class="pre">words_to_neighbors</span></code> is intentionally lenient.</li>
-</ul>
-</div>
-<div class="section" id="setup-py">
-<h2><code class="docutils literal"><span class="pre">setup.py</span></code><a class="headerlink" href="#setup-py" title="Permalink to this headline">¶</a></h2>
-<p>(notes)</p>
-</div>
-<div class="section" id="readme-rst">
-<h2><code class="docutils literal"><span class="pre">readme.rst</span></code><a class="headerlink" href="#readme-rst" title="Permalink to this headline">¶</a></h2>
-<p>rst rather than markdown is used
-because this is to be read as the
-long description in <code class="docutils literal"><span class="pre">setup.py</span></code>,
-and PyPI recognizes rst but not markdown
-to render the text formatting.</p>
-</div>
-<div class="section" id="changelog-md">
-<h2><code class="docutils literal"><span class="pre">changelog.md</span></code><a class="headerlink" href="#changelog-md" title="Permalink to this headline">¶</a></h2>
-<p>(notes)</p>
-</div>
-<div class="section" id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
-<p>Using Sphinx. More notes needed here.</p>
 </div>
 <div class="section" id="graphical-user-interface">
 <h2>Graphical user interface<a class="headerlink" href="#graphical-user-interface" title="Permalink to this headline">¶</a></h2>
@@ -394,11 +305,7 @@ Or we could just output those whose counts are higher than some threshold?</li>
 </div>
 <div class="section" id="linguistica-version">
 <h2><code class="docutils literal"><span class="pre">linguistica/VERSION</span></code><a class="headerlink" href="#linguistica-version" title="Permalink to this headline">¶</a></h2>
-<p>A plain text file that specifies the version number &#8211; currently <code class="docutils literal"><span class="pre">5.1.0-dev</span></code>.</p>
-</div>
-<div class="section" id="codebase">
-<h2>Codebase<a class="headerlink" href="#codebase" title="Permalink to this headline">¶</a></h2>
-<p>See <a class="reference internal" href="codebase.html#codebase"><span class="std std-ref">Codebase</span></a>.</p>
+<p>A plain text file that specifies the version number &#8211; currently <code class="docutils literal"><span class="pre">5.1.0</span></code>.</p>
 </div>
 </div>
 
@@ -422,7 +329,7 @@ Or we could just output those whose counts are higher than some threshold?</li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015-2016, Jackson Lee.
-      Last updated on Dec 21, 2016.
+      Last updated on Dec 22, 2016.
 
     </p>
   </div>

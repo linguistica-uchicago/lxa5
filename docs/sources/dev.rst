@@ -3,6 +3,10 @@
 For developers
 ==============
 
+This page provides technical notes for the developers of the Linguistica 5
+group. For introductory background about the Linguistica 5 codebase,
+please consult :ref:`codebase`.
+
 These notes record various details and potential gotchas regarding
 the source code of Linguistica 5.
 They should be helpful for the core developers of
@@ -126,41 +130,6 @@ Notes in this section are to be better organized...
   ``open(file_path, encoding=ENCODING)`` or equivalent.
 
 
-.. _ci:
-
-Continuous integration
-----------------------
-
-* We take advantage of continuous integration to:
-
-  * test whether the Linguistica 5 library can be successfully installed
-  * check if all tests pass
-  * measure test coverage
-  * ensure that the codebase is compliant with PEP 8 coding style conventions
-
-* The images for various continuous integration elements are directly shown
-  at the top of ``readme.rst``. So be sure everything works and looks great
-  at all times!
-
-* We use `Travis-CI <https://travis-ci.org/>`_ to test the library installation
-  as hosted on GitHub.
-  ``.travis.yml`` in the repository provides the instructions for Travis CI to
-  run the tests whenever a commit is pushed to the ``master`` branch.
-  Under no circumstances can build tests be marked as "fail".
-
-* We use `coveralls <https://coveralls.io/>`_ to measure test coverage.
-  ``.travis.yml`` and ``.coveragerc`` configure the measurement and reportage.
-  Under no circumstances can test coverage drop below 95%.
-
-* ``.travis.yml`` runs ``ci/travis_install.sh`` to install all library
-  dependencies and packages for testing. We use Miniconda for faster
-  downloading
-  (apt-get is sometimes too slow and there's a 50-minute cap for build tests
-  on Travis CI).
-
-* We use `landscape.io <https://landscape.io>`_ to check code health for
-  ensuring the codebase abides by the PEP 8 coding style conventions.
-  Under no circumstances can code health drop below 95%.
 
 Commits and pushes
 ------------------
@@ -186,74 +155,6 @@ Commits and pushes
   commit is fine.
 
 
-Testing
--------
-
-* Install the packages needed for testing. Run
-  ``sudo python3 -m pip -r test_requirements.txt``.
-
-* We use ``nose`` as the testing framework.
-  To run tests, run ``python3 nosetests_run.py``.
-
-* Run ``python3 nosetests_run.py``
-  as often as possible to ensure nothing has broken.
-  In particular, it must be run before *and* after each coding session.
-
-* All testing-related files and scripts are in the directory ``tests``.
-
-* ``tests/data`` contains all expected outputs rendered
-  as Python literals, plus the corpus file ``english-brown.txt``.
-  All scripts in ``tests`` are named ``test_X.py`` so that ``nose`` can
-  recognize them. All tests are functions named ``test_X()``.
-
-* All tests must be explicitly written as the ``test_X()`` functions in the
-  ``test_X.py`` scripts.
-  We do *NOT* use docstrings in the library code for the
-  purposes of library testing.
-
-* Note that ``tests`` are **NOT** included in the library under the directory
-  ``linguistica``. This means that ``tests`` is available only through
-  the GitHub repository and is not included in the library installation.
-  This structure is intentional, because ``tests`` is only for the developers
-  but not the users, and ``tests`` contains large files that the users
-  wouldn't need.
-
-
-* ``words_to_neighbors``:
-  Syntactic word neighbor computation appears to be sensitive to the precise
-  versions of NumPy and SciPy being used.
-  This affects the precise word
-  neighbors found. Since an exact match of neighbors between the test and
-  expected results is *not* critical ("close enough" would do), the
-  test for ``words_to_neighbors`` is intentionally lenient.
-
-
-``setup.py``
-------------
-
-(notes)
-
-
-``readme.rst``
---------------
-
-rst rather than markdown is used
-because this is to be read as the
-long description in ``setup.py``,
-and PyPI recognizes rst but not markdown
-to render the text formatting.
-
-
-``changelog.md``
-----------------
-
-(notes)
-
-
-Documentation
--------------
-
-Using Sphinx. More notes needed here.
 
 
 Graphical user interface
@@ -292,10 +193,5 @@ Command line interface
 ``linguistica/VERSION``
 -----------------------
 
-A plain text file that specifies the version number -- currently ``5.1.0-dev``.
+A plain text file that specifies the version number -- currently ``5.1.0``.
 
-
-Codebase
---------
-
-See :ref:`codebase`.
