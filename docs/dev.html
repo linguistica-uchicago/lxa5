@@ -153,9 +153,54 @@ group. For introductory background about the Linguistica 5 codebase,
 please consult <a class="reference internal" href="codebase.html#codebase"><span class="std std-ref">Codebase</span></a>.</p>
 <div class="section" id="setting-up-the-development-environment">
 <h2>Setting up the development environment<a class="headerlink" href="#setting-up-the-development-environment" title="Permalink to this headline">¶</a></h2>
-<p>need the correct python version plus numpy scipy networkx</p>
-<p>use miniconda</p>
-<p>use an environment</p>
+<p>To work on the Linguistica 5 code:</p>
+<ol class="arabic">
+<li><p class="first">Set up a personal GitHub account</p>
+<p>Pick a username preferably with lowercase letters only, e.g. &#8220;joesmith&#8221;.
+The Linguistica 5 codebase is hosted on GitHub.
+Your contributions will be added to it via the GitHub interface.</p>
+</li>
+<li><p class="first">Download and install <code class="docutils literal"><span class="pre">git</span></code></p>
+<p><code class="docutils literal"><span class="pre">git</span></code> is the version control system of the Linguistica 5 project.
+Your contributions will be managed and passed from your local drive to
+GitHub by <code class="docutils literal"><span class="pre">git</span></code>.</p>
+</li>
+<li><p class="first">Download and install Miniconda</p>
+<p>You may want to take advantage of Miniconda for having a dedicated
+environment with a specific Python version and other dependencies
+for the Linguistica 5 project.
+Having such a dedicated environment is desirable as you are likely working
+on multiple projects at any given time (Linguistica 5 being just one of them),
+and you don&#8217;t want the environment for one project to contaminate that for
+another project.</p>
+<p>Install Miniconda for Python 3.5. (This installs a new Python distribution
+on your machine, but we are not going to use it directly.)</p>
+<p>After Miniconda is installed, by default you are at the root environment.
+If you fire up your Python interpreter from the command line,
+you should see you are on Python 3.5 whose distribution is by
+Continuum Analytics, Inc. (the company that maintains Miniconda).
+Exit the interpreter, and run the following command to create the new environment
+for Linguistica 5.</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>$ conda create -n lxa5 python=3.5 numpy scipy networkx
+</pre></div>
+</div>
+<p>This command creates the new environment called <code class="docutils literal"><span class="pre">lxa5</span></code> with Python 3.5
+as well as the specified dependencies for Linguistica 5. After this command
+is done with all the installation work, run the following to activate the
+new environment:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>$ source activate lxa5
+</pre></div>
+</div>
+<p>Now you are in the <code class="docutils literal"><span class="pre">lxa5</span></code> environment (no longer in the root environment).
+As an indicator for this change, your command line prompt is now prefixed
+with <code class="docutils literal"><span class="pre">(lxa5)</span></code>.</p>
+<p>To deactivate the environment (for going back to the root environment, or
+for preparing to switch to another environment), simply run this:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>$ source deactivate
+</pre></div>
+</div>
+</li>
+</ol>
 </div>
 <div class="section" id="getting-linguistica-5">
 <h2>Getting Linguistica 5<a class="headerlink" href="#getting-linguistica-5" title="Permalink to this headline">¶</a></h2>

@@ -11,11 +11,65 @@ please consult :ref:`codebase`.
 Setting up the development environment
 --------------------------------------
 
-need the correct python version plus numpy scipy networkx
+To work on the Linguistica 5 code:
 
-use miniconda
+1. Set up a personal GitHub account
 
-use an environment
+   Pick a username preferably with lowercase letters only, e.g. "joesmith".
+   The Linguistica 5 codebase is hosted on GitHub.
+   Your contributions will be added to it via the GitHub interface.
+
+
+2. Download and install ``git``
+
+   ``git`` is the version control system of the Linguistica 5 project.
+   Your contributions will be managed and passed from your local drive to
+   GitHub by ``git``.
+
+
+3. Download and install Miniconda
+
+   You may want to take advantage of Miniconda for having a dedicated
+   environment with a specific Python version and other dependencies
+   for the Linguistica 5 project.
+   Having such a dedicated environment is desirable as you are likely working
+   on multiple projects at any given time (Linguistica 5 being just one of them),
+   and you don't want the environment for one project to contaminate that for
+   another project.
+
+   Install Miniconda for Python 3.5. (This installs a new Python distribution
+   on your machine, but we are not going to use it directly.)
+
+   After Miniconda is installed, by default you are at the root environment.
+   If you fire up your Python interpreter from the command line,
+   you should see you are on Python 3.5 whose distribution is by
+   Continuum Analytics, Inc. (the company that maintains Miniconda).
+   Exit the interpreter, and run the following command to create the new environment
+   for Linguistica 5.
+
+   .. code::
+
+      $ conda create -n lxa5 python=3.5 numpy scipy networkx
+
+   This command creates the new environment called ``lxa5`` with Python 3.5
+   as well as the specified dependencies for Linguistica 5. After this command
+   is done with all the installation work, run the following to activate the
+   new environment:
+
+   .. code::
+
+      $ source activate lxa5
+
+   Now you are in the ``lxa5`` environment (no longer in the root environment).
+   As an indicator for this change, your command line prompt is now prefixed
+   with ``(lxa5)``.
+
+   To deactivate the environment (for going back to the root environment, or
+   for preparing to switch to another environment), simply run this:
+
+   .. code::
+
+      $ source deactivate
 
 
 Getting Linguistica 5
