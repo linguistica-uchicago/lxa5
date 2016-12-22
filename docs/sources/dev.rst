@@ -7,6 +7,65 @@ This page provides technical notes for the developers of the Linguistica 5
 group. For introductory background about the Linguistica 5 codebase,
 please consult :ref:`codebase`.
 
+
+Setting up the development environment
+--------------------------------------
+
+need the correct python version plus numpy scipy networkx
+
+use miniconda
+
+use an environment
+
+
+Getting Linguistica 5
+---------------------
+
+Each person working on the code has to have their own fork under their GitHub account. Steps for each person:
+
+1. Make a personal GitHub account (if not done already).
+2. Log on to GitHub and go to https://github.com/linguistica-uchicago/lxa5
+3. At the top right hand corner, click "Fork". (If prompted for "where should we fork this repository", choose your own personal GitHub name.)
+4. Now under your personal GitHub, you see a new repository called "lxa5".
+5. Clone this repository (i.e. <your-github-name>/lxa5, not linguistica-chicago/lxa5) onto your local disk using git, and also install the linguistica library:
+
+$ git clone https://github.com/<your-github-name>/lxa5.git
+$ cd lxa5
+$ python setup.py develop
+
+(If you're on linux, you will likely need "sudo" for the last command above).
+
+6. Test if you have the library installed. Fire up your python interpreter:
+
+>>> import linguistica  # there should be no ImportError
+
+Workflow
+--------
+
+Now you have the python library "linguistica" installed in development mode (i.e. changes in source code are immediately effective -- no need to uninstall and reinstall to try out new code). And you're ready to do awesome work by changing the source code:
+
+1. Never ever work from the "master" branch. (Run "git branch" to see what branches you have and which branch you're on.)
+2. Instead, work on a different branch whose name indicates what you are doing, e.g. "fix-bug-in-stems-to-signatures", "update-docs". You can create a branch by "git checkout -b <branch-name>"
+3. Now (and finally!) you can actually make changes to the source code. Make changes incrementally and commit them with git. Run this pair of commands for each commit:
+
+$ git add <files-changed>
+$ git commit -m "<commit-message>"
+
+Write brief and meaningful commit messages.
+
+4. Repeat step 3 above as many time as needed for making the new feature you're working on great. If possible, please limit the number of lines changes to below 300, so that it won't take forever to review your changes.
+
+5. When you're ready to get comments on your changes, you will push your code to your fork on github and make a pull request.
+6. To push your code to your fork:
+
+$ git push origin <branch-name>
+
+7. To make a pull request (i.e. you want linguistica-chicago/lxa5 to get the changes from <your-github-name>/lxa5, as it were), go to your GitHub page and then to the forked "lxa5" repository. Click "Pull request" (or something like "Make pull request" -- should be something fairly prominent visually). Now you'll wait for feedback.
+
+
+(old intro)
+-----------
+
 These notes record various details and potential gotchas regarding
 the source code of Linguistica 5.
 They should be helpful for the core developers of
