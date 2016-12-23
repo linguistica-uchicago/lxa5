@@ -96,7 +96,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#setting-up-the-development-environment">Setting up the development environment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#getting-linguistica-5">Getting Linguistica 5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#committing-changes-and-making-a-pull-request">Committing changes and making a pull request</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#general-remarks">General remarks</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="codebase.html">Codebase</a></li>
@@ -168,6 +167,12 @@ a lot smaller in scale like &#8220;add-feature-x&#8221; or &#8220;fix-function-y
 <li>Work in bite sizes: small commits, small pull requests.</li>
 <li>Each pull request should include no more than 300 line changes.</li>
 </ol>
+<ul class="simple">
+<li>Follow <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">PEP 8</a> in coding.
+Use <a class="reference external" href="https://www.jetbrains.com/pycharm/">PyCharm</a> which nicely checks code,
+detects PEP 8 violations, and fixes everything.
+Do <strong>NOT</strong> use any generic text/code editors.</li>
+</ul>
 </div>
 <div class="section" id="overview-of-the-development-workflow">
 <span id="dev-overview"></span><h2>Overview of the development workflow<a class="headerlink" href="#overview-of-the-development-workflow" title="Permalink to this headline">¶</a></h2>
@@ -243,6 +248,7 @@ for preparing to switch to another environment), simply run this:</p>
 </div></blockquote>
 </li>
 </ol>
+<p>$ pip install Sphinx flake8 pytest pytest-cov sphinx_rtd_theme</p>
 </div>
 <div class="section" id="getting-linguistica-5">
 <h2>Getting Linguistica 5<a class="headerlink" href="#getting-linguistica-5" title="Permalink to this headline">¶</a></h2>
@@ -322,79 +328,8 @@ the first word is capitalized and there&#8217;s no ending period. It contains
 no more than 50 characters. The message body explains what the commit
 is about. (If the commit is for something minor, e.g. &#8220;Tweak readme format&#8221;,
 then the message body can be omitted.)</li>
-</ul>
-</div>
-<div class="section" id="general-remarks">
-<h2>General remarks<a class="headerlink" href="#general-remarks" title="Permalink to this headline">¶</a></h2>
-<p>Notes in this section are to be better organized...</p>
-<ul class="simple">
-<li>Follow <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">PEP 8</a> in coding.
-Use <a class="reference external" href="https://www.jetbrains.com/pycharm/">PyCharm</a> which nicely checks code,
-detects PEP 8 violations, and fixes everything.
-Do <strong>NOT</strong> use any generic text/code editors.</li>
-<li>Never ever make API changes!</li>
 <li><strong>Before and after each coding session</strong>, run <code class="docutils literal"><span class="pre">python3</span> <span class="pre">nosetests_run.py</span></code>
 to make sure nothing breaks.</li>
-<li>Write brief and crisp code. For long routines/functions/methods, break them
-up into meaningful, smaller chunks.
-Doing this is desirable because it makes the code much more readable and
-essentially self-documenting. Also, writing shorter functions and methods
-apparently has great potential for performance gain because of fewer
-variables in a given namespace.</li>
-<li>If possible, the actual code is doing the job of documentation;
-this point is related to a previous one about writing shorter functions
-and methods.
-Minimize the use of comments in the code.
-Use <code class="docutils literal"><span class="pre">vprint()</span></code> defined in the <code class="docutils literal"><span class="pre">util</span></code> module for verbose print.</li>
-<li><strong>Sorting:</strong> Avoid using the in-place method <code class="docutils literal"><span class="pre">sort()</span></code>.
-Use the <code class="docutils literal"><span class="pre">sorted()</span></code> function that explicitly returns a new copy.
-This avoids accidentally sorting the source object.</li>
-<li>We do <strong>NOT</strong> use multiprocessing/threading.
-The library runs pretty fast anyway.
-The gain with parallelizing the processes (especially for running
-all modules for a given corpus), if any,
-isn&#8217;t worth all the effort to struggle with potential issues for both
-the developers and users.</li>
-<li>All <code class="docutils literal"><span class="pre">.py</span></code> files must have <code class="docutils literal"><span class="pre">#</span> <span class="pre">-*-</span> <span class="pre">encoding:</span> <span class="pre">utf8</span> <span class="pre">-*-</span></code> as the very first
-line. (Exception: the empty <code class="docutils literal"><span class="pre">__init__.py</span></code> files)
-It is true that Python 3 assumes UTF-8 for <code class="docutils literal"><span class="pre">.py</span></code> files by default,
-but let&#8217;s be explicit rather than rely on the implicit.</li>
-<li>Python 2 is <strong>NOT</strong> supported. First, we need Python 3 only features
-(better unicode support etc). Second, it&#8217;s not worth our effort to
-maintain a Python 2 version while Python 2 will be history soon-ish.</li>
-<li><strong>Version number:</strong> We follow <a class="reference external" href="http://semver.org/">http://semver.org/</a> for the <code class="docutils literal"><span class="pre">major.minor.patch</span></code>
-format.
-The current version is <code class="docutils literal"><span class="pre">5.1.0</span></code>.
-The major version is <code class="docutils literal"><span class="pre">5</span></code> because there&#8217;s John&#8217;s Linguistica 3 &amp; 4
-written in C++.
-The minor version is <code class="docutils literal"><span class="pre">1</span></code> rather than <code class="docutils literal"><span class="pre">0</span></code> because John has his in-house
-<code class="docutils literal"><span class="pre">5.0</span></code> written in Python 2 circa/before 2012.
-The version number is specified in <code class="docutils literal"><span class="pre">linguistica/VERSION</span></code> (and nowhere else).</li>
-<li>To minimize any inconsistency and confusion,
-follow the &#8220;don&#8217;t repeat yourself&#8221; principle.
-This practice is to be applied fairly broadly.
-Examples include:<ul>
-<li>Specifying library dependencies at only one place, the <code class="docutils literal"><span class="pre">requirements.txt</span></code>
-file (which <code class="docutils literal"><span class="pre">setup.py</span></code> reads).</li>
-<li>Specifying version number at only one place,
-the <code class="docutils literal"><span class="pre">linguistica/VERSION</span></code> file
-(which both <code class="docutils literal"><span class="pre">setup.py</span></code> and the library read).</li>
-<li>No code duplication, if possible. For generic/utility-type functions,
-define them in the <code class="docutils literal"><span class="pre">util</span></code> module.</li>
-</ul>
-</li>
-<li>Never ever use <code class="docutils literal"><span class="pre">import</span> <span class="pre">*</span></code>.</li>
-<li><strong>File I/O and encoding</strong>:
-Apparently, the default file encoding for <code class="docutils literal"><span class="pre">open()</span></code>
-is platform-dependent (?).
-To be absolutely sure about the encoding,
-whenever <code class="docutils literal"><span class="pre">open()</span></code> is used, always explicitly specify
-the <code class="docutils literal"><span class="pre">encoding</span></code> parameter.
-For this purpose,
-in <code class="docutils literal"><span class="pre">linguistica/util.py</span></code>, the constant <code class="docutils literal"><span class="pre">ENCODING</span></code> (= <code class="docutils literal"><span class="pre">'utf8'</span></code>)
-is defined. This constant is imported in other <code class="docutils literal"><span class="pre">.py</span></code> files throughout the
-library, and all <code class="docutils literal"><span class="pre">open()</span></code> calls are something like
-<code class="docutils literal"><span class="pre">open(file_path,</span> <span class="pre">encoding=ENCODING)</span></code> or equivalent.</li>
 </ul>
 </div>
 </div>

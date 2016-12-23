@@ -42,6 +42,11 @@ Important reminders
 
 4. Each pull request should include no more than 300 line changes.
 
+* Follow `PEP 8 <https://www.python.org/dev/peps/pep-0008/>`_ in coding.
+  Use `PyCharm <https://www.jetbrains.com/pycharm/>`_ which nicely checks code,
+  detects PEP 8 violations, and fixes everything.
+  Do **NOT** use any generic text/code editors.
+
 
 .. _dev_overview:
 
@@ -129,6 +134,9 @@ To work on the Linguistica 5 code:
       .. code::
 
          $ source deactivate
+
+
+$ pip install Sphinx flake8 pytest pytest-cov sphinx_rtd_theme
 
 
 Getting Linguistica 5
@@ -226,90 +234,6 @@ $ git push origin <branch-name>
   is about. (If the commit is for something minor, e.g. "Tweak readme format",
   then the message body can be omitted.)
 
-
-General remarks
----------------
-
-Notes in this section are to be better organized...
-
-* Follow `PEP 8 <https://www.python.org/dev/peps/pep-0008/>`_ in coding.
-  Use `PyCharm <https://www.jetbrains.com/pycharm/>`_ which nicely checks code,
-  detects PEP 8 violations, and fixes everything.
-  Do **NOT** use any generic text/code editors.
-
-* Never ever make API changes!
-
 * **Before and after each coding session**, run ``python3 nosetests_run.py``
   to make sure nothing breaks.
-
-* Write brief and crisp code. For long routines/functions/methods, break them
-  up into meaningful, smaller chunks.
-  Doing this is desirable because it makes the code much more readable and
-  essentially self-documenting. Also, writing shorter functions and methods
-  apparently has great potential for performance gain because of fewer
-  variables in a given namespace.
-
-* If possible, the actual code is doing the job of documentation;
-  this point is related to a previous one about writing shorter functions
-  and methods.
-  Minimize the use of comments in the code.
-  Use ``vprint()`` defined in the ``util`` module for verbose print.
-
-* **Sorting:** Avoid using the in-place method ``sort()``.
-  Use the ``sorted()`` function that explicitly returns a new copy.
-  This avoids accidentally sorting the source object.
-
-* We do **NOT** use multiprocessing/threading.
-  The library runs pretty fast anyway.
-  The gain with parallelizing the processes (especially for running
-  all modules for a given corpus), if any,
-  isn't worth all the effort to struggle with potential issues for both
-  the developers and users.
-
-* All ``.py`` files must have ``# -*- encoding: utf8 -*-`` as the very first
-  line. (Exception: the empty ``__init__.py`` files)
-  It is true that Python 3 assumes UTF-8 for ``.py`` files by default,
-  but let's be explicit rather than rely on the implicit.
-
-* Python 2 is **NOT** supported. First, we need Python 3 only features
-  (better unicode support etc). Second, it's not worth our effort to
-  maintain a Python 2 version while Python 2 will be history soon-ish.
-
-* **Version number:** We follow http://semver.org/ for the ``major.minor.patch``
-  format.
-  The current version is ``5.1.0``.
-  The major version is ``5`` because there's John's Linguistica 3 & 4
-  written in C++.
-  The minor version is ``1`` rather than ``0`` because John has his in-house
-  ``5.0`` written in Python 2 circa/before 2012.
-  The version number is specified in ``linguistica/VERSION`` (and nowhere else).
-
-* To minimize any inconsistency and confusion,
-  follow the "don't repeat yourself" principle.
-  This practice is to be applied fairly broadly.
-  Examples include:
-
-  * Specifying library dependencies at only one place, the ``requirements.txt``
-    file (which ``setup.py`` reads).
-  * Specifying version number at only one place,
-    the ``linguistica/VERSION`` file
-    (which both ``setup.py`` and the library read).
-  * No code duplication, if possible. For generic/utility-type functions,
-    define them in the ``util`` module.
-
-* Never ever use ``import *``.
-
-* **File I/O and encoding**:
-  Apparently, the default file encoding for ``open()``
-  is platform-dependent (?).
-  To be absolutely sure about the encoding,
-  whenever ``open()`` is used, always explicitly specify
-  the ``encoding`` parameter.
-  For this purpose,
-  in ``linguistica/util.py``, the constant ``ENCODING`` (= ``'utf8'``)
-  is defined. This constant is imported in other ``.py`` files throughout the
-  library, and all ``open()`` calls are something like
-  ``open(file_path, encoding=ENCODING)`` or equivalent.
-
-
 

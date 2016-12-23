@@ -20,7 +20,7 @@ components:
   This is arguably the core of the codebase where most of the research and development
   efforts go.
   To get a sense of how the code works,
-  please see both :ref:`demo` and :ref:`codebase_overview`.
+  please see :ref:`codebase_overview` below.
 
 * :ref:`codebase_documentation`
 
@@ -304,6 +304,15 @@ Version
 A plain text file that specifies the version number -- currently ``5.1.0``.
 
 Defined in `linguistica/VERSION` and nowhere else.
+
+* **Version number:** We follow http://semver.org/ for the ``major.minor.patch``
+  format.
+  The current version is ``5.1.0``.
+  The major version is ``5`` because there's John's Linguistica 3 & 4
+  written in C++.
+  The minor version is ``1`` rather than ``0`` because John has his in-house
+  ``5.0`` written in Python 2 circa/before 2012.
+  The version number is specified in ``linguistica/VERSION`` (and nowhere else).
 
 
 Graphical user interface
