@@ -150,9 +150,6 @@ To work on the Linguistica 5 code:
          $ source deactivate
 
 
-$ pip install Sphinx flake8 pytest pytest-cov sphinx_rtd_theme
-
-
 Getting Linguistica 5
 ---------------------
 
@@ -207,7 +204,19 @@ To download the Linguistica 5 codebase for development work:
 Committing changes and making a pull request
 --------------------------------------------
 
-And you're ready to do awesome work by changing the source code:
+After you have set up your system and downloaded Linguistica 5 as described above,
+you are now (almost) ready to do awesome work!
+
+1. **Verify that the master branch on your local drive is up-to-date in sync with
+   the master on linguistica-uchicago/lxa5.**
+
+   It is important to make sure you start working with the latest
+   codebase:
+
+   .. code::
+
+        $ git checkout master  # go to master branch
+        $ git pull upstream master  # pull the latest code from the master branch of linguistica-uchicago/lxa5 (= "upstream")
 
 verify you are on master
 pull from upstream/master
