@@ -92,7 +92,6 @@
 <li class="toctree-l1"><a class="reference internal" href="lexicon.html">Full API documentation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">For developers</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#important-reminders">Important reminders</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#overview-of-the-development-workflow">Overview of the development workflow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#setting-up-the-development-environment">Setting up the development environment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#getting-linguistica-5">Getting Linguistica 5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#committing-changes-and-making-a-pull-request">Committing changes and making a pull request</a></li>
@@ -148,12 +147,10 @@ For introductory background about the Linguistica 5 codebase,
 please consult <a class="reference internal" href="codebase.html#codebase"><span class="std std-ref">Codebase</span></a>.</p>
 <p>None of the development notes here are
 new, as they all come from the collective wisdom of the open-source and
-software development community.
+software development community &#8211; notably, for what is known as &#8220;gitflow&#8221;.
 They should be taken as best practice recommendations, and nothing is set in stone.
 You are entirely entitled to deviate from any of the advice given here;
 in that case, you are on your own and you know what you are doing.</p>
-<p><a class="reference internal" href="#dev-reminders"><span class="std std-ref">Important reminders</span></a></p>
-<p>To get started, please go the section <a class="reference internal" href="#dev-overview"><span class="std std-ref">Overview of the development workflow</span></a> below.</p>
 <div class="section" id="important-reminders">
 <span id="dev-reminders"></span><h2>Important reminders<a class="headerlink" href="#important-reminders" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic">
@@ -173,41 +170,29 @@ much more concrete and
 a lot smaller in scale like &#8220;add-feature-x&#8221; or &#8220;fix-function-y&#8221;.</p>
 </div></blockquote>
 </li>
-<li><p class="first"><strong>Work in bite sizes</strong></p>
+<li><p class="first"><strong>Work in bite sizes.</strong></p>
 <blockquote>
 <div><p>Small commits, small pull requests.</p>
 </div></blockquote>
 </li>
 <li><p class="first"><strong>No more than 300 lines of changes in each pull request.</strong></p>
 <blockquote>
-<div><p>None of the project&#8217;s core develoeprs can spend a lot of time working on
-Linguistica 5 in practice. All pull requests have to be small
+<div><p>All pull requests have to be small
 so that the code review can be done efficiently and effectively with
 useful feedback.</p>
 </div></blockquote>
 </li>
-<li><p class="first"><strong>Follow `PEP 8 &lt;https://www.python.org/dev/peps/pep-0008/&gt;`_ in coding.</strong></p>
+<li><p class="first"><strong>Follow PEP 8 in coding.</strong></p>
 <blockquote>
-<div><p>The coding conventions exist precisely because we would like to schedule
+<div><p>The <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">PEP 8</a>
+coding conventions exist precisely because we would like to schedule
 exactly no time for discussing things like &#8220;how to name variables&#8221;,
-&#8220;whether space is needed&#8221; and so on for coding. If we drift away from PEP 8,
-the Linguistica 5 codebase will degrade over time.</p>
+&#8220;whether space is needed&#8221; and so on for coding.
+There are excellent IDEs such as <a class="reference external" href="https://www.jetbrains.com/pycharm/">PyCharm</a> for maintaining Python projects
+at a high level of quality.</p>
 </div></blockquote>
 </li>
 </ol>
-</div>
-<div class="section" id="overview-of-the-development-workflow">
-<span id="dev-overview"></span><h2>Overview of the development workflow<a class="headerlink" href="#overview-of-the-development-workflow" title="Permalink to this headline">¶</a></h2>
-<p>brief intro of gitflow</p>
-<p>(need graphic aids or something?)</p>
-<p>introduce the key terms</p>
-<ul class="simple">
-<li>done only once: FORK the repo, CLONE it to local drive, REMOTE (git remote add upstream &lt;url&gt;)</li>
-<li>CHECKOUT master, PULL from upstream/master, CHECKOUT new branch</li>
-<li>make changes and COMMIT them, repeat this step as needed</li>
-<li>PUSH to fork on github</li>
-<li>make PULL REQUEST</li>
-</ul>
 </div>
 <div class="section" id="setting-up-the-development-environment">
 <h2>Setting up the development environment<a class="headerlink" href="#setting-up-the-development-environment" title="Permalink to this headline">¶</a></h2>
@@ -322,48 +307,79 @@ you are now (almost) ready to do awesome work!</p>
 <ol class="arabic">
 <li><p class="first"><strong>Verify that the master branch on your local drive is up-to-date in sync with
 the master on linguistica-uchicago/lxa5.</strong></p>
-<p>It is important to make sure you start working with the latest
+<blockquote>
+<div><p>It is important to make sure you start working with the latest
 codebase:</p>
 <div class="code highlight-default"><div class="highlight"><pre><span></span>$ git checkout master  # go to master branch
-$ git pull upstream master  # pull the latest code from the master branch of linguistica-uchicago/lxa5 (= &quot;upstream&quot;)
+$ git pull upstream master  # pull latest from master branch of upstream
 </pre></div>
 </div>
+<p>Recall that &#8220;upstream&#8221; means the linguistica-uchicago/lxa5 repository.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Create a new branch for your great work.</strong></p>
+<blockquote>
+<div><p>Never work from the master branch.
+(Run &#8220;git branch&#8221; anytime to see what branches you have and which branch you&#8217;re on.)</p>
+<p>Instead, work on a different branch whose name indicates what you are doing,
+e.g. &#8220;Revamp-stems-to-signatures&#8221;, &#8220;update-docs&#8221;:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>$ git checkout -b &lt;branch-name&gt;
+</pre></div>
+</div>
+<p>After this command is run, the new branch is created <em>and</em> you are on
+that branch as well (no longer on master branch).</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Start committing changes to source code.</strong></p>
+<blockquote>
+<div><p>Now (and finally!) you can actually make changes to the source code.
+Make changes incrementally and commit them with Git.
+Run this pair of commands for each commit:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>$ git add &lt;files-changed&gt;
+$ git commit -m &quot;&lt;commit-message&gt;&quot;
+</pre></div>
+</div>
+<p>Write brief and meaningful commit messages,
+e.g. &#8220;Fix bug in stems_to_signatures&#8221;.
+Aim at making each commit a logical and meaningful chunk of changes.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Repeat step 3 above as needed.</strong></p>
+<blockquote>
+<div><p>Repeat step 3 for making more commits on your way to what the branch
+is for. Limit the number of line changes to below 300 to make
+efficient and effective code review possible.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Push your changes to your fork on GitHub.</strong></p>
+<blockquote>
+<div><p>To make your changes available for review and for merging,
+you will first have to push your changes to your fork on GitHub:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>$ git push origin &lt;branch-name&gt;
+</pre></div>
+</div>
+<p>Recall that &#8220;origin&#8221; is the (default) name of your fork &lt;your-github-username&gt;/lxa5 on GitHub.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Make a pull request.</strong></p>
+<blockquote>
+<div><p>Log on to your GitHub and go to your fork &lt;your-github-username&gt;/lxa5.
+Now you are ready to make a pull request
+(i.e. you want linguistica-chicago/lxa5 to get the changes
+from your &lt;branch-name&gt; of &lt;your-github-name&gt;/lxa5, as it were).
+Click &#8220;Pull request&#8221;
+(or something like &#8220;Make pull request&#8221; &#8211; it should be something fairly prominent visually).
+Now you&#8217;ll wait for feedback.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Start a new branch for a new &#8220;mini&#8221; project.</strong></p>
+<blockquote>
+<div><p>After all your hard work in the pull request has been accepted (= merged
+into linguistica-uchicago/lxa5), you can go back to step 1
+for a new branch and an upcoming pull request!</p>
+</div></blockquote>
 </li>
 </ol>
-<p>verify you are on master
-pull from upstream/master</p>
-<ol class="arabic simple">
-<li>Never ever work from the &#8220;master&#8221; branch. (Run &#8220;git branch&#8221; to see what branches you have and which branch you&#8217;re on.)</li>
-<li>Instead, work on a different branch whose name indicates what you are doing, e.g. &#8220;fix-bug-in-stems-to-signatures&#8221;, &#8220;update-docs&#8221;. You can create a branch by &#8220;git checkout -b &lt;branch-name&gt;&#8221;</li>
-<li>Now (and finally!) you can actually make changes to the source code. Make changes incrementally and commit them with git. Run this pair of commands for each commit:</li>
-</ol>
-<p>$ git add &lt;files-changed&gt;
-$ git commit -m &#8220;&lt;commit-message&gt;&#8221;</p>
-<p>Write brief and meaningful commit messages.</p>
-<ol class="arabic simple" start="4">
-<li>Repeat step 3 above as many time as needed for making the new feature you&#8217;re working on great. If possible, please limit the number of lines changes to below 300, so that it won&#8217;t take forever to review your changes.</li>
-<li>When you&#8217;re ready to get comments on your changes, you will push your code to your fork on github and make a pull request.</li>
-<li>To push your code to your fork:</li>
-</ol>
-<p>$ git push origin &lt;branch-name&gt;</p>
-<ol class="arabic simple" start="7">
-<li>To make a pull request (i.e. you want linguistica-chicago/lxa5 to get the changes from &lt;your-github-name&gt;/lxa5, as it were), go to your GitHub page and then to the forked &#8220;lxa5&#8221; repository. Click &#8220;Pull request&#8221; (or something like &#8220;Make pull request&#8221; &#8211; should be something fairly prominent visually). Now you&#8217;ll wait for feedback.</li>
-</ol>
-<p>(incorporate these notes:)</p>
-<ul class="simple">
-<li>Each commit is one single meaning and small chunk.</li>
-<li>Write meaningful commit messages
-(see <a class="reference external" href="http://chris.beams.io/posts/git-commit/">here</a>, for instance).
-Each commit message consists of two components:
-(1) the subject line, and (2) the message body.
-The subject line is an imperative sentence (e.g. &#8220;Update readme&#8221;); note
-the first word is capitalized and there&#8217;s no ending period. It contains
-no more than 50 characters. The message body explains what the commit
-is about. (If the commit is for something minor, e.g. &#8220;Tweak readme format&#8221;,
-then the message body can be omitted.)</li>
-<li><strong>Before and after each coding session</strong>, run <code class="docutils literal"><span class="pre">python3</span> <span class="pre">nosetests_run.py</span></code>
-to make sure nothing breaks.</li>
-</ul>
 </div>
 </div>
 

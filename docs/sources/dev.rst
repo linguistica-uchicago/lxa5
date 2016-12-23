@@ -4,6 +4,8 @@
 
 .. _Miniconda: http://conda.pydata.org/miniconda.html
 
+.. _PyCharm: https://www.jetbrains.com/pycharm/
+
 .. _dev:
 
 For developers
@@ -15,14 +17,10 @@ please consult :ref:`codebase`.
 
 None of the development notes here are
 new, as they all come from the collective wisdom of the open-source and
-software development community.
+software development community -- notably, for what is known as "gitflow".
 They should be taken as best practice recommendations, and nothing is set in stone.
 You are entirely entitled to deviate from any of the advice given here;
 in that case, you are on your own and you know what you are doing.
-
-:ref:`dev_reminders`
-
-To get started, please go the section :ref:`dev_overview` below.
 
 .. _dev_reminders:
 
@@ -43,41 +41,24 @@ Important reminders
       much more concrete and
       a lot smaller in scale like "add-feature-x" or "fix-function-y".
 
-3. **Work in bite sizes**
+3. **Work in bite sizes.**
 
       Small commits, small pull requests.
 
 4. **No more than 300 lines of changes in each pull request.**
 
-      None of the project's core develoeprs can spend a lot of time working on
-      Linguistica 5 in practice. All pull requests have to be small
+      All pull requests have to be small
       so that the code review can be done efficiently and effectively with
       useful feedback.
 
-5. **Follow `PEP 8 <https://www.python.org/dev/peps/pep-0008/>`_ in coding.**
+5. **Follow PEP 8 in coding.**
 
-      The coding conventions exist precisely because we would like to schedule
+      The `PEP 8 <https://www.python.org/dev/peps/pep-0008/>`_
+      coding conventions exist precisely because we would like to schedule
       exactly no time for discussing things like "how to name variables",
-      "whether space is needed" and so on for coding. If we drift away from PEP 8,
-      the Linguistica 5 codebase will degrade over time.
-
-
-.. _dev_overview:
-
-Overview of the development workflow
-------------------------------------
-
-brief intro of gitflow
-
-(need graphic aids or something?)
-
-introduce the key terms
-
-- done only once: FORK the repo, CLONE it to local drive, REMOTE (git remote add upstream <url>)
-- CHECKOUT master, PULL from upstream/master, CHECKOUT new branch
-- make changes and COMMIT them, repeat this step as needed
-- PUSH to fork on github
-- make PULL REQUEST
+      "whether space is needed" and so on for coding.
+      There are excellent IDEs such as PyCharm_ for maintaining Python projects
+      at a high level of quality.
 
 
 Setting up the development environment
@@ -210,53 +191,76 @@ you are now (almost) ready to do awesome work!
 1. **Verify that the master branch on your local drive is up-to-date in sync with
    the master on linguistica-uchicago/lxa5.**
 
-   It is important to make sure you start working with the latest
-   codebase:
+      It is important to make sure you start working with the latest
+      codebase:
 
-   .. code::
+      .. code::
 
-        $ git checkout master  # go to master branch
-        $ git pull upstream master  # pull the latest code from the master branch of linguistica-uchicago/lxa5 (= "upstream")
+         $ git checkout master  # go to master branch
+         $ git pull upstream master  # pull latest from master branch of upstream
 
-verify you are on master
-pull from upstream/master
-
-
-1. Never ever work from the "master" branch. (Run "git branch" to see what branches you have and which branch you're on.)
-
-2. Instead, work on a different branch whose name indicates what you are doing, e.g. "fix-bug-in-stems-to-signatures", "update-docs". You can create a branch by "git checkout -b <branch-name>"
-
-3. Now (and finally!) you can actually make changes to the source code. Make changes incrementally and commit them with git. Run this pair of commands for each commit:
-
-$ git add <files-changed>
-$ git commit -m "<commit-message>"
-
-Write brief and meaningful commit messages.
-
-4. Repeat step 3 above as many time as needed for making the new feature you're working on great. If possible, please limit the number of lines changes to below 300, so that it won't take forever to review your changes.
-
-5. When you're ready to get comments on your changes, you will push your code to your fork on github and make a pull request.
-6. To push your code to your fork:
-
-$ git push origin <branch-name>
-
-7. To make a pull request (i.e. you want linguistica-chicago/lxa5 to get the changes from <your-github-name>/lxa5, as it were), go to your GitHub page and then to the forked "lxa5" repository. Click "Pull request" (or something like "Make pull request" -- should be something fairly prominent visually). Now you'll wait for feedback.
+      Recall that "upstream" means the linguistica-uchicago/lxa5 repository.
 
 
-(incorporate these notes:)
+2. **Create a new branch for your great work.**
 
-* Each commit is one single meaning and small chunk.
+      Never work from the master branch.
+      (Run "git branch" anytime to see what branches you have and which branch you're on.)
 
-* Write meaningful commit messages
-  (see `here <http://chris.beams.io/posts/git-commit/>`_, for instance).
-  Each commit message consists of two components:
-  (1) the subject line, and (2) the message body.
-  The subject line is an imperative sentence (e.g. "Update readme"); note
-  the first word is capitalized and there's no ending period. It contains
-  no more than 50 characters. The message body explains what the commit
-  is about. (If the commit is for something minor, e.g. "Tweak readme format",
-  then the message body can be omitted.)
+      Instead, work on a different branch whose name indicates what you are doing,
+      e.g. "Revamp-stems-to-signatures", "update-docs":
 
-* **Before and after each coding session**, run ``python3 nosetests_run.py``
-  to make sure nothing breaks.
+      .. code::
 
+         $ git checkout -b <branch-name>
+
+      After this command is run, the new branch is created *and* you are on
+      that branch as well (no longer on master branch).
+
+3. **Start committing changes to source code.**
+
+      Now (and finally!) you can actually make changes to the source code.
+      Make changes incrementally and commit them with Git.
+      Run this pair of commands for each commit:
+
+      .. code::
+
+         $ git add <files-changed>
+         $ git commit -m "<commit-message>"
+
+      Write brief and meaningful commit messages,
+      e.g. "Fix bug in stems_to_signatures".
+      Aim at making each commit a logical and meaningful chunk of changes.
+
+4. **Repeat step 3 above as needed.**
+
+      Repeat step 3 for making more commits on your way to what the branch
+      is for. Limit the number of line changes to below 300 to make
+      efficient and effective code review possible.
+
+5. **Push your changes to your fork on GitHub.**
+
+      To make your changes available for review and for merging,
+      you will first have to push your changes to your fork on GitHub:
+
+      .. code::
+
+         $ git push origin <branch-name>
+
+      Recall that "origin" is the (default) name of your fork <your-github-username>/lxa5 on GitHub.
+
+6. **Make a pull request.**
+
+      Log on to your GitHub and go to your fork <your-github-username>/lxa5.
+      Now you are ready to make a pull request
+      (i.e. you want linguistica-chicago/lxa5 to get the changes
+      from your <branch-name> of <your-github-name>/lxa5, as it were).
+      Click "Pull request"
+      (or something like "Make pull request" -- it should be something fairly prominent visually).
+      Now you'll wait for feedback.
+
+7. **Start a new branch for a new "mini" project.**
+
+      After all your hard work in the pull request has been accepted (= merged
+      into linguistica-uchicago/lxa5), you can go back to step 1
+      for a new branch and an upcoming pull request!

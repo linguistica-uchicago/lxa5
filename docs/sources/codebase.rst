@@ -37,7 +37,7 @@ components:
 * :ref:`codebase_readme`
 
 Developers of the Linguistica project shall consult the page :ref:`dev` for
-setting up their environment.
+set-up and workflow.
 
 
 .. _codebase_overview:
@@ -175,7 +175,9 @@ such as ``signature``, ``manifold``, and so on.
 Documentation
 -------------
 
-Using Sphinx. More notes needed here.
+(To be updated)
+
+Using Sphinx
 
 changelog.md
 
@@ -187,7 +189,11 @@ build-doc.sh
 Continuous integration
 ----------------------
 
-, .travis.yml, .coveragerc
+(To be updated)
+
+* .travis.yml
+
+* .coveragerc
 
 * We take advantage of continuous integration to:
 
@@ -224,6 +230,8 @@ Continuous integration
 
 Tests
 -----
+
+(To be updated)
 
 * Install the packages needed for testing. Run
   ``sudo python3 -m pip -r test_requirements.txt``.
@@ -291,6 +299,8 @@ LICENSE.txt
 Readme
 ------
 
+(To be updated)
+
 rst rather than markdown is used
 because this is to be read as the
 long description in ``setup.py``,
@@ -300,6 +310,8 @@ to render the text formatting.
 
 Version
 -------
+
+(To be updated)
 
 A plain text file that specifies the version number -- currently ``5.1.0``.
 
