@@ -156,23 +156,45 @@ in that case, you are on your own and you know what you are doing.</p>
 <p>To get started, please go the section <a class="reference internal" href="#dev-overview"><span class="std std-ref">Overview of the development workflow</span></a> below.</p>
 <div class="section" id="important-reminders">
 <span id="dev-reminders"></span><h2>Important reminders<a class="headerlink" href="#important-reminders" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic simple">
-<li>Never commit changes to a &#8220;master&#8221; branch &#8211; not even at your
-own fork.</li>
-<li>Never create a branch like &#8220;develop&#8221; and &#8220;research&#8221; and plan to vomit
+<ol class="arabic">
+<li><p class="first"><strong>Never commit changes to a master branch.</strong></p>
+<blockquote>
+<div><p>Not even at your own fork &#8211; this ensures that the master branch
+is always clean and serves as a fall back in case anything disastrous
+happens.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Create task-specific branches.</strong></p>
+<blockquote>
+<div><p>Never create a branch like &#8220;develop&#8221; and &#8220;research&#8221; and plan to vomit
 a huge amount of your great work into it before making any pull requests
 (this would make code review impossible). Think of a branch as something
 much more concrete and
-a lot smaller in scale like &#8220;add-feature-x&#8221; or &#8220;fix-function-y&#8221;.</li>
-<li>Work in bite sizes: small commits, small pull requests.</li>
-<li>Each pull request should include no more than 300 line changes.</li>
+a lot smaller in scale like &#8220;add-feature-x&#8221; or &#8220;fix-function-y&#8221;.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Work in bite sizes</strong></p>
+<blockquote>
+<div><p>Small commits, small pull requests.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>No more than 300 lines of changes in each pull request.</strong></p>
+<blockquote>
+<div><p>None of the project&#8217;s core develoeprs can spend a lot of time working on
+Linguistica 5 in practice. All pull requests have to be small
+so that the code review can be done efficiently and effectively with
+useful feedback.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Follow `PEP 8 &lt;https://www.python.org/dev/peps/pep-0008/&gt;`_ in coding.</strong></p>
+<blockquote>
+<div><p>The coding conventions exist precisely because we would like to schedule
+exactly no time for discussing things like &#8220;how to name variables&#8221;,
+&#8220;whether space is needed&#8221; and so on for coding. If we drift away from PEP 8,
+the Linguistica 5 codebase will degrade over time.</p>
+</div></blockquote>
+</li>
 </ol>
-<ul class="simple">
-<li>Follow <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">PEP 8</a> in coding.
-Use <a class="reference external" href="https://www.jetbrains.com/pycharm/">PyCharm</a> which nicely checks code,
-detects PEP 8 violations, and fixes everything.
-Do <strong>NOT</strong> use any generic text/code editors.</li>
-</ul>
 </div>
 <div class="section" id="overview-of-the-development-workflow">
 <span id="dev-overview"></span><h2>Overview of the development workflow<a class="headerlink" href="#overview-of-the-development-workflow" title="Permalink to this headline">¶</a></h2>

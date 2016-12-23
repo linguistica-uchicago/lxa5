@@ -29,23 +29,37 @@ To get started, please go the section :ref:`dev_overview` below.
 Important reminders
 -------------------
 
-1. Never commit changes to a "master" branch -- not even at your
-   own fork.
+1. **Never commit changes to a master branch.**
 
-2. Never create a branch like "develop" and "research" and plan to vomit
-   a huge amount of your great work into it before making any pull requests
-   (this would make code review impossible). Think of a branch as something
-   much more concrete and
-   a lot smaller in scale like "add-feature-x" or "fix-function-y".
+      Not even at your own fork -- this ensures that the master branch
+      is always clean and serves as a fall back in case anything disastrous
+      happens.
 
-3. Work in bite sizes: small commits, small pull requests.
+2. **Create task-specific branches.**
 
-4. Each pull request should include no more than 300 line changes.
+      Never create a branch like "develop" and "research" and plan to vomit
+      a huge amount of your great work into it before making any pull requests
+      (this would make code review impossible). Think of a branch as something
+      much more concrete and
+      a lot smaller in scale like "add-feature-x" or "fix-function-y".
 
-* Follow `PEP 8 <https://www.python.org/dev/peps/pep-0008/>`_ in coding.
-  Use `PyCharm <https://www.jetbrains.com/pycharm/>`_ which nicely checks code,
-  detects PEP 8 violations, and fixes everything.
-  Do **NOT** use any generic text/code editors.
+3. **Work in bite sizes**
+
+      Small commits, small pull requests.
+
+4. **No more than 300 lines of changes in each pull request.**
+
+      None of the project's core develoeprs can spend a lot of time working on
+      Linguistica 5 in practice. All pull requests have to be small
+      so that the code review can be done efficiently and effectively with
+      useful feedback.
+
+5. **Follow `PEP 8 <https://www.python.org/dev/peps/pep-0008/>`_ in coding.**
+
+      The coding conventions exist precisely because we would like to schedule
+      exactly no time for discussing things like "how to name variables",
+      "whether space is needed" and so on for coding. If we drift away from PEP 8,
+      the Linguistica 5 codebase will degrade over time.
 
 
 .. _dev_overview:
