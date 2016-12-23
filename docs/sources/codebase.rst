@@ -298,6 +298,51 @@ and PyPI recognizes rst but not markdown
 to render the text formatting.
 
 
+Version
+-------
+
+A plain text file that specifies the version number -- currently ``5.1.0``.
+
+Defined in `linguistica/VERSION` and nowhere else.
+
+
+Graphical user interface
+------------------------
+
+(To be updated)
+
+* Because SIP and PyQt5 are required for the GUI but their installation
+  is possibly non-trivial, they are designated as *optional* dependencies
+  for Linguistica 5 (the GUI is not an absolute must-have for Linguistica 5
+  to work).
+
+* The GUI code is in ``linguistica/gui``. The GUI is launched by
+  calling ``linguistica.gui.main()`` in ``linguistica/__main__.py``.
+
+* All GUI code is accessible through only ``linguistica.gui.main()``
+  defined in ``linguistica/gui/__init__.py``.
+  This is important, because PyQt5 may potentially be unavailable
+  at the user's system. The ``__init__.py`` safeguards against import errors,
+  but other ``.py`` files in ``linguistica/gui`` do not.
+  Relatedly, when ``linguistica.gui.main()`` is to be called
+  (as in ``linguistica/__main__.py``), there is always code that checks
+  whether PyQt5 is importable before ``linguistica.gui.main()`` can
+  actually be called.
+
+
+Command line interface
+----------------------
+
+(To be updated)
+
+* The CLI code is in ``linguistica/cli.py``, all wrapped in
+  ``linguistica.cli.main()`` called in ``linguistica/__main__.py``.
+
+* We don't output ``words_to_contexts``
+  and ``contexts_to_words``, because they are huge...
+  Or we could just output those whose counts are higher than some threshold?
+
+
 
 ``linguistica/__main__.py``
 ---------------------------

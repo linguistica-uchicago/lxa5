@@ -1,27 +1,30 @@
+.. _GitHub: https://github.com/
+
+.. _Git: https://git-scm.com/
+
+.. _Miniconda: http://conda.pydata.org/miniconda.html
+
 .. _dev:
 
 For developers
 ==============
 
-This page provides technical notes for the developers of the Linguistica 5
-group. For introductory background about the Linguistica 5 codebase,
+This page provides technical notes for the developers of the Linguistica 5 group.
+For introductory background about the Linguistica 5 codebase,
 please consult :ref:`codebase`.
 
-Overview of the development workflow
-------------------------------------
+None of the development notes here are
+new, as they all come from the collective wisdom of the open-source and
+software development community.
+They should be taken as best practice recommendations, and nothing is set in stone.
+You are entirely entitled to deviate from any of the advice given here;
+in that case, you are on your own and you know what you are doing.
 
-brief intro of gitflow
+:ref:`dev_reminders`
 
-(need graphic aids or something?)
+To get started, please go the section :ref:`dev_overview` below.
 
-introduce the key terms
-
-- done only once: FORK the repo, CLONE it to local drive, REMOTE (git remote add upstream <url>)
-- CHECKOUT master, PULL from upstream/master, CHECKOUT new branch
-- make changes and COMMIT them, repeat this step as needed
-- PUSH to fork on github
-- make PULL REQUEST
-
+.. _dev_reminders:
 
 Important reminders
 -------------------
@@ -40,68 +43,92 @@ Important reminders
 4. Each pull request should include no more than 300 line changes.
 
 
+.. _dev_overview:
+
+Overview of the development workflow
+------------------------------------
+
+brief intro of gitflow
+
+(need graphic aids or something?)
+
+introduce the key terms
+
+- done only once: FORK the repo, CLONE it to local drive, REMOTE (git remote add upstream <url>)
+- CHECKOUT master, PULL from upstream/master, CHECKOUT new branch
+- make changes and COMMIT them, repeat this step as needed
+- PUSH to fork on github
+- make PULL REQUEST
+
+
 Setting up the development environment
 --------------------------------------
 
 To work on the Linguistica 5 code:
 
-1. Set up a personal GitHub account
+1. **Set up a personal GitHub account**
 
-   Pick a username preferably with lowercase letters only, e.g. "joesmith".
-   The Linguistica 5 codebase is hosted on GitHub.
-   Your contributions will be added to it via the GitHub interface.
-
-
-2. Download and install ``git``
-
-   ``git`` is the version control system of the Linguistica 5 project.
-   Your contributions will be managed and passed from your local drive to
-   GitHub by ``git``.
+      If you are setting a new GitHub_ account,
+      pick a username preferably with lowercase letters only, e.g. "joesmith".
+      The Linguistica 5 codebase is hosted on GitHub.
+      Your contributions will be added to it via the GitHub interface.
 
 
-3. Download and install Miniconda
+2. **Download and install Git**
 
-   You may want to take advantage of Miniconda for having a dedicated
-   environment with a specific Python version and other dependencies
-   for the Linguistica 5 project.
-   Having such a dedicated environment is desirable as you are likely working
-   on multiple projects at any given time (Linguistica 5 being just one of them),
-   and you don't want the environment for one project to contaminate that for
-   another project.
+      Git_ is the version control system of the Linguistica 5 project.
+      Your contributions will be managed and passed from your local drive to
+      GitHub by Git.
 
-   Install Miniconda for Python 3.5. (This installs a new Python distribution
-   on your machine, but we are not going to use it directly.)
 
-   After Miniconda is installed, by default you are at the root environment.
-   If you fire up your Python interpreter from the command line,
-   you should see you are on Python 3.5 whose distribution is by
-   Continuum Analytics, Inc. (the company that maintains Miniconda).
-   Exit the interpreter, and run the following command to create the new environment
-   for Linguistica 5.
+3. **Download and install Miniconda**
 
-   .. code::
+      Install Miniconda_ for Python 3.5. (This installs a new Python distribution
+      on your machine, but we are not going to use it directly.)
 
-      $ conda create -n lxa5 python=3.5 numpy scipy networkx
+      You may want to take advantage of Miniconda for having a dedicated
+      environment with a specific Python version and other dependencies
+      for the Linguistica 5 project.
 
-   This command creates the new environment called ``lxa5`` with Python 3.5
-   as well as the specified dependencies for Linguistica 5. After this command
-   is done with all the installation work, run the following to activate the
-   new environment:
+      Having such a dedicated environment is desirable as you are likely working
+      on multiple projects at any given time (Linguistica 5 being just one of them),
+      and you don't want the environment for one project to contaminate that for
+      another project.
 
-   .. code::
+      After Miniconda is installed, by default you are at the root environment.
+      If you fire up your Python interpreter from the command line,
+      you should see you are on Python 3.5 whose distribution is by
+      Continuum Analytics, Inc. (the company that maintains Miniconda).
+      Exit the interpreter, and run the following command to create the new environment
+      for Linguistica 5.
 
-      $ source activate lxa5
+      .. code::
 
-   Now you are in the ``lxa5`` environment (no longer in the root environment).
-   As an indicator for this change, your command line prompt is now prefixed
-   with ``(lxa5)``.
+         $ conda create -n lxa5 python=3.5 numpy scipy networkx
 
-   To deactivate the environment (for going back to the root environment, or
-   for preparing to switch to another environment), simply run this:
+      This command creates the new environment called ``lxa5`` with Python 3.5
+      as well as the specified dependencies for Linguistica 5. After this command
+      is done with all the installation work, run the following to activate the
+      new environment:
 
-   .. code::
+      .. code::
 
-      $ source deactivate
+         $ source activate lxa5
+
+      Now you are in the ``lxa5`` environment (no longer in the root environment).
+      As an indicator for this change, your command line prompt is now prefixed
+      with ``(lxa5)``. Whenever you are working on the Linguistica 5 codebase,
+      be sure you are in this environment at your command line
+      (otherwise you might get puzzled: "I thought I had the correct Python
+      version, but it's not right?!" or "I thought I already had SciPy but it
+      says it's not there?!" etc.)
+
+      To deactivate the environment (for going back to the root environment, or
+      for preparing to switch to another environment), simply run this:
+
+      .. code::
+
+         $ source deactivate
 
 
 Getting Linguistica 5
@@ -117,17 +144,17 @@ To download the Linguistica 5 codebase for development work:
 3. Now under your personal GitHub account, you see a new repository called "lxa5".
 
 4. Clone this repository (i.e. <your-github-username>/lxa5, not linguistica-chicago/lxa5)
-   onto your local disk using ``git``, and also install the ``linguistica`` library:
+   onto your local disk using Git, and also install the Linguistica 5 Python library:
 
    .. code::
 
-      $ git clone https://github.com/<your-github-name>/lxa5.git
+      $ git clone https://github.com/<your-github-username>/lxa5.git
       $ cd lxa5
       $ python setup.py develop
 
    (If you're on Linux, you will probably need ``sudo`` for the last command above).
 
-   Now you have the python library ``linguistica`` installed in development mode
+   Now you have the Python library (called ``linguistica``) installed in development mode
    (i.e. changes in source code are immediately effective -- no need to uninstall
    and reinstall to try out new code).
 
@@ -142,7 +169,7 @@ To download the Linguistica 5 codebase for development work:
    From time to time, you will need to keep your local
    copy of the Linguistica 5 codebase up-to-date by pulling the latest code
    from the linguistica-uchicago/lxa5 repository. This added link (with the name
-   "upstream") tells git where to pull updates from.
+   "upstream") tells Git where to pull updates from.
 
    By default, after you have cloned and created a copy of Linguistica 5 on
    your local drive (in step 4 above), there is already a link called "origin"
@@ -153,9 +180,6 @@ To download the Linguistica 5 codebase for development work:
    .. code::
 
       $ git remote -v
-
-   (You will see "fetch" and "push" for each repository link. Their differences
-   will be clear very shortly.)
 
 
 Committing changes and making a pull request
@@ -188,46 +212,20 @@ $ git push origin <branch-name>
 7. To make a pull request (i.e. you want linguistica-chicago/lxa5 to get the changes from <your-github-name>/lxa5, as it were), go to your GitHub page and then to the forked "lxa5" repository. Click "Pull request" (or something like "Make pull request" -- should be something fairly prominent visually). Now you'll wait for feedback.
 
 
-(old intro)
------------
+(incorporate these notes:)
 
-These notes record various details and potential gotchas regarding
-the source code of Linguistica 5.
-They should be helpful for the core developers of
-Linguistica 5 or whoever would like to mess with the code.
-At the moment the notes are added onto this page as they pop up in the mind of
-the Linguistica 5 developers, and are revamped in a more organized form
-from time to time.
+* Each commit is one single meaning and small chunk.
 
-All notes here assume that you are at the project root directory ``lxa5``:
+* Write meaningful commit messages
+  (see `here <http://chris.beams.io/posts/git-commit/>`_, for instance).
+  Each commit message consists of two components:
+  (1) the subject line, and (2) the message body.
+  The subject line is an imperative sentence (e.g. "Update readme"); note
+  the first word is capitalized and there's no ending period. It contains
+  no more than 50 characters. The message body explains what the commit
+  is about. (If the commit is for something minor, e.g. "Tweak readme format",
+  then the message body can be omitted.)
 
-.. code-block:: bash
-
-   $ git clone http://github.com/linguistica-uchicago/lxa5.git
-   $ cd lxa5
-
-This is important, as all references to commands, paths, files etc depend on it.
-
-The command ``python3`` as referred to throughout is meant to point to your
-Python 3 interpreter. Depending on your setup, the command might simply be
-``python`` for you. (In any event, Linguistica 5 requires Python 3.4 or above.)
-
-
-First steps
------------
-
-* Install the Linguistica 5 library **as a developer**.
-  Run ``sudo python3 setup.py develop``. The ``develop`` argument means that
-  you "install" the library by placing a symlink at your ``lxa5`` project
-  directory so that your Python interpreter recognizes ``linguistica``
-  at the current directory as a library and
-  you can keep changing the code with immediate effects,
-  without having to actually uninstall and reinstall all the time.
-
-* Install the packages needed for testing. Run
-  ``sudo python3 -m pip -r test_requirements.txt``.
-
-* Use `PyCharm <https://www.jetbrains.com/pycharm/>`_ as your IDE.
 
 General remarks
 ---------------
@@ -314,68 +312,4 @@ Notes in this section are to be better organized...
   ``open(file_path, encoding=ENCODING)`` or equivalent.
 
 
-
-Commits and pushes
-------------------
-
-* Each commit is one single meaning and small chunk.
-
-* Write meaningful commit messages
-  (see `here <http://chris.beams.io/posts/git-commit/>`_, for instance).
-  Each commit message consists of two components:
-  (1) the subject line, and (2) the message body.
-  The subject line is an imperative sentence (e.g. "Update readme"); note
-  the first word is capitalized and there's no ending period. It contains
-  no more than 50 characters. The message body explains what the commit
-  is about. (If the commit is for something minor, e.g. "Tweak readme format",
-  then the message body can be omitted.)
-
-* No need to push code to GitHub for every single commit.
-  This is because the repository is connected to :ref:`ci`, and therefore we
-  don't need to waste web resources to trigger the tests etc all the time,
-  especially for minor commits. Also, before and after every commit,
-  we run tests locally (i.e., running ``python3 nosetests_run.py``) to ensure
-  nothing breaks anyway. So the practice of **not** pushing code for every
-  commit is fine.
-
-
-
-
-Graphical user interface
-------------------------
-
-* Because SIP and PyQt5 are required for the GUI but their installation
-  is possibly non-trivial, they are designated as *optional* dependencies
-  for Linguistica 5 (the GUI is not an absolute must-have for Linguistica 5
-  to work).
-
-* The GUI code is in ``linguistica/gui``. The GUI is launched by
-  calling ``linguistica.gui.main()`` in ``linguistica/__main__.py``.
-
-* All GUI code is accessible through only ``linguistica.gui.main()``
-  defined in ``linguistica/gui/__init__.py``.
-  This is important, because PyQt5 may potentially be unavailable
-  at the user's system. The ``__init__.py`` safeguards against import errors,
-  but other ``.py`` files in ``linguistica/gui`` do not.
-  Relatedly, when ``linguistica.gui.main()`` is to be called
-  (as in ``linguistica/__main__.py``), there is always code that checks
-  whether PyQt5 is importable before ``linguistica.gui.main()`` can
-  actually be called.
-
-
-Command line interface
-----------------------
-
-* The CLI code is in ``linguistica/cli.py``, all wrapped in
-  ``linguistica.cli.main()`` called in ``linguistica/__main__.py``.
-
-* We don't output ``words_to_contexts``
-  and ``contexts_to_words``, because they are huge...
-  Or we could just output those whose counts are higher than some threshold?
-
-
-``linguistica/VERSION``
------------------------
-
-A plain text file that specifies the version number -- currently ``5.1.0``.
 

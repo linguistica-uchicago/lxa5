@@ -100,6 +100,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#license">License</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#readme">Readme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version">Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#graphical-user-interface">Graphical user interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#command-line-interface">Command line interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#linguistica-main-py"><code class="docutils literal"><span class="pre">linguistica/__main__.py</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#linguistica-init-py"><code class="docutils literal"><span class="pre">linguistica/__init__.py</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#linguistica-release-py"><code class="docutils literal"><span class="pre">linguistica/release.py</span></code></a></li>
@@ -382,6 +385,43 @@ because this is to be read as the
 long description in <code class="docutils literal"><span class="pre">setup.py</span></code>,
 and PyPI recognizes rst but not markdown
 to render the text formatting.</p>
+</div>
+<div class="section" id="version">
+<h2>Version<a class="headerlink" href="#version" title="Permalink to this headline">¶</a></h2>
+<p>A plain text file that specifies the version number &#8211; currently <code class="docutils literal"><span class="pre">5.1.0</span></code>.</p>
+<p>Defined in <cite>linguistica/VERSION</cite> and nowhere else.</p>
+</div>
+<div class="section" id="graphical-user-interface">
+<h2>Graphical user interface<a class="headerlink" href="#graphical-user-interface" title="Permalink to this headline">¶</a></h2>
+<p>(To be updated)</p>
+<ul class="simple">
+<li>Because SIP and PyQt5 are required for the GUI but their installation
+is possibly non-trivial, they are designated as <em>optional</em> dependencies
+for Linguistica 5 (the GUI is not an absolute must-have for Linguistica 5
+to work).</li>
+<li>The GUI code is in <code class="docutils literal"><span class="pre">linguistica/gui</span></code>. The GUI is launched by
+calling <code class="docutils literal"><span class="pre">linguistica.gui.main()</span></code> in <code class="docutils literal"><span class="pre">linguistica/__main__.py</span></code>.</li>
+<li>All GUI code is accessible through only <code class="docutils literal"><span class="pre">linguistica.gui.main()</span></code>
+defined in <code class="docutils literal"><span class="pre">linguistica/gui/__init__.py</span></code>.
+This is important, because PyQt5 may potentially be unavailable
+at the user&#8217;s system. The <code class="docutils literal"><span class="pre">__init__.py</span></code> safeguards against import errors,
+but other <code class="docutils literal"><span class="pre">.py</span></code> files in <code class="docutils literal"><span class="pre">linguistica/gui</span></code> do not.
+Relatedly, when <code class="docutils literal"><span class="pre">linguistica.gui.main()</span></code> is to be called
+(as in <code class="docutils literal"><span class="pre">linguistica/__main__.py</span></code>), there is always code that checks
+whether PyQt5 is importable before <code class="docutils literal"><span class="pre">linguistica.gui.main()</span></code> can
+actually be called.</li>
+</ul>
+</div>
+<div class="section" id="command-line-interface">
+<h2>Command line interface<a class="headerlink" href="#command-line-interface" title="Permalink to this headline">¶</a></h2>
+<p>(To be updated)</p>
+<ul class="simple">
+<li>The CLI code is in <code class="docutils literal"><span class="pre">linguistica/cli.py</span></code>, all wrapped in
+<code class="docutils literal"><span class="pre">linguistica.cli.main()</span></code> called in <code class="docutils literal"><span class="pre">linguistica/__main__.py</span></code>.</li>
+<li>We don&#8217;t output <code class="docutils literal"><span class="pre">words_to_contexts</span></code>
+and <code class="docutils literal"><span class="pre">contexts_to_words</span></code>, because they are huge...
+Or we could just output those whose counts are higher than some threshold?</li>
+</ul>
 </div>
 <div class="section" id="linguistica-main-py">
 <h2><code class="docutils literal"><span class="pre">linguistica/__main__.py</span></code><a class="headerlink" href="#linguistica-main-py" title="Permalink to this headline">¶</a></h2>
