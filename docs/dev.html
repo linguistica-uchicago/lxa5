@@ -91,6 +91,7 @@
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command line interface (CLI)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lexicon.html">Full API documentation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">For developers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview-of-the-development-workflow">Overview of the development workflow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#important-reminders">Important reminders</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#setting-up-the-development-environment">Setting up the development environment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#getting-linguistica-5">Getting Linguistica 5</a></li>
@@ -152,6 +153,19 @@
 <p>This page provides technical notes for the developers of the Linguistica 5
 group. For introductory background about the Linguistica 5 codebase,
 please consult <a class="reference internal" href="codebase.html#codebase"><span class="std std-ref">Codebase</span></a>.</p>
+<div class="section" id="overview-of-the-development-workflow">
+<h2>Overview of the development workflow<a class="headerlink" href="#overview-of-the-development-workflow" title="Permalink to this headline">¶</a></h2>
+<p>brief intro of gitflow</p>
+<p>(need graphic aids or something?)</p>
+<p>introduce the key terms</p>
+<ul class="simple">
+<li>done only once: FORK the repo, CLONE it to local drive, REMOTE (git remote add upstream &lt;url&gt;)</li>
+<li>CHECKOUT master, PULL from upstream/master, CHECKOUT new branch</li>
+<li>make changes and COMMIT them, repeat this step as needed</li>
+<li>PUSH to fork on github</li>
+<li>make PULL REQUEST</li>
+</ul>
+</div>
 <div class="section" id="important-reminders">
 <h2>Important reminders<a class="headerlink" href="#important-reminders" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
@@ -471,7 +485,7 @@ Or we could just output those whose counts are higher than some threshold?</li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015-2016, Jackson Lee.
-      Last updated on Dec 22, 2016.
+      Last updated on Dec 23, 2016.
 
     </p>
   </div>

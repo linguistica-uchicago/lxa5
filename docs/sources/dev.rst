@@ -7,6 +7,22 @@ This page provides technical notes for the developers of the Linguistica 5
 group. For introductory background about the Linguistica 5 codebase,
 please consult :ref:`codebase`.
 
+Overview of the development workflow
+------------------------------------
+
+brief intro of gitflow
+
+(need graphic aids or something?)
+
+introduce the key terms
+
+- done only once: FORK the repo, CLONE it to local drive, REMOTE (git remote add upstream <url>)
+- CHECKOUT master, PULL from upstream/master, CHECKOUT new branch
+- make changes and COMMIT them, repeat this step as needed
+- PUSH to fork on github
+- make PULL REQUEST
+
+
 Important reminders
 -------------------
 
