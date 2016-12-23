@@ -75,28 +75,65 @@ To work on the Linguistica 5 code:
 Getting Linguistica 5
 ---------------------
 
-Each person working on the code has to have their own fork under their GitHub account. Steps for each person:
+To download the Linguistica 5 codebase for development work:
 
-1. Make a personal GitHub account (if not done already).
-2. Log on to GitHub and go to https://github.com/linguistica-uchicago/lxa5
-3. At the top right hand corner, click "Fork". (If prompted for "where should we fork this repository", choose your own personal GitHub name.)
-4. Now under your personal GitHub, you see a new repository called "lxa5".
-5. Clone this repository (i.e. <your-github-name>/lxa5, not linguistica-chicago/lxa5) onto your local disk using git, and also install the linguistica library:
+1. Log on to your GitHub account and go to https://github.com/linguistica-uchicago/lxa5
 
-$ git clone https://github.com/<your-github-name>/lxa5.git
-$ cd lxa5
-$ python setup.py develop
+2. At the top right hand corner, click "Fork".
+   (If prompted for "where should we fork this repository", choose your own personal GitHub username.)
 
-(If you're on linux, you will likely need "sudo" for the last command above).
+3. Now under your personal GitHub account, you see a new repository called "lxa5".
 
-6. Test if you have the library installed. Fire up your python interpreter:
+4. Clone this repository (i.e. <your-github-username>/lxa5, not linguistica-chicago/lxa5)
+   onto your local disk using ``git``, and also install the ``linguistica`` library:
 
->>> import linguistica  # there should be no ImportError
+   .. code::
+
+      $ git clone https://github.com/<your-github-name>/lxa5.git
+      $ cd lxa5
+      $ python setup.py develop
+
+   (If you're on Linux, you will probably need ``sudo`` for the last command above).
+
+   Now you have the python library ``linguistica`` installed in development mode
+   (i.e. changes in source code are immediately effective -- no need to uninstall
+   and reinstall to try out new code).
+
+5. Add a link to the linguistica-uchicago/lxa5 repository:
+
+   .. code::
+
+      $ git remote add upstream https://github.com/linguistica-uchicago/lxa5.git
+
+   This command adds a new link to the linguistica-uchicago/lxa5 repository
+   (not your fork) and names it as "upstream".
+   From time to time, you will need to keep your local
+   copy of the Linguistica 5 codebase up-to-date by pulling the latest code
+   from the linguistica-uchicago/lxa5 repository. This added link (with the name
+   "upstream") tells git where to pull updates from.
+
+   By default, after you have cloned and created a copy of Linguistica 5 on
+   your local drive (in step 4 above), there is already a link called "origin"
+   set up and linked to your fork on GitHub. Run the following to verify you
+   have "origin" pointing to your fork and "upstream" pointing to
+   linguistica-uchicago/lxa5:
+
+   .. code::
+
+      $ git remote -v
+
+   (You will see "fetch" and "push" for each repository link. Their differences
+   will be clear very shortly.)
+
 
 Workflow
 --------
 
-Now you have the python library "linguistica" installed in development mode (i.e. changes in source code are immediately effective -- no need to uninstall and reinstall to try out new code). And you're ready to do awesome work by changing the source code:
+And you're ready to do awesome work by changing the source code:
+
+verify you are on master
+pull from upstream/master
+
 
 1. Never ever work from the "master" branch. (Run "git branch" to see what branches you have and which branch you're on.)
 2. Instead, work on a different branch whose name indicates what you are doing, e.g. "fix-bug-in-stems-to-signatures", "update-docs". You can create a branch by "git checkout -b <branch-name>"
