@@ -91,9 +91,10 @@
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command line interface (CLI)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lexicon.html">Full API documentation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">For developers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#important-reminders">Important reminders</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#setting-up-the-development-environment">Setting up the development environment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#getting-linguistica-5">Getting Linguistica 5</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#workflow">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#committing-changes-and-making-a-pull-request">Committing changes and making a pull request</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#old-intro">(old intro)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#first-steps">First steps</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#general-remarks">General remarks</a></li>
@@ -151,6 +152,20 @@
 <p>This page provides technical notes for the developers of the Linguistica 5
 group. For introductory background about the Linguistica 5 codebase,
 please consult <a class="reference internal" href="codebase.html#codebase"><span class="std std-ref">Codebase</span></a>.</p>
+<div class="section" id="important-reminders">
+<h2>Important reminders<a class="headerlink" href="#important-reminders" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>Never commit changes to a &#8220;master&#8221; branch &#8211; not even at your
+own fork.</li>
+<li>Never create a branch like &#8220;develop&#8221; and &#8220;research&#8221; and plan to vomit
+a huge amount of your great work into it before making any pull requests
+(this would make code review impossible). Think of a branch as something
+much more concrete and
+a lot smaller in scale like &#8220;add-feature-x&#8221; or &#8220;fix-function-y&#8221;.</li>
+<li>Work in bite sizes: small commits, small pull requests.</li>
+<li>Each pull request should include no more than 300 line changes.</li>
+</ol>
+</div>
 <div class="section" id="setting-up-the-development-environment">
 <h2>Setting up the development environment<a class="headerlink" href="#setting-up-the-development-environment" title="Permalink to this headline">¶</a></h2>
 <p>To work on the Linguistica 5 code:</p>
@@ -248,9 +263,11 @@ will be clear very shortly.)</p>
 </li>
 </ol>
 </div>
-<div class="section" id="workflow">
-<h2>Workflow<a class="headerlink" href="#workflow" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="committing-changes-and-making-a-pull-request">
+<h2>Committing changes and making a pull request<a class="headerlink" href="#committing-changes-and-making-a-pull-request" title="Permalink to this headline">¶</a></h2>
 <p>And you&#8217;re ready to do awesome work by changing the source code:</p>
+<p>verify you are on master
+pull from upstream/master</p>
 <ol class="arabic simple">
 <li>Never ever work from the &#8220;master&#8221; branch. (Run &#8220;git branch&#8221; to see what branches you have and which branch you&#8217;re on.)</li>
 <li>Instead, work on a different branch whose name indicates what you are doing, e.g. &#8220;fix-bug-in-stems-to-signatures&#8221;, &#8220;update-docs&#8221;. You can create a branch by &#8220;git checkout -b &lt;branch-name&gt;&#8221;</li>

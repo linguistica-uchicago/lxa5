@@ -7,6 +7,22 @@ This page provides technical notes for the developers of the Linguistica 5
 group. For introductory background about the Linguistica 5 codebase,
 please consult :ref:`codebase`.
 
+Important reminders
+-------------------
+
+1. Never commit changes to a "master" branch -- not even at your
+   own fork.
+
+2. Never create a branch like "develop" and "research" and plan to vomit
+   a huge amount of your great work into it before making any pull requests
+   (this would make code review impossible). Think of a branch as something
+   much more concrete and
+   a lot smaller in scale like "add-feature-x" or "fix-function-y".
+
+3. Work in bite sizes: small commits, small pull requests.
+
+4. Each pull request should include no more than 300 line changes.
+
 
 Setting up the development environment
 --------------------------------------
@@ -126,8 +142,8 @@ To download the Linguistica 5 codebase for development work:
    will be clear very shortly.)
 
 
-Workflow
---------
+Committing changes and making a pull request
+--------------------------------------------
 
 And you're ready to do awesome work by changing the source code:
 
@@ -136,7 +152,9 @@ pull from upstream/master
 
 
 1. Never ever work from the "master" branch. (Run "git branch" to see what branches you have and which branch you're on.)
+
 2. Instead, work on a different branch whose name indicates what you are doing, e.g. "fix-bug-in-stems-to-signatures", "update-docs". You can create a branch by "git checkout -b <branch-name>"
+
 3. Now (and finally!) you can actually make changes to the source code. Make changes incrementally and commit them with git. Run this pair of commands for each commit:
 
 $ git add <files-changed>
