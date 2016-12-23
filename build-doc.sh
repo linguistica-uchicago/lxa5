@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 BUILDPATH=docs
-SOURCEPATH=docs-rst-sources
+SOURCEPATH=docs/sources
 
 rm -rf $BUILDPATH/_static/*
 rm -rf $BUILDPATH/_sources/*

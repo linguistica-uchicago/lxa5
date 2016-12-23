@@ -1,24 +1,13 @@
 # Linguistica 5
 
-These notes are for the core developers of the project only.
+These notes are only for the administrators and core developers of the project.
+They are what is done from time to time for project maintenance.
 
-## Installing the library in development mode
+Core developers are assumed to already
+have their system set up and Linguistica 5 downloaded
+as described here:
 
-
-First and foremost, you need to have Linguistica 5 installed *in development mode*.
-If you have Linguistica 5 installed, be sure to uninstall:
-
-```
-$ pip uninstall linguistica
-```
-
-Then install it with the `develop` flag:
-
-```
-$ git clone https://github.com/linguistica-uchicago/lxa5.git
-$ cd lxa5
-$ python setup.py develop
-```
+http://linguistica-uchicago.github.io/lxa5/dev.html
 
 ## Install the dependencies for development and documentation
 

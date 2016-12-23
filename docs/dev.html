@@ -32,7 +32,7 @@
   
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="Linguistica 5.1.0 documentation" href="index.html"/>
-        <link rel="next" title="Code base" href="codebase.html"/>
+        <link rel="next" title="Codebase" href="codebase.html"/>
         <link rel="prev" title="Full API documentation" href="lexicon.html"/> 
 
   
@@ -91,22 +91,13 @@
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command line interface (CLI)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lexicon.html">Full API documentation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">For developers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#first-steps">First steps</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#general-remarks">General remarks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#continuous-integration">Continuous integration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#commits-and-pushes">Commits and pushes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#testing">Testing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#setup-py"><code class="docutils literal"><span class="pre">setup.py</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#readme-rst"><code class="docutils literal"><span class="pre">readme.rst</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#changelog-md"><code class="docutils literal"><span class="pre">changelog.md</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#graphical-user-interface">Graphical user interface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#command-line-interface">Command line interface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#linguistica-version"><code class="docutils literal"><span class="pre">linguistica/VERSION</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#codebase">Codebase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#important-reminders">Important reminders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-up-the-development-environment">Setting up the development environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-linguistica-5">Getting Linguistica 5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#committing-changes-and-making-a-pull-request">Committing changes and making a pull request</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="codebase.html">Code base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="codebase.html">Codebase</a></li>
 </ul>
 
             
@@ -151,254 +142,244 @@
             
   <div class="section" id="for-developers">
 <span id="dev"></span><h1>For developers<a class="headerlink" href="#for-developers" title="Permalink to this headline">¶</a></h1>
-<p>These notes record various details and potential gotchas regarding
-the source code of Linguistica 5.
-They should be helpful for the core developers of
-Linguistica 5 or whoever would like to mess with the code.
-At the moment the notes are added onto this page as they pop up in the mind of
-the Linguistica 5 developers, and are revamped in a more organized form
-from time to time.</p>
-<p>All notes here assume that you are at the project root directory <code class="docutils literal"><span class="pre">lxa5</span></code>:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ git clone http://github.com/linguistica-uchicago/lxa5.git
-$ <span class="nb">cd</span> lxa5
+<p>This page provides technical notes for the developers of the Linguistica 5 group.
+For introductory background about the Linguistica 5 codebase,
+please consult <a class="reference internal" href="codebase.html#codebase"><span class="std std-ref">Codebase</span></a>.</p>
+<p>None of the development notes here are
+new, as they all come from the collective wisdom of the open-source and
+software development community &#8211; notably, for what is known as &#8220;gitflow&#8221;.
+They should be taken as best practice recommendations, and nothing is set in stone.
+You are entirely entitled to deviate from any of the advice given here;
+in that case, you are on your own and you know what you are doing.</p>
+<div class="section" id="important-reminders">
+<span id="dev-reminders"></span><h2>Important reminders<a class="headerlink" href="#important-reminders" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first"><strong>Never commit changes to a master branch.</strong></p>
+<blockquote>
+<div><p>Not even at your own fork &#8211; this ensures that the master branch
+is always clean and serves as a fall back in case anything disastrous
+happens.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Create task-specific branches.</strong></p>
+<blockquote>
+<div><p>Never create a branch like &#8220;develop&#8221; and &#8220;research&#8221; and plan to vomit
+a huge amount of your great work into it before making any pull requests
+(this would make code review impossible). Think of a branch as something
+much more concrete and
+a lot smaller in scale like &#8220;add-feature-x&#8221; or &#8220;fix-function-y&#8221;.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Work in bite sizes.</strong></p>
+<blockquote>
+<div><p>Small commits, small pull requests.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>No more than 300 lines of changes in each pull request.</strong></p>
+<blockquote>
+<div><p>All pull requests have to be small
+so that the code review can be done efficiently and effectively with
+useful feedback.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Follow PEP 8 in coding.</strong></p>
+<blockquote>
+<div><p>The <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">PEP 8</a>
+coding conventions exist precisely because we would like to schedule
+exactly no time for discussing things like &#8220;how to name variables&#8221;,
+&#8220;whether space is needed&#8221; and so on for coding.
+There are excellent IDEs such as <a class="reference external" href="https://www.jetbrains.com/pycharm/">PyCharm</a> for maintaining Python projects
+at a high level of quality.</p>
+</div></blockquote>
+</li>
+</ol>
+</div>
+<div class="section" id="setting-up-the-development-environment">
+<h2>Setting up the development environment<a class="headerlink" href="#setting-up-the-development-environment" title="Permalink to this headline">¶</a></h2>
+<p>To work on the Linguistica 5 code:</p>
+<ol class="arabic">
+<li><p class="first"><strong>Set up a personal GitHub account</strong></p>
+<blockquote>
+<div><p>If you are setting a new <a class="reference external" href="https://github.com/">GitHub</a> account,
+pick a username preferably with lowercase letters only, e.g. &#8220;joesmith&#8221;.
+The Linguistica 5 codebase is hosted on GitHub.
+Your contributions will be added to it via the GitHub interface.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Download and install Git</strong></p>
+<blockquote>
+<div><p><a class="reference external" href="https://git-scm.com/">Git</a> is the version control system of the Linguistica 5 project.
+Your contributions will be managed and passed from your local drive to
+GitHub by Git.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Download and install Miniconda</strong></p>
+<blockquote>
+<div><p>Install <a class="reference external" href="http://conda.pydata.org/miniconda.html">Miniconda</a> for Python 3.5. (This installs a new Python distribution
+on your machine, but we are not going to use it directly.)</p>
+<p>You may want to take advantage of Miniconda for having a dedicated
+environment with a specific Python version and other dependencies
+for the Linguistica 5 project.</p>
+<p>Having such a dedicated environment is desirable as you are likely working
+on multiple projects at any given time (Linguistica 5 being just one of them),
+and you don&#8217;t want the environment for one project to contaminate that for
+another project.</p>
+<p>After Miniconda is installed, by default you are at the root environment.
+If you fire up your Python interpreter from the command line,
+you should see you are on Python 3.5 whose distribution is by
+Continuum Analytics, Inc. (the company that maintains Miniconda).
+Exit the interpreter, and run the following command to create the new environment
+for Linguistica 5.</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>$ conda create -n lxa5 python=3.5 numpy scipy networkx
 </pre></div>
 </div>
-<p>This is important, as all references to commands, paths, files etc depend on it.</p>
-<p>The command <code class="docutils literal"><span class="pre">python3</span></code> as referred to throughout is meant to point to your
-Python 3 interpreter. Depending on your setup, the command might simply be
-<code class="docutils literal"><span class="pre">python</span></code> for you. (In any event, Linguistica 5 requires Python 3.4 or above.)</p>
-<div class="section" id="first-steps">
-<h2>First steps<a class="headerlink" href="#first-steps" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Install the Linguistica 5 library <strong>as a developer</strong>.
-Run <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">python3</span> <span class="pre">setup.py</span> <span class="pre">develop</span></code>. The <code class="docutils literal"><span class="pre">develop</span></code> argument means that
-you &#8220;install&#8221; the library by placing a symlink at your <code class="docutils literal"><span class="pre">lxa5</span></code> project
-directory so that your Python interpreter recognizes <code class="docutils literal"><span class="pre">linguistica</span></code>
-at the current directory as a library and
-you can keep changing the code with immediate effects,
-without having to actually uninstall and reinstall all the time.</li>
-<li>Install the packages needed for testing. Run
-<code class="docutils literal"><span class="pre">sudo</span> <span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">-r</span> <span class="pre">test_requirements.txt</span></code>.</li>
-<li>Use <a class="reference external" href="https://www.jetbrains.com/pycharm/">PyCharm</a> as your IDE.</li>
-</ul>
+<p>This command creates the new environment called <code class="docutils literal"><span class="pre">lxa5</span></code> with Python 3.5
+as well as the specified dependencies for Linguistica 5. After this command
+is done with all the installation work, run the following to activate the
+new environment:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>$ source activate lxa5
+</pre></div>
 </div>
-<div class="section" id="general-remarks">
-<h2>General remarks<a class="headerlink" href="#general-remarks" title="Permalink to this headline">¶</a></h2>
-<p>Notes in this section are to be better organized...</p>
-<ul class="simple">
-<li>Follow <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">PEP 8</a> in coding.
-Use <a class="reference external" href="https://www.jetbrains.com/pycharm/">PyCharm</a> which nicely checks code,
-detects PEP 8 violations, and fixes everything.
-Do <strong>NOT</strong> use any generic text/code editors.</li>
-<li>Never ever make API changes!</li>
-<li><strong>Before and after each coding session</strong>, run <code class="docutils literal"><span class="pre">python3</span> <span class="pre">nosetests_run.py</span></code>
-to make sure nothing breaks.</li>
-<li>Write brief and crisp code. For long routines/functions/methods, break them
-up into meaningful, smaller chunks.
-Doing this is desirable because it makes the code much more readable and
-essentially self-documenting. Also, writing shorter functions and methods
-apparently has great potential for performance gain because of fewer
-variables in a given namespace.</li>
-<li>If possible, the actual code is doing the job of documentation;
-this point is related to a previous one about writing shorter functions
-and methods.
-Minimize the use of comments in the code.
-Use <code class="docutils literal"><span class="pre">vprint()</span></code> defined in the <code class="docutils literal"><span class="pre">util</span></code> module for verbose print.</li>
-<li><strong>Sorting:</strong> Avoid using the in-place method <code class="docutils literal"><span class="pre">sort()</span></code>.
-Use the <code class="docutils literal"><span class="pre">sorted()</span></code> function that explicitly returns a new copy.
-This avoids accidentally sorting the source object.</li>
-<li>We do <strong>NOT</strong> use multiprocessing/threading.
-The library runs pretty fast anyway.
-The gain with parallelizing the processes (especially for running
-all modules for a given corpus), if any,
-isn&#8217;t worth all the effort to struggle with potential issues for both
-the developers and users.</li>
-<li>All <code class="docutils literal"><span class="pre">.py</span></code> files must have <code class="docutils literal"><span class="pre">#</span> <span class="pre">-*-</span> <span class="pre">encoding:</span> <span class="pre">utf8</span> <span class="pre">-*-</span></code> as the very first
-line. (Exception: the empty <code class="docutils literal"><span class="pre">__init__.py</span></code> files)
-It is true that Python 3 assumes UTF-8 for <code class="docutils literal"><span class="pre">.py</span></code> files by default,
-but let&#8217;s be explicit rather than rely on the implicit.</li>
-<li>Python 2 is <strong>NOT</strong> supported. First, we need Python 3 only features
-(better unicode support etc). Second, it&#8217;s not worth our effort to
-maintain a Python 2 version while Python 2 will be history soon-ish.</li>
-<li><strong>Version number:</strong> We follow <a class="reference external" href="http://semver.org/">http://semver.org/</a> for the <code class="docutils literal"><span class="pre">major.minor.patch</span></code>
-format.
-The current version is <code class="docutils literal"><span class="pre">5.1.0</span></code>.
-The major version is <code class="docutils literal"><span class="pre">5</span></code> because there&#8217;s John&#8217;s Linguistica 3 &amp; 4
-written in C++.
-The minor version is <code class="docutils literal"><span class="pre">1</span></code> rather than <code class="docutils literal"><span class="pre">0</span></code> because John has his in-house
-<code class="docutils literal"><span class="pre">5.0</span></code> written in Python 2 circa/before 2012.
-The version number is specified in <code class="docutils literal"><span class="pre">linguistica/VERSION</span></code> (and nowhere else).</li>
-<li>To minimize any inconsistency and confusion,
-follow the &#8220;don&#8217;t repeat yourself&#8221; principle.
-This practice is to be applied fairly broadly.
-Examples include:<ul>
-<li>Specifying library dependencies at only one place, the <code class="docutils literal"><span class="pre">requirements.txt</span></code>
-file (which <code class="docutils literal"><span class="pre">setup.py</span></code> reads).</li>
-<li>Specifying version number at only one place,
-the <code class="docutils literal"><span class="pre">linguistica/VERSION</span></code> file
-(which both <code class="docutils literal"><span class="pre">setup.py</span></code> and the library read).</li>
-<li>No code duplication, if possible. For generic/utility-type functions,
-define them in the <code class="docutils literal"><span class="pre">util</span></code> module.</li>
-</ul>
+<p>Now you are in the <code class="docutils literal"><span class="pre">lxa5</span></code> environment (no longer in the root environment).
+As an indicator for this change, your command line prompt is now prefixed
+with <code class="docutils literal"><span class="pre">(lxa5)</span></code>. Whenever you are working on the Linguistica 5 codebase,
+be sure you are in this environment at your command line
+(otherwise you might get puzzled: &#8220;I thought I had the correct Python
+version, but it&#8217;s not right?!&#8221; or &#8220;I thought I already had SciPy but it
+says it&#8217;s not there?!&#8221; etc.)</p>
+<p>To deactivate the environment (for going back to the root environment, or
+for preparing to switch to another environment), simply run this:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>$ source deactivate
+</pre></div>
+</div>
+</div></blockquote>
 </li>
-<li>Never ever use <code class="docutils literal"><span class="pre">import</span> <span class="pre">*</span></code>.</li>
-<li><strong>File I/O and encoding</strong>:
-Apparently, the default file encoding for <code class="docutils literal"><span class="pre">open()</span></code>
-is platform-dependent (?).
-To be absolutely sure about the encoding,
-whenever <code class="docutils literal"><span class="pre">open()</span></code> is used, always explicitly specify
-the <code class="docutils literal"><span class="pre">encoding</span></code> parameter.
-For this purpose,
-in <code class="docutils literal"><span class="pre">linguistica/util.py</span></code>, the constant <code class="docutils literal"><span class="pre">ENCODING</span></code> (= <code class="docutils literal"><span class="pre">'utf8'</span></code>)
-is defined. This constant is imported in other <code class="docutils literal"><span class="pre">.py</span></code> files throughout the
-library, and all <code class="docutils literal"><span class="pre">open()</span></code> calls are something like
-<code class="docutils literal"><span class="pre">open(file_path,</span> <span class="pre">encoding=ENCODING)</span></code> or equivalent.</li>
-</ul>
+</ol>
 </div>
-<div class="section" id="continuous-integration">
-<span id="ci"></span><h2>Continuous integration<a class="headerlink" href="#continuous-integration" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>We take advantage of continuous integration to:<ul>
-<li>test whether the Linguistica 5 library can be successfully installed</li>
-<li>check if all tests pass</li>
-<li>measure test coverage</li>
-<li>ensure that the codebase is compliant with PEP 8 coding style conventions</li>
-</ul>
+<div class="section" id="getting-linguistica-5">
+<h2>Getting Linguistica 5<a class="headerlink" href="#getting-linguistica-5" title="Permalink to this headline">¶</a></h2>
+<p>To download the Linguistica 5 codebase for development work:</p>
+<ol class="arabic">
+<li><p class="first">Log on to your GitHub account and go to <a class="reference external" href="https://github.com/linguistica-uchicago/lxa5">https://github.com/linguistica-uchicago/lxa5</a></p>
 </li>
-<li>The images for various continuous integration elements are directly shown
-at the top of <code class="docutils literal"><span class="pre">readme.rst</span></code>. So be sure everything works and looks great
-at all times!</li>
-<li>We use <a class="reference external" href="https://travis-ci.org/">Travis-CI</a> to test the library installation
-as hosted on GitHub.
-<code class="docutils literal"><span class="pre">.travis.yml</span></code> in the repository provides the instructions for Travis CI to
-run the tests whenever a commit is pushed to the <code class="docutils literal"><span class="pre">master</span></code> branch.
-Under no circumstances can build tests be marked as &#8220;fail&#8221;.</li>
-<li>We use <a class="reference external" href="https://coveralls.io/">coveralls</a> to measure test coverage.
-<code class="docutils literal"><span class="pre">.travis.yml</span></code> and <code class="docutils literal"><span class="pre">.coveragerc</span></code> configure the measurement and reportage.
-Under no circumstances can test coverage drop below 95%.</li>
-<li><code class="docutils literal"><span class="pre">.travis.yml</span></code> runs <code class="docutils literal"><span class="pre">ci/travis_install.sh</span></code> to install all library
-dependencies and packages for testing. We use Miniconda for faster
-downloading
-(apt-get is sometimes too slow and there&#8217;s a 50-minute cap for build tests
-on Travis CI).</li>
-<li>We use <a class="reference external" href="https://landscape.io">landscape.io</a> to check code health for
-ensuring the codebase abides by the PEP 8 coding style conventions.
-Under no circumstances can code health drop below 95%.</li>
-</ul>
+<li><p class="first">At the top right hand corner, click &#8220;Fork&#8221;.
+(If prompted for &#8220;where should we fork this repository&#8221;, choose your own personal GitHub username.)</p>
+</li>
+<li><p class="first">Now under your personal GitHub account, you see a new repository called &#8220;lxa5&#8221;.</p>
+</li>
+<li><p class="first">Clone this repository (i.e. &lt;your-github-username&gt;/lxa5, not linguistica-chicago/lxa5)
+onto your local disk using Git, and also install the Linguistica 5 Python library:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>$ git clone https://github.com/&lt;your-github-username&gt;/lxa5.git
+$ cd lxa5
+$ python setup.py develop
+</pre></div>
 </div>
-<div class="section" id="commits-and-pushes">
-<h2>Commits and pushes<a class="headerlink" href="#commits-and-pushes" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Each commit is one single meaning and small chunk.</li>
-<li>Write meaningful commit messages
-(see <a class="reference external" href="http://chris.beams.io/posts/git-commit/">here</a>, for instance).
-Each commit message consists of two components:
-(1) the subject line, and (2) the message body.
-The subject line is an imperative sentence (e.g. &#8220;Update readme&#8221;); note
-the first word is capitalized and there&#8217;s no ending period. It contains
-no more than 50 characters. The message body explains what the commit
-is about. (If the commit is for something minor, e.g. &#8220;Tweak readme format&#8221;,
-then the message body can be omitted.)</li>
-<li>No need to push code to GitHub for every single commit.
-This is because the repository is connected to <a class="reference internal" href="#ci"><span class="std std-ref">Continuous integration</span></a>, and therefore we
-don&#8217;t need to waste web resources to trigger the tests etc all the time,
-especially for minor commits. Also, before and after every commit,
-we run tests locally (i.e., running <code class="docutils literal"><span class="pre">python3</span> <span class="pre">nosetests_run.py</span></code>) to ensure
-nothing breaks anyway. So the practice of <strong>not</strong> pushing code for every
-commit is fine.</li>
-</ul>
+<p>(If you&#8217;re on Linux, you will probably need <code class="docutils literal"><span class="pre">sudo</span></code> for the last command above).</p>
+<p>Now you have the Python library (called <code class="docutils literal"><span class="pre">linguistica</span></code>) installed in development mode
+(i.e. changes in source code are immediately effective &#8211; no need to uninstall
+and reinstall to try out new code).</p>
+</li>
+<li><p class="first">Add a link to the linguistica-uchicago/lxa5 repository:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>$ git remote add upstream https://github.com/linguistica-uchicago/lxa5.git
+</pre></div>
 </div>
-<div class="section" id="testing">
-<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Install the packages needed for testing. Run
-<code class="docutils literal"><span class="pre">sudo</span> <span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">-r</span> <span class="pre">test_requirements.txt</span></code>.</li>
-<li>We use <code class="docutils literal"><span class="pre">nose</span></code> as the testing framework.
-To run tests, run <code class="docutils literal"><span class="pre">python3</span> <span class="pre">nosetests_run.py</span></code>.</li>
-<li>Run <code class="docutils literal"><span class="pre">python3</span> <span class="pre">nosetests_run.py</span></code>
-as often as possible to ensure nothing has broken.
-In particular, it must be run before <em>and</em> after each coding session.</li>
-<li>All testing-related files and scripts are in the directory <code class="docutils literal"><span class="pre">tests</span></code>.</li>
-<li><code class="docutils literal"><span class="pre">tests/data</span></code> contains all expected outputs rendered
-as Python literals, plus the corpus file <code class="docutils literal"><span class="pre">english-brown.txt</span></code>.
-All scripts in <code class="docutils literal"><span class="pre">tests</span></code> are named <code class="docutils literal"><span class="pre">test_X.py</span></code> so that <code class="docutils literal"><span class="pre">nose</span></code> can
-recognize them. All tests are functions named <code class="docutils literal"><span class="pre">test_X()</span></code>.</li>
-<li>All tests must be explicitly written as the <code class="docutils literal"><span class="pre">test_X()</span></code> functions in the
-<code class="docutils literal"><span class="pre">test_X.py</span></code> scripts.
-We do <em>NOT</em> use docstrings in the library code for the
-purposes of library testing.</li>
-<li>Note that <code class="docutils literal"><span class="pre">tests</span></code> are <strong>NOT</strong> included in the library under the directory
-<code class="docutils literal"><span class="pre">linguistica</span></code>. This means that <code class="docutils literal"><span class="pre">tests</span></code> is available only through
-the GitHub repository and is not included in the library installation.
-This structure is intentional, because <code class="docutils literal"><span class="pre">tests</span></code> is only for the developers
-but not the users, and <code class="docutils literal"><span class="pre">tests</span></code> contains large files that the users
-wouldn&#8217;t need.</li>
-<li><code class="docutils literal"><span class="pre">words_to_neighbors</span></code>:
-Syntactic word neighbor computation appears to be sensitive to the precise
-versions of NumPy and SciPy being used.
-This affects the precise word
-neighbors found. Since an exact match of neighbors between the test and
-expected results is <em>not</em> critical (&#8220;close enough&#8221; would do), the
-test for <code class="docutils literal"><span class="pre">words_to_neighbors</span></code> is intentionally lenient.</li>
-</ul>
+<p>This command adds a new link to the linguistica-uchicago/lxa5 repository
+(not your fork) and names it as &#8220;upstream&#8221;.
+From time to time, you will need to keep your local
+copy of the Linguistica 5 codebase up-to-date by pulling the latest code
+from the linguistica-uchicago/lxa5 repository. This added link (with the name
+&#8220;upstream&#8221;) tells Git where to pull updates from.</p>
+<p>By default, after you have cloned and created a copy of Linguistica 5 on
+your local drive (in step 4 above), there is already a link called &#8220;origin&#8221;
+set up and linked to your fork on GitHub. Run the following to verify you
+have &#8220;origin&#8221; pointing to your fork and &#8220;upstream&#8221; pointing to
+linguistica-uchicago/lxa5:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>$ git remote -v
+</pre></div>
 </div>
-<div class="section" id="setup-py">
-<h2><code class="docutils literal"><span class="pre">setup.py</span></code><a class="headerlink" href="#setup-py" title="Permalink to this headline">¶</a></h2>
-<p>(notes)</p>
+</li>
+</ol>
 </div>
-<div class="section" id="readme-rst">
-<h2><code class="docutils literal"><span class="pre">readme.rst</span></code><a class="headerlink" href="#readme-rst" title="Permalink to this headline">¶</a></h2>
-<p>rst rather than markdown is used
-because this is to be read as the
-long description in <code class="docutils literal"><span class="pre">setup.py</span></code>,
-and PyPI recognizes rst but not markdown
-to render the text formatting.</p>
+<div class="section" id="committing-changes-and-making-a-pull-request">
+<h2>Committing changes and making a pull request<a class="headerlink" href="#committing-changes-and-making-a-pull-request" title="Permalink to this headline">¶</a></h2>
+<p>After you have set up your system and downloaded Linguistica 5 as described above,
+you are now (almost) ready to do awesome work!</p>
+<ol class="arabic">
+<li><p class="first"><strong>Verify that the master branch on your local drive is up-to-date in sync with
+the master on linguistica-uchicago/lxa5.</strong></p>
+<blockquote>
+<div><p>It is important to make sure you start working with the latest
+codebase:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>$ git checkout master  # go to master branch
+$ git pull upstream master  # pull latest from master branch of upstream
+</pre></div>
 </div>
-<div class="section" id="changelog-md">
-<h2><code class="docutils literal"><span class="pre">changelog.md</span></code><a class="headerlink" href="#changelog-md" title="Permalink to this headline">¶</a></h2>
-<p>(notes)</p>
+<p>Recall that &#8220;upstream&#8221; means the linguistica-uchicago/lxa5 repository.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Create a new branch for your great work.</strong></p>
+<blockquote>
+<div><p>Never work from the master branch.
+(Run &#8220;git branch&#8221; anytime to see what branches you have and which branch you&#8217;re on.)</p>
+<p>Instead, work on a different branch whose name indicates what you are doing,
+e.g. &#8220;Revamp-stems-to-signatures&#8221;, &#8220;update-docs&#8221;:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>$ git checkout -b &lt;branch-name&gt;
+</pre></div>
 </div>
-<div class="section" id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
-<p>Using Sphinx. More notes needed here.</p>
+<p>After this command is run, the new branch is created <em>and</em> you are on
+that branch as well (no longer on master branch).</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Start committing changes to source code.</strong></p>
+<blockquote>
+<div><p>Now (and finally!) you can actually make changes to the source code.
+Make changes incrementally and commit them with Git.
+Run this pair of commands for each commit:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>$ git add &lt;files-changed&gt;
+$ git commit -m &quot;&lt;commit-message&gt;&quot;
+</pre></div>
 </div>
-<div class="section" id="graphical-user-interface">
-<h2>Graphical user interface<a class="headerlink" href="#graphical-user-interface" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Because SIP and PyQt5 are required for the GUI but their installation
-is possibly non-trivial, they are designated as <em>optional</em> dependencies
-for Linguistica 5 (the GUI is not an absolute must-have for Linguistica 5
-to work).</li>
-<li>The GUI code is in <code class="docutils literal"><span class="pre">linguistica/gui</span></code>. The GUI is launched by
-calling <code class="docutils literal"><span class="pre">linguistica.gui.main()</span></code> in <code class="docutils literal"><span class="pre">linguistica/__main__.py</span></code>.</li>
-<li>All GUI code is accessible through only <code class="docutils literal"><span class="pre">linguistica.gui.main()</span></code>
-defined in <code class="docutils literal"><span class="pre">linguistica/gui/__init__.py</span></code>.
-This is important, because PyQt5 may potentially be unavailable
-at the user&#8217;s system. The <code class="docutils literal"><span class="pre">__init__.py</span></code> safeguards against import errors,
-but other <code class="docutils literal"><span class="pre">.py</span></code> files in <code class="docutils literal"><span class="pre">linguistica/gui</span></code> do not.
-Relatedly, when <code class="docutils literal"><span class="pre">linguistica.gui.main()</span></code> is to be called
-(as in <code class="docutils literal"><span class="pre">linguistica/__main__.py</span></code>), there is always code that checks
-whether PyQt5 is importable before <code class="docutils literal"><span class="pre">linguistica.gui.main()</span></code> can
-actually be called.</li>
-</ul>
+<p>Write brief and meaningful commit messages,
+e.g. &#8220;Fix bug in stems_to_signatures&#8221;.
+Aim at making each commit a logical and meaningful chunk of changes.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Repeat step 3 above as needed.</strong></p>
+<blockquote>
+<div><p>Repeat step 3 for making more commits on your way to what the branch
+is for. Limit the number of line changes to below 300 to make
+efficient and effective code review possible.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Push your changes to your fork on GitHub.</strong></p>
+<blockquote>
+<div><p>To make your changes available for review and for merging,
+you will first have to push your changes to your fork on GitHub:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>$ git push origin &lt;branch-name&gt;
+</pre></div>
 </div>
-<div class="section" id="command-line-interface">
-<h2>Command line interface<a class="headerlink" href="#command-line-interface" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>The CLI code is in <code class="docutils literal"><span class="pre">linguistica/cli.py</span></code>, all wrapped in
-<code class="docutils literal"><span class="pre">linguistica.cli.main()</span></code> called in <code class="docutils literal"><span class="pre">linguistica/__main__.py</span></code>.</li>
-<li>We don&#8217;t output <code class="docutils literal"><span class="pre">words_to_contexts</span></code>
-and <code class="docutils literal"><span class="pre">contexts_to_words</span></code>, because they are huge...
-Or we could just output those whose counts are higher than some threshold?</li>
-</ul>
-</div>
-<div class="section" id="linguistica-version">
-<h2><code class="docutils literal"><span class="pre">linguistica/VERSION</span></code><a class="headerlink" href="#linguistica-version" title="Permalink to this headline">¶</a></h2>
-<p>A plain text file that specifies the version number &#8211; currently <code class="docutils literal"><span class="pre">5.1.0-dev</span></code>.</p>
-</div>
-<div class="section" id="codebase">
-<h2>Codebase<a class="headerlink" href="#codebase" title="Permalink to this headline">¶</a></h2>
-<p>See <a class="reference internal" href="codebase.html#codebase"><span class="std std-ref">Code base</span></a>.</p>
+<p>Recall that &#8220;origin&#8221; is the (default) name of your fork &lt;your-github-username&gt;/lxa5 on GitHub.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Make a pull request.</strong></p>
+<blockquote>
+<div><p>Log on to your GitHub and go to your fork &lt;your-github-username&gt;/lxa5.
+Now you are ready to make a pull request
+(i.e. you want linguistica-chicago/lxa5 to get the changes
+from your &lt;branch-name&gt; of &lt;your-github-name&gt;/lxa5, as it were).
+Click &#8220;Pull request&#8221;
+(or something like &#8220;Make pull request&#8221; &#8211; it should be something fairly prominent visually).
+Now you&#8217;ll wait for feedback.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Start a new branch for a new &#8220;mini&#8221; project.</strong></p>
+<blockquote>
+<div><p>After all your hard work in the pull request has been accepted (= merged
+into linguistica-uchicago/lxa5), you can go back to step 1
+for a new branch and an upcoming pull request!</p>
+</div></blockquote>
+</li>
+</ol>
 </div>
 </div>
 
@@ -409,7 +390,7 @@ Or we could just output those whose counts are higher than some threshold?</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="codebase.html" class="btn btn-neutral float-right" title="Code base" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="codebase.html" class="btn btn-neutral float-right" title="Codebase" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="lexicon.html" class="btn btn-neutral" title="Full API documentation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -422,7 +403,7 @@ Or we could just output those whose counts are higher than some threshold?</li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015-2016, Jackson Lee.
-      Last updated on Dec 21, 2016.
+      Last updated on Dec 23, 2016.
 
     </p>
   </div>
