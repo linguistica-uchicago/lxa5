@@ -19,7 +19,9 @@ None of the development notes here are
 new, as they all come from the collective wisdom of the open-source and
 software development community -- notably, for what is known as "gitflow".
 They should be taken as best practice recommendations, and nothing is set in stone.
-You are entirely entitled to deviate from any of the advice given here;
+While your general goal is to get pull requests up,
+the way how you make pull requests is entirely up to you.
+Naturally, you can deviate from any of the advice given here;
 in that case, you are on your own and you know what you are doing.
 
 .. _dev_reminders:
@@ -30,28 +32,23 @@ Important reminders
 1. **Never commit changes to a master branch.**
 
       Not even at your own fork -- this ensures that the master branch
-      is always clean and serves as a fall back in case anything disastrous
-      happens.
+      is always clean and serves as a fall back.
 
 2. **Create task-specific branches.**
 
       Never create a branch like "develop" and "research" and plan to vomit
       a huge amount of your great work into it before making any pull requests
       (this would make code review impossible). Think of a branch as something
-      much more concrete and
-      a lot smaller in scale like "add-feature-x" or "fix-function-y".
+      much more concrete like a mini project, with branch names like
+      "add-feature-x" or "fix-function-x".
 
-3. **Work in bite sizes.**
+3. **Keep pull requests small.**
 
-      Small commits, small pull requests.
-
-4. **No more than 300 lines of changes in each pull request.**
-
-      All pull requests have to be small
+      A pull request has to be small (say, fewer than 300 lines of changes)
       so that the code review can be done efficiently and effectively with
       useful feedback.
 
-5. **Follow PEP 8 in coding.**
+4. **Follow PEP 8 in coding.**
 
       The `PEP 8 <https://www.python.org/dev/peps/pep-0008/>`_
       coding conventions exist precisely because we would like to schedule
@@ -83,24 +80,23 @@ To work on the Linguistica 5 code:
 
 3. **Download and install Miniconda**
 
-      Install Miniconda_ for Python 3.5. (This installs a new Python distribution
-      on your machine, but we are not going to use it directly.)
+      If you are sure that you have Python 3 with the required dependencies
+      (NumPy, SciPy and networkx) and are happy to use it for the Linguistica 5
+      development work, then you may skip this section. Otherwise,
+      consider using Miniconda_ (get Python 3.5).
 
-      You may want to take advantage of Miniconda for having a dedicated
-      environment with a specific Python version and other dependencies
-      for the Linguistica 5 project.
-
+      Miniconda allows you to set up specific environments with a specific version
+      of Python and dependencies. For our purposes, you can use Miniconda to
+      create a dedicated environment for the Linguistica 5 project (and no other
+      projects).
       Having such a dedicated environment is desirable as you are likely working
       on multiple projects at any given time (Linguistica 5 being just one of them),
       and you don't want the environment for one project to contaminate that for
       another project.
 
-      After Miniconda is installed, by default you are at the root environment.
-      If you fire up your Python interpreter from the command line,
-      you should see you are on Python 3.5 whose distribution is by
-      Continuum Analytics, Inc. (the company that maintains Miniconda).
-      Exit the interpreter, and run the following command to create the new environment
-      for Linguistica 5.
+      After Miniconda is installed,
+      run the following command to create the new environment
+      for Linguistica 5:
 
       .. code::
 
@@ -109,7 +105,7 @@ To work on the Linguistica 5 code:
       This command creates the new environment called ``lxa5`` with Python 3.5
       as well as the specified dependencies for Linguistica 5. After this command
       is done with all the installation work, run the following to activate the
-      new environment:
+      new environment ``lxa5``:
 
       .. code::
 
@@ -120,8 +116,10 @@ To work on the Linguistica 5 code:
       with ``(lxa5)``. Whenever you are working on the Linguistica 5 codebase,
       be sure you are in this environment at your command line
       (otherwise you might get puzzled: "I thought I had the correct Python
-      version, but it's not right?!" or "I thought I already had SciPy but it
-      says it's not there?!" etc.)
+      version, but it's not right?" or "I thought I already had SciPy but it
+      says it's not there?" etc.). If you run ``python`` now, you will see
+      the Python interpreter says it is the Python 3.5 distribution by
+      Continuum Analytics, Inc. (the company that maintains Miniconda).
 
       To deactivate the environment (for going back to the root environment, or
       for preparing to switch to another environment), simply run this:
@@ -208,7 +206,7 @@ you are now (almost) ready to do awesome work!
       (Run "git branch" anytime to see what branches you have and which branch you're on.)
 
       Instead, work on a different branch whose name indicates what you are doing,
-      e.g. "Revamp-stems-to-signatures", "update-docs":
+      e.g. "revamp-stems-to-signatures", "update-docs", "fix-bug-in-function-x":
 
       .. code::
 
@@ -259,8 +257,9 @@ you are now (almost) ready to do awesome work!
       (or something like "Make pull request" -- it should be something fairly prominent visually).
       Now you'll wait for feedback.
 
-7. **Start a new branch for a new "mini" project.**
+7. **Start a new branch for a new mini project.**
 
       After all your hard work in the pull request has been accepted (= merged
       into linguistica-uchicago/lxa5), you can go back to step 1
+      to update your master branch for the latest code and prepare
       for a new branch and an upcoming pull request!

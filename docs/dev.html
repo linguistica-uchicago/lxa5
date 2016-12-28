@@ -149,7 +149,9 @@ please consult <a class="reference internal" href="codebase.html#codebase"><span
 new, as they all come from the collective wisdom of the open-source and
 software development community &#8211; notably, for what is known as &#8220;gitflow&#8221;.
 They should be taken as best practice recommendations, and nothing is set in stone.
-You are entirely entitled to deviate from any of the advice given here;
+While your general goal is to get pull requests up,
+the way how you make pull requests is entirely up to you.
+Naturally, you can deviate from any of the advice given here;
 in that case, you are on your own and you know what you are doing.</p>
 <div class="section" id="important-reminders">
 <span id="dev-reminders"></span><h2>Important reminders<a class="headerlink" href="#important-reminders" title="Permalink to this headline">¶</a></h2>
@@ -157,8 +159,7 @@ in that case, you are on your own and you know what you are doing.</p>
 <li><p class="first"><strong>Never commit changes to a master branch.</strong></p>
 <blockquote>
 <div><p>Not even at your own fork &#8211; this ensures that the master branch
-is always clean and serves as a fall back in case anything disastrous
-happens.</p>
+is always clean and serves as a fall back.</p>
 </div></blockquote>
 </li>
 <li><p class="first"><strong>Create task-specific branches.</strong></p>
@@ -166,18 +167,13 @@ happens.</p>
 <div><p>Never create a branch like &#8220;develop&#8221; and &#8220;research&#8221; and plan to vomit
 a huge amount of your great work into it before making any pull requests
 (this would make code review impossible). Think of a branch as something
-much more concrete and
-a lot smaller in scale like &#8220;add-feature-x&#8221; or &#8220;fix-function-y&#8221;.</p>
+much more concrete like a mini project, with branch names like
+&#8220;add-feature-x&#8221; or &#8220;fix-function-x&#8221;.</p>
 </div></blockquote>
 </li>
-<li><p class="first"><strong>Work in bite sizes.</strong></p>
+<li><p class="first"><strong>Keep pull requests small.</strong></p>
 <blockquote>
-<div><p>Small commits, small pull requests.</p>
-</div></blockquote>
-</li>
-<li><p class="first"><strong>No more than 300 lines of changes in each pull request.</strong></p>
-<blockquote>
-<div><p>All pull requests have to be small
+<div><p>A pull request has to be small (say, fewer than 300 lines of changes)
 so that the code review can be done efficiently and effectively with
 useful feedback.</p>
 </div></blockquote>
@@ -215,28 +211,28 @@ GitHub by Git.</p>
 </li>
 <li><p class="first"><strong>Download and install Miniconda</strong></p>
 <blockquote>
-<div><p>Install <a class="reference external" href="http://conda.pydata.org/miniconda.html">Miniconda</a> for Python 3.5. (This installs a new Python distribution
-on your machine, but we are not going to use it directly.)</p>
-<p>You may want to take advantage of Miniconda for having a dedicated
-environment with a specific Python version and other dependencies
-for the Linguistica 5 project.</p>
-<p>Having such a dedicated environment is desirable as you are likely working
+<div><p>If you are sure that you have Python 3 with the required dependencies
+(NumPy, SciPy and networkx) and are happy to use it for the Linguistica 5
+development work, then you may skip this section. Otherwise,
+consider using <a class="reference external" href="http://conda.pydata.org/miniconda.html">Miniconda</a> (get Python 3.5).</p>
+<p>Miniconda allows you to set up specific environments with a specific version
+of Python and dependencies. For our purposes, you can use Miniconda to
+create a dedicated environment for the Linguistica 5 project (and no other
+projects).
+Having such a dedicated environment is desirable as you are likely working
 on multiple projects at any given time (Linguistica 5 being just one of them),
 and you don&#8217;t want the environment for one project to contaminate that for
 another project.</p>
-<p>After Miniconda is installed, by default you are at the root environment.
-If you fire up your Python interpreter from the command line,
-you should see you are on Python 3.5 whose distribution is by
-Continuum Analytics, Inc. (the company that maintains Miniconda).
-Exit the interpreter, and run the following command to create the new environment
-for Linguistica 5.</p>
+<p>After Miniconda is installed,
+run the following command to create the new environment
+for Linguistica 5:</p>
 <div class="code highlight-default"><div class="highlight"><pre><span></span>$ conda create -n lxa5 python=3.5 numpy scipy networkx
 </pre></div>
 </div>
 <p>This command creates the new environment called <code class="docutils literal"><span class="pre">lxa5</span></code> with Python 3.5
 as well as the specified dependencies for Linguistica 5. After this command
 is done with all the installation work, run the following to activate the
-new environment:</p>
+new environment <code class="docutils literal"><span class="pre">lxa5</span></code>:</p>
 <div class="code highlight-default"><div class="highlight"><pre><span></span>$ source activate lxa5
 </pre></div>
 </div>
@@ -245,8 +241,10 @@ As an indicator for this change, your command line prompt is now prefixed
 with <code class="docutils literal"><span class="pre">(lxa5)</span></code>. Whenever you are working on the Linguistica 5 codebase,
 be sure you are in this environment at your command line
 (otherwise you might get puzzled: &#8220;I thought I had the correct Python
-version, but it&#8217;s not right?!&#8221; or &#8220;I thought I already had SciPy but it
-says it&#8217;s not there?!&#8221; etc.)</p>
+version, but it&#8217;s not right?&#8221; or &#8220;I thought I already had SciPy but it
+says it&#8217;s not there?&#8221; etc.). If you run <code class="docutils literal"><span class="pre">python</span></code> now, you will see
+the Python interpreter says it is the Python 3.5 distribution by
+Continuum Analytics, Inc. (the company that maintains Miniconda).</p>
 <p>To deactivate the environment (for going back to the root environment, or
 for preparing to switch to another environment), simply run this:</p>
 <div class="code highlight-default"><div class="highlight"><pre><span></span>$ source deactivate
@@ -322,7 +320,7 @@ $ git pull upstream master  # pull latest from master branch of upstream
 <div><p>Never work from the master branch.
 (Run &#8220;git branch&#8221; anytime to see what branches you have and which branch you&#8217;re on.)</p>
 <p>Instead, work on a different branch whose name indicates what you are doing,
-e.g. &#8220;Revamp-stems-to-signatures&#8221;, &#8220;update-docs&#8221;:</p>
+e.g. &#8220;revamp-stems-to-signatures&#8221;, &#8220;update-docs&#8221;, &#8220;fix-bug-in-function-x&#8221;:</p>
 <div class="code highlight-default"><div class="highlight"><pre><span></span>$ git checkout -b &lt;branch-name&gt;
 </pre></div>
 </div>
@@ -372,10 +370,11 @@ Click &#8220;Pull request&#8221;
 Now you&#8217;ll wait for feedback.</p>
 </div></blockquote>
 </li>
-<li><p class="first"><strong>Start a new branch for a new &#8220;mini&#8221; project.</strong></p>
+<li><p class="first"><strong>Start a new branch for a new mini project.</strong></p>
 <blockquote>
 <div><p>After all your hard work in the pull request has been accepted (= merged
 into linguistica-uchicago/lxa5), you can go back to step 1
+to update your master branch for the latest code and prepare
 for a new branch and an upcoming pull request!</p>
 </div></blockquote>
 </li>
@@ -403,7 +402,7 @@ for a new branch and an upcoming pull request!</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015-2016, Jackson Lee.
-      Last updated on Dec 23, 2016.
+      Last updated on Dec 28, 2016.
 
     </p>
   </div>
