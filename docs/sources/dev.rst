@@ -255,6 +255,9 @@ you are now (almost) ready to do awesome work!
       from your <branch-name> of <your-github-name>/lxa5, as it were).
       Click "Pull request"
       (or something like "Make pull request" -- it should be something fairly prominent visually).
+      Create the pull request by giving your pull request a title
+      (most probably something very similar to the branch name) and
+      providing brief notes on what the new changes are in the "comments" section.
       Now you'll wait for feedback.
 
 7. **Start a new branch for a new mini project.**
