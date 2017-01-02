@@ -11,11 +11,11 @@
 For developers
 ==============
 
-This page provides technical notes for the developers of the Linguistica 5 group.
+This page provides technical notes for the developers of the Linguistica 5 project group.
 For introductory background about the Linguistica 5 codebase,
 please consult :ref:`codebase`.
 
-None of the development notes here are
+None of the development notes below are
 new, as they all come from the collective wisdom of the open-source and
 software development community -- notably, for what is known as "gitflow".
 They should be taken as best practice recommendations, and nothing is set in stone.
@@ -65,7 +65,7 @@ To work on the Linguistica 5 code:
 
 1. **Set up a personal GitHub account**
 
-      If you are setting a new GitHub_ account,
+      If you are creating a new GitHub_ account,
       pick a username preferably with lowercase letters only, e.g. "joesmith".
       The Linguistica 5 codebase is hosted on GitHub.
       Your contributions will be added to it via the GitHub interface.
@@ -74,7 +74,7 @@ To work on the Linguistica 5 code:
 2. **Download and install Git**
 
       Git_ is the version control system of the Linguistica 5 project.
-      Your contributions will be managed and passed from your local drive to
+      Your contributions will be managed and uploaded from your local drive to
       GitHub by Git.
 
 
@@ -115,7 +115,7 @@ To work on the Linguistica 5 code:
       As an indicator for this change, your command line prompt is now prefixed
       with ``(lxa5)``. Whenever you are working on the Linguistica 5 codebase,
       be sure you are in this environment at your command line
-      (otherwise you might get puzzled: "I thought I had the correct Python
+      (otherwise you might get puzzled from time to time: "I thought I had the correct Python
       version, but it's not right?" or "I thought I already had SciPy but it
       says it's not there?" etc.). If you run ``python`` now, you will see
       the Python interpreter says it is the Python 3.5 distribution by
@@ -141,8 +141,8 @@ To download the Linguistica 5 codebase for development work:
 
 3. Now under your personal GitHub account, you see a new repository called "lxa5".
 
-4. Clone this repository (i.e. <your-github-username>/lxa5, not linguistica-chicago/lxa5)
-   onto your local disk using Git, and also install the Linguistica 5 Python library:
+4. Clone this repository onto your local disk using Git,
+   and also install the Linguistica 5 Python library:
 
    .. code::
 
@@ -150,7 +150,12 @@ To download the Linguistica 5 codebase for development work:
       $ cd lxa5
       $ python setup.py develop
 
-   (If you're on Linux, you will probably need ``sudo`` for the last command above).
+   In the last command just above,
+   ``python`` is meant to point to the specific Python 3 interpreter
+   you are using for the Linguistica 5 project. Depending on how your Python
+   distribution is set up, the command you need could be something else, e.g.
+   ``python3``.
+   Also, if you're on Linux, you will probably need ``sudo``.
 
    Now you have the Python library (called ``linguistica``) installed in development mode
    (i.e. changes in source code are immediately effective -- no need to uninstall
@@ -163,7 +168,7 @@ To download the Linguistica 5 codebase for development work:
       $ git remote add upstream https://github.com/linguistica-uchicago/lxa5.git
 
    This command adds a new link to the linguistica-uchicago/lxa5 repository
-   (not your fork) and names it as "upstream".
+   (not your fork on GitHub) and names it as "upstream".
    From time to time, you will need to keep your local
    copy of the Linguistica 5 codebase up-to-date by pulling the latest code
    from the linguistica-uchicago/lxa5 repository. This added link (with the name
@@ -226,6 +231,9 @@ you are now (almost) ready to do awesome work!
          $ git add <files-changed>
          $ git commit -m "<commit-message>"
 
+      ``<files-changed>`` can be a single file (e.g. ``foo.py``) or multiple ones
+      separated by spaces (e.g. ``foo.py bar.py``).
+
       Write brief and meaningful commit messages,
       e.g. "Fix bug in stems_to_signatures".
       Aim at making each commit a logical and meaningful chunk of changes.
@@ -245,7 +253,7 @@ you are now (almost) ready to do awesome work!
 
          $ git push origin <branch-name>
 
-      Recall that "origin" is the (default) name of your fork <your-github-username>/lxa5 on GitHub.
+      Recall that "origin" is the (default) name point to your fork <your-github-username>/lxa5 on GitHub.
 
 6. **Make a pull request.**
 

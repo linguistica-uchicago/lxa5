@@ -142,10 +142,10 @@
             
   <div class="section" id="for-developers">
 <span id="dev"></span><h1>For developers<a class="headerlink" href="#for-developers" title="Permalink to this headline">¶</a></h1>
-<p>This page provides technical notes for the developers of the Linguistica 5 group.
+<p>This page provides technical notes for the developers of the Linguistica 5 project group.
 For introductory background about the Linguistica 5 codebase,
 please consult <a class="reference internal" href="codebase.html#codebase"><span class="std std-ref">Codebase</span></a>.</p>
-<p>None of the development notes here are
+<p>None of the development notes below are
 new, as they all come from the collective wisdom of the open-source and
 software development community &#8211; notably, for what is known as &#8220;gitflow&#8221;.
 They should be taken as best practice recommendations, and nothing is set in stone.
@@ -196,7 +196,7 @@ at a high level of quality.</p>
 <ol class="arabic">
 <li><p class="first"><strong>Set up a personal GitHub account</strong></p>
 <blockquote>
-<div><p>If you are setting a new <a class="reference external" href="https://github.com/">GitHub</a> account,
+<div><p>If you are creating a new <a class="reference external" href="https://github.com/">GitHub</a> account,
 pick a username preferably with lowercase letters only, e.g. &#8220;joesmith&#8221;.
 The Linguistica 5 codebase is hosted on GitHub.
 Your contributions will be added to it via the GitHub interface.</p>
@@ -205,7 +205,7 @@ Your contributions will be added to it via the GitHub interface.</p>
 <li><p class="first"><strong>Download and install Git</strong></p>
 <blockquote>
 <div><p><a class="reference external" href="https://git-scm.com/">Git</a> is the version control system of the Linguistica 5 project.
-Your contributions will be managed and passed from your local drive to
+Your contributions will be managed and uploaded from your local drive to
 GitHub by Git.</p>
 </div></blockquote>
 </li>
@@ -240,7 +240,7 @@ new environment <code class="docutils literal"><span class="pre">lxa5</span></co
 As an indicator for this change, your command line prompt is now prefixed
 with <code class="docutils literal"><span class="pre">(lxa5)</span></code>. Whenever you are working on the Linguistica 5 codebase,
 be sure you are in this environment at your command line
-(otherwise you might get puzzled: &#8220;I thought I had the correct Python
+(otherwise you might get puzzled from time to time: &#8220;I thought I had the correct Python
 version, but it&#8217;s not right?&#8221; or &#8220;I thought I already had SciPy but it
 says it&#8217;s not there?&#8221; etc.). If you run <code class="docutils literal"><span class="pre">python</span></code> now, you will see
 the Python interpreter says it is the Python 3.5 distribution by
@@ -265,14 +265,19 @@ for preparing to switch to another environment), simply run this:</p>
 </li>
 <li><p class="first">Now under your personal GitHub account, you see a new repository called &#8220;lxa5&#8221;.</p>
 </li>
-<li><p class="first">Clone this repository (i.e. &lt;your-github-username&gt;/lxa5, not linguistica-chicago/lxa5)
-onto your local disk using Git, and also install the Linguistica 5 Python library:</p>
+<li><p class="first">Clone this repository onto your local disk using Git,
+and also install the Linguistica 5 Python library:</p>
 <div class="code highlight-default"><div class="highlight"><pre><span></span>$ git clone https://github.com/&lt;your-github-username&gt;/lxa5.git
 $ cd lxa5
 $ python setup.py develop
 </pre></div>
 </div>
-<p>(If you&#8217;re on Linux, you will probably need <code class="docutils literal"><span class="pre">sudo</span></code> for the last command above).</p>
+<p>In the last command just above,
+<code class="docutils literal"><span class="pre">python</span></code> is meant to point to the specific Python 3 interpreter
+you are using for the Linguistica 5 project. Depending on how your Python
+distribution is set up, the command you need could be something else, e.g.
+<code class="docutils literal"><span class="pre">python3</span></code>.
+Also, if you&#8217;re on Linux, you will probably need <code class="docutils literal"><span class="pre">sudo</span></code>.</p>
 <p>Now you have the Python library (called <code class="docutils literal"><span class="pre">linguistica</span></code>) installed in development mode
 (i.e. changes in source code are immediately effective &#8211; no need to uninstall
 and reinstall to try out new code).</p>
@@ -282,7 +287,7 @@ and reinstall to try out new code).</p>
 </pre></div>
 </div>
 <p>This command adds a new link to the linguistica-uchicago/lxa5 repository
-(not your fork) and names it as &#8220;upstream&#8221;.
+(not your fork on GitHub) and names it as &#8220;upstream&#8221;.
 From time to time, you will need to keep your local
 copy of the Linguistica 5 codebase up-to-date by pulling the latest code
 from the linguistica-uchicago/lxa5 repository. This added link (with the name
@@ -337,6 +342,8 @@ Run this pair of commands for each commit:</p>
 $ git commit -m &quot;&lt;commit-message&gt;&quot;
 </pre></div>
 </div>
+<p><code class="docutils literal"><span class="pre">&lt;files-changed&gt;</span></code> can be a single file (e.g. <code class="docutils literal"><span class="pre">foo.py</span></code>) or multiple ones
+separated by spaces (e.g. <code class="docutils literal"><span class="pre">foo.py</span> <span class="pre">bar.py</span></code>).</p>
 <p>Write brief and meaningful commit messages,
 e.g. &#8220;Fix bug in stems_to_signatures&#8221;.
 Aim at making each commit a logical and meaningful chunk of changes.</p>
@@ -356,7 +363,7 @@ you will first have to push your changes to your fork on GitHub:</p>
 <div class="code highlight-default"><div class="highlight"><pre><span></span>$ git push origin &lt;branch-name&gt;
 </pre></div>
 </div>
-<p>Recall that &#8220;origin&#8221; is the (default) name of your fork &lt;your-github-username&gt;/lxa5 on GitHub.</p>
+<p>Recall that &#8220;origin&#8221; is the (default) name point to your fork &lt;your-github-username&gt;/lxa5 on GitHub.</p>
 </div></blockquote>
 </li>
 <li><p class="first"><strong>Make a pull request.</strong></p>
@@ -404,8 +411,8 @@ for a new branch and an upcoming pull request!</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015-2016, Jackson Lee.
-      Last updated on Dec 28, 2016.
+        &copy; Copyright 2015-2017, Jackson Lee.
+      Last updated on Jan 01, 2017.
 
     </p>
   </div>

@@ -1,13 +1,14 @@
 # Linguistica 5
 
-These notes are only for the administrators and core developers of the project.
-They are what is done from time to time for project maintenance.
+These notes are only for the administrators of the Linguistica 5 project.
 
-Core developers are assumed to already
-have their system set up and Linguistica 5 downloaded
-as described here:
-
-http://linguistica-uchicago.github.io/lxa5/dev.html
+For all commands below:
+ 
+* They are run at the root directory of the project codebase.
+* The command `python` points to the specific Python distribution you use
+  for the Linguistica 5 project.
+* The command `pip` points to the pip associated with the specific Python
+  distribution.
 
 ## Install the dependencies for development and documentation
 
@@ -17,15 +18,11 @@ $ pip install Sphinx flake8 pytest pytest-cov sphinx_rtd_theme
 
 ## Run tests
 
-At the root directory of the project:
-
 ```
 $ pytest -v --cov
 ```
 
 ## Build documentation
-
-At the root directory of the project:
 
 ```
 $ sh build-doc.sh
@@ -33,11 +30,11 @@ $ sh build-doc.sh
 
 ## Package the library for PyPI release
 
-Only for core developers with admin access to upload to https://pypi.python.org/pypi/linguistica
+Only for those with admin access to upload to https://pypi.python.org/pypi/linguistica
 
 ### Confirm the new version number
 
-Be very sure that the version number (defined nowhere but in `linguistica/VERSION` from the project root directory)
+Be very sure that the version number (defined nowhere but in `linguistica/VERSION`)
 is updated correctly and does not already appear on https://pypi.python.org/pypi/linguistica
 
 ### Prepare credentials for PyPI
