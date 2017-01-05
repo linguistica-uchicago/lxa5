@@ -23,9 +23,10 @@ Raw corpus text
 ---------------
 
 A raw corpus text is simply a plain text file.
-An example is the English Brown corpus (Kučera and Francis 1967) with
-about one million word tokens (for about 50,000 word types) available
-`here <https://github.com/linguistica-uchicago/lxa5/blob/master/linguistica/datasets/english-brown.txt>`_.
+An example is the
+`Brown corpus <https://github.com/linguistica-uchicago/lxa5/blob/master/linguistica/datasets/english-brown.txt>`_
+(Kučera and Francis 1967) with
+about one million word tokens (for about 50,000 word types).
 This corpus is a built-in dataset that comes with Linguistica 5 --
 its file path is accessible as ``brown`` as follows:
 
