@@ -14,7 +14,7 @@ from PyQt5.QtWidgets import (QMainWindow, QWidget, QAction, QVBoxLayout,
                              QSpinBox, QSizePolicy, QHBoxLayout, QPushButton,
                              QShortcut)
 from PyQt5.QtGui import QKeySequence
-from PyQt5.QtWebKitWidgets import QWebView
+from PyQt5.QtWebEngineWidgets import QWebEngineView
 
 from linguistica import (read_corpus, read_wordlist)
 
@@ -753,7 +753,7 @@ class MainWindow(QMainWindow):
             url = Path(viz_html).as_uri()
             print('url:', url)
 
-            new_display = QWebView()
+            new_display = QWebEngineView()
             new_display.setUrl(QUrl(url))
 
         self.load_main_window(major_display=new_display,
