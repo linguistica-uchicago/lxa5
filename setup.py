@@ -56,6 +56,12 @@ setup(name='linguistica',
 
       zip_safe=False,
 
+      entry_points={
+          'console_scripts': [
+              'linguistica = linguistica.__main__:main'
+          ]
+      },
+
       classifiers=[
           'Development Status :: 4 - Beta',
           'Intended Audience :: Developers',

@@ -7,7 +7,7 @@ To launch the Linguistica CLI:
 
 .. code-block:: bash
 
-    $ python3 -m linguistica cli
+    $ linguistica cli
 
 The command line interface works for either a corpus text file or a wordlist
 file. Parameter changes are supported. Results are saved as text files.
@@ -16,7 +16,7 @@ A sample CLI session,
 with a corpus text file as input and default settings for all parameters and
 options::
 
-    $ python3 -m linguistica cli
+    $ linguistica cli
 
     ================================================================
     Welcome to Linguistica 5.1.0-dev!
