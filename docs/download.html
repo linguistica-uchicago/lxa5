@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Download and install &mdash; Linguistica 5.1.0 documentation</title>
+  <title>Download and install &mdash; Linguistica 5.1.1 documentation</title>
   
 
   
@@ -31,7 +31,7 @@
 
   
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Linguistica 5.1.0 documentation" href="index.html"/>
+    <link rel="top" title="Linguistica 5.1.1 documentation" href="index.html"/>
         <link rel="next" title="Quick demonstration" href="demo.html"/>
         <link rel="prev" title="Linguistica 5" href="index.html"/> 
 
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                5.1.0
+                5.1.1
               </div>
             
           
@@ -145,10 +145,15 @@ If you encounter issues in installing these dependencies,
 consider using the Python distribution <a class="reference external" href="https://www.continuum.io/downloads">Anaconda</a>
 (or <a class="reference external" href="http://conda.pydata.org/miniconda.html">Miniconda</a>)
 with these dependencies installed.</p>
-<p>To use the graphical user interface, PyQt5 and SIP are required:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ pip install sip PyQt5
+<p>To use the graphical user interface, PyQt5 and SIP are required.
+PyQt5 is readily available from <code class="docutils literal"><span class="pre">pip</span></code>:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ pip install PyQt5
 </pre></div>
 </div>
+<p>At the time of writing (March 2017), SIP is best downloaded and installed from
+<a class="reference external" href="http://pyqt.sourceforge.net/Docs/sip4/installation.html">its source</a>.
+(SIP is available through <code class="docutils literal"><span class="pre">pip</span></code>, but it does not include
+the C/C++ code generator for PyQt5.)</p>
 <p>To test the installation:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">linguistica</span> <span class="kn">as</span> <span class="nn">lxa</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">lxa</span><span class="o">.</span><span class="n">__version__</span>  <span class="c1"># show version number</span>
@@ -176,7 +181,7 @@ with these dependencies installed.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015-2017, Jackson Lee.
-      Last updated on Jan 01, 2017.
+      Last updated on Mar 04, 2017.
 
     </p>
   </div>
@@ -198,7 +203,7 @@ with these dependencies installed.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'5.1.0',
+            VERSION:'5.1.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

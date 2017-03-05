@@ -7,7 +7,7 @@ To launch the Linguistica GUI:
 
 .. code-block:: bash
 
-    $ python3 -m linguistica gui
+    $ linguistica gui
 
 To read an input file, go to **File**, then:
 

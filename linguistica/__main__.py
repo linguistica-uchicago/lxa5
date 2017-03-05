@@ -18,41 +18,46 @@ check_py_version()
 
 lxa_version = lxa.__version__
 
-# ------------------------------------------------------------------------------
-# ensure lxa_mode is one of the modes in MODES
 
-MODES = {'cli', 'gui'}
+def main():
+    # --------------------------------------------------------------------------
+    # ensure lxa_mode is one of the modes in MODES
 
-try:
-    lxa_mode = sys.argv[1].lower()
-except IndexError:
-    lxa_mode = None
-    error_msg_template = 'Error: mode not specified for running Linguistica.' \
-                         '\n\nRun one of the following:\n\n{}'
-    command_template = 'python3 -m linguistica {}'
+    MODES = {'cli', 'gui'}
 
-    sys.exit(error_msg_template.format('\n'.join([command_template.format(mode)
-                                                  for mode in sorted(MODES)])))
+    try:
+        lxa_mode = sys.argv[1].lower()
+    except IndexError:
+        lxa_mode = None
+        error_msg_template = 'Error: no running mode specified.' \
+                             '\n\nRun one of the following:\n\n{}'
 
-if lxa_mode not in MODES:
-    sys.exit('Unrecognized mode: ' + sys.argv[1])
+        sys.exit(error_msg_template.format(
+            '\n'.join('linguistica ' + mode for mode in sorted(MODES))))
 
-# ------------------------------------------------------------------------------
-# launch graphical user interface
+    if lxa_mode not in MODES:
+        sys.exit('Unrecognized mode: ' + sys.argv[1])
 
-if lxa_mode == 'gui':
+    # --------------------------------------------------------------------------
+    # launch graphical user interface
 
-    if pyqt5_available:
-        print('Running the graphical user interface of Linguistica {}...'
-              .format(lxa_version))
-        gui_main()
+    if lxa_mode == 'gui':
 
-    else:
-        sys.exit('Unable to import PyQt5. '
-                 'Graphical user interface cannot be launched.')
+        if pyqt5_available:
+            print('Running the graphical user interface of Linguistica {}...'
+                  .format(lxa_version))
+            gui_main()
 
-# ------------------------------------------------------------------------------
-# launch command line interface
+        else:
+            sys.exit('Unable to import PyQt5. '
+                     'Graphical user interface cannot be launched.')
 
-if lxa_mode == 'cli':
-    cli_main()
+    # --------------------------------------------------------------------------
+    # launch command line interface
+
+    if lxa_mode == 'cli':
+        cli_main()
+
+
+if __name__ == '__main__':
+    main()
