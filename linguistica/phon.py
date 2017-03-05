@@ -43,7 +43,9 @@ class Word:
 
         _bigram_plog = self.unigram_plog
         for biphone in zip(*[self.phones[i:] for i in range(2)]):
-            _bigram_plog -= biphone_dict[biphone].MI
+            if biphone in biphone_dict:
+                # TODO "biphone in biphone_dict" could be false?
+                _bigram_plog -= biphone_dict[biphone].MI
         self.bigram_plog = _bigram_plog
 
         self.avg_bigram_plog = self.bigram_plog / (len(self.phones) - 1)
