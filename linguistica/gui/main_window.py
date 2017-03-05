@@ -355,11 +355,16 @@ class MainWindow(QMainWindow):
 
         # display corpus name (in the tree header label)
         file_type = 'wordlist' if self.lexicon.file_is_wordlist else 'corpus'
-        header_label = 'File: {}\nFile type: {}\n\n# word types: {:,}\n'.format(
-            self.corpus_name, file_type, self.lexicon.number_of_word_types())
-        if file_type == 'corpus':
-            header_label += '# word tokens: {:,}\n'.format(
-                self.lexicon.number_of_word_tokens())
+        header_label = 'File: {}\nFile type: {}\n'.format(
+            self.corpus_name, file_type)
+
+        # TODO Bring the following back for correct word type/token counts.
+        # header_label = 'File: {}\nFile type: {}\n\n# word types: {:,}\n'.format(
+        #     self.corpus_name, file_type, self.lexicon.number_of_word_types())
+        # if file_type == 'corpus':
+        #     header_label += '# word tokens: {:,}\n'.format(
+        #         self.lexicon.number_of_word_tokens())
+
         self.lexicon_tree.setHeaderLabel(header_label)
 
     @staticmethod
