@@ -162,7 +162,7 @@ class Lexicon:
 
         file_abspath = os.path.abspath(file_path)
         if not os.path.isfile(file_abspath):
-            raise FileNotFoundError(file_path)
+            raise FileNotFoundError
         else:
             return file_abspath
 
@@ -887,17 +887,18 @@ class Lexicon:
             if not line or line.startswith('#'):
                 continue
 
-            word, *rest = line.split()
+            line_split = line.split()
+            word = line_split[0]
 
             if not self.parameters_['keep_case']:
                 word = word.lower()
 
             try:
-                freq = int(rest[0])
+                freq = int(line_split[1])
             except (ValueError, IndexError):
                 freq = 1
 
-            phones = rest[1:]
+            phones = line_split[2:]
             if not phones:
                 phones = list(word)
 
