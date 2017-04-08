@@ -229,13 +229,12 @@ def output_latex(iter_obj, file_path, title, headers,
     file.close()
 
 
-def vprint(*objects, verbose=False, sep='', end='\n', file=sys.stdout,
-           flush=True):
+def vprint(verbose=False, *objects, **kwargs):
     """
     Verbose print; defaults to False.
     """
     if verbose:
-        print(*objects, sep=sep, end=end, file=file, flush=flush)
+        print(*objects, **kwargs)
     else:
         return
 

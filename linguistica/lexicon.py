@@ -344,7 +344,7 @@ class Lexicon:
 
         # ----------------------------------------------------------------------
         if self.corpus_file_object:
-            vprint('ngram objects', verbose=verbose)
+            vprint(verbose, 'ngram objects')
 
             fname = 'word_bigrams.txt'
             obj = double_sorted(self.word_bigram_counter().items(),
@@ -361,7 +361,7 @@ class Lexicon:
                          number_of_word_types=self.number_of_word_types(),
                          number_of_word_tokens=self.number_of_word_tokens(),
                          input_file_path=self.file_abspath)
-            vprint('\t' + fname, verbose=verbose)
+            vprint(verbose, '\t' + fname)
 
             fname = 'word_trigrams.txt'
             obj = double_sorted(self.word_trigram_counter().items(),
@@ -378,10 +378,10 @@ class Lexicon:
                          number_of_word_types=self.number_of_word_types(),
                          number_of_word_tokens=self.number_of_word_tokens(),
                          input_file_path=self.file_abspath)
-            vprint('\t' + fname, verbose=verbose)
+            vprint(verbose, '\t' + fname)
 
         # ----------------------------------------------------------------------
-        vprint('morphological signature objects', verbose=verbose)
+        vprint(verbose, 'morphological signature objects')
 
         fname = 'stems_to_words.txt'
         obj = double_sorted(self.stems_to_words().items(),
@@ -400,7 +400,7 @@ class Lexicon:
                      number_of_word_types=self.number_of_word_types(),
                      number_of_word_tokens=self.number_of_word_tokens(),
                      input_file_path=self.file_abspath)
-        vprint('\t' + fname, verbose=verbose)
+        vprint(verbose, '\t' + fname)
 
         fname = 'stems_to_words.txt'
         obj = double_sorted(self.stems_to_words().items(),
@@ -419,7 +419,7 @@ class Lexicon:
                      number_of_word_types=self.number_of_word_types(),
                      number_of_word_tokens=self.number_of_word_tokens(),
                      input_file_path=self.file_abspath)
-        vprint('\t' + fname, verbose=verbose)
+        vprint(verbose, '\t' + fname)
 
         fname = 'signatures_to_stems.txt'
         obj = double_sorted(self.signatures_to_stems().items(),
@@ -437,7 +437,7 @@ class Lexicon:
                      number_of_word_types=self.number_of_word_types(),
                      number_of_word_tokens=self.number_of_word_tokens(),
                      input_file_path=self.file_abspath)
-        vprint('\t' + fname, verbose=verbose)
+        vprint(verbose, '\t' + fname)
 
         fname = 'signatures_to_stems_truncated.txt'
         obj = double_sorted(self.signatures_to_stems().items(),
@@ -457,7 +457,7 @@ class Lexicon:
                      number_of_word_types=self.number_of_word_types(),
                      number_of_word_tokens=self.number_of_word_tokens(),
                      input_file_path=self.file_abspath)
-        vprint('\t' + fname, verbose=verbose)
+        vprint(verbose, '\t' + fname)
 
         fname = 'stems_to_signatures.txt'
         obj = double_sorted(self.stems_to_signatures().items(),
@@ -476,7 +476,7 @@ class Lexicon:
                      number_of_word_types=self.number_of_word_types(),
                      number_of_word_tokens=self.number_of_word_tokens(),
                      input_file_path=self.file_abspath)
-        vprint('\t' + fname, verbose=verbose)
+        vprint(verbose, '\t' + fname)
 
         fname = 'words_to_signatures.txt'
         obj = double_sorted(self.words_to_signatures().items(),
@@ -496,7 +496,7 @@ class Lexicon:
                      number_of_word_types=self.number_of_word_types(),
                      number_of_word_tokens=self.number_of_word_tokens(),
                      input_file_path=self.file_abspath)
-        vprint('\t' + fname, verbose=verbose)
+        vprint(verbose, '\t' + fname)
 
         fname = 'signatures_to_words.txt'
         obj = double_sorted(self.signatures_to_words().items(),
@@ -514,7 +514,7 @@ class Lexicon:
                      number_of_word_types=self.number_of_word_types(),
                      number_of_word_tokens=self.number_of_word_tokens(),
                      input_file_path=self.file_abspath)
-        vprint('\t' + fname, verbose=verbose)
+        vprint(verbose, '\t' + fname)
 
         fname = 'signatures_to_words_truncated.txt'
         obj = double_sorted(self.signatures_to_words().items(),
@@ -534,7 +534,7 @@ class Lexicon:
                      number_of_word_types=self.number_of_word_types(),
                      number_of_word_tokens=self.number_of_word_tokens(),
                      input_file_path=self.file_abspath)
-        vprint('\t' + fname, verbose=verbose)
+        vprint(verbose, '\t' + fname)
 
         fname = 'words_to_sigtransforms.txt'
         obj = double_sorted(self.words_to_sigtransforms().items(),
@@ -554,7 +554,7 @@ class Lexicon:
                      number_of_word_types=self.number_of_word_types(),
                      number_of_word_tokens=self.number_of_word_tokens(),
                      input_file_path=self.file_abspath)
-        vprint('\t' + fname, verbose=verbose)
+        vprint(verbose, '\t' + fname)
 
         fname = 'affixes_to_signatures.txt'
         obj = double_sorted(self.affixes_to_signatures().items(),
@@ -574,11 +574,11 @@ class Lexicon:
                      number_of_word_types=self.number_of_word_types(),
                      number_of_word_tokens=self.number_of_word_tokens(),
                      input_file_path=self.file_abspath)
-        vprint('\t' + fname, verbose=verbose)
+        vprint(verbose, '\t' + fname)
 
         # ----------------------------------------------------------------------
         if self.corpus_file_object:
-            vprint('manifold objects', verbose=verbose)
+            vprint(verbose, 'manifold objects')
 
             fname = 'words_to_neighbors.txt'
             obj = list()  # list of tuple(word, list of neighbor words)
@@ -596,10 +596,10 @@ class Lexicon:
                          number_of_word_types=self.number_of_word_types(),
                          number_of_word_tokens=self.number_of_word_tokens(),
                          input_file_path=self.file_abspath)
-            vprint('\t' + fname, verbose=verbose)
+            vprint(verbose, '\t' + fname)
 
         # ----------------------------------------------------------------------
-        vprint('phon objects', verbose=verbose)
+        vprint(verbose, 'phon objects')
 
         def output_latex_for_phon_words(obj_, f_path_, title_, lxa_parameters_,
                                         test_, encoding_, number_of_word_types_,
@@ -643,7 +643,7 @@ class Lexicon:
                                     self.number_of_word_types(),
                                     self.number_of_word_tokens(),
                                     self.file_abspath)
-        vprint('\t' + fname, verbose=verbose)
+        vprint(verbose, '\t' + fname)
 
         fname = 'wordlist_by_avg_unigram_plog.txt'
         obj_unigram_plog = double_sorted(obj_word_phon,
@@ -656,7 +656,7 @@ class Lexicon:
                                     self.number_of_word_types(),
                                     self.number_of_word_tokens(),
                                     self.file_abspath)
-        vprint('\t' + fname, verbose=verbose)
+        vprint(verbose, '\t' + fname)
 
         fname = 'wordlist_by_avg_bigram_plog.txt'
         obj_bigram_plog = double_sorted(obj_word_phon,
@@ -669,7 +669,7 @@ class Lexicon:
                                     self.number_of_word_types(),
                                     self.number_of_word_tokens(),
                                     self.file_abspath)
-        vprint('\t' + fname, verbose=verbose)
+        vprint(verbose, '\t' + fname)
 
         fname = 'phones.txt'
         obj = double_sorted(self.phone_dict().items(),
@@ -689,7 +689,7 @@ class Lexicon:
                      number_of_word_types=self.number_of_word_types(),
                      number_of_word_tokens=self.number_of_word_tokens(),
                      input_file_path=self.file_abspath)
-        vprint('\t' + fname, verbose=verbose)
+        vprint(verbose, '\t' + fname)
 
         fname = 'biphones.txt'
         obj = double_sorted(self.biphone_dict().items(),
@@ -714,7 +714,7 @@ class Lexicon:
                      number_of_word_types=self.number_of_word_types(),
                      number_of_word_tokens=self.number_of_word_tokens(),
                      input_file_path=self.file_abspath)
-        vprint('\t' + fname, verbose=verbose)
+        vprint(verbose, '\t' + fname)
 
         fname = 'triphones.txt'
         obj = double_sorted(self.phone_trigram_counter().items(),
@@ -732,10 +732,10 @@ class Lexicon:
                      number_of_word_types=self.number_of_word_types(),
                      number_of_word_tokens=self.number_of_word_tokens(),
                      input_file_path=self.file_abspath)
-        vprint('\t' + fname, verbose=verbose)
+        vprint(verbose, '\t' + fname)
 
         # ----------------------------------------------------------------------
-        vprint('trie objects', verbose=verbose)
+        vprint(verbose, 'trie objects')
 
         fname = 'words_as_tries.txt'
         obj = list()
@@ -758,7 +758,7 @@ class Lexicon:
                      number_of_word_types=self.number_of_word_types(),
                      number_of_word_tokens=self.number_of_word_tokens(),
                      input_file_path=self.file_abspath)
-        vprint('\t' + fname, verbose=verbose)
+        vprint(verbose, '\t' + fname)
 
         fname = 'successors.txt'
         obj = double_sorted(self.successors().items(),
@@ -776,7 +776,7 @@ class Lexicon:
                      number_of_word_types=self.number_of_word_types(),
                      number_of_word_tokens=self.number_of_word_tokens(),
                      input_file_path=self.file_abspath)
-        vprint('\t' + fname, verbose=verbose)
+        vprint(verbose, '\t' + fname)
 
         fname = 'predecessors.txt'
         obj = double_sorted(self.predecessors().items(),
@@ -794,7 +794,7 @@ class Lexicon:
                      number_of_word_types=self.number_of_word_types(),
                      number_of_word_tokens=self.number_of_word_tokens(),
                      input_file_path=self.file_abspath)
-        vprint('\t' + fname, verbose=verbose)
+        vprint(verbose, '\t' + fname)
 
     # --------------------------------------------------------------------------
     # for number of word types and tokens
@@ -926,7 +926,7 @@ class Lexicon:
         """
         Run the ngram module.
         """
-        vprint('Extracting word ngrams...', verbose=verbose)
+        vprint(verbose, 'Extracting word ngrams...')
         if self._wordlist is None:
             self._make_wordlist()
 
@@ -1078,7 +1078,7 @@ class Lexicon:
         """
         Run the signature module.
         """
-        vprint('Morphological signatures...', verbose=verbose)
+        vprint(verbose, 'Morphological signatures...')
         self._make_all_signature_objects()
 
     # --------------------------------------------------------------------------
@@ -1140,7 +1140,7 @@ class Lexicon:
         """
         Run the phon module.
         """
-        vprint('Syntactic word neighbors...', verbose=verbose)
+        vprint(verbose, 'Syntactic word neighbors...')
         if self.corpus_file_object:
             self._make_all_manifold_objects()
 
@@ -1244,7 +1244,7 @@ class Lexicon:
         """
         Run the phon module.
         """
-        vprint('Phonology...', verbose=verbose)
+        vprint(verbose, 'Phonology...')
         self._make_all_phon_objects()
 
     # --------------------------------------------------------------------------
@@ -1299,5 +1299,5 @@ class Lexicon:
         """
         Run the trie module.
         """
-        vprint('Tries...', verbose=verbose)
+        vprint(verbose, 'Tries...')
         self._make_all_trie_objects()
