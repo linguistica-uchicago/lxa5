@@ -68,13 +68,13 @@ To launch the Linguistica 5 graphical user interface
 
 .. code-block:: bash
 
-   $ python -m linguistica gui
+   $ linguistica gui
 
 To launch the Linguistica 5 command line interface:
 
 .. code-block:: bash
 
-   $ python -m linguistica cli
+   $ linguistica cli
 
 
 Citation
