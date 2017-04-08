@@ -1,6 +1,3 @@
-#!usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 from os import path
 import sys
 from setuptools import (setup, find_packages)
@@ -14,23 +11,17 @@ if current_py_version < required_py_version:
              'You are using Python {}.{}.'.format(*current_py_version))
 this_dir = path.dirname(__file__)
 
-package_version = None
 version_path = path.join(this_dir, 'linguistica', 'VERSION')
 with open(version_path) as f:
     package_version = f.read().strip()
-assert type(package_version) == str
 
-long_description = None
 readme_path = path.join(this_dir, 'readme.rst')
 with open(readme_path) as f:
     long_description = f.read()
-assert type(long_description) == str
 
-requirements = None
 requirements_path = path.join(this_dir, 'requirements.txt')
 with open(requirements_path) as f:
     requirements = [x.strip() for x in f.readlines()]
-assert type(requirements) == list
 
 setup(name='linguistica',
       version=package_version,
@@ -73,6 +64,7 @@ setup(name='linguistica',
           'Programming Language :: Python :: 3',
           'Programming Language :: Python :: 3.4',
           'Programming Language :: Python :: 3.5',
+          'Programming Language :: Python :: 3.6',
           'Topic :: Scientific/Engineering',
           'Topic :: Scientific/Engineering :: Artificial Intelligence',
           'Topic :: Scientific/Engineering :: Human Machine Interfaces',
