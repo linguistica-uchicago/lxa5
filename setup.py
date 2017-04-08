@@ -1,14 +1,6 @@
 from os import path
-import sys
-from setuptools import (setup, find_packages)
+from setuptools import setup, find_packages
 
-required_py_version = (3, 4)
-current_py_version = sys.version_info[:2]
-
-if current_py_version < required_py_version:
-    sys.exit('Error: Linguistica requires Python {}.{} or above.\n'
-             .format(*required_py_version) +
-             'You are using Python {}.{}.'.format(*current_py_version))
 this_dir = path.dirname(__file__)
 
 version_path = path.join(this_dir, 'linguistica', 'VERSION')
@@ -61,6 +53,8 @@ setup(name='linguistica',
           'Intended Audience :: Science/Research',
           'License :: OSI Approved :: MIT License',
           'Operating System :: OS Independent',
+          'Programming Language :: Python :: 2',
+          'Programming Language :: Python :: 2.7',
           'Programming Language :: Python :: 3',
           'Programming Language :: Python :: 3.4',
           'Programming Language :: Python :: 3.5',
