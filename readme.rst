@@ -1,6 +1,9 @@
 Linguistica 5
 =============
 
+.. image:: https://badge.fury.io/py/linguistica.svg
+   :target: https://badge.fury.io/py/linguistica
+
 .. image:: https://travis-ci.org/linguistica-uchicago/lxa5.svg?branch=master
    :target: https://travis-ci.org/linguistica-uchicago/lxa5
 
