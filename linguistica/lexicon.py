@@ -113,7 +113,7 @@ Other methods and attributes
 import sys
 import os
 from io import StringIO
-from io import open
+from io import open  # not using built-in open(), for py2+3 cross compatibility
 
 from linguistica import (ngram, signature, manifold, phon, trie)
 from linguistica.util import (ENCODING, PARAMETERS, SEP_SIG, SEP_SIGTRANSFORM,
