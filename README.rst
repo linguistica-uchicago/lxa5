@@ -34,7 +34,10 @@ Linguistica 5 is available through ``pip``:
 
    $ pip install linguistica
 
-To use the graphical user interface, PyQt5 and SIP are required.
+Linguistica 5 works with Python 2.7, 3.4, 3.5, and 3.6.
+
+To use the graphical user interface, only Python 3 is supported at the moment.
+In addition, PyQt5 and SIP are required.
 PyQt5 is readily available from ``pip``:
 
 .. code-block:: bash
