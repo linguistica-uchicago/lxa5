@@ -34,12 +34,6 @@ Linguistica 5 is available through ``pip``:
 
    $ pip install linguistica
 
-Linguistica 5 requires Python 3.4 or above. Core dependencies are NumPy, SciPy, and NetworkX.
-If you encounter issues in installing these dependencies,
-consider using the Python distribution `Anaconda <https://www.continuum.io/downloads>`_
-(or `Miniconda <http://conda.pydata.org/miniconda.html>`_)
-with these dependencies installed.
-
 To use the graphical user interface, PyQt5 and SIP are required.
 PyQt5 is readily available from ``pip``:
 
