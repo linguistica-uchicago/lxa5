@@ -43,8 +43,7 @@ def test_plog():
     assert plog(2) == -1.0
     assert plog(0.5) == 1.0
     assert plog(0.25) == 2.0
-    with pytest.raises(ValueError):
-        plog(0)
+    assert plog(0) == float('inf')
 
 
 def test_phone_dict():

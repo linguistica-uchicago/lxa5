@@ -1,12 +1,14 @@
 # -*- encoding: utf8 -*-
 
-
 from collections import Counter
+
+import numpy
 
 
 def plog(x):
-    import math
-    return -1 * math.log2(x)
+    if x == 0:
+        return float('inf')
+    return float(-1 * numpy.log2(x))
 
 
 class Phone:
