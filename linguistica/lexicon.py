@@ -110,6 +110,7 @@ Other methods and attributes
 
 """
 
+import six
 import sys
 import os
 from io import StringIO
@@ -277,10 +278,10 @@ class Lexicon:
             # self.corpus_object is either a list of strings or a long str
             if type(self.corpus_object) is list:
                 corpus_str = fix_punctuations(' '.join(self.corpus_object))
-            elif type(self.corpus_object) is str:
+            elif type(self.corpus_object) is six.text_type:
                 corpus_str = fix_punctuations(self.corpus_object)
             else:
-                raise TypeError('corpus object must be either a str or a list')
+                raise TypeError('corpus object must be either a text or a list')
             self.corpus_file_object = StringIO(corpus_str)
         elif self.file_abspath and not self.file_is_wordlist:
             self.corpus_file_object = open(self.file_abspath,
