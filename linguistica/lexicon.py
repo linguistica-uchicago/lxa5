@@ -129,7 +129,7 @@ class Lexicon:
                             word_count_dict[word] = 0
                         word_count_dict[word] += count
 
-                self._wordlist = [word for word, _ in
+                self._wordlist = [word_ for word_, _ in
                                   double_sorted(word_count_dict.items(),
                                                 key=lambda x: x[1],
                                                 reverse=True)]
