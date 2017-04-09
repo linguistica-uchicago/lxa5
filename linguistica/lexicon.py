@@ -121,6 +121,12 @@ from linguistica.util import (ENCODING, PARAMETERS, SEP_SIG, SEP_SIGTRANSFORM,
                               output_latex, vprint)
 
 
+try:
+    FileNotFoundError
+except NameError:
+    FileNotFoundError = OSError  # no FileNotFoundError in Python 2
+
+
 class Lexicon:
     """
     A class for a Linguistica object. It is called "Lexicon" for the historical

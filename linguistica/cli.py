@@ -7,6 +7,12 @@ from pprint import pformat
 import linguistica as lxa
 from linguistica.util import (ENCODING, PARAMETERS)
 
+
+try:
+    FileNotFoundError
+except NameError:
+    FileNotFoundError = OSError  # no FileNotFoundError in Python 2
+
 lxa_version = lxa.__version__
 
 

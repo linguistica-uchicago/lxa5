@@ -26,6 +26,10 @@ def test_unfound_parameter_error():
 
 
 def test_unfound_file_error():
+    try:
+        FileNotFoundError
+    except NameError:
+        FileNotFoundError = OSError  # Python 2 doesn't have FileNotFoundError
     with pytest.raises(FileNotFoundError):
         read_corpus("foo")
 
