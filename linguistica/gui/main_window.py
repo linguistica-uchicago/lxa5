@@ -1,5 +1,9 @@
 # -*- encoding: utf8 -*-
 
+import six
+if six.PY2:
+    raise RuntimeError('Linguistica 5 GUI does not support Python 2.')
+
 import os
 import json
 from pathlib import Path

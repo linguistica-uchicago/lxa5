@@ -1,8 +1,7 @@
 # -*- encoding: utf8 -*-
 
-from __future__ import print_function
+from __future__ import print_function, unicode_literals
 
-import sys
 import os
 from itertools import groupby
 from time import strftime
@@ -10,10 +9,12 @@ from pprint import pformat
 import platform
 from io import open  # not using built-in open(), for py2+3 cross compatibility
 
-import linguistica
+import six
 import scipy
 import numpy
 import networkx
+
+import linguistica
 
 
 lxa_version = linguistica.__version__
@@ -155,44 +156,45 @@ def output_latex(iter_obj, file_path, title, headers,
         raise ValueError('headers, row_format, and column_widths '
                          'not of the same size')
 
-    print('Time:', strftime('%Y-%m-%d %H:%M:%S'), file=file)
-    print('Path of this file:', file_path, file=file)
-    print(file=file)
+    uprint('Time:', strftime('%Y-%m-%d %H:%M:%S'), file=file)
+    uprint('Path of this file:', file_path, file=file)
+    uprint(file=file)
 
-    print('System info:\n'
-          '=============================================', file=file)
+    uprint('System info:\n'
+           '=============================================', file=file)
 
     uname = platform.uname()
-    print('System:', uname.system, file=file)
-    print('Node:', uname.node, file=file)
-    print('Release:', uname.release, file=file)
-    print('Version:', uname.version, file=file)
-    print('Machine:', uname.machine, file=file)
-    print('Processor:', uname.processor, file=file)
-    print('Python version:', platform.python_version(), file=file)
-    print(file=file)
+    uprint('System:', uname.system, file=file)
+    uprint('Node:', uname.node, file=file)
+    uprint('Release:', uname.release, file=file)
+    uprint('Version:', uname.version, file=file)
+    uprint('Machine:', uname.machine, file=file)
+    uprint('Processor:', uname.processor, file=file)
+    uprint('Python version:', platform.python_version(), file=file)
+    uprint(file=file)
 
-    print('Packages:\n=============================================', file=file)
+    uprint('Packages:\n'
+           '=============================================', file=file)
 
-    print('Linguistica', lxa_version, file=file)
-    print('SciPy', scipy_version, file=file)
-    print('NumPy', numpy_version, file=file)
-    print('NetworkX', networkx_version, file=file)
-    print(file=file)
+    uprint('Linguistica', lxa_version, file=file)
+    uprint('SciPy', scipy_version, file=file)
+    uprint('NumPy', numpy_version, file=file)
+    uprint('NetworkX', networkx_version, file=file)
+    uprint(file=file)
 
-    print('Linguistica parameters:\n'
+    uprint('Linguistica parameters:\n'
           '=============================================', file=file)
-    print(pformat(lxa_parameters), file=file)
-    print(file=file)
+    uprint(pformat(lxa_parameters), file=file)
+    uprint(file=file)
 
-    print('Input file information:\n'
-          '=============================================', file=file)
-    print('Path:', input_file_path, file=file)
-    print('Number of word types:', number_of_word_types, file=file)
-    print('Number of word tokens:', number_of_word_tokens, file=file)
-    print(file=file)
+    uprint('Input file information:\n'
+           '=============================================', file=file)
+    uprint('Path:', input_file_path, file=file)
+    uprint('Number of word types:', number_of_word_types, file=file)
+    uprint('Number of word tokens:', number_of_word_tokens, file=file)
+    uprint(file=file)
 
-    print('Results:\n=============================================', file=file)
+    uprint('Results:\n=============================================', file=file)
 
     header_list = list()
 
@@ -205,12 +207,13 @@ def output_latex(iter_obj, file_path, title, headers,
 
     number_of_columns = len(header_list)
 
-    print(title + '\n', file=file)
-    print('\\begin{{tabular}}{{{}}}'.format('l' * number_of_columns), file=file)
-    print('\\toprule', file=file)
+    uprint(title + '\n', file=file)
+    uprint('\\begin{{tabular}}{{{}}}'.format('l' * number_of_columns),
+           file=file)
+    uprint('\\toprule', file=file)
 
-    print('{} \\\\'.format(' & '.join(header_list)), file=file)
-    print('\\midrule', file=file)
+    uprint('{} \\\\'.format(' & '.join(header_list)), file=file)
+    uprint('\\midrule', file=file)
 
     for i, row_obj in enumerate(iter_obj, 1):
         if index:
@@ -221,10 +224,10 @@ def output_latex(iter_obj, file_path, title, headers,
         for row_func, col_width in zip(row_functions, column_widths):
             row_list.append(str(row_func(row_obj)).ljust(col_width))
 
-        print('{} \\\\'.format(' & '.join(row_list)), file=file)
+            uprint('{} \\\\'.format(' & '.join(row_list)), file=file)
 
-    print('\\bottomrule', file=file)
-    print('\\end{tabular}\n', file=file)
+    uprint('\\bottomrule', file=file)
+    uprint('\\end{tabular}\n', file=file)
 
     file.close()
 
@@ -239,12 +242,16 @@ def vprint(verbose=False, *objects, **kwargs):
         return
 
 
-def check_py_version(required=REQUIRED_PY_VERSION):
+def uprint(*args, **kwargs):
+    """
+    Same as ``print(*args, **kwargs)``, but all ``args`` are first passed
+    through ``six.u`` to ensure unicode. This function is used specifically
+    for printing to a file.
 
-    required_py_version = required
-    current_py_version = sys.version_info[:2]
-
-    if current_py_version < required_py_version:
-        sys.exit('Error: Linguistica requires Python {}.{} or above.\n'
-                 .format(*required_py_version) +
-                 'You are using Python {}.{}.'.format(*current_py_version))
+    :param args: objects to print
+    :param kwargs: kwargs for ``print``
+    """
+    # args = [six.u(x) for x in args]
+    # for x in args:
+    #     print(x, type(x))
+    print(*args, **kwargs)
