@@ -4,11 +4,10 @@ Linguistica 5
 .. image:: https://badge.fury.io/py/linguistica.svg
    :target: https://badge.fury.io/py/linguistica
 
+.. image:: https://img.shields.io/pypi/pyversions/linguistica.svg
+
 .. image:: https://travis-ci.org/linguistica-uchicago/lxa5.svg?branch=master
    :target: https://travis-ci.org/linguistica-uchicago/lxa5
-
-.. image:: https://coveralls.io/repos/github/linguistica-uchicago/lxa5/badge.svg?branch=master
-   :target: https://coveralls.io/github/linguistica-uchicago/lxa5?branch=master
 
 .. image:: https://landscape.io/github/linguistica-uchicago/lxa5/master/landscape.svg?style=flat
    :target: https://landscape.io/github/linguistica-uchicago/lxa5/master
