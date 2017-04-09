@@ -5,7 +5,6 @@ import sys
 
 import linguistica as lxa
 from linguistica.cli import main as cli_main
-from linguistica.util import check_py_version
 
 try:
     from linguistica.gui import main as gui_main
@@ -13,8 +12,6 @@ try:
 except ImportError:
     gui_main = None
     pyqt5_available = False
-
-check_py_version()
 
 lxa_version = lxa.__version__
 
