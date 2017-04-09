@@ -5,8 +5,8 @@ from PyQt5.QtCore import (QThread, pyqtSignal)
 # We spawn another
 # thread to set up a "Linguistica component worker" using QThread.
 # In this way, this worker (with lots of heavy computational work) works in a
-# separate thread that is not the main thread for the GUI, and therefore the GUI
-# stays responsive and (most probably) nothing freezes.
+# separate thread that is not the main thread for the GUI, and therefore the
+# GUI stays responsive and (most probably) nothing freezes.
 
 
 class LinguisticaWorker(QThread):

@@ -10,6 +10,7 @@ from PyQt5.QtCore import QCoreApplication
 def process_all_gui_events():
     QCoreApplication.processEvents()
 
+
 # ------------------------------------------------------------------------------
 
 # configuration file
@@ -102,7 +103,8 @@ svg.append("rect")
 
 
 function zooming() {{
-  svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+  svg.attr("transform",
+    "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
 }};
 
 d3.json("{}", function(error, graph) {{

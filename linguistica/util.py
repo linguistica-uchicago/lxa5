@@ -1,25 +1,25 @@
 # -*- encoding: utf8 -*-
 
-import sys
-import os
+from __future__ import print_function, unicode_literals
 
+import os
 from itertools import groupby
 from time import strftime
 from pprint import pformat
 import platform
+from io import open  # not using built-in open(), for py2+3 cross compatibility
 
-import linguistica
 import scipy
 import numpy
 import networkx
+
+import linguistica
 
 
 lxa_version = linguistica.__version__
 scipy_version = scipy.__version__
 numpy_version = numpy.__version__
 networkx_version = networkx.__version__
-
-REQUIRED_PY_VERSION = (3, 4)
 
 ENCODING = 'utf8'
 
@@ -111,9 +111,10 @@ def double_sorted(input_object, key=lambda x: x, reverse=False,
         # see python 3.4 documentation:
         # https://docs.python.org/3/library/itertools.html#itertools.groupby
         # "The returned group is itself an iterator that shares the underlying
-        # iterable with groupby(). Because the source is shared, when the 
-        # groupby() object is advanced, the previous group is no longer visible.
-        # So, if that data is needed later, it should be stored as a list"
+        # iterable with groupby(). Because the source is shared, when the
+        # groupby() object is advanced, the previous group is no longer
+        # visible. So, if that data is needed later, it should be stored as a
+        # list"
 
         new_sorted_list.extend(sublist)
 
@@ -170,7 +171,8 @@ def output_latex(iter_obj, file_path, title, headers,
     print('Python version:', platform.python_version(), file=file)
     print(file=file)
 
-    print('Packages:\n=============================================', file=file)
+    print('Packages:\n'
+          '=============================================', file=file)
 
     print('Linguistica', lxa_version, file=file)
     print('SciPy', scipy_version, file=file)
@@ -204,7 +206,8 @@ def output_latex(iter_obj, file_path, title, headers,
     number_of_columns = len(header_list)
 
     print(title + '\n', file=file)
-    print('\\begin{{tabular}}{{{}}}'.format('l' * number_of_columns), file=file)
+    print('\\begin{{tabular}}{{{}}}'.format('l' * number_of_columns),
+          file=file)
     print('\\toprule', file=file)
 
     print('{} \\\\'.format(' & '.join(header_list)), file=file)
@@ -219,7 +222,7 @@ def output_latex(iter_obj, file_path, title, headers,
         for row_func, col_width in zip(row_functions, column_widths):
             row_list.append(str(row_func(row_obj)).ljust(col_width))
 
-        print('{} \\\\'.format(' & '.join(row_list)), file=file)
+            print('{} \\\\'.format(' & '.join(row_list)), file=file)
 
     print('\\bottomrule', file=file)
     print('\\end{tabular}\n', file=file)
@@ -227,23 +230,11 @@ def output_latex(iter_obj, file_path, title, headers,
     file.close()
 
 
-def vprint(*objects, verbose=False, sep='', end='\n', file=sys.stdout,
-           flush=True):
+def vprint(verbose=False, *objects, **kwargs):
     """
     Verbose print; defaults to False.
     """
     if verbose:
-        print(*objects, sep=sep, end=end, file=file, flush=flush)
+        print(*objects, **kwargs)
     else:
         return
-
-
-def check_py_version(required=REQUIRED_PY_VERSION):
-
-    required_py_version = required
-    current_py_version = sys.version_info[:2]
-
-    if current_py_version < required_py_version:
-        sys.exit('Error: Linguistica requires Python {}.{} or above.\n'
-                 .format(*required_py_version) +
-                 'You are using Python {}.{}.'.format(*current_py_version))

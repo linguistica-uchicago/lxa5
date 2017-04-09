@@ -44,4 +44,3 @@ def test_predecessors():
     expected_object_path = os.path.join(data_dir, 'predecessors.txt')
     expected_object = eval(open(expected_object_path).read())
     assert test_object == expected_object
-

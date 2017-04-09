@@ -1,12 +1,14 @@
 # -*- encoding: utf8 -*-
 
-
 from collections import Counter
+
+import numpy
 
 
 def plog(x):
-    import math
-    return -1 * math.log2(x)
+    if x == 0:
+        return float('inf')
+    return float(-1 * numpy.log2(x))
 
 
 class Phone:
@@ -31,7 +33,8 @@ class Biphone:
 
 
 class Word:
-    def __init__(self, spelling, phones, count, freq, phone_dict, biphone_dict):
+    def __init__(self, spelling, phones, count, freq, phone_dict,
+                 biphone_dict):
         self.spelling = spelling
         self.phones = phones
         self.count = count
@@ -75,7 +78,8 @@ def make_word_ngrams(word_unigram_counter, words_to_phones=None):
         for triphone in triphones:
             triphone_counter[triphone] += freq
 
-    return dict(uniphone_counter), dict(biphone_counter), dict(triphone_counter)
+    return (dict(uniphone_counter), dict(biphone_counter),
+            dict(triphone_counter))
 
 
 def make_phone_dict(phone_unigram_counter=None):

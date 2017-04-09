@@ -4,8 +4,16 @@ import sys
 import os
 from pprint import pformat
 
+from six.moves import input
+
 import linguistica as lxa
 from linguistica.util import (ENCODING, PARAMETERS)
+
+
+try:
+    FileNotFoundError
+except NameError:
+    FileNotFoundError = OSError  # no FileNotFoundError in Python 2
 
 lxa_version = lxa.__version__
 
@@ -13,7 +21,8 @@ lxa_version = lxa.__version__
 def determine_use_wordlist():
     use_wordlist_response = None
     while use_wordlist_response is None:
-        use_wordlist_response = input('\nAre you using a wordlist file? [N/y] ')
+        use_wordlist_response = input(
+            '\nAre you using a wordlist file? [N/y] ')
 
     if use_wordlist_response and use_wordlist_response[0].lower() == 'y':
         use_wordlist = True
@@ -133,9 +142,9 @@ def get_new_parameters():
 
 
 def main():
-    print('\n================================================================\n'
-          'Welcome to Linguistica {}!\n'
-          '================================================================'
+    print('\n================================================================'
+          '\nWelcome to Linguistica {}!'
+          '\n================================================================'
           .format(lxa_version))
 
     # --------------------------------------------------------------------------

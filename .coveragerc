@@ -1,8 +1,8 @@
 [run]
-source = linguistica
+source = linguistica/
+omit = linguistica/gui/*
+branch = True
 
 [report]
-omit =
-    */linguistica/gui/*
-    */python?.?/*
-    */site-packages/*
+omit = linguistica/gui/*
+show_missing = True

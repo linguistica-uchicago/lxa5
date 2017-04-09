@@ -1,24 +1,19 @@
-# After changing this file, check it on:
-#   http://lint.travis-ci.org/
 language: python
 
-virtualenv:
-  system_site_packages: true
+python:
+  - "2.7"
+  - "3.4"
+  - "3.5"
+  - "3.6"
 
-env:
-  matrix:
-    - PYTHON_VERSION="3.4"
-    - PYTHON_VERSION="3.5"
+cache: pip
 
 install:
-  - source ci/travis_install.sh
+  - pip install --upgrade pip
+  - pip install -r requirements.txt
+  - pip install -r dev-requirements.txt
+  - python setup.py install
 
 script:
-  - pytest -v
-
-after_success:
-  - coveralls
-
-cache: apt
-
-sudo: false
+  - pytest -vv --cov linguistica
+  - flake8 linguistica

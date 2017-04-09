@@ -50,7 +50,7 @@ def get_array(wordlist, bigram_to_freq, trigram_to_freq,
         return tmp
 
     contextdict = defaultdict(contexts_increment)
-    # key: context (e.g., tuple ('of', '_', 'cat') as a 3-gram context for 'the'
+    # key: context (e.g., tuple ('of', '_', 'cat'), a 3-gram context for 'the')
     # value: context index (int)
     # This dict is analogous to worddict, where each key is a word (str)
     # and each value is a word index (int).

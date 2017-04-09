@@ -3,10 +3,11 @@
 import os
 
 import pytest
+from io import open  # not using built-in open(), for py2+3 cross compatibility
 
 import linguistica as lxa
-from linguistica import (Lexicon,
-                         read_corpus, read_wordlist, from_corpus, from_wordlist)
+from linguistica import (Lexicon, read_corpus, read_wordlist, from_corpus,
+                         from_wordlist)
 from linguistica.datasets import brown as corpus_path
 from linguistica.datasets import cmudict as wordlist_path
 
@@ -25,6 +26,10 @@ def test_unfound_parameter_error():
 
 
 def test_unfound_file_error():
+    try:
+        FileNotFoundError
+    except NameError:
+        FileNotFoundError = OSError  # Python 2 doesn't have FileNotFoundError
     with pytest.raises(FileNotFoundError):
         read_corpus("foo")
 
@@ -64,12 +69,6 @@ def test_reset():
     assert test_object.reset() is None
 
 
-def test_run_all_modules():
-    lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
-    lxa_object.run_all_modules()
-    assert True  # test if there are errors
-
-
 def test_run_ngram_module():
     lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
     lxa_object.run_ngram_module()
@@ -97,11 +96,4 @@ def test_run_trie_module():
 def test_run_manifold_module():
     lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
     lxa_object.run_manifold_module()
-    assert True  # test if there are errors
-
-
-def test_output_all_results():
-    lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
-    lxa_object.run_all_modules()
-    lxa_object.output_all_results(test=True)
     assert True  # test if there are errors

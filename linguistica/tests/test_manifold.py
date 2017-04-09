@@ -1,6 +1,9 @@
 # -*- encoding: utf8 -*-
 
+from __future__ import division
+
 import os
+
 import networkx as nx
 
 import linguistica as lxa
@@ -74,7 +77,8 @@ def test_neighbor_graph():
     number_of_hits = 0
 
     for test_edge in test_edges:
-        if test_edge in expected_edges:
+        test_edge_reversed = (test_edge[1], test_edge[0])
+        if test_edge in expected_edges or test_edge_reversed in expected_edges:
             number_of_hits += 1
 
     hit_ratio = number_of_hits / len(expected_edges)

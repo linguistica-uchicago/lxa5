@@ -105,4 +105,3 @@ def test_stems():
     expected_object_path = os.path.join(data_dir, 'stems_to_words.txt')
     expected_object = set(eval(open(expected_object_path).read()).keys())
     assert test_object == expected_object
-

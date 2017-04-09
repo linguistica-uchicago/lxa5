@@ -1,36 +1,19 @@
-#!usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 from os import path
-import sys
-from setuptools import (setup, find_packages)
+from setuptools import setup, find_packages
 
-required_py_version = (3, 4)
-current_py_version = sys.version_info[:2]
-
-if current_py_version < required_py_version:
-    sys.exit('Error: Linguistica requires Python {}.{} or above.\n'
-             .format(*required_py_version) +
-             'You are using Python {}.{}.'.format(*current_py_version))
 this_dir = path.dirname(__file__)
 
-package_version = None
 version_path = path.join(this_dir, 'linguistica', 'VERSION')
 with open(version_path) as f:
     package_version = f.read().strip()
-assert type(package_version) == str
 
-long_description = None
-readme_path = path.join(this_dir, 'readme.rst')
+readme_path = path.join(this_dir, 'README.rst')
 with open(readme_path) as f:
     long_description = f.read()
-assert type(long_description) == str
 
-requirements = None
 requirements_path = path.join(this_dir, 'requirements.txt')
 with open(requirements_path) as f:
     requirements = [x.strip() for x in f.readlines()]
-assert type(requirements) == list
 
 setup(name='linguistica',
       version=package_version,
@@ -70,9 +53,12 @@ setup(name='linguistica',
           'Intended Audience :: Science/Research',
           'License :: OSI Approved :: MIT License',
           'Operating System :: OS Independent',
+          'Programming Language :: Python :: 2',
+          'Programming Language :: Python :: 2.7',
           'Programming Language :: Python :: 3',
           'Programming Language :: Python :: 3.4',
           'Programming Language :: Python :: 3.5',
+          'Programming Language :: Python :: 3.6',
           'Topic :: Scientific/Engineering',
           'Topic :: Scientific/Engineering :: Artificial Intelligence',
           'Topic :: Scientific/Engineering :: Human Machine Interfaces',
