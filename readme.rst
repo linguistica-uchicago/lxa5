@@ -2,7 +2,7 @@ Linguistica 5
 =============
 
 .. image:: https://badge.fury.io/py/linguistica.svg
-   :target: https://badge.fury.io/py/linguistica
+   :target: https://pypi.python.org/pypi/linguistica
 
 .. image:: https://img.shields.io/pypi/pyversions/linguistica.svg
 
