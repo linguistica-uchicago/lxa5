@@ -113,6 +113,7 @@ Other methods and attributes
 import sys
 import os
 from io import StringIO
+from io import open
 
 from linguistica import (ngram, signature, manifold, phon, trie)
 from linguistica.util import (ENCODING, PARAMETERS, SEP_SIG, SEP_SIGTRANSFORM,
