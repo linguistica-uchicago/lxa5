@@ -1,12 +1,15 @@
 # -*- encoding: utf8 -*-
 
-import six
-if six.PY2:
-    raise RuntimeError('Linguistica 5 GUI does not support Python 2.')
-
 import os
 import json
-from pathlib import Path
+
+try:
+    from pathlib import Path
+except ImportError:
+    # pathlib is not on Python 2, and, anyway,
+    # PyQt5 doesn't support Python 2 officially
+    # so we just raise an error if GUI is run on Python 2
+    raise RuntimeError('Currently, Linguistica 5 GUI works on Python 3 only.')
 
 from networkx.readwrite import json_graph
 
@@ -14,9 +17,9 @@ from PyQt5.QtCore import (Qt, QUrl)
 from PyQt5.QtWidgets import (QMainWindow, QWidget, QAction, QVBoxLayout,
                              QTreeWidget, QFileDialog, QLabel, QTreeWidgetItem,
                              QTableWidget, QTableWidgetItem, QSplitter,
-                             QProgressDialog, QMessageBox, QDialog, QGridLayout,
-                             QSpinBox, QSizePolicy, QHBoxLayout, QPushButton,
-                             QShortcut)
+                             QProgressDialog, QMessageBox, QDialog,
+                             QGridLayout, QSpinBox, QSizePolicy, QHBoxLayout,
+                             QPushButton, QShortcut)
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 
@@ -70,10 +73,11 @@ class MainWindow(QMainWindow):
                                                   slot=self.corpus_dir_dialog,
                                                   tip='Select a corpus file',
                                                   shortcut='Ctrl+N')
-        select_wordlist_action = self.create_action(text='&Select wordlist...',
-                                                    slot=self.wordlist_dir_dialog,
-                                                    tip='Select a wordlist file',
-                                                    shortcut='Ctrl+W')
+        select_wordlist_action = self.create_action(
+            text='&Select wordlist...',
+            slot=self.wordlist_dir_dialog,
+            tip='Select a wordlist file',
+            shortcut='Ctrl+W')
         run_file_action = self.create_action(text='&Run...',
                                              slot=self.run_file,
                                              tip='Run the input file',
@@ -91,8 +95,9 @@ class MainWindow(QMainWindow):
 
         self.status = self.statusBar()
         self.status.setSizeGripEnabled(False)
-        self.status.showMessage('No input file loaded. To select one: File --> '
-                                'Select corpus... or Select wordlist...')
+        self.status.showMessage(
+            'No input file loaded. To select one: File --> '
+            'Select corpus... or Select wordlist...')
 
     def initialize_lexicon_tree(self):
         self.lexicon_tree = QTreeWidget()
@@ -138,7 +143,7 @@ class MainWindow(QMainWindow):
 
         # HACK: fname is supposed to be a string (at least according to the
         # PyQt5 documentation), but for some reason fname is a tuple.
-        # So we need this hack to make sure that fname is a string of a filename
+        # So we need to make sure that fname is a string of a filename
         # -- Jackson Lee, 2015/06/22
 
         # update: it's turned out that this behavior is due to compatibility
@@ -307,8 +312,8 @@ class MainWindow(QMainWindow):
 
         # set up the Linguistica components worker
         # The worker is a QThread. We spawn this thread, and the linguistica
-        # components run on this new thread but not the main thread for the GUI.
-        # This makes the GUI still responsive
+        # components run on this new thread but not the main thread for the
+        # GUI. This makes the GUI still responsive
         # while the long and heavy running process of
         # the Linguistica components is ongoing.
 
@@ -363,7 +368,8 @@ class MainWindow(QMainWindow):
             self.corpus_name, file_type)
 
         # TODO Bring the following back for correct word type/token counts.
-        # header_label = 'File: {}\nFile type: {}\n\n# word types: {:,}\n'.format(
+        # header_label = 'File: {}\nFile type: {}\n\n# word types: {:,}\n'\
+        #     .format(
         #     self.corpus_name, file_type, self.lexicon.number_of_word_types())
         # if file_type == 'corpus':
         #     header_label += '# word tokens: {:,}\n'.format(
@@ -470,7 +476,7 @@ class MainWindow(QMainWindow):
         self.lexicon_tree.resize(lexicon_tree_size)
 
         # set up:
-        # 1) main splitter (b/w lexicon-tree+parameter window and major display)
+        # 1) main splitter (b/w lexicon-tree+parameter window & major display)
         # 2) minor splitter (b/w lexicon-tree and parameter window)
         self.mainSplitter = QSplitter(Qt.Horizontal)
         self.mainSplitter.setHandleWidth(10)
@@ -526,7 +532,8 @@ class MainWindow(QMainWindow):
         sig_to_stems_minor_table.resizeColumnsToContents()
 
         minor_table_title = QLabel('{} (number of stems: {})'
-                                   .format(SEP_SIG.join(signature), len(stems)))
+                                   .format(SEP_SIG.join(signature), len(stems))
+                                   )
 
         minor_table_widget_with_title = QWidget()
         layout = QVBoxLayout()

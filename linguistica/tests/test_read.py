@@ -6,8 +6,8 @@ import pytest
 from io import open  # not using built-in open(), for py2+3 cross compatibility
 
 import linguistica as lxa
-from linguistica import (Lexicon,
-                         read_corpus, read_wordlist, from_corpus, from_wordlist)
+from linguistica import (Lexicon, read_corpus, read_wordlist, from_corpus,
+                         from_wordlist)
 from linguistica.datasets import brown as corpus_path
 from linguistica.datasets import cmudict as wordlist_path
 

@@ -169,7 +169,7 @@ class Lexicon:
             elif type(self.corpus_object) is six.text_type:
                 corpus_str = fix_punctuations(self.corpus_object)
             else:
-                raise TypeError('corpus object must be either a text or a list')
+                raise TypeError('corpus object must be either a text or list')
             self.corpus_file_object = StringIO(corpus_str)
         elif self.file_abspath and not self.file_is_wordlist:
             self.corpus_file_object = open(self.file_abspath,
@@ -209,8 +209,9 @@ class Lexicon:
     def reset(self):
         """
         Reset the Linguistica object. While the file path information is
-        retained, all computed objects (ngrams, signatures, word neighbors, etc)
-        are reset to ``NULL``; if they are called again, they are re-computed.
+        retained, all computed objects (ngrams, signatures, word neighbors,
+        etc) are reset to ``NULL``; if they are called again, they are
+        re-computed.
         """
         self._initialize()
 
@@ -498,7 +499,8 @@ class Lexicon:
         vprint(verbose, 'phon objects')
 
         def output_latex_for_phon_words(obj_, f_path_, title_, lxa_parameters_,
-                                        test_, encoding_, number_of_word_types_,
+                                        test_, encoding_,
+                                        number_of_word_types_,
                                         number_of_word_tokens_,
                                         input_file_path_):
             output_latex(obj_, f_path_,
@@ -943,8 +945,8 @@ class Lexicon:
     def _make_all_signature_objects(self):
         self._stems_to_words = signature.make_stems_to_words(
             self.wordlist(), self.parameters_['min_stem_length'],
-            self.parameters_['max_affix_length'], self.parameters_['suffixing'],
-            self.parameters_['min_sig_count'])
+            self.parameters_['max_affix_length'],
+            self.parameters_['suffixing'], self.parameters_['min_sig_count'])
 
         self._signatures_to_stems = signature.make_signatures_to_stems(
             self._stems_to_words, self.parameters_['max_affix_length'],
@@ -1023,14 +1025,14 @@ class Lexicon:
 
     def _make_all_manifold_objects(self):
         self._words_to_neighbors, self._words_to_contexts, \
-        self._contexts_to_words = manifold.run(
-            self.word_unigram_counter(),
-            self.word_bigram_counter(),
-            self.word_trigram_counter(),
-            self.parameters_['max_word_types'],
-            self.parameters_['n_neighbors'],
-            self.parameters_['n_eigenvectors'],
-            self.parameters_['min_context_count'])
+            self._contexts_to_words = manifold.run(
+                self.word_unigram_counter(),
+                self.word_bigram_counter(),
+                self.word_trigram_counter(),
+                self.parameters_['max_word_types'],
+                self.parameters_['n_neighbors'],
+                self.parameters_['n_eigenvectors'],
+                self.parameters_['min_context_count'])
         self._neighbor_graph = manifold.compute_graph(self._words_to_neighbors)
 
     def run_manifold_module(self, verbose=False):
@@ -1126,8 +1128,8 @@ class Lexicon:
         words_to_phones = self.words_to_phones()
 
         self._phone_unigram_counter, self._phone_bigram_counter, \
-        self._phone_trigram_counter = phon.make_word_ngrams(
-            word_unigram_counter, words_to_phones)
+            self._phone_trigram_counter = phon.make_word_ngrams(
+                word_unigram_counter, words_to_phones)
 
         self._phone_dict = phon.make_phone_dict(self._phone_unigram_counter)
         self._biphone_dict = phon.make_biphone_dict(self._phone_bigram_counter,
@@ -1189,8 +1191,8 @@ class Lexicon:
 
     def _make_all_trie_objects(self):
         self._broken_words_left_to_right, self._broken_words_right_to_left, \
-        self._successors, self._predecessors = trie.run(
-            self.wordlist(), self.parameters_['min_stem_length'])
+            self._successors, self._predecessors = trie.run(
+                self.wordlist(), self.parameters_['min_stem_length'])
 
     def run_trie_module(self, verbose=False):
         """

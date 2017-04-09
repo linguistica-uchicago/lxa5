@@ -113,10 +113,10 @@ def reverse_direction(str_to_sequences_of_strings, is_list=False):
     for s, sequence_of_strings in str_to_sequences_of_strings.items():
         if type(sequence_of_strings) is set:
             new_sequence = set()
-            grow = lambda sequence_, new_item: sequence_.add(new_item)
+            grow = lambda sequence_, new_item: sequence_.add(new_item)  # noqa
         else:  # sequences_of_strings is a list
             new_sequence = list()
-            grow = lambda sequence_, new_item: sequence_.append(new_item)
+            grow = lambda sequence_, new_item: sequence_.append(new_item)  # noqa
 
         for item in sequence_of_strings:
             if item != NULL:
@@ -155,7 +155,8 @@ def run(wordlist=None, min_stem_length=4):
     # Compute successors and predecessors
 
     successors = get_successors(wordlist, broken_words_left_to_right)
-    predecessors = get_successors(reversed_wordlist, broken_words_right_to_left)
+    predecessors = get_successors(reversed_wordlist,
+                                  broken_words_right_to_left)
 
     # --------------------------------------------------------------------------
     # Reverse direction to right-to-left

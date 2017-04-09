@@ -32,12 +32,11 @@ def make_stems_to_signatures(sigs_to_stems):
     return stems_to_sigs
 
 
-# noinspection PyPep8
 def check_affix(word, affix, suffixing):
     if suffixing:
-        is_affix = lambda word_, affix_: word_.endswith(affix_)
+        is_affix = lambda word_, affix_: word_.endswith(affix_)  # noqa
     else:
-        is_affix = lambda word_, affix_: word_.startswith(affix_)
+        is_affix = lambda word_, affix_: word_.startswith(affix_)  # noqa
 
     if affix == NULL:
         affix = ""
@@ -160,10 +159,10 @@ def make_bisignatures(wordlist, min_stem_length, max_affix_length, suffixing):
 
     if not suffixing:
         wordlist = sorted(wordlist, key=lambda x: x[::-1])
-        group_key = lambda x: x[-min_stem_length:]
+        group_key = lambda x: x[-min_stem_length:]  # noqa
     else:
         wordlist = sorted(wordlist)
-        group_key = lambda x: x[: min_stem_length]
+        group_key = lambda x: x[: min_stem_length]  # noqa
 
     wordlist = filter(lambda x: len(x) >= min_stem_length, wordlist)
 
@@ -173,8 +172,9 @@ def make_bisignatures(wordlist, min_stem_length, max_affix_length, suffixing):
         # https://docs.python.org/3/library/itertools.html#itertools.groupby
         # "The returned group is itself an iterator that shares the underlying
         # iterable with groupby(). Because the source is shared, when the
-        # groupby() object is advanced, the previous group is no longer visible.
-        # So, if that data is needed later, it should be stored as a list"
+        # groupby() object is advanced, the previous group is no longer
+        # visible. So, if that data is needed later, it should be stored as a
+        # list"
 
         for (word1, word2) in combinations(wordlist_for_analysis, 2):
 
@@ -221,4 +221,3 @@ def make_affixes_to_signatures(signatures):
             affixes_to_sigs[affix].add(sig)
 
     return affixes_to_sigs
-

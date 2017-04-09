@@ -111,9 +111,10 @@ def double_sorted(input_object, key=lambda x: x, reverse=False,
         # see python 3.4 documentation:
         # https://docs.python.org/3/library/itertools.html#itertools.groupby
         # "The returned group is itself an iterator that shares the underlying
-        # iterable with groupby(). Because the source is shared, when the 
-        # groupby() object is advanced, the previous group is no longer visible.
-        # So, if that data is needed later, it should be stored as a list"
+        # iterable with groupby(). Because the source is shared, when the
+        # groupby() object is advanced, the previous group is no longer
+        # visible. So, if that data is needed later, it should be stored as a
+        # list"
 
         new_sorted_list.extend(sublist)
 
@@ -158,7 +159,7 @@ def output_latex(iter_obj, file_path, title, headers,
     print(file=file)
 
     print('System info:\n'
-           '=============================================', file=file)
+          '=============================================', file=file)
 
     uname = platform.uname()
     print('System:', uname.system, file=file)
@@ -171,7 +172,7 @@ def output_latex(iter_obj, file_path, title, headers,
     print(file=file)
 
     print('Packages:\n'
-           '=============================================', file=file)
+          '=============================================', file=file)
 
     print('Linguistica', lxa_version, file=file)
     print('SciPy', scipy_version, file=file)
@@ -185,7 +186,7 @@ def output_latex(iter_obj, file_path, title, headers,
     print(file=file)
 
     print('Input file information:\n'
-           '=============================================', file=file)
+          '=============================================', file=file)
     print('Path:', input_file_path, file=file)
     print('Number of word types:', number_of_word_types, file=file)
     print('Number of word tokens:', number_of_word_tokens, file=file)
@@ -206,7 +207,7 @@ def output_latex(iter_obj, file_path, title, headers,
 
     print(title + '\n', file=file)
     print('\\begin{{tabular}}{{{}}}'.format('l' * number_of_columns),
-           file=file)
+          file=file)
     print('\\toprule', file=file)
 
     print('{} \\\\'.format(' & '.join(header_list)), file=file)

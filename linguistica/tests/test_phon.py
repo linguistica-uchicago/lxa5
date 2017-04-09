@@ -2,8 +2,6 @@
 
 import os
 
-import pytest
-
 import linguistica as lxa
 from linguistica.datasets import brown as corpus_path
 
@@ -48,17 +46,17 @@ def test_plog():
 
 def test_phone_dict():
     lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
-    _ = lxa_object.phone_dict()
-    assert True  # TODO: only testing if there are errors for now...
+    lxa_object.phone_dict()
+    # TODO: only testing if there are errors for now...
 
 
 def test_biphone_dict():
     lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
-    _ = lxa_object.biphone_dict()
-    assert True  # TODO: only testing if there are errors for now...
+    lxa_object.biphone_dict()
+    # TODO: only testing if there are errors for now...
 
 
 def test_word_phonology_dict():
     lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
-    _ = lxa_object.word_phonology_dict()
-    assert True  # TODO: only testing if there are errors for now...
+    lxa_object.word_phonology_dict()
+    # TODO: only testing if there are errors for now...

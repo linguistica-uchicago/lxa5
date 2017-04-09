@@ -36,4 +36,5 @@ def run(corpus_file_object=None, keep_case=False, max_word_tokens=0):
         bigrams_counter.update(bigrams_of_line)
         trigrams_counter.update(trigrams_of_line)
 
-    return dict(unigrams_counter), dict(bigrams_counter), dict(trigrams_counter)
+    return (dict(unigrams_counter), dict(bigrams_counter),
+            dict(trigrams_counter))
