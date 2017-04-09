@@ -69,12 +69,6 @@ def test_reset():
     assert test_object.reset() is None
 
 
-def test_run_all_modules():
-    lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
-    lxa_object.run_all_modules()
-    assert True  # test if there are errors
-
-
 def test_run_ngram_module():
     lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
     lxa_object.run_ngram_module()
@@ -102,11 +96,4 @@ def test_run_trie_module():
 def test_run_manifold_module():
     lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
     lxa_object.run_manifold_module()
-    assert True  # test if there are errors
-
-
-def test_output_all_results():
-    lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
-    lxa_object.run_all_modules()
-    lxa_object.output_all_results(test=True)
     assert True  # test if there are errors
