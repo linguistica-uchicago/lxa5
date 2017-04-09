@@ -3,6 +3,7 @@
 import os
 
 import pytest
+from io import open  # not using built-in open(), for py2+3 cross compatibility
 
 import linguistica as lxa
 from linguistica import (Lexicon,

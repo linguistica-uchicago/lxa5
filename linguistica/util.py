@@ -4,11 +4,11 @@ from __future__ import print_function
 
 import sys
 import os
-
 from itertools import groupby
 from time import strftime
 from pprint import pformat
 import platform
+from io import open  # not using built-in open(), for py2+3 cross compatibility
 
 import linguistica
 import scipy
