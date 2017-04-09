@@ -7,7 +7,7 @@ version_path = path.join(this_dir, 'linguistica', 'VERSION')
 with open(version_path) as f:
     package_version = f.read().strip()
 
-readme_path = path.join(this_dir, 'readme.rst')
+readme_path = path.join(this_dir, 'README.rst')
 with open(readme_path) as f:
     long_description = f.read()
 

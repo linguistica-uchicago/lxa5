@@ -203,7 +203,7 @@ Continuous integration
   * ensure that the codebase is compliant with PEP 8 coding style conventions
 
 * The images for various continuous integration elements are directly shown
-  at the top of ``readme.rst``. So be sure everything works and looks great
+  at the top of ``README.rst``. So be sure everything works and looks great
   at all times!
 
 * We use `Travis-CI <https://travis-ci.org/>`_ to test the library installation
