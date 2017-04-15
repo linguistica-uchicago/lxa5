@@ -3,11 +3,19 @@ Linguistica 5
 
 .. image:: https://badge.fury.io/py/linguistica.svg
    :target: https://pypi.python.org/pypi/linguistica
+   :alt: PyPI version
 
 .. image:: https://img.shields.io/pypi/pyversions/linguistica.svg
+   :target: https://pypi.python.org/pypi/linguistica
+   :alt: Supported Python versions
+
+.. image:: https://img.shields.io/pypi/wheel/linguistica.svg
+   :target: https://pypi.python.org/pypi/linguistica
+   :alt: Wheel
 
 .. image:: https://travis-ci.org/linguistica-uchicago/lxa5.svg?branch=master
    :target: https://travis-ci.org/linguistica-uchicago/lxa5
+   :alt: Build
 
 .. image:: https://landscape.io/github/linguistica-uchicago/lxa5/master/landscape.svg?style=flat
    :target: https://landscape.io/github/linguistica-uchicago/lxa5/master
@@ -34,7 +42,7 @@ Linguistica 5 is available through ``pip``:
 
    $ pip install linguistica
 
-Linguistica 5 works with Python 2.7, 3.4, 3.5, and 3.6.
+Linguistica 5 works with Python 2.7 and 3.4+.
 
 To use the graphical user interface, only Python 3 is supported.
 In addition, PyQt5 and SIP are required.
