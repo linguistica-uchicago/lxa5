@@ -22,19 +22,20 @@ components:
   To get a sense of how the code works,
   please see :ref:`codebase_overview` below.
 
-* :ref:`codebase_documentation`
-
-* :ref:`codebase_continuous_integration`
+* :ref:`codebase_dependencies`
 
 * :ref:`codebase_tests`
 
+* :ref:`codebase_continuous_integration`
+
 * :ref:`codebase_setup_dot_py`
 
-* :ref:`codebase_dependencies`
-
-* :ref:`codebase_license`
-
 * :ref:`codebase_readme`
+
+* :ref:`codebase_version`
+
+* :ref:`codebase_documentation`
+
 
 Developers of the Linguistica project shall consult the page :ref:`dev` for
 set-up and workflow.
@@ -72,7 +73,7 @@ The answer lies in the design of the class ``Lexicon``.
 Given the definition of the class is fairly long, we will examine it step by step,
 unfolding only the relevant bits as we move along:
 
-.. code::
+.. code:: python
 
     class Lexicon:
 
@@ -105,7 +106,7 @@ When ``lxa_object.signatures_to_stems()`` is called, the method
 ``signatures_to_stems()`` of the ``Lexicon`` class is called.
 What does this method do? Let's check out the code:
 
-.. code::
+.. code:: python
 
     class Lexicon:
 
@@ -169,171 +170,13 @@ immediate retrieval. All heavy lifting is only called but not done within
 the class ``Lexicon`` -- the real work is done in the respective modules
 such as ``signature``, ``manifold``, and so on.
 
+Notes on the graphicsl user interface (GUI):
 
-.. _codebase_documentation:
-
-Documentation
--------------
-
-(To be updated)
-
-Using Sphinx
-
-changelog.md
-
-build-doc.sh
-
-
-.. _codebase_continuous_integration:
-
-Continuous integration
-----------------------
-
-(To be updated)
-
-* .travis.yml
-
-* .coveragerc
-
-* We take advantage of continuous integration to:
-
-  * test whether the Linguistica 5 library can be successfully installed
-  * check if all tests pass
-  * measure test coverage
-  * ensure that the codebase is compliant with PEP 8 coding style conventions
-
-* The images for various continuous integration elements are directly shown
-  at the top of ``README.rst``. So be sure everything works and looks great
-  at all times!
-
-* We use `Travis-CI <https://travis-ci.org/>`_ to test the library installation
-  as hosted on GitHub.
-  ``.travis.yml`` in the repository provides the instructions for Travis CI to
-  run the tests whenever a commit is pushed to the ``master`` branch.
-  Under no circumstances can build tests be marked as "fail".
-
-* We use `coveralls <https://coveralls.io/>`_ to measure test coverage.
-  ``.travis.yml`` and ``.coveragerc`` configure the measurement and reportage.
-  Under no circumstances can test coverage drop below 95%.
-
-* ``.travis.yml`` runs ``ci/travis_install.sh`` to install all library
-  dependencies and packages for testing. We use Miniconda for faster
-  downloading
-  (apt-get is sometimes too slow and there's a 50-minute cap for build tests
-  on Travis CI).
-
-* We use `landscape.io <https://landscape.io>`_ to check code health for
-  ensuring the codebase abides by the PEP 8 coding style conventions.
-  Under no circumstances can code health drop below 95%.
-
-.. _codebase_tests:
-
-Tests
------
-
-(To be updated)
-
-* Install the packages needed for testing. Run
-  ``sudo python3 -m pip -r test_requirements.txt``.
-
-* We use ``nose`` as the testing framework.
-  To run tests, run ``python3 nosetests_run.py``.
-
-* Run ``python3 nosetests_run.py``
-  as often as possible to ensure nothing has broken.
-  In particular, it must be run before *and* after each coding session.
-
-* All testing-related files and scripts are in the directory ``tests``.
-
-* ``tests/data`` contains all expected outputs rendered
-  as Python literals, plus the corpus file ``english-brown.txt``.
-  All scripts in ``tests`` are named ``test_X.py`` so that ``nose`` can
-  recognize them. All tests are functions named ``test_X()``.
-
-* All tests must be explicitly written as the ``test_X()`` functions in the
-  ``test_X.py`` scripts.
-  We do *NOT* use docstrings in the library code for the
-  purposes of library testing.
-
-* Note that ``tests`` are **NOT** included in the library under the directory
-  ``linguistica``. This means that ``tests`` is available only through
-  the GitHub repository and is not included in the library installation.
-  This structure is intentional, because ``tests`` is only for the developers
-  but not the users, and ``tests`` contains large files that the users
-  wouldn't need.
-
-
-* ``words_to_neighbors``:
-  Syntactic word neighbor computation appears to be sensitive to the precise
-  versions of NumPy and SciPy being used.
-  This affects the precise word
-  neighbors found. Since an exact match of neighbors between the test and
-  expected results is *not* critical ("close enough" would do), the
-  test for ``words_to_neighbors`` is intentionally lenient.
-
-
-.. _codebase_setup_dot_py:
-
-``setup.py``
-------------
-
-
-.. _codebase_dependencies:
-
-Dependencies
-------------
-
-requirements.txt
-
-
-.. _codebase_license:
-
-License
--------
-
-LICENSE.txt
-
-
-.. _codebase_readme:
-
-Readme
-------
-
-(To be updated)
-
-rst rather than markdown is used
-because this is to be read as the
-long description in ``setup.py``,
-and PyPI recognizes rst but not markdown
-to render the text formatting.
-
-
-Version
--------
-
-(To be updated)
-
-A plain text file that specifies the version number -- currently ``5.1.0``.
-
-Defined in `linguistica/VERSION` and nowhere else.
-
-* **Version number:** We follow http://semver.org/ for the ``major.minor.patch``
-  format.
-  The current version is ``5.1.0``.
-  The major version is ``5`` because there's John's Linguistica 3 & 4
-  written in C++.
-  The minor version is ``1`` rather than ``0`` because John has his in-house
-  ``5.0`` written in Python 2 circa/before 2012.
-  The version number is specified in ``linguistica/VERSION`` (and nowhere else).
-
-
-Graphical user interface
-------------------------
-
-(To be updated)
+* The GUI is Python 3 only. The main reason is tha the GUI requires PyQt5 (and
+  SIP), and PyQt5 appears to be Python 3 only (at least officially?).
 
 * Because SIP and PyQt5 are required for the GUI but their installation
-  is possibly non-trivial, they are designated as *optional* dependencies
+  is possibly non-trivial. They are designated as *optional* dependencies
   for Linguistica 5 (the GUI is not an absolute must-have for Linguistica 5
   to work).
 
@@ -351,84 +194,133 @@ Graphical user interface
   actually be called.
 
 
-Command line interface
-----------------------
-
-(To be updated)
+Notes on the command line interface (CLI):
 
 * The CLI code is in ``linguistica/cli.py``, all wrapped in
-  ``linguistica.cli.main()`` called in ``linguistica/__main__.py``.
+  ``linguistica.cli.main()`` which is called in ``linguistica/__main__.py``.
 
 * We don't output ``words_to_contexts``
   and ``contexts_to_words``, because they are huge...
   Or we could just output those whose counts are higher than some threshold?
 
 
+.. _codebase_dependencies:
 
-``linguistica/__main__.py``
----------------------------
+Dependencies
+------------
 
-For running GUI and CLI
+The core dependencies are specified in ``requirements.txt`` which is read by
+``setup.py`` and used in build tests by Travis CI.
+For reproducibility, we pin down each dependency's major and minor version
+numbers, while allowing flexibility for getting bug fixes.
+For example, ``six>=1.10.0,<=1.10.99`` points to the latest six v1.10.x.
 
-
-``linguistica/__init__.py``
----------------------------
-
-``__init__.py`` sets up the functions for reading data.
-
-
-``linguistica/release.py``
---------------------------
-
-Metadata of the library (version etc)
+There is also ``dev-requirements.txt`` with dependencies for running tests and
+code quality checks. Travis CI uses this file for build tests.
+It is recommended that developers and administrators of the Linguistica 5
+also install these dependencies and use them for maintaining high code quality.
 
 
-``linguistica/util.py``
------------------------
+.. _codebase_tests:
 
-Constants and various utility functions.
+Tests
+-----
 
+We use ``pytest`` as the testing framework. Developers and administrators
+should install the dependencies for running tests:
+``$ pip install -r dev-requirements``
 
-``linguistica/lexicon.py``
---------------------------
+Run tests as often as you can. In particular, it must be run before *and*
+after each coding session:
+``$ pytest -vv --cov linguistica linguistica``.
+``-vv`` outputs a verbose test report. ``--cov linguistica`` means that we
+check test coverage for ``.py`` files under the directory ``linguistica``
+(so just the library code). Lastly, the second ``linguistica`` in the command
+specifies the directory (again, the library code) where pytest should look for
+tests in ``test_*.py``. ``.coveragerc`` configures the test coverage report.
 
-The ``Lexicon`` class.
-
-
-``linguistica/ngram.py``
-------------------------
-
-This ``ngram`` module is to get the word ngrams.
-
-
-``linguistica/signature.py``
-----------------------------
-
-* Morphological signatures should really be sets, but they are tuples
-  (e.g. ``('NULL', 's')``) with affixes ordered alphabetically.
-  The signatures are very often the keys in some dicts, and Python doesn't
-  allow sets to be dict keys...
+We are also using ``flake8`` for maintaining high code quality. Essentially,
+no PEP8 violations are allowed -- not even trailing whitespace or extra
+empty lines. Run flake8 with ``$ flake8 linguistica``. If you see no
+terminal output, it means everything is compliant. Note that the Travis CI
+build tests also run flake8. Do not try to work around the robots!
 
 
-``linguistica/phon.py``
------------------------
+.. _codebase_continuous_integration:
 
-The ``phon`` module is to perform various phonology-related computations.
-
-
-``linguistica/trie.py``
------------------------
-
-Left-to-right and right-to-left tries. Successors. Predecessors.
-
-
-``linguistica/manifold.py``
----------------------------
-
-Syntactic word neighbors
-
-
-``linguistica/fsm.py``
+Continuous integration
 ----------------------
 
-(Forthcoming)
+The Linguistica 5 repository is set up with Travis CI for automatically
+running build tests for all pull requests. The configuration is in
+``.travis.yml``. We take advantage of continuous integration to:
+
+  * test whether the Linguistica 5 library can be successfully installed
+  * check if all tests pass
+  * ensure that the codebase is compliant with PEP 8 coding style conventions
+
+Build tests are run for all supported Python versions (2.7 and 3.4+).
+
+
+.. _codebase_setup_dot_py:
+
+``setup.py``
+------------
+
+``setup.py`` installs the Linguistica 5 library. It also specifies the metadata
+of the library (displayed on the PyPI site). Developers and administrators
+are recommended to install Linguisitca 5 with ``$ python setup.py develop``
+for development purposes.
+
+
+.. _codebase_readme:
+
+Readme
+------
+
+The readme, ``README.rst``, is in reStructuredText instead of Markdown,
+simply because PyPI
+does not seem to render Markdown mark-up for the ``long_description`` in
+``setup.py``.
+
+``readme-dev.md`` contains notes for the administrators of the Linguistica 5
+project.
+
+
+.. _codebase_version:
+
+Version
+-------
+
+The version number is specified in the text file `linguistica/VERSION` and
+nowhere else. The version number in both ``setup.py`` and
+``linguistica.__version__`` points to this text file. It is important to
+**not** hard-code or even mention the current version number anywhere else
+(not even in the source ``.rst`` of this documentation) to avoid confusion.
+
+We essentially follow http://semver.org/ for the ``major.minor.patch``
+format. The major version is ``5`` because there's John's Linguistica 3 & 4
+written in C++. The minor version number increments when a new release comes
+with new features. The patch number increments when a new release comes with
+changes with no API ramifications such as bug fixes.
+
+The first release of Linguistica 5 was 5.1.0 instead of 5.0.0, because 5.0.0
+was John's in-house version written in Python 2.
+
+
+.. _codebase_documentation:
+
+Documentation
+-------------
+
+We use Sphinx as the documentation framework, as it is the official tool for
+Python projects (including the docs of the Python language itself).
+The source files (in the reStructuredText mark-up language) are in
+``docs/sources/``. These source files are what generates the ``docs/*.html``
+files, which GitHub renders as the documentation website
+(= what you are reading now). To update the HTML files after the source
+``.rst`` files are updated, run ``$ sh build-doc.sh``.
+
+
+Changes (new features, bug fixes) together with new version releases
+should be documented in ``CHANGELOG.md``.

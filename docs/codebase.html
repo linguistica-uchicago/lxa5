@@ -93,27 +93,13 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Codebase</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#structure-of-the-project-repository">Structure of the project repository</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#continuous-integration">Continuous integration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#tests">Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#setup-py"><code class="docutils literal"><span class="pre">setup.py</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tests">Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#continuous-integration">Continuous integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setup-py"><code class="docutils literal"><span class="pre">setup.py</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#readme">Readme</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version">Version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#graphical-user-interface">Graphical user interface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#command-line-interface">Command line interface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#linguistica-main-py"><code class="docutils literal"><span class="pre">linguistica/__main__.py</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#linguistica-init-py"><code class="docutils literal"><span class="pre">linguistica/__init__.py</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#linguistica-release-py"><code class="docutils literal"><span class="pre">linguistica/release.py</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#linguistica-util-py"><code class="docutils literal"><span class="pre">linguistica/util.py</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#linguistica-lexicon-py"><code class="docutils literal"><span class="pre">linguistica/lexicon.py</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#linguistica-ngram-py"><code class="docutils literal"><span class="pre">linguistica/ngram.py</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#linguistica-signature-py"><code class="docutils literal"><span class="pre">linguistica/signature.py</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#linguistica-phon-py"><code class="docutils literal"><span class="pre">linguistica/phon.py</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#linguistica-trie-py"><code class="docutils literal"><span class="pre">linguistica/trie.py</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#linguistica-manifold-py"><code class="docutils literal"><span class="pre">linguistica/manifold.py</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#linguistica-fsm-py"><code class="docutils literal"><span class="pre">linguistica/fsm.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
 </ul>
 </li>
 </ul>
@@ -174,13 +160,13 @@ This is arguably the core of the codebase where most of the research and develop
 efforts go.
 To get a sense of how the code works,
 please see <a class="reference internal" href="#codebase-overview"><span class="std std-ref">Overview</span></a> below.</li>
-<li><a class="reference internal" href="#codebase-documentation"><span class="std std-ref">Documentation</span></a></li>
-<li><a class="reference internal" href="#codebase-continuous-integration"><span class="std std-ref">Continuous integration</span></a></li>
-<li><a class="reference internal" href="#codebase-tests"><span class="std std-ref">Tests</span></a></li>
-<li><a class="reference internal" href="#codebase-setup-dot-py"><span class="std std-ref">setup.py</span></a></li>
 <li><a class="reference internal" href="#codebase-dependencies"><span class="std std-ref">Dependencies</span></a></li>
-<li><a class="reference internal" href="#codebase-license"><span class="std std-ref">License</span></a></li>
+<li><a class="reference internal" href="#codebase-tests"><span class="std std-ref">Tests</span></a></li>
+<li><a class="reference internal" href="#codebase-continuous-integration"><span class="std std-ref">Continuous integration</span></a></li>
+<li><a class="reference internal" href="#codebase-setup-dot-py"><span class="std std-ref">setup.py</span></a></li>
 <li><a class="reference internal" href="#codebase-readme"><span class="std std-ref">Readme</span></a></li>
+<li><a class="reference internal" href="#codebase-version"><span class="std std-ref">Version</span></a></li>
+<li><a class="reference internal" href="#codebase-documentation"><span class="std std-ref">Documentation</span></a></li>
 </ul>
 <p>Developers of the Linguistica project shall consult the page <a class="reference internal" href="dev.html#dev"><span class="std std-ref">For developers</span></a> for
 set-up and workflow.</p>
@@ -208,7 +194,7 @@ which returns a dict of signatures to stems?
 The answer lies in the design of the class <code class="docutils literal"><span class="pre">Lexicon</span></code>.
 Given the definition of the class is fairly long, we will examine it step by step,
 unfolding only the relevant bits as we move along:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Lexicon</span><span class="p">:</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Lexicon</span><span class="p">:</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">...</span><span class="p">):</span>
 
@@ -236,7 +222,7 @@ we examine what happens when the final line
 <p>When <code class="docutils literal"><span class="pre">lxa_object.signatures_to_stems()</span></code> is called, the method
 <code class="docutils literal"><span class="pre">signatures_to_stems()</span></code> of the <code class="docutils literal"><span class="pre">Lexicon</span></code> class is called.
 What does this method do? Let&#8217;s check out the code:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Lexicon</span><span class="p">:</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Lexicon</span><span class="p">:</span>
 
     <span class="k">def</span> <span class="nf">signatures_to_stems</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -294,125 +280,12 @@ computed until necessary. Once computed, they are available in memory for
 immediate retrieval. All heavy lifting is only called but not done within
 the class <code class="docutils literal"><span class="pre">Lexicon</span></code> &#8211; the real work is done in the respective modules
 such as <code class="docutils literal"><span class="pre">signature</span></code>, <code class="docutils literal"><span class="pre">manifold</span></code>, and so on.</p>
-</div>
-<div class="section" id="documentation">
-<span id="codebase-documentation"></span><h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
-<p>(To be updated)</p>
-<p>Using Sphinx</p>
-<p>changelog.md</p>
-<p>build-doc.sh</p>
-</div>
-<div class="section" id="continuous-integration">
-<span id="codebase-continuous-integration"></span><h2>Continuous integration<a class="headerlink" href="#continuous-integration" title="Permalink to this headline">¶</a></h2>
-<p>(To be updated)</p>
+<p>Notes on the graphicsl user interface (GUI):</p>
 <ul class="simple">
-<li>.travis.yml</li>
-<li>.coveragerc</li>
-<li>We take advantage of continuous integration to:<ul>
-<li>test whether the Linguistica 5 library can be successfully installed</li>
-<li>check if all tests pass</li>
-<li>measure test coverage</li>
-<li>ensure that the codebase is compliant with PEP 8 coding style conventions</li>
-</ul>
-</li>
-<li>The images for various continuous integration elements are directly shown
-at the top of <code class="docutils literal"><span class="pre">README.rst</span></code>. So be sure everything works and looks great
-at all times!</li>
-<li>We use <a class="reference external" href="https://travis-ci.org/">Travis-CI</a> to test the library installation
-as hosted on GitHub.
-<code class="docutils literal"><span class="pre">.travis.yml</span></code> in the repository provides the instructions for Travis CI to
-run the tests whenever a commit is pushed to the <code class="docutils literal"><span class="pre">master</span></code> branch.
-Under no circumstances can build tests be marked as &#8220;fail&#8221;.</li>
-<li>We use <a class="reference external" href="https://coveralls.io/">coveralls</a> to measure test coverage.
-<code class="docutils literal"><span class="pre">.travis.yml</span></code> and <code class="docutils literal"><span class="pre">.coveragerc</span></code> configure the measurement and reportage.
-Under no circumstances can test coverage drop below 95%.</li>
-<li><code class="docutils literal"><span class="pre">.travis.yml</span></code> runs <code class="docutils literal"><span class="pre">ci/travis_install.sh</span></code> to install all library
-dependencies and packages for testing. We use Miniconda for faster
-downloading
-(apt-get is sometimes too slow and there&#8217;s a 50-minute cap for build tests
-on Travis CI).</li>
-<li>We use <a class="reference external" href="https://landscape.io">landscape.io</a> to check code health for
-ensuring the codebase abides by the PEP 8 coding style conventions.
-Under no circumstances can code health drop below 95%.</li>
-</ul>
-</div>
-<div class="section" id="tests">
-<span id="codebase-tests"></span><h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
-<p>(To be updated)</p>
-<ul class="simple">
-<li>Install the packages needed for testing. Run
-<code class="docutils literal"><span class="pre">sudo</span> <span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">-r</span> <span class="pre">test_requirements.txt</span></code>.</li>
-<li>We use <code class="docutils literal"><span class="pre">nose</span></code> as the testing framework.
-To run tests, run <code class="docutils literal"><span class="pre">python3</span> <span class="pre">nosetests_run.py</span></code>.</li>
-<li>Run <code class="docutils literal"><span class="pre">python3</span> <span class="pre">nosetests_run.py</span></code>
-as often as possible to ensure nothing has broken.
-In particular, it must be run before <em>and</em> after each coding session.</li>
-<li>All testing-related files and scripts are in the directory <code class="docutils literal"><span class="pre">tests</span></code>.</li>
-<li><code class="docutils literal"><span class="pre">tests/data</span></code> contains all expected outputs rendered
-as Python literals, plus the corpus file <code class="docutils literal"><span class="pre">english-brown.txt</span></code>.
-All scripts in <code class="docutils literal"><span class="pre">tests</span></code> are named <code class="docutils literal"><span class="pre">test_X.py</span></code> so that <code class="docutils literal"><span class="pre">nose</span></code> can
-recognize them. All tests are functions named <code class="docutils literal"><span class="pre">test_X()</span></code>.</li>
-<li>All tests must be explicitly written as the <code class="docutils literal"><span class="pre">test_X()</span></code> functions in the
-<code class="docutils literal"><span class="pre">test_X.py</span></code> scripts.
-We do <em>NOT</em> use docstrings in the library code for the
-purposes of library testing.</li>
-<li>Note that <code class="docutils literal"><span class="pre">tests</span></code> are <strong>NOT</strong> included in the library under the directory
-<code class="docutils literal"><span class="pre">linguistica</span></code>. This means that <code class="docutils literal"><span class="pre">tests</span></code> is available only through
-the GitHub repository and is not included in the library installation.
-This structure is intentional, because <code class="docutils literal"><span class="pre">tests</span></code> is only for the developers
-but not the users, and <code class="docutils literal"><span class="pre">tests</span></code> contains large files that the users
-wouldn&#8217;t need.</li>
-<li><code class="docutils literal"><span class="pre">words_to_neighbors</span></code>:
-Syntactic word neighbor computation appears to be sensitive to the precise
-versions of NumPy and SciPy being used.
-This affects the precise word
-neighbors found. Since an exact match of neighbors between the test and
-expected results is <em>not</em> critical (&#8220;close enough&#8221; would do), the
-test for <code class="docutils literal"><span class="pre">words_to_neighbors</span></code> is intentionally lenient.</li>
-</ul>
-</div>
-<div class="section" id="setup-py">
-<span id="codebase-setup-dot-py"></span><h2><code class="docutils literal"><span class="pre">setup.py</span></code><a class="headerlink" href="#setup-py" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="dependencies">
-<span id="codebase-dependencies"></span><h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
-<p>requirements.txt</p>
-</div>
-<div class="section" id="license">
-<span id="codebase-license"></span><h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
-<p>LICENSE.txt</p>
-</div>
-<div class="section" id="readme">
-<span id="codebase-readme"></span><h2>Readme<a class="headerlink" href="#readme" title="Permalink to this headline">¶</a></h2>
-<p>(To be updated)</p>
-<p>rst rather than markdown is used
-because this is to be read as the
-long description in <code class="docutils literal"><span class="pre">setup.py</span></code>,
-and PyPI recognizes rst but not markdown
-to render the text formatting.</p>
-</div>
-<div class="section" id="version">
-<h2>Version<a class="headerlink" href="#version" title="Permalink to this headline">¶</a></h2>
-<p>(To be updated)</p>
-<p>A plain text file that specifies the version number &#8211; currently <code class="docutils literal"><span class="pre">5.1.0</span></code>.</p>
-<p>Defined in <cite>linguistica/VERSION</cite> and nowhere else.</p>
-<ul class="simple">
-<li><strong>Version number:</strong> We follow <a class="reference external" href="http://semver.org/">http://semver.org/</a> for the <code class="docutils literal"><span class="pre">major.minor.patch</span></code>
-format.
-The current version is <code class="docutils literal"><span class="pre">5.1.0</span></code>.
-The major version is <code class="docutils literal"><span class="pre">5</span></code> because there&#8217;s John&#8217;s Linguistica 3 &amp; 4
-written in C++.
-The minor version is <code class="docutils literal"><span class="pre">1</span></code> rather than <code class="docutils literal"><span class="pre">0</span></code> because John has his in-house
-<code class="docutils literal"><span class="pre">5.0</span></code> written in Python 2 circa/before 2012.
-The version number is specified in <code class="docutils literal"><span class="pre">linguistica/VERSION</span></code> (and nowhere else).</li>
-</ul>
-</div>
-<div class="section" id="graphical-user-interface">
-<h2>Graphical user interface<a class="headerlink" href="#graphical-user-interface" title="Permalink to this headline">¶</a></h2>
-<p>(To be updated)</p>
-<ul class="simple">
+<li>The GUI is Python 3 only. The main reason is tha the GUI requires PyQt5 (and
+SIP), and PyQt5 appears to be Python 3 only (at least officially?).</li>
 <li>Because SIP and PyQt5 are required for the GUI but their installation
-is possibly non-trivial, they are designated as <em>optional</em> dependencies
+is possibly non-trivial. They are designated as <em>optional</em> dependencies
 for Linguistica 5 (the GUI is not an absolute must-have for Linguistica 5
 to work).</li>
 <li>The GUI code is in <code class="docutils literal"><span class="pre">linguistica/gui</span></code>. The GUI is launched by
@@ -427,66 +300,102 @@ Relatedly, when <code class="docutils literal"><span class="pre">linguistica.gui
 whether PyQt5 is importable before <code class="docutils literal"><span class="pre">linguistica.gui.main()</span></code> can
 actually be called.</li>
 </ul>
-</div>
-<div class="section" id="command-line-interface">
-<h2>Command line interface<a class="headerlink" href="#command-line-interface" title="Permalink to this headline">¶</a></h2>
-<p>(To be updated)</p>
+<p>Notes on the command line interface (CLI):</p>
 <ul class="simple">
 <li>The CLI code is in <code class="docutils literal"><span class="pre">linguistica/cli.py</span></code>, all wrapped in
-<code class="docutils literal"><span class="pre">linguistica.cli.main()</span></code> called in <code class="docutils literal"><span class="pre">linguistica/__main__.py</span></code>.</li>
+<code class="docutils literal"><span class="pre">linguistica.cli.main()</span></code> which is called in <code class="docutils literal"><span class="pre">linguistica/__main__.py</span></code>.</li>
 <li>We don&#8217;t output <code class="docutils literal"><span class="pre">words_to_contexts</span></code>
 and <code class="docutils literal"><span class="pre">contexts_to_words</span></code>, because they are huge...
 Or we could just output those whose counts are higher than some threshold?</li>
 </ul>
 </div>
-<div class="section" id="linguistica-main-py">
-<h2><code class="docutils literal"><span class="pre">linguistica/__main__.py</span></code><a class="headerlink" href="#linguistica-main-py" title="Permalink to this headline">¶</a></h2>
-<p>For running GUI and CLI</p>
+<div class="section" id="dependencies">
+<span id="codebase-dependencies"></span><h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<p>The core dependencies are specified in <code class="docutils literal"><span class="pre">requirements.txt</span></code> which is read by
+<code class="docutils literal"><span class="pre">setup.py</span></code> and used in build tests by Travis CI.
+For reproducibility, we pin down each dependency&#8217;s major and minor version
+numbers, while allowing flexibility for getting bug fixes.
+For example, <code class="docutils literal"><span class="pre">six&gt;=1.10.0,&lt;=1.10.99</span></code> points to the latest six v1.10.x.</p>
+<p>There is also <code class="docutils literal"><span class="pre">dev-requirements.txt</span></code> with dependencies for running tests and
+code quality checks. Travis CI uses this file for build tests.
+It is recommended that developers and administrators of the Linguistica 5
+also install these dependencies and use them for maintaining high code quality.</p>
 </div>
-<div class="section" id="linguistica-init-py">
-<h2><code class="docutils literal"><span class="pre">linguistica/__init__.py</span></code><a class="headerlink" href="#linguistica-init-py" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal"><span class="pre">__init__.py</span></code> sets up the functions for reading data.</p>
+<div class="section" id="tests">
+<span id="codebase-tests"></span><h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
+<p>We use <code class="docutils literal"><span class="pre">pytest</span></code> as the testing framework. Developers and administrators
+should install the dependencies for running tests:
+<code class="docutils literal"><span class="pre">$</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-r</span> <span class="pre">dev-requirements</span></code></p>
+<p>Run tests as often as you can. In particular, it must be run before <em>and</em>
+after each coding session:
+<code class="docutils literal"><span class="pre">$</span> <span class="pre">pytest</span> <span class="pre">-vv</span> <span class="pre">--cov</span> <span class="pre">linguistica</span> <span class="pre">linguistica</span></code>.
+<code class="docutils literal"><span class="pre">-vv</span></code> outputs a verbose test report. <code class="docutils literal"><span class="pre">--cov</span> <span class="pre">linguistica</span></code> means that we
+check test coverage for <code class="docutils literal"><span class="pre">.py</span></code> files under the directory <code class="docutils literal"><span class="pre">linguistica</span></code>
+(so just the library code). Lastly, the second <code class="docutils literal"><span class="pre">linguistica</span></code> in the command
+specifies the directory (again, the library code) where pytest should look for
+tests in <code class="docutils literal"><span class="pre">test_*.py</span></code>. <code class="docutils literal"><span class="pre">.coveragerc</span></code> configures the test coverage report.</p>
+<p>We are also using <code class="docutils literal"><span class="pre">flake8</span></code> for maintaining high code quality. Essentially,
+no PEP8 violations are allowed &#8211; not even trailing whitespace or extra
+empty lines. Run flake8 with <code class="docutils literal"><span class="pre">$</span> <span class="pre">flake8</span> <span class="pre">linguistica</span></code>. If you see no
+terminal output, it means everything is compliant. Note that the Travis CI
+build tests also run flake8. Do not try to work around the robots!</p>
 </div>
-<div class="section" id="linguistica-release-py">
-<h2><code class="docutils literal"><span class="pre">linguistica/release.py</span></code><a class="headerlink" href="#linguistica-release-py" title="Permalink to this headline">¶</a></h2>
-<p>Metadata of the library (version etc)</p>
-</div>
-<div class="section" id="linguistica-util-py">
-<h2><code class="docutils literal"><span class="pre">linguistica/util.py</span></code><a class="headerlink" href="#linguistica-util-py" title="Permalink to this headline">¶</a></h2>
-<p>Constants and various utility functions.</p>
-</div>
-<div class="section" id="linguistica-lexicon-py">
-<h2><code class="docutils literal"><span class="pre">linguistica/lexicon.py</span></code><a class="headerlink" href="#linguistica-lexicon-py" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="docutils literal"><span class="pre">Lexicon</span></code> class.</p>
-</div>
-<div class="section" id="linguistica-ngram-py">
-<h2><code class="docutils literal"><span class="pre">linguistica/ngram.py</span></code><a class="headerlink" href="#linguistica-ngram-py" title="Permalink to this headline">¶</a></h2>
-<p>This <code class="docutils literal"><span class="pre">ngram</span></code> module is to get the word ngrams.</p>
-</div>
-<div class="section" id="linguistica-signature-py">
-<h2><code class="docutils literal"><span class="pre">linguistica/signature.py</span></code><a class="headerlink" href="#linguistica-signature-py" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Morphological signatures should really be sets, but they are tuples
-(e.g. <code class="docutils literal"><span class="pre">('NULL',</span> <span class="pre">'s')</span></code>) with affixes ordered alphabetically.
-The signatures are very often the keys in some dicts, and Python doesn&#8217;t
-allow sets to be dict keys...</li>
+<div class="section" id="continuous-integration">
+<span id="codebase-continuous-integration"></span><h2>Continuous integration<a class="headerlink" href="#continuous-integration" title="Permalink to this headline">¶</a></h2>
+<p>The Linguistica 5 repository is set up with Travis CI for automatically
+running build tests for all pull requests. The configuration is in
+<code class="docutils literal"><span class="pre">.travis.yml</span></code>. We take advantage of continuous integration to:</p>
+<blockquote>
+<div><ul class="simple">
+<li>test whether the Linguistica 5 library can be successfully installed</li>
+<li>check if all tests pass</li>
+<li>ensure that the codebase is compliant with PEP 8 coding style conventions</li>
 </ul>
+</div></blockquote>
+<p>Build tests are run for all supported Python versions (2.7 and 3.4+).</p>
 </div>
-<div class="section" id="linguistica-phon-py">
-<h2><code class="docutils literal"><span class="pre">linguistica/phon.py</span></code><a class="headerlink" href="#linguistica-phon-py" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="docutils literal"><span class="pre">phon</span></code> module is to perform various phonology-related computations.</p>
+<div class="section" id="setup-py">
+<span id="codebase-setup-dot-py"></span><h2><code class="docutils literal"><span class="pre">setup.py</span></code><a class="headerlink" href="#setup-py" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">setup.py</span></code> installs the Linguistica 5 library. It also specifies the metadata
+of the library (displayed on the PyPI site). Developers and administrators
+are recommended to install Linguisitca 5 with <code class="docutils literal"><span class="pre">$</span> <span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">develop</span></code>
+for development purposes.</p>
 </div>
-<div class="section" id="linguistica-trie-py">
-<h2><code class="docutils literal"><span class="pre">linguistica/trie.py</span></code><a class="headerlink" href="#linguistica-trie-py" title="Permalink to this headline">¶</a></h2>
-<p>Left-to-right and right-to-left tries. Successors. Predecessors.</p>
+<div class="section" id="readme">
+<span id="codebase-readme"></span><h2>Readme<a class="headerlink" href="#readme" title="Permalink to this headline">¶</a></h2>
+<p>The readme, <code class="docutils literal"><span class="pre">README.rst</span></code>, is in reStructuredText instead of Markdown,
+simply because PyPI
+does not seem to render Markdown mark-up for the <code class="docutils literal"><span class="pre">long_description</span></code> in
+<code class="docutils literal"><span class="pre">setup.py</span></code>.</p>
+<p><code class="docutils literal"><span class="pre">readme-dev.md</span></code> contains notes for the administrators of the Linguistica 5
+project.</p>
 </div>
-<div class="section" id="linguistica-manifold-py">
-<h2><code class="docutils literal"><span class="pre">linguistica/manifold.py</span></code><a class="headerlink" href="#linguistica-manifold-py" title="Permalink to this headline">¶</a></h2>
-<p>Syntactic word neighbors</p>
+<div class="section" id="version">
+<span id="codebase-version"></span><h2>Version<a class="headerlink" href="#version" title="Permalink to this headline">¶</a></h2>
+<p>The version number is specified in the text file <cite>linguistica/VERSION</cite> and
+nowhere else. The version number in both <code class="docutils literal"><span class="pre">setup.py</span></code> and
+<code class="docutils literal"><span class="pre">linguistica.__version__</span></code> points to this text file. It is important to
+<strong>not</strong> hard-code or even mention the current version number anywhere else
+(not even in the source <code class="docutils literal"><span class="pre">.rst</span></code> of this documentation) to avoid confusion.</p>
+<p>We essentially follow <a class="reference external" href="http://semver.org/">http://semver.org/</a> for the <code class="docutils literal"><span class="pre">major.minor.patch</span></code>
+format. The major version is <code class="docutils literal"><span class="pre">5</span></code> because there&#8217;s John&#8217;s Linguistica 3 &amp; 4
+written in C++. The minor version number increments when a new release comes
+with new features. The patch number increments when a new release comes with
+changes with no API ramifications such as bug fixes.</p>
+<p>The first release of Linguistica 5 was 5.1.0 instead of 5.0.0, because 5.0.0
+was John&#8217;s in-house version written in Python 2.</p>
 </div>
-<div class="section" id="linguistica-fsm-py">
-<h2><code class="docutils literal"><span class="pre">linguistica/fsm.py</span></code><a class="headerlink" href="#linguistica-fsm-py" title="Permalink to this headline">¶</a></h2>
-<p>(Forthcoming)</p>
+<div class="section" id="documentation">
+<span id="codebase-documentation"></span><h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<p>We use Sphinx as the documentation framework, as it is the official tool for
+Python projects (including the docs of the Python language itself).
+The source files (in the reStructuredText mark-up language) are in
+<code class="docutils literal"><span class="pre">docs/sources/</span></code>. These source files are what generates the <code class="docutils literal"><span class="pre">docs/*.html</span></code>
+files, which GitHub renders as the documentation website
+(= what you are reading now). To update the HTML files after the source
+<code class="docutils literal"><span class="pre">.rst</span></code> files are updated, run <code class="docutils literal"><span class="pre">$</span> <span class="pre">sh</span> <span class="pre">build-doc.sh</span></code>.</p>
+<p>Changes (new features, bug fixes) together with new version releases
+should be documented in <code class="docutils literal"><span class="pre">CHANGELOG.md</span></code>.</p>
 </div>
 </div>
 
@@ -508,7 +417,7 @@ allow sets to be dict keys...</li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015-2017, Jackson Lee.
-      Last updated on Apr 09, 2017.
+      Last updated on Apr 15, 2017.
 
     </p>
   </div>
