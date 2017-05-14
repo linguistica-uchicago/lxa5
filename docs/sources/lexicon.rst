@@ -108,7 +108,6 @@ Other methods and attributes
    parameters
    change_parameters
    use_default_parameters
-   reset
 
 .. automodule:: linguistica.lexicon
    :members:

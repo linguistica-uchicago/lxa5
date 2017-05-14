@@ -38,72 +38,6 @@ class Lexicon:
         self.wordlist_object = wordlist_object
         self.parameters_ = self._determine_parameters(**kwargs)
 
-        self._initialize()
-
-    @staticmethod
-    def _check_file_path(file_path):
-        """
-        Return the absolute path of *file_path*.
-        """
-        if file_path is None:
-            return None
-
-        if type(file_path) != str:
-            raise TypeError('file path must be a str -- ' + file_path)
-
-        if sys.platform.startswith('win'):
-            file_path = file_path.replace('/', os.sep)
-        else:
-            file_path = file_path.replace('\\', os.sep)
-
-        file_abspath = os.path.abspath(file_path)
-        if not os.path.isfile(file_abspath):
-            raise FileNotFoundError
-        else:
-            return file_abspath
-
-    @staticmethod
-    def _determine_parameters(**kwargs):
-        """
-        Determine the parameter dict.
-        """
-        temp_parameters = dict(PARAMETERS)
-
-        for parameter in kwargs.keys():
-            if parameter not in PARAMETERS:
-                raise KeyError('unknown parameter -- ' + parameter)
-            else:
-                temp_parameters[parameter] = kwargs[parameter]
-
-        return temp_parameters
-
-    def parameters(self):
-        """
-        Return the parameter dict.
-
-        :rtype: dict(str: int)
-        """
-        return self.parameters_
-
-    def change_parameters(self, **kwargs):
-        """
-        Change parameters specified by *kwargs*.
-
-        :param kwargs: keyword arguments for parameters and their new values
-        """
-        for parameter, new_value in kwargs.items():
-            if parameter not in self.parameters_:
-                raise KeyError('unknown parameter -- ' + parameter)
-
-            self.parameters_[parameter] = new_value
-
-    def use_default_parameters(self):
-        """
-        Reset parameters to their default values.
-        """
-        self.parameters_ = dict(PARAMETERS)
-
-    def _initialize(self):
         # number of word types and tokens
         self._number_of_word_types = None
         self._number_of_word_tokens = None
@@ -206,14 +140,68 @@ class Lexicon:
         self._successors = None
         self._predecessors = None
 
-    def reset(self):
+    @staticmethod
+    def _check_file_path(file_path):
         """
-        Reset the Linguistica object. While the file path information is
-        retained, all computed objects (ngrams, signatures, word neighbors,
-        etc) are reset to ``NULL``; if they are called again, they are
-        re-computed.
+        Return the absolute path of *file_path*.
         """
-        self._initialize()
+        if file_path is None:
+            return None
+
+        if type(file_path) != str:
+            raise TypeError('file path must be a str -- ' + file_path)
+
+        if sys.platform.startswith('win'):
+            file_path = file_path.replace('/', os.sep)
+        else:
+            file_path = file_path.replace('\\', os.sep)
+
+        file_abspath = os.path.abspath(file_path)
+        if not os.path.isfile(file_abspath):
+            raise FileNotFoundError
+        else:
+            return file_abspath
+
+    @staticmethod
+    def _determine_parameters(**kwargs):
+        """
+        Determine the parameter dict.
+        """
+        temp_parameters = dict(PARAMETERS)
+
+        for parameter in kwargs.keys():
+            if parameter not in PARAMETERS:
+                raise KeyError('unknown parameter -- ' + parameter)
+            else:
+                temp_parameters[parameter] = kwargs[parameter]
+
+        return temp_parameters
+
+    def parameters(self):
+        """
+        Return the parameter dict.
+
+        :rtype: dict(str: int)
+        """
+        return self.parameters_
+
+    def change_parameters(self, **kwargs):
+        """
+        Change parameters specified by *kwargs*.
+
+        :param kwargs: keyword arguments for parameters and their new values
+        """
+        for parameter, new_value in kwargs.items():
+            if parameter not in self.parameters_:
+                raise KeyError('unknown parameter -- ' + parameter)
+
+            self.parameters_[parameter] = new_value
+
+    def use_default_parameters(self):
+        """
+        Reset parameters to their default values.
+        """
+        self.parameters_ = dict(PARAMETERS)
 
     def run_all_modules(self, verbose=False):
         """
