@@ -1,8 +1,179 @@
 # -*- encoding: utf8 -*-
 
-from itertools import (combinations, groupby)
+from itertools import combinations, groupby
 
-from linguistica.util import NULL
+from linguistica.util import NULL, vprint
+
+
+class LexiconSignature:
+    def __init__(self, wordlist, min_stem_length, max_affix_length,
+                 min_sig_count, suffixing_flag):
+        self._wordlist = wordlist
+        self._min_stem_length = min_stem_length
+        self._max_affix_length = max_affix_length
+        self._min_sig_count = min_sig_count
+        self._suffixing_flag = suffixing_flag
+
+        self._stems_to_words = None
+        self._signatures_to_stems = None
+        self._stems_to_signatures = None
+        self._words_to_signatures = None
+        self._signatures_to_words = None
+        self._words_to_sigtransforms = None
+
+        self._signatures = None
+        self._affixes_to_signatures = None
+        self._words_in_signatures = None
+        self._affixes = None
+        self._stems = None
+
+    def stems_to_words(self):
+        """
+        Return a dict of stems to words.
+
+        :rtype: dict(str: set(str))
+        """
+        if self._stems_to_words is None:
+            self._make_all_signature_objects()
+        return self._stems_to_words
+
+    def signatures_to_stems(self):
+        """
+        Return a dict of morphological signatures to stems.
+
+        :rtype: dict(tuple(str): set(str))
+        """
+        if self._signatures_to_stems is None:
+            self._make_all_signature_objects()
+        return self._signatures_to_stems
+
+    def stems_to_signatures(self):
+        """
+        Return a dict of stems to morphological signatures.
+
+        :rtype: dict(str: set(tuple(str)))
+        """
+        if self._stems_to_signatures is None:
+            self._make_all_signature_objects()
+        return self._stems_to_signatures
+
+    def words_to_signatures(self):
+        """
+        Return a dict of words to morphological signatures.
+
+        :rtype: dict(str: set(tuple(str)))
+        """
+        if self._words_to_signatures is None:
+            self._make_all_signature_objects()
+        return self._words_to_signatures
+
+    def signatures_to_words(self):
+        """
+        Return a dict of morphological signatures to words.
+
+        :rtype: dict(tuple(str): set(str))
+        """
+        if self._signatures_to_words is None:
+            self._make_all_signature_objects()
+        return self._signatures_to_words
+
+    def words_to_sigtransforms(self):
+        """
+        Return a dict of words to signature transforms.
+
+        :rtype: dict(str: set(tuple(tuple(str), str))
+        """
+        if self._words_to_sigtransforms is None:
+            self._make_all_signature_objects()
+        return self._words_to_sigtransforms
+
+    def signatures(self):
+        """
+        Return a set of morphological signatures.
+
+        :rtype: set(tuple(str))
+        """
+        if self._signatures is None:
+            self._make_all_signature_objects()
+        return self._signatures
+
+    def affixes_to_signatures(self):
+        """
+        Return a dict of affixes to morphological signatures.
+
+        :rtype: dict(str: set(tuple(str)))
+        """
+        if self._affixes_to_signatures is None:
+            self._make_all_signature_objects()
+        return self._affixes_to_signatures
+
+    def words_in_signatures(self):
+        """
+        Return a set of words that are in at least one morphological signature.
+
+        :rtype: set(str)
+        """
+        if self._words_in_signatures is None:
+            self._make_all_signature_objects()
+        return self._words_in_signatures
+
+    def affixes(self):
+        """
+        Return a set of affixes.
+
+        :rtype: set(str)
+        """
+        if self._affixes is None:
+            self._make_all_signature_objects()
+        return self._affixes
+
+    def stems(self):
+        """
+        Return a set of stems.
+
+        :rtype: set(str)
+        """
+        if self._stems is None:
+            self._make_all_signature_objects()
+        return self._stems
+
+    def run_signature_module(self, verbose=False):
+        """
+        Run the signature module.
+        """
+        vprint(verbose, 'Morphological signatures...')
+        self._make_all_signature_objects()
+
+    def _make_all_signature_objects(self):
+        self._stems_to_words = make_stems_to_words(
+            self._wordlist, self._min_stem_length,
+            self._max_affix_length,
+            self._suffixing_flag, self._min_sig_count)
+
+        self._signatures_to_stems = make_signatures_to_stems(
+            self._stems_to_words, self._max_affix_length,
+            self._min_sig_count, self._suffixing_flag)
+
+        self._stems_to_signatures = make_stems_to_signatures(
+            self._signatures_to_stems)
+
+        self._words_to_signatures = make_words_to_signatures(
+            self._stems_to_words, self._stems_to_signatures)
+
+        self._signatures_to_words = make_signatures_to_words(
+            self._words_to_signatures)
+
+        self._words_to_sigtransforms = make_words_to_sigtransforms(
+            self._words_to_signatures, self._suffixing_flag)
+
+        self._signatures = set(self._signatures_to_stems.keys())
+
+        self._affixes_to_signatures = make_affixes_to_signatures(
+            self._signatures)
+
+        self._words_in_signatures = set(self._words_to_signatures.keys())
+        self._affixes = set(self._affixes_to_signatures.keys())
+        self._stems = set(self._stems_to_words.keys())
 
 
 def max_common_prefix(a, b):
