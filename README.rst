@@ -22,8 +22,7 @@ Linguistica 5
    :alt: Code Health
 
 Linguistica 5 is a Python library for unsupervised learning
-of linguistic structure, based on Goldsmith (2001, 2006) and all subsequent
-developments.
+of linguistic structure.
 
 Full documentation: http://linguistica-uchicago.github.io/lxa5/
 
