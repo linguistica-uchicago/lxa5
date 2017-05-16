@@ -33,6 +33,13 @@ interfaces: (i) graphical user interface; (ii) command line interface.
 Work by Jackson Lee and John Goldsmith
 
 
+Please note that this code (Linguistica 5) is not John Goldsmith's development code,
+which can be found on
+`his GitHub repository <https://github.com/JohnAGoldsmith/lxa5_0>`_.
+The most recent release of John Goldsmith's code is Linguistica 4; see
+`Linguistica at UChicago <http://linguistica.uchicago.edu/>`_.
+
+
 Download and install
 --------------------
 

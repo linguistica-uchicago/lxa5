@@ -4,7 +4,14 @@ Linguistica 5
 =============
 
 Linguistica 5 is a Python library for unsupervised learning of linguistic
-structure, based on Goldsmith (2001, 2006) and all subsequent developments.
+structure.
+
+Please note that this code is not John Goldsmith's development code,
+which can be found on
+`his GitHub repository <https://github.com/JohnAGoldsmith/lxa5_0>`_.
+The most recent release of John Goldsmith's code is Linguistica 4; see
+`Linguistica at UChicago <http://linguistica.uchicago.edu/>`_.
+
 
 Linguistica 5 is available in three modes:
 
