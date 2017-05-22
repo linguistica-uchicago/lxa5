@@ -8,7 +8,7 @@ from io import open  # not using built-in open(), for py2+3 cross compatibility
 import six
 
 from linguistica import ngram, manifold, phon, trie
-from linguistica.signature import LexiconSignature
+from linguistica.signature import Lexicon_BiSig
 from linguistica.util import (ENCODING, PARAMETERS, SEP_SIG, SEP_SIGTRANSFORM,
                               double_sorted, fix_punctuations,
                               output_latex, vprint)
@@ -20,7 +20,7 @@ except NameError:
     FileNotFoundError = OSError  # no FileNotFoundError in Python 2
 
 
-class Lexicon(LexiconSignature):
+class Lexicon(Lexicon_BiSig):
     """
     A class for a Linguistica object.
     """
@@ -128,11 +128,11 @@ class Lexicon(LexiconSignature):
         self._successors = None
         self._predecessors = None
 
-        LexiconSignature.__init__(self, self.wordlist(),
-                                  self.parameters_['min_stem_length'],
-                                  self.parameters_['max_affix_length'],
-                                  self.parameters_['min_sig_count'],
-                                  self.parameters_['suffixing'])
+        Lexicon_BiSig.__init__(self, self.wordlist(),
+                               self.parameters_['min_stem_length'],
+                               self.parameters_['max_affix_length'],
+                               self.parameters_['min_sig_count'],
+                               self.parameters_['suffixing'])
 
     @staticmethod
     def _check_file_path(file_path):

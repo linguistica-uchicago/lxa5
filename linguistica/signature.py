@@ -5,7 +5,7 @@ from itertools import combinations, groupby
 from linguistica.util import NULL, vprint
 
 
-class LexiconSignature:
+class Lexicon_BiSig:
     def __init__(self, wordlist, min_stem_length, max_affix_length,
                  min_sig_count, suffixing_flag):
 
