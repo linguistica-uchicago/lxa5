@@ -1,12 +1,14 @@
 # -*- encoding: utf8 -*-
 
-import six
 import sys
 import os
 from io import StringIO
 from io import open  # not using built-in open(), for py2+3 cross compatibility
 
-from linguistica import (ngram, signature, manifold, phon, trie)
+import six
+
+from linguistica import ngram, manifold, phon, trie
+from linguistica.signature import Lexicon_BiSig
 from linguistica.util import (ENCODING, PARAMETERS, SEP_SIG, SEP_SIGTRANSFORM,
                               double_sorted, fix_punctuations,
                               output_latex, vprint)
@@ -18,7 +20,7 @@ except NameError:
     FileNotFoundError = OSError  # no FileNotFoundError in Python 2
 
 
-class Lexicon:
+class Lexicon(Lexicon_BiSig):
     """
     A class for a Linguistica object.
     """
@@ -38,7 +40,99 @@ class Lexicon:
         self.wordlist_object = wordlist_object
         self.parameters_ = self._determine_parameters(**kwargs)
 
-        self._initialize()
+        # number of word types and tokens
+        self._number_of_word_types = None
+        self._number_of_word_tokens = None
+
+        # word ngrams
+        self._word_unigram_counter = None
+        self._word_bigram_counter = None
+        self._word_trigram_counter = None
+
+        # wordlist
+        self._wordlist = None
+        if self.wordlist_object is not None:
+            # self.wordlist_object is
+            # either an iterable or a dict of word-count pairs
+            if type(self.wordlist_object) is dict:
+                word_count_dict = dict()
+                if self.parameters_['keep_case']:
+                    word_count_dict = self.wordlist_object
+                else:
+                    for word, count in self.wordlist_object:
+                        word = word.lower()
+                        if word not in word_count_dict:
+                            word_count_dict[word] = 0
+                        word_count_dict[word] += count
+
+                self._wordlist = [word_ for word_, _ in
+                                  double_sorted(word_count_dict.items(),
+                                                key=lambda x: x[1],
+                                                reverse=True)]
+                self._word_unigram_counter = word_count_dict
+
+            elif hasattr(self.wordlist_object, '__iter__'):
+                if self.parameters_['keep_case']:
+                    self._wordlist = sorted(set(self.wordlist_object))
+                else:
+                    self._wordlist = sorted(
+                        set(w.lower() for w in self.wordlist_object))
+                self._word_unigram_counter = {w: 1 for w in self._wordlist}
+
+            else:
+                raise TypeError('wordlist object must be a dict of word-count'
+                                'pairs or an iterable of words')
+
+        # corpus file object
+        if self.corpus_object is not None:
+            # self.corpus_object is either a list of strings or a long str
+            if type(self.corpus_object) is list:
+                corpus_str = fix_punctuations(' '.join(self.corpus_object))
+            elif type(self.corpus_object) is six.text_type:
+                corpus_str = fix_punctuations(self.corpus_object)
+            else:
+                raise TypeError('corpus object must be either a text or list')
+            self.corpus_file_object = StringIO(corpus_str)
+        elif self.file_abspath and not self.file_is_wordlist:
+            self.corpus_file_object = open(self.file_abspath,
+                                           encoding=self.encoding)
+        else:
+            self.corpus_file_object = None
+
+        # wordlist file object
+        if self.file_is_wordlist:
+            self.wordlist_file_object = open(self.file_abspath,
+                                             encoding=self.encoding)
+        else:
+            self.wordlist_file_object = StringIO()
+
+        # manifold-related objects
+        self._words_to_neighbors = None
+        self._words_to_contexts = None
+        self._contexts_to_words = None
+        self._neighbor_graph = None
+
+        # phon objects
+        self._phone_unigram_counter = None
+        self._phone_bigram_counter = None
+        self._phone_trigram_counter = None
+
+        self._phone_dict = None
+        self._biphone_dict = None
+        self._word_dict = None
+        self._words_to_phones = None
+
+        # trie objects
+        self._broken_words_left_to_right = None
+        self._broken_words_right_to_left = None
+        self._successors = None
+        self._predecessors = None
+
+        Lexicon_BiSig.__init__(self, self.wordlist(),
+                               self.parameters_['min_stem_length'],
+                               self.parameters_['max_affix_length'],
+                               self.parameters_['min_sig_count'],
+                               self.parameters_['suffixing'])
 
     @staticmethod
     def _check_file_path(file_path):
@@ -102,118 +196,6 @@ class Lexicon:
         Reset parameters to their default values.
         """
         self.parameters_ = dict(PARAMETERS)
-
-    def _initialize(self):
-        # number of word types and tokens
-        self._number_of_word_types = None
-        self._number_of_word_tokens = None
-
-        # word ngrams
-        self._word_unigram_counter = None
-        self._word_bigram_counter = None
-        self._word_trigram_counter = None
-
-        # wordlist
-        self._wordlist = None
-        if self.wordlist_object is not None:
-            # self.wordlist_object is
-            # either an iterable or a dict of word-count pairs
-            if type(self.wordlist_object) is dict:
-                word_count_dict = dict()
-                if self.parameters_['keep_case']:
-                    word_count_dict = self.wordlist_object
-                else:
-                    for word, count in self.wordlist_object:
-                        word = word.lower()
-                        if word not in word_count_dict:
-                            word_count_dict[word] = 0
-                        word_count_dict[word] += count
-
-                self._wordlist = [word_ for word_, _ in
-                                  double_sorted(word_count_dict.items(),
-                                                key=lambda x: x[1],
-                                                reverse=True)]
-                self._word_unigram_counter = word_count_dict
-
-            elif hasattr(self.wordlist_object, '__iter__'):
-                if self.parameters_['keep_case']:
-                    self._wordlist = sorted(set(self.wordlist_object))
-                else:
-                    self._wordlist = sorted(
-                        set(w.lower() for w in self.wordlist_object))
-                self._word_unigram_counter = {w: 1 for w in self._wordlist}
-
-            else:
-                raise TypeError('wordlist object must be a dict of word-count'
-                                'pairs or an iterable of words')
-
-        # signature-related objects
-        self._stems_to_words = None
-        self._signatures_to_stems = None
-        self._stems_to_signatures = None
-        self._words_to_signatures = None
-        self._signatures_to_words = None
-        self._words_to_sigtransforms = None
-
-        self._signatures = None
-        self._affixes_to_signatures = None
-        self._words_in_signatures = None
-        self._affixes = None
-        self._stems = None
-
-        # corpus file object
-        if self.corpus_object is not None:
-            # self.corpus_object is either a list of strings or a long str
-            if type(self.corpus_object) is list:
-                corpus_str = fix_punctuations(' '.join(self.corpus_object))
-            elif type(self.corpus_object) is six.text_type:
-                corpus_str = fix_punctuations(self.corpus_object)
-            else:
-                raise TypeError('corpus object must be either a text or list')
-            self.corpus_file_object = StringIO(corpus_str)
-        elif self.file_abspath and not self.file_is_wordlist:
-            self.corpus_file_object = open(self.file_abspath,
-                                           encoding=self.encoding)
-        else:
-            self.corpus_file_object = None
-
-        # wordlist file object
-        if self.file_is_wordlist:
-            self.wordlist_file_object = open(self.file_abspath,
-                                             encoding=self.encoding)
-        else:
-            self.wordlist_file_object = StringIO()
-
-        # manifold-related objects
-        self._words_to_neighbors = None
-        self._words_to_contexts = None
-        self._contexts_to_words = None
-        self._neighbor_graph = None
-
-        # phon objects
-        self._phone_unigram_counter = None
-        self._phone_bigram_counter = None
-        self._phone_trigram_counter = None
-
-        self._phone_dict = None
-        self._biphone_dict = None
-        self._word_dict = None
-        self._words_to_phones = None
-
-        # trie objects
-        self._broken_words_left_to_right = None
-        self._broken_words_right_to_left = None
-        self._successors = None
-        self._predecessors = None
-
-    def reset(self):
-        """
-        Reset the Linguistica object. While the file path information is
-        retained, all computed objects (ngrams, signatures, word neighbors,
-        etc) are reset to ``NULL``; if they are called again, they are
-        re-computed.
-        """
-        self._initialize()
 
     def run_all_modules(self, verbose=False):
         """
@@ -828,157 +810,6 @@ class Lexicon:
         vprint(verbose, 'Extracting word ngrams...')
         if self._wordlist is None:
             self._make_wordlist()
-
-    # --------------------------------------------------------------------------
-    # for the "signature" module
-
-    def stems_to_words(self):
-        """
-        Return a dict of stems to words.
-
-        :rtype: dict(str: set(str))
-        """
-        if self._stems_to_words is None:
-            self._make_all_signature_objects()
-        return self._stems_to_words
-
-    def signatures_to_stems(self):
-        """
-        Return a dict of morphological signatures to stems.
-
-        :rtype: dict(tuple(str): set(str))
-        """
-        if self._signatures_to_stems is None:
-            self._make_all_signature_objects()
-        return self._signatures_to_stems
-
-    def stems_to_signatures(self):
-        """
-        Return a dict of stems to morphological signatures.
-
-        :rtype: dict(str: set(tuple(str)))
-        """
-        if self._stems_to_signatures is None:
-            self._make_all_signature_objects()
-        return self._stems_to_signatures
-
-    def words_to_signatures(self):
-        """
-        Return a dict of words to morphological signatures.
-
-        :rtype: dict(str: set(tuple(str)))
-        """
-        if self._words_to_signatures is None:
-            self._make_all_signature_objects()
-        return self._words_to_signatures
-
-    def signatures_to_words(self):
-        """
-        Return a dict of morphological signatures to words.
-
-        :rtype: dict(tuple(str): set(str))
-        """
-        if self._signatures_to_words is None:
-            self._make_all_signature_objects()
-        return self._signatures_to_words
-
-    def words_to_sigtransforms(self):
-        """
-        Return a dict of words to signature transforms.
-
-        :rtype: dict(str: set(tuple(tuple(str), str))
-        """
-        if self._words_to_sigtransforms is None:
-            self._make_all_signature_objects()
-        return self._words_to_sigtransforms
-
-    def signatures(self):
-        """
-        Return a set of morphological signatures.
-
-        :rtype: set(tuple(str))
-        """
-        if self._signatures is None:
-            self._make_all_signature_objects()
-        return self._signatures
-
-    def affixes_to_signatures(self):
-        """
-        Return a dict of affixes to morphological signatures.
-
-        :rtype: dict(str: set(tuple(str)))
-        """
-        if self._affixes_to_signatures is None:
-            self._make_all_signature_objects()
-        return self._affixes_to_signatures
-
-    def words_in_signatures(self):
-        """
-        Return a set of words that are in at least one morphological signature.
-
-        :rtype: set(str)
-        """
-        if self._words_in_signatures is None:
-            self._make_all_signature_objects()
-        return self._words_in_signatures
-
-    def affixes(self):
-        """
-        Return a set of affixes.
-
-        :rtype: set(str)
-        """
-        if self._affixes is None:
-            self._make_all_signature_objects()
-        return self._affixes
-
-    def stems(self):
-        """
-        Return a set of stems.
-
-        :rtype: set(str)
-        """
-        if self._stems is None:
-            self._make_all_signature_objects()
-        return self._stems
-
-    def _make_all_signature_objects(self):
-        self._stems_to_words = signature.make_stems_to_words(
-            self.wordlist(), self.parameters_['min_stem_length'],
-            self.parameters_['max_affix_length'],
-            self.parameters_['suffixing'], self.parameters_['min_sig_count'])
-
-        self._signatures_to_stems = signature.make_signatures_to_stems(
-            self._stems_to_words, self.parameters_['max_affix_length'],
-            self.parameters_['min_sig_count'], self.parameters_['suffixing'])
-
-        self._stems_to_signatures = signature.make_stems_to_signatures(
-            self._signatures_to_stems)
-
-        self._words_to_signatures = signature.make_words_to_signatures(
-            self._stems_to_words, self._stems_to_signatures)
-
-        self._signatures_to_words = signature.make_signatures_to_words(
-            self._words_to_signatures)
-
-        self._words_to_sigtransforms = signature.make_words_to_sigtransforms(
-            self._words_to_signatures, self.parameters_['suffixing'])
-
-        self._signatures = set(self._signatures_to_stems.keys())
-
-        self._affixes_to_signatures = signature.make_affixes_to_signatures(
-            self._signatures)
-
-        self._words_in_signatures = set(self._words_to_signatures.keys())
-        self._affixes = set(self._affixes_to_signatures.keys())
-        self._stems = set(self._stems_to_words.keys())
-
-    def run_signature_module(self, verbose=False):
-        """
-        Run the signature module.
-        """
-        vprint(verbose, 'Morphological signatures...')
-        self._make_all_signature_objects()
 
     # --------------------------------------------------------------------------
     # for the "manifold" module
