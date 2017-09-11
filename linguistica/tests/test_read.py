@@ -64,6 +64,11 @@ def test_change_parameters_with_error():
         test_object.change_parameters(non_existing_parameter=4)
 
 
+def test_reset():
+    test_object = read_corpus(corpus_path)
+    assert test_object.reset() is None
+
+
 def test_run_ngram_module():
     lxa_object = lxa.read_corpus(corpus_path, max_word_tokens=50000)
     lxa_object.run_ngram_module()
