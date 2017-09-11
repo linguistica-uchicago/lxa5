@@ -46,10 +46,16 @@ Parameters: ``min_stem_length``, ``max_affix_length``, ``min_sig_count``, ``suff
 
 .. autosummary::
 
+   signatures
+   stems
+   affixes
+
    signatures_to_stems
    signatures_to_words
+   affixes_to_signatures
    stems_to_signatures
    stems_to_words
+   words_in_signatures
    words_to_signatures
    words_to_sigtransforms
 
@@ -102,6 +108,7 @@ Other methods and attributes
    parameters
    change_parameters
    use_default_parameters
+   reset
 
 .. automodule:: linguistica.lexicon
    :members:
