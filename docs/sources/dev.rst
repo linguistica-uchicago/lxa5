@@ -195,6 +195,21 @@ you are now (almost) ready to do awesome work!
       is for. Limit the number of line changes to below 300 to make
       efficient and effective code review possible.
 
+5. **Run tests to make sure nothing breaks.**
+
+      Run the tests (and get a detailed report if anything breaks):
+
+      .. code::
+
+         $ py.test -vv --cov linguistica linguistica
+
+
+      Make sure the code is PEP8 compliant:
+
+      .. code::
+
+         $ flake8 linguistica
+
 5. **Push your changes to your fork on GitHub.**
 
       To make your changes available for review and for merging,
