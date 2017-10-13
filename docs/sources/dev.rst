@@ -210,7 +210,7 @@ you are now (almost) ready to do awesome work!
 
          $ flake8 linguistica
 
-5. **Push your changes to your fork on GitHub.**
+6. **Push your changes to your fork on GitHub.**
 
       To make your changes available for review and for merging,
       you will first have to push your changes to your fork on GitHub:
@@ -221,7 +221,7 @@ you are now (almost) ready to do awesome work!
 
       Recall that "origin" is the (default) name point to your fork <your-github-username>/lxa5 on GitHub.
 
-6. **Make a pull request.**
+7. **Make a pull request.**
 
       Log on to your GitHub and go to your fork <your-github-username>/lxa5.
       Now you are ready to make a pull request
@@ -234,7 +234,7 @@ you are now (almost) ready to do awesome work!
       providing brief notes on what the new changes are in the "comments" section.
       Now you'll wait for feedback.
 
-7. **Start a new branch for a new mini project.**
+8. **Start a new branch for a new mini project.**
 
       After all your hard work in the pull request has been accepted (= merged
       into linguistica-uchicago/lxa5), you can go back to step 1
