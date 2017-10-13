@@ -61,37 +61,24 @@ Important reminders
 Setting up the development environment
 --------------------------------------
 
-To work on the Linguistica 5 code:
+1. You will need a GitHub_ account. If you are creating a new one,
+   pick a username preferably with lowercase letters only, e.g. "joesmith".
+   The Linguistica 5 codebase is hosted on GitHub.
+   Your contributions will be added to it via the GitHub interface.
 
-1. **Set up a personal GitHub account**
+2. You will need Git_ for version control.
+   Your contributions will be managed and uploaded from your local drive to
+   GitHub by Git.
 
-      If you are creating a new GitHub_ account,
-      pick a username preferably with lowercase letters only, e.g. "joesmith".
-      The Linguistica 5 codebase is hosted on GitHub.
-      Your contributions will be added to it via the GitHub interface.
+3. Log on to your GitHub account and go to https://github.com/linguistica-uchicago/lxa5
 
-
-2. **Download and install Git**
-
-      Git_ is the version control system of the Linguistica 5 project.
-      Your contributions will be managed and uploaded from your local drive to
-      GitHub by Git.
-
-
-Getting Linguistica 5
----------------------
-
-To download the Linguistica 5 codebase for development work:
-
-1. Log on to your GitHub account and go to https://github.com/linguistica-uchicago/lxa5
-
-2. At the top right hand corner, click "Fork".
+4. At the top right hand corner, click "Fork".
    (If prompted for "where should we fork this repository", choose your own personal GitHub username.)
 
-3. Now under your personal GitHub account, you see a new repository called "lxa5".
+5. Now under your personal GitHub account, you see a new repository called "lxa5".
 
-4. Clone this repository onto your local disk using Git,
-   and also install the Linguistica 5 Python library:
+6. Clone this repository onto your local disk using Git,
+   and also install the Linguistica 5 Python library and its dependencies:
 
    .. code::
 
@@ -112,7 +99,7 @@ To download the Linguistica 5 codebase for development work:
    (i.e. changes in source code are immediately effective -- no need to uninstall
    and reinstall to try out new code).
 
-5. Add a link to the linguistica-uchicago/lxa5 repository:
+7. Add a link to the linguistica-uchicago/lxa5 repository:
 
    .. code::
 
