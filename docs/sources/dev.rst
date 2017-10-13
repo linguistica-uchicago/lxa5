@@ -97,10 +97,12 @@ To download the Linguistica 5 codebase for development work:
 
       $ git clone https://github.com/<your-github-username>/lxa5.git
       $ cd lxa5
+      $ pip install -r requirements.txt
+      $ pip install -r dev-requirements.txt
       $ python setup.py develop
 
    In the last command just above,
-   ``python`` is meant to point to the specific Python 3 interpreter
+   ``python`` is meant to point to the specific Python interpreter
    you are using for the Linguistica 5 project. Depending on how your Python
    distribution is set up, the command you need could be something else, e.g.
    ``python3``.
