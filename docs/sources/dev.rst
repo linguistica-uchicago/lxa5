@@ -57,6 +57,11 @@ Important reminders
       There are excellent IDEs such as PyCharm_ for maintaining Python projects
       at a high level of quality.
 
+5. **Do not directly modify the HTML files of the documentation.**
+
+     To update the documentation, edit the source ``.rst`` files under
+    ``docs/sources/``, and then follow the notes in ``readme-dev.md`` to
+    generate the new HTML files.
 
 Setting up the development environment
 --------------------------------------
