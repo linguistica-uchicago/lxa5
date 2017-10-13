@@ -13,6 +13,8 @@
 
   
   
+  
+  
 
   
 
@@ -42,6 +44,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -82,7 +85,10 @@
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="download.html">Download and install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo.html">Quick demonstration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
@@ -93,7 +99,6 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">For developers</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#important-reminders">Important reminders</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#setting-up-the-development-environment">Setting up the development environment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#getting-linguistica-5">Getting Linguistica 5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#committing-changes-and-making-a-pull-request">Committing changes and making a pull request</a></li>
 </ul>
 </li>
@@ -110,8 +115,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">Linguistica</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Linguistica</a>
+        
       </nav>
 
 
@@ -120,21 +127,38 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>For developers</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>For developers</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -147,7 +171,7 @@ For introductory background about the Linguistica 5 codebase,
 please consult <a class="reference internal" href="codebase.html#codebase"><span class="std std-ref">Codebase</span></a>.</p>
 <p>None of the development notes below are
 new, as they all come from the collective wisdom of the open-source and
-software development community &#8211; notably, for what is known as &#8220;gitflow&#8221;.
+software development community – notably, for what is known as “gitflow”.
 They should be taken as best practice recommendations, and nothing is set in stone.
 While your general goal is to get pull requests up,
 the way how you make pull requests is entirely up to you.
@@ -158,17 +182,17 @@ in that case, you are on your own and you know what you are doing.</p>
 <ol class="arabic">
 <li><p class="first"><strong>Never commit changes to a master branch.</strong></p>
 <blockquote>
-<div><p>Not even at your own fork &#8211; this ensures that the master branch
+<div><p>Not even at your own fork – this ensures that the master branch
 is always clean and serves as a fall back.</p>
 </div></blockquote>
 </li>
 <li><p class="first"><strong>Create task-specific branches.</strong></p>
 <blockquote>
-<div><p>Never create a branch like &#8220;develop&#8221; and &#8220;research&#8221; and plan to vomit
+<div><p>Never create a branch like “develop” and “research” and plan to vomit
 a huge amount of your great work into it before making any pull requests
 (this would make code review impossible). Think of a branch as something
 much more concrete like a mini project, with branch names like
-&#8220;add-feature-x&#8221; or &#8220;fix-function-x&#8221;.</p>
+“add-feature-x” or “fix-function-x”.</p>
 </div></blockquote>
 </li>
 <li><p class="first"><strong>Keep pull requests small.</strong></p>
@@ -182,104 +206,59 @@ useful feedback.</p>
 <blockquote>
 <div><p>The <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">PEP 8</a>
 coding conventions exist precisely because we would like to schedule
-exactly no time for discussing things like &#8220;how to name variables&#8221;,
-&#8220;whether space is needed&#8221; and so on for coding.
+exactly no time for discussing things like “how to name variables”,
+“whether space is needed” and so on for coding.
 There are excellent IDEs such as <a class="reference external" href="https://www.jetbrains.com/pycharm/">PyCharm</a> for maintaining Python projects
 at a high level of quality.</p>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Do not directly modify the HTML files of the documentation.</strong></p>
+<blockquote>
+<div><blockquote>
+<div><p>To update the documentation, edit the source <code class="docutils literal"><span class="pre">.rst</span></code> files under</p>
+</div></blockquote>
+<p><code class="docutils literal"><span class="pre">docs/sources/</span></code>, and then follow the notes in <code class="docutils literal"><span class="pre">readme-dev.md</span></code> to
+generate the new HTML files.</p>
 </div></blockquote>
 </li>
 </ol>
 </div>
 <div class="section" id="setting-up-the-development-environment">
 <h2>Setting up the development environment<a class="headerlink" href="#setting-up-the-development-environment" title="Permalink to this headline">¶</a></h2>
-<p>To work on the Linguistica 5 code:</p>
 <ol class="arabic">
-<li><p class="first"><strong>Set up a personal GitHub account</strong></p>
-<blockquote>
-<div><p>If you are creating a new <a class="reference external" href="https://github.com/">GitHub</a> account,
-pick a username preferably with lowercase letters only, e.g. &#8220;joesmith&#8221;.
+<li><p class="first">You will need a <a class="reference external" href="https://github.com/">GitHub</a> account. If you are creating a new one,
+pick a username preferably with lowercase letters only, e.g. “joesmith”.
 The Linguistica 5 codebase is hosted on GitHub.
 Your contributions will be added to it via the GitHub interface.</p>
-</div></blockquote>
 </li>
-<li><p class="first"><strong>Download and install Git</strong></p>
-<blockquote>
-<div><p><a class="reference external" href="https://git-scm.com/">Git</a> is the version control system of the Linguistica 5 project.
+<li><p class="first">You will need <a class="reference external" href="https://git-scm.com/">Git</a> for version control.
 Your contributions will be managed and uploaded from your local drive to
 GitHub by Git.</p>
-</div></blockquote>
 </li>
-<li><p class="first"><strong>Download and install Miniconda</strong></p>
-<blockquote>
-<div><p>If you are sure that you have Python 3 with the required dependencies
-(NumPy, SciPy and networkx) and are happy to use it for the Linguistica 5
-development work, then you may skip this section. Otherwise,
-consider using <a class="reference external" href="http://conda.pydata.org/miniconda.html">Miniconda</a> (get Python 3.5).</p>
-<p>Miniconda allows you to set up specific environments with a specific version
-of Python and dependencies. For our purposes, you can use Miniconda to
-create a dedicated environment for the Linguistica 5 project (and no other
-projects).
-Having such a dedicated environment is desirable as you are likely working
-on multiple projects at any given time (Linguistica 5 being just one of them),
-and you don&#8217;t want the environment for one project to contaminate that for
-another project.</p>
-<p>After Miniconda is installed,
-run the following command to create the new environment
-for Linguistica 5:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span>$ conda create -n lxa5 python=3.5 numpy scipy networkx
-</pre></div>
-</div>
-<p>This command creates the new environment called <code class="docutils literal"><span class="pre">lxa5</span></code> with Python 3.5
-as well as the specified dependencies for Linguistica 5. After this command
-is done with all the installation work, run the following to activate the
-new environment <code class="docutils literal"><span class="pre">lxa5</span></code>:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span>$ source activate lxa5
-</pre></div>
-</div>
-<p>Now you are in the <code class="docutils literal"><span class="pre">lxa5</span></code> environment (no longer in the root environment).
-As an indicator for this change, your command line prompt is now prefixed
-with <code class="docutils literal"><span class="pre">(lxa5)</span></code>. Whenever you are working on the Linguistica 5 codebase,
-be sure you are in this environment at your command line
-(otherwise you might get puzzled from time to time: &#8220;I thought I had the correct Python
-version, but it&#8217;s not right?&#8221; or &#8220;I thought I already had SciPy but it
-says it&#8217;s not there?&#8221; etc.). If you run <code class="docutils literal"><span class="pre">python</span></code> now, you will see
-the Python interpreter says it is the Python 3.5 distribution by
-Continuum Analytics, Inc. (the company that maintains Miniconda).</p>
-<p>To deactivate the environment (for going back to the root environment, or
-for preparing to switch to another environment), simply run this:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span>$ source deactivate
-</pre></div>
-</div>
-</div></blockquote>
-</li>
-</ol>
-</div>
-<div class="section" id="getting-linguistica-5">
-<h2>Getting Linguistica 5<a class="headerlink" href="#getting-linguistica-5" title="Permalink to this headline">¶</a></h2>
-<p>To download the Linguistica 5 codebase for development work:</p>
-<ol class="arabic">
 <li><p class="first">Log on to your GitHub account and go to <a class="reference external" href="https://github.com/linguistica-uchicago/lxa5">https://github.com/linguistica-uchicago/lxa5</a></p>
 </li>
-<li><p class="first">At the top right hand corner, click &#8220;Fork&#8221;.
-(If prompted for &#8220;where should we fork this repository&#8221;, choose your own personal GitHub username.)</p>
+<li><p class="first">At the top right hand corner, click “Fork”.
+(If prompted for “where should we fork this repository”, choose your own personal GitHub username.)</p>
 </li>
-<li><p class="first">Now under your personal GitHub account, you see a new repository called &#8220;lxa5&#8221;.</p>
+<li><p class="first">Now under your personal GitHub account, you see a new repository called “lxa5”.</p>
 </li>
 <li><p class="first">Clone this repository onto your local disk using Git,
-and also install the Linguistica 5 Python library:</p>
+and also install the Linguistica 5 Python library and its dependencies:</p>
 <div class="code highlight-default"><div class="highlight"><pre><span></span>$ git clone https://github.com/&lt;your-github-username&gt;/lxa5.git
 $ cd lxa5
+$ pip install -r requirements.txt
+$ pip install -r dev-requirements.txt
 $ python setup.py develop
 </pre></div>
 </div>
 <p>In the last command just above,
-<code class="docutils literal"><span class="pre">python</span></code> is meant to point to the specific Python 3 interpreter
+<code class="docutils literal"><span class="pre">python</span></code> is meant to point to the specific Python interpreter
 you are using for the Linguistica 5 project. Depending on how your Python
 distribution is set up, the command you need could be something else, e.g.
 <code class="docutils literal"><span class="pre">python3</span></code>.
-Also, if you&#8217;re on Linux, you will probably need <code class="docutils literal"><span class="pre">sudo</span></code>.</p>
+Also, if you’re on Linux, you will probably need <code class="docutils literal"><span class="pre">sudo</span></code>.</p>
 <p>Now you have the Python library (called <code class="docutils literal"><span class="pre">linguistica</span></code>) installed in development mode
-(i.e. changes in source code are immediately effective &#8211; no need to uninstall
+(i.e. changes in source code are immediately effective – no need to uninstall
 and reinstall to try out new code).</p>
 </li>
 <li><p class="first">Add a link to the linguistica-uchicago/lxa5 repository:</p>
@@ -287,15 +266,15 @@ and reinstall to try out new code).</p>
 </pre></div>
 </div>
 <p>This command adds a new link to the linguistica-uchicago/lxa5 repository
-(not your fork on GitHub) and names it as &#8220;upstream&#8221;.
+(not your fork on GitHub) and names it as “upstream”.
 From time to time, you will need to keep your local
 copy of the Linguistica 5 codebase up-to-date by pulling the latest code
 from the linguistica-uchicago/lxa5 repository. This added link (with the name
-&#8220;upstream&#8221;) tells Git where to pull updates from.</p>
+“upstream”) tells Git where to pull updates from.</p>
 <p>By default, after you have cloned and created a copy of Linguistica 5 on
-your local drive (in step 4 above), there is already a link called &#8220;origin&#8221;
+your local drive (in step 4 above), there is already a link called “origin”
 set up and linked to your fork on GitHub. Run the following to verify you
-have &#8220;origin&#8221; pointing to your fork and &#8220;upstream&#8221; pointing to
+have “origin” pointing to your fork and “upstream” pointing to
 linguistica-uchicago/lxa5:</p>
 <div class="code highlight-default"><div class="highlight"><pre><span></span>$ git remote -v
 </pre></div>
@@ -317,15 +296,15 @@ codebase:</p>
 $ git pull upstream master  # pull latest from master branch of upstream
 </pre></div>
 </div>
-<p>Recall that &#8220;upstream&#8221; means the linguistica-uchicago/lxa5 repository.</p>
+<p>Recall that “upstream” means the linguistica-uchicago/lxa5 repository.</p>
 </div></blockquote>
 </li>
 <li><p class="first"><strong>Create a new branch for your great work.</strong></p>
 <blockquote>
 <div><p>Never work from the master branch.
-(Run &#8220;git branch&#8221; anytime to see what branches you have and which branch you&#8217;re on.)</p>
+(Run “git branch” anytime to see what branches you have and which branch you’re on.)</p>
 <p>Instead, work on a different branch whose name indicates what you are doing,
-e.g. &#8220;revamp-stems-to-signatures&#8221;, &#8220;update-docs&#8221;, &#8220;fix-bug-in-function-x&#8221;:</p>
+e.g. “revamp-stems-to-signatures”, “update-docs”, “fix-bug-in-function-x”:</p>
 <div class="code highlight-default"><div class="highlight"><pre><span></span>$ git checkout -b &lt;branch-name&gt;
 </pre></div>
 </div>
@@ -345,7 +324,7 @@ $ git commit -m &quot;&lt;commit-message&gt;&quot;
 <p><code class="docutils literal"><span class="pre">&lt;files-changed&gt;</span></code> can be a single file (e.g. <code class="docutils literal"><span class="pre">foo.py</span></code>) or multiple ones
 separated by spaces (e.g. <code class="docutils literal"><span class="pre">foo.py</span> <span class="pre">bar.py</span></code>).</p>
 <p>Write brief and meaningful commit messages,
-e.g. &#8220;Fix bug in stems_to_signatures&#8221;.
+e.g. “Fix bug in stems_to_signatures”.
 Aim at making each commit a logical and meaningful chunk of changes.</p>
 </div></blockquote>
 </li>
@@ -356,6 +335,18 @@ is for. Limit the number of line changes to below 300 to make
 efficient and effective code review possible.</p>
 </div></blockquote>
 </li>
+<li><p class="first"><strong>Run tests to make sure nothing breaks.</strong></p>
+<blockquote>
+<div><p>Run the tests (and get a detailed report if anything breaks):</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>$ py.test -vv --cov linguistica linguistica
+</pre></div>
+</div>
+<p>Make sure the code is PEP8 compliant:</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span>$ flake8 linguistica
+</pre></div>
+</div>
+</div></blockquote>
+</li>
 <li><p class="first"><strong>Push your changes to your fork on GitHub.</strong></p>
 <blockquote>
 <div><p>To make your changes available for review and for merging,
@@ -363,7 +354,7 @@ you will first have to push your changes to your fork on GitHub:</p>
 <div class="code highlight-default"><div class="highlight"><pre><span></span>$ git push origin &lt;branch-name&gt;
 </pre></div>
 </div>
-<p>Recall that &#8220;origin&#8221; is the (default) name point to your fork &lt;your-github-username&gt;/lxa5 on GitHub.</p>
+<p>Recall that “origin” is the (default) name point to your fork &lt;your-github-username&gt;/lxa5 on GitHub.</p>
 </div></blockquote>
 </li>
 <li><p class="first"><strong>Make a pull request.</strong></p>
@@ -372,12 +363,12 @@ you will first have to push your changes to your fork on GitHub:</p>
 Now you are ready to make a pull request
 (i.e. you want linguistica-chicago/lxa5 to get the changes
 from your &lt;branch-name&gt; of &lt;your-github-name&gt;/lxa5, as it were).
-Click &#8220;Pull request&#8221;
-(or something like &#8220;Make pull request&#8221; &#8211; it should be something fairly prominent visually).
+Click “Pull request”
+(or something like “Make pull request” – it should be something fairly prominent visually).
 Create the pull request by giving your pull request a title
 (most probably something very similar to the branch name) and
-providing brief notes on what the new changes are in the &#8220;comments&#8221; section.
-Now you&#8217;ll wait for feedback.</p>
+providing brief notes on what the new changes are in the “comments” section.
+Now you’ll wait for feedback.</p>
 </div></blockquote>
 </li>
 <li><p class="first"><strong>Start a new branch for a new mini project.</strong></p>
@@ -394,15 +385,18 @@ for a new branch and an upcoming pull request!</p>
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="codebase.html" class="btn btn-neutral float-right" title="Codebase" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="codebase.html" class="btn btn-neutral float-right" title="Codebase" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="lexicon.html" class="btn btn-neutral" title="Full API documentation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="lexicon.html" class="btn btn-neutral" title="Full API documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -412,7 +406,7 @@ for a new branch and an upcoming pull request!</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015-2017, Jackson Lee.
-      Last updated on May 16, 2017.
+      Last updated on Oct 13, 2017.
 
     </p>
   </div>
@@ -437,7 +431,8 @@ for a new branch and an upcoming pull request!</p>
             VERSION:'5.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>

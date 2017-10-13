@@ -13,6 +13,8 @@
 
   
   
+  
+  
 
   
 
@@ -42,6 +44,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -82,7 +85,10 @@
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="download.html">Download and install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo.html">Quick demonstration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
@@ -108,8 +114,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">Linguistica</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Linguistica</a>
+        
       </nav>
 
 
@@ -118,21 +126,38 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>Python library</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Python library</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -157,10 +182,10 @@ The way this can be done depends on the nature of your data source:</p>
 <tr class="row-even"><td><a class="reference internal" href="#linguistica.read_wordlist" title="linguistica.read_wordlist"><code class="xref py py-obj docutils literal"><span class="pre">read_wordlist</span></code></a>(file_path[,&nbsp;encoding])</td>
 <td>Create a Linguistica object with a wordlist file.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#linguistica.from_corpus" title="linguistica.from_corpus"><code class="xref py py-obj docutils literal"><span class="pre">from_corpus</span></code></a>(corpus_object,&nbsp;\*\*kwargs)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#linguistica.from_corpus" title="linguistica.from_corpus"><code class="xref py py-obj docutils literal"><span class="pre">from_corpus</span></code></a>(corpus_object,&nbsp;**kwargs)</td>
 <td>Create a Linguistica object with a corpus object.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#linguistica.from_wordlist" title="linguistica.from_wordlist"><code class="xref py py-obj docutils literal"><span class="pre">from_wordlist</span></code></a>(wordlist_object,&nbsp;\*\*kwargs)</td>
+<tr class="row-even"><td><a class="reference internal" href="#linguistica.from_wordlist" title="linguistica.from_wordlist"><code class="xref py py-obj docutils literal"><span class="pre">from_wordlist</span></code></a>(wordlist_object,&nbsp;**kwargs)</td>
 <td>Create a Linguistica object with a wordlist object.</td>
 </tr>
 </tbody>
@@ -239,7 +264,7 @@ corpus:</p>
 <td>1 (= yes)</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">keep_case</span></code></td>
-<td>whether case distinctions (&#8220;the&#8221; vs &#8220;The&#8221;) are kept</td>
+<td>whether case distinctions (“the” vs “The”) are kept</td>
 <td>0 (= no)</td>
 </tr>
 </tbody>
@@ -286,10 +311,10 @@ use <code class="docutils literal"><span class="pre">use_default_parameters()</s
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>corpus_object</strong> &#8211; either a long string of text
+<li><strong>corpus_object</strong> – either a long string of text
 (with spaces separating word tokens) or a list of strings as word
 tokens</li>
-<li><strong>kwargs</strong> &#8211; keyword arguments for parameters and their values.</li>
+<li><strong>kwargs</strong> – keyword arguments for parameters and their values.</li>
 </ul>
 </td>
 </tr>
@@ -306,9 +331,9 @@ tokens</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>wordlist_object</strong> &#8211; either a dict of word types (as strings) mapped to
+<li><strong>wordlist_object</strong> – either a dict of word types (as strings) mapped to
 their token counts or an iterable of word types (as strings).</li>
-<li><strong>kwargs</strong> &#8211; keyword arguments for parameters and their values.</li>
+<li><strong>kwargs</strong> – keyword arguments for parameters and their values.</li>
 </ul>
 </td>
 </tr>
@@ -325,9 +350,9 @@ their token counts or an iterable of word types (as strings).</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>file_path</strong> &#8211; path of input corpus file</li>
-<li><strong>encoding</strong> &#8211; encoding of the file at <em>file_path</em>. Default: <code class="docutils literal"><span class="pre">'utf8'</span></code></li>
-<li><strong>kwargs</strong> &#8211; keyword arguments for parameters and their values.</li>
+<li><strong>file_path</strong> – path of input corpus file</li>
+<li><strong>encoding</strong> – encoding of the file at <em>file_path</em>. Default: <code class="docutils literal"><span class="pre">'utf8'</span></code></li>
+<li><strong>kwargs</strong> – keyword arguments for parameters and their values.</li>
 </ul>
 </td>
 </tr>
@@ -344,11 +369,11 @@ their token counts or an iterable of word types (as strings).</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>file_path</strong> &#8211; path of input wordlist file where each line contains
+<li><strong>file_path</strong> – path of input wordlist file where each line contains
 one word type (and, optionally, a whitespace plus the token count
 for that word).</li>
-<li><strong>encoding</strong> &#8211; encoding of the file at <em>file_path</em>. Default: <code class="docutils literal"><span class="pre">'utf8'</span></code></li>
-<li><strong>kwargs</strong> &#8211; keyword arguments for parameters and their values.</li>
+<li><strong>encoding</strong> – encoding of the file at <em>file_path</em>. Default: <code class="docutils literal"><span class="pre">'utf8'</span></code></li>
+<li><strong>kwargs</strong> – keyword arguments for parameters and their values.</li>
 </ul>
 </td>
 </tr>
@@ -361,15 +386,18 @@ for that word).</li>
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="gui.html" class="btn btn-neutral float-right" title="Graphical user interface (GUI)" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="gui.html" class="btn btn-neutral float-right" title="Graphical user interface (GUI)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="data.html" class="btn btn-neutral" title="Data" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="data.html" class="btn btn-neutral" title="Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -379,7 +407,7 @@ for that word).</li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015-2017, Jackson Lee.
-      Last updated on May 16, 2017.
+      Last updated on Oct 13, 2017.
 
     </p>
   </div>
@@ -404,7 +432,8 @@ for that word).</li>
             VERSION:'5.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>

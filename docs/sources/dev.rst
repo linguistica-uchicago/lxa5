@@ -57,101 +57,44 @@ Important reminders
       There are excellent IDEs such as PyCharm_ for maintaining Python projects
       at a high level of quality.
 
+5. **Do not directly modify the HTML files of the documentation.**
+
+     To update the documentation, edit the source ``.rst`` files under
+    ``docs/sources/``, and then follow the notes in ``readme-dev.md`` to
+    generate the new HTML files.
 
 Setting up the development environment
 --------------------------------------
 
-To work on the Linguistica 5 code:
+1. You will need a GitHub_ account. If you are creating a new one,
+   pick a username preferably with lowercase letters only, e.g. "joesmith".
+   The Linguistica 5 codebase is hosted on GitHub.
+   Your contributions will be added to it via the GitHub interface.
 
-1. **Set up a personal GitHub account**
+2. You will need Git_ for version control.
+   Your contributions will be managed and uploaded from your local drive to
+   GitHub by Git.
 
-      If you are creating a new GitHub_ account,
-      pick a username preferably with lowercase letters only, e.g. "joesmith".
-      The Linguistica 5 codebase is hosted on GitHub.
-      Your contributions will be added to it via the GitHub interface.
+3. Log on to your GitHub account and go to https://github.com/linguistica-uchicago/lxa5
 
-
-2. **Download and install Git**
-
-      Git_ is the version control system of the Linguistica 5 project.
-      Your contributions will be managed and uploaded from your local drive to
-      GitHub by Git.
-
-
-3. **Download and install Miniconda**
-
-      If you are sure that you have Python 3 with the required dependencies
-      (NumPy, SciPy and networkx) and are happy to use it for the Linguistica 5
-      development work, then you may skip this section. Otherwise,
-      consider using Miniconda_ (get Python 3.5).
-
-      Miniconda allows you to set up specific environments with a specific version
-      of Python and dependencies. For our purposes, you can use Miniconda to
-      create a dedicated environment for the Linguistica 5 project (and no other
-      projects).
-      Having such a dedicated environment is desirable as you are likely working
-      on multiple projects at any given time (Linguistica 5 being just one of them),
-      and you don't want the environment for one project to contaminate that for
-      another project.
-
-      After Miniconda is installed,
-      run the following command to create the new environment
-      for Linguistica 5:
-
-      .. code::
-
-         $ conda create -n lxa5 python=3.5 numpy scipy networkx
-
-      This command creates the new environment called ``lxa5`` with Python 3.5
-      as well as the specified dependencies for Linguistica 5. After this command
-      is done with all the installation work, run the following to activate the
-      new environment ``lxa5``:
-
-      .. code::
-
-         $ source activate lxa5
-
-      Now you are in the ``lxa5`` environment (no longer in the root environment).
-      As an indicator for this change, your command line prompt is now prefixed
-      with ``(lxa5)``. Whenever you are working on the Linguistica 5 codebase,
-      be sure you are in this environment at your command line
-      (otherwise you might get puzzled from time to time: "I thought I had the correct Python
-      version, but it's not right?" or "I thought I already had SciPy but it
-      says it's not there?" etc.). If you run ``python`` now, you will see
-      the Python interpreter says it is the Python 3.5 distribution by
-      Continuum Analytics, Inc. (the company that maintains Miniconda).
-
-      To deactivate the environment (for going back to the root environment, or
-      for preparing to switch to another environment), simply run this:
-
-      .. code::
-
-         $ source deactivate
-
-
-Getting Linguistica 5
----------------------
-
-To download the Linguistica 5 codebase for development work:
-
-1. Log on to your GitHub account and go to https://github.com/linguistica-uchicago/lxa5
-
-2. At the top right hand corner, click "Fork".
+4. At the top right hand corner, click "Fork".
    (If prompted for "where should we fork this repository", choose your own personal GitHub username.)
 
-3. Now under your personal GitHub account, you see a new repository called "lxa5".
+5. Now under your personal GitHub account, you see a new repository called "lxa5".
 
-4. Clone this repository onto your local disk using Git,
-   and also install the Linguistica 5 Python library:
+6. Clone this repository onto your local disk using Git,
+   and also install the Linguistica 5 Python library and its dependencies:
 
    .. code::
 
       $ git clone https://github.com/<your-github-username>/lxa5.git
       $ cd lxa5
+      $ pip install -r requirements.txt
+      $ pip install -r dev-requirements.txt
       $ python setup.py develop
 
    In the last command just above,
-   ``python`` is meant to point to the specific Python 3 interpreter
+   ``python`` is meant to point to the specific Python interpreter
    you are using for the Linguistica 5 project. Depending on how your Python
    distribution is set up, the command you need could be something else, e.g.
    ``python3``.
@@ -161,7 +104,7 @@ To download the Linguistica 5 codebase for development work:
    (i.e. changes in source code are immediately effective -- no need to uninstall
    and reinstall to try out new code).
 
-5. Add a link to the linguistica-uchicago/lxa5 repository:
+7. Add a link to the linguistica-uchicago/lxa5 repository:
 
    .. code::
 
@@ -244,7 +187,22 @@ you are now (almost) ready to do awesome work!
       is for. Limit the number of line changes to below 300 to make
       efficient and effective code review possible.
 
-5. **Push your changes to your fork on GitHub.**
+5. **Run tests to make sure nothing breaks.**
+
+      Run the tests (and get a detailed report if anything breaks):
+
+      .. code::
+
+         $ py.test -vv --cov linguistica linguistica
+
+
+      Make sure the code is PEP8 compliant:
+
+      .. code::
+
+         $ flake8 linguistica
+
+6. **Push your changes to your fork on GitHub.**
 
       To make your changes available for review and for merging,
       you will first have to push your changes to your fork on GitHub:
@@ -255,7 +213,7 @@ you are now (almost) ready to do awesome work!
 
       Recall that "origin" is the (default) name point to your fork <your-github-username>/lxa5 on GitHub.
 
-6. **Make a pull request.**
+7. **Make a pull request.**
 
       Log on to your GitHub and go to your fork <your-github-username>/lxa5.
       Now you are ready to make a pull request
@@ -268,7 +226,7 @@ you are now (almost) ready to do awesome work!
       providing brief notes on what the new changes are in the "comments" section.
       Now you'll wait for feedback.
 
-7. **Start a new branch for a new mini project.**
+8. **Start a new branch for a new mini project.**
 
       After all your hard work in the pull request has been accepted (= merged
       into linguistica-uchicago/lxa5), you can go back to step 1

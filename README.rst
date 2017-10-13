@@ -42,6 +42,10 @@ The most recent release of John Goldsmith's code is Linguistica 4; see
 Download and install
 --------------------
 
+Note: If you are a developer of the Linguistica project group, you should ignore
+this section and set up your environment by following
+`these notes <http://linguistica-uchicago.github.io/lxa5/dev.html#setting-up-the-development-environment>`_.
+
 Linguistica 5 is available through ``pip``:
 
 .. code-block:: bash

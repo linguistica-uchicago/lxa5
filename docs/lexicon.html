@@ -13,6 +13,8 @@
 
   
   
+  
+  
 
   
 
@@ -42,6 +44,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -82,7 +85,10 @@
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="download.html">Download and install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo.html">Quick demonstration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
@@ -113,8 +119,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">Linguistica</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Linguistica</a>
+        
       </nav>
 
 
@@ -123,21 +131,38 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>Full API documentation</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Full API documentation</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -318,7 +343,7 @@ linguistic analysis:</p>
 <tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.parameters" title="linguistica.lexicon.Lexicon.parameters"><code class="xref py py-obj docutils literal"><span class="pre">parameters</span></code></a>()</td>
 <td>Return the parameter dict.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.change_parameters" title="linguistica.lexicon.Lexicon.change_parameters"><code class="xref py py-obj docutils literal"><span class="pre">change_parameters</span></code></a>(\*\*kwargs)</td>
+<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.change_parameters" title="linguistica.lexicon.Lexicon.change_parameters"><code class="xref py py-obj docutils literal"><span class="pre">change_parameters</span></code></a>(**kwargs)</td>
 <td>Change parameters specified by <em>kwargs</em>.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.use_default_parameters" title="linguistica.lexicon.Lexicon.use_default_parameters"><code class="xref py py-obj docutils literal"><span class="pre">use_default_parameters</span></code></a>()</td>
@@ -414,7 +439,7 @@ A Biphone instance has the methods
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kwargs</strong> &#8211; keyword arguments for parameters and their new values</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kwargs</strong> – keyword arguments for parameters and their new values</td>
 </tr>
 </tbody>
 </table>
@@ -484,7 +509,7 @@ A Biphone instance has the methods
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>directory</strong> &#8211; output directory. If not specified, it defaults to
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>directory</strong> – output directory. If not specified, it defaults to
 the current directory given by <code class="docutils literal"><span class="pre">os.getcwd()</span></code>.</td>
 </tr>
 </tbody>
@@ -790,7 +815,7 @@ A Word instance has the methods
 <dt id="linguistica.lexicon.Lexicon.wordlist">
 <code class="descname">wordlist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#linguistica.lexicon.Lexicon.wordlist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a wordlist sorted by word frequency in descending order.
-(So &#8220;the&#8221; will most likely be the first word for written English.)</p>
+(So “the” will most likely be the first word for written English.)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -892,15 +917,18 @@ A Word instance has the methods
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="dev.html" class="btn btn-neutral float-right" title="For developers" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="dev.html" class="btn btn-neutral float-right" title="For developers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="cli.html" class="btn btn-neutral" title="Command line interface (CLI)" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="cli.html" class="btn btn-neutral" title="Command line interface (CLI)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -910,7 +938,7 @@ A Word instance has the methods
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015-2017, Jackson Lee.
-      Last updated on May 16, 2017.
+      Last updated on Oct 13, 2017.
 
     </p>
   </div>
@@ -935,7 +963,8 @@ A Word instance has the methods
             VERSION:'5.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>
