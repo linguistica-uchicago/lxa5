@@ -13,6 +13,8 @@
 
   
   
+  
+  
 
   
 
@@ -42,6 +44,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -82,7 +85,10 @@
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="download.html">Download and install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo.html">Quick demonstration</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Data</a><ul>
@@ -108,8 +114,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">Linguistica</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Linguistica</a>
+        
       </nav>
 
 
@@ -118,21 +126,38 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>Data</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Data</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -159,7 +184,7 @@ An example is the
 <a class="reference external" href="https://github.com/linguistica-uchicago/lxa5/blob/master/linguistica/datasets/english-brown.txt">Brown corpus</a>
 (Kučera and Francis 1967) with
 about one million word tokens (for about 50,000 word types).
-This corpus is a built-in dataset that comes with Linguistica 5 &#8211;
+This corpus is a built-in dataset that comes with Linguistica 5 –
 its file path is accessible as <code class="docutils literal"><span class="pre">brown</span></code> as follows:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">linguistica</span> <span class="k">as</span> <span class="nn">lxa</span>
 <span class="kn">from</span> <span class="nn">linguistica.datasets</span> <span class="k">import</span> <span class="n">brown</span>
@@ -182,14 +207,14 @@ you need.</p>
 <p>A wordlist file is a plain text file in a specific format (more below)
 that Linguistica 5 recognizes as a wordlist.
 The Linguistica team has conventionally called this format <code class="docutils literal"><span class="pre">.dx1</span></code>
-(think: a dictionary file; that&#8217;s &#8220;one&#8221; but not &#8220;L&#8221; at the end)
+(think: a dictionary file; that’s “one” but not “L” at the end)
 which is also the file extension name.
 An example of a <code class="docutils literal"><span class="pre">.dx1</span></code> file is <code class="docutils literal"><span class="pre">english-cmudict.dx1</span></code> available
 <a class="reference external" href="https://github.com/linguistica-uchicago/lxa5/blob/master/linguistica/datasets/english-cmudict.dx1">here</a>.
 (This file is essentially the
 <a class="reference external" href="http://www.speech.cs.cmu.edu/cgi-bin/cmudict">CMU Pronouncing Dictionary</a>
 with English words represented phonemically by Arpabet,
-with the addition of word token counts&#8212;if available&#8212;based on the English
+with the addition of word token counts—if available—based on the English
 Brown corpus.) This wordlist is also a built-in dataset:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">linguistica</span> <span class="k">as</span> <span class="nn">lxa</span>
 <span class="kn">from</span> <span class="nn">linguistica.datasets</span> <span class="k">import</span> <span class="n">cmudict</span>
@@ -240,15 +265,18 @@ the relevant function is <code class="docutils literal"><span class="pre">from_w
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="read.html" class="btn btn-neutral float-right" title="Python library" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="read.html" class="btn btn-neutral float-right" title="Python library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="demo.html" class="btn btn-neutral" title="Quick demonstration" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="demo.html" class="btn btn-neutral" title="Quick demonstration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -258,7 +286,7 @@ the relevant function is <code class="docutils literal"><span class="pre">from_w
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015-2017, Jackson Lee.
-      Last updated on May 16, 2017.
+      Last updated on Oct 13, 2017.
 
     </p>
   </div>
@@ -283,7 +311,8 @@ the relevant function is <code class="docutils literal"><span class="pre">from_w
             VERSION:'5.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>

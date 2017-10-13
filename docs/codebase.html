@@ -13,6 +13,8 @@
 
   
   
+  
+  
 
   
 
@@ -41,6 +43,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -81,7 +84,10 @@
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="download.html">Download and install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo.html">Quick demonstration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
@@ -114,8 +120,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">Linguistica</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Linguistica</a>
+        
       </nav>
 
 
@@ -124,21 +132,38 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>Codebase</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Codebase</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -221,7 +246,7 @@ we examine what happens when the final line
 <code class="docutils literal"><span class="pre">sigs_to_stems</span> <span class="pre">=</span> <span class="pre">lxa_object.signatures_to_stems()</span></code> in the code snippet is run.</p>
 <p>When <code class="docutils literal"><span class="pre">lxa_object.signatures_to_stems()</span></code> is called, the method
 <code class="docutils literal"><span class="pre">signatures_to_stems()</span></code> of the <code class="docutils literal"><span class="pre">Lexicon</span></code> class is called.
-What does this method do? Let&#8217;s check out the code:</p>
+What does this method do? Let’s check out the code:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Lexicon</span><span class="p">:</span>
 
     <span class="k">def</span> <span class="nf">signatures_to_stems</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -278,7 +303,7 @@ in <code class="docutils literal"><span class="pre">linguistica/signature.py</sp
 class. They are initialized in some way and are <em>not</em> actually
 computed until necessary. Once computed, they are available in memory for
 immediate retrieval. All heavy lifting is only called but not done within
-the class <code class="docutils literal"><span class="pre">Lexicon</span></code> &#8211; the real work is done in the respective modules
+the class <code class="docutils literal"><span class="pre">Lexicon</span></code> – the real work is done in the respective modules
 such as <code class="docutils literal"><span class="pre">signature</span></code>, <code class="docutils literal"><span class="pre">manifold</span></code>, and so on.</p>
 <p>Notes on the graphicsl user interface (GUI):</p>
 <ul class="simple">
@@ -293,7 +318,7 @@ calling <code class="docutils literal"><span class="pre">linguistica.gui.main()<
 <li>All GUI code is accessible through only <code class="docutils literal"><span class="pre">linguistica.gui.main()</span></code>
 defined in <code class="docutils literal"><span class="pre">linguistica/gui/__init__.py</span></code>.
 This is important, because PyQt5 may potentially be unavailable
-at the user&#8217;s system. The <code class="docutils literal"><span class="pre">__init__.py</span></code> safeguards against import errors,
+at the user’s system. The <code class="docutils literal"><span class="pre">__init__.py</span></code> safeguards against import errors,
 but other <code class="docutils literal"><span class="pre">.py</span></code> files in <code class="docutils literal"><span class="pre">linguistica/gui</span></code> do not.
 Relatedly, when <code class="docutils literal"><span class="pre">linguistica.gui.main()</span></code> is to be called
 (as in <code class="docutils literal"><span class="pre">linguistica/__main__.py</span></code>), there is always code that checks
@@ -304,8 +329,8 @@ actually be called.</li>
 <ul class="simple">
 <li>The CLI code is in <code class="docutils literal"><span class="pre">linguistica/cli.py</span></code>, all wrapped in
 <code class="docutils literal"><span class="pre">linguistica.cli.main()</span></code> which is called in <code class="docutils literal"><span class="pre">linguistica/__main__.py</span></code>.</li>
-<li>We don&#8217;t output <code class="docutils literal"><span class="pre">words_to_contexts</span></code>
-and <code class="docutils literal"><span class="pre">contexts_to_words</span></code>, because they are huge...
+<li>We don’t output <code class="docutils literal"><span class="pre">words_to_contexts</span></code>
+and <code class="docutils literal"><span class="pre">contexts_to_words</span></code>, because they are huge…
 Or we could just output those whose counts are higher than some threshold?</li>
 </ul>
 </div>
@@ -313,7 +338,7 @@ Or we could just output those whose counts are higher than some threshold?</li>
 <span id="codebase-dependencies"></span><h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
 <p>The core dependencies are specified in <code class="docutils literal"><span class="pre">requirements.txt</span></code> which is read by
 <code class="docutils literal"><span class="pre">setup.py</span></code> and used in build tests by Travis CI.
-For reproducibility, we pin down each dependency&#8217;s major and minor version
+For reproducibility, we pin down each dependency’s major and minor version
 numbers, while allowing flexibility for getting bug fixes.
 For example, <code class="docutils literal"><span class="pre">six&gt;=1.10.0,&lt;=1.10.99</span></code> points to the latest six v1.10.x.</p>
 <p>There is also <code class="docutils literal"><span class="pre">dev-requirements.txt</span></code> with dependencies for running tests and
@@ -335,7 +360,7 @@ check test coverage for <code class="docutils literal"><span class="pre">.py</sp
 specifies the directory (again, the library code) where pytest should look for
 tests in <code class="docutils literal"><span class="pre">test_*.py</span></code>. <code class="docutils literal"><span class="pre">.coveragerc</span></code> configures the test coverage report.</p>
 <p>We are also using <code class="docutils literal"><span class="pre">flake8</span></code> for maintaining high code quality. Essentially,
-no PEP8 violations are allowed &#8211; not even trailing whitespace or extra
+no PEP8 violations are allowed – not even trailing whitespace or extra
 empty lines. Run flake8 with <code class="docutils literal"><span class="pre">$</span> <span class="pre">flake8</span> <span class="pre">linguistica</span></code>. If you see no
 terminal output, it means everything is compliant. Note that the Travis CI
 build tests also run flake8. Do not try to work around the robots!</p>
@@ -378,12 +403,12 @@ nowhere else. The version number in both <code class="docutils literal"><span cl
 <strong>not</strong> hard-code or even mention the current version number anywhere else
 (not even in the source <code class="docutils literal"><span class="pre">.rst</span></code> of this documentation) to avoid confusion.</p>
 <p>We essentially follow <a class="reference external" href="http://semver.org/">http://semver.org/</a> for the <code class="docutils literal"><span class="pre">major.minor.patch</span></code>
-format. The major version is <code class="docutils literal"><span class="pre">5</span></code> because there&#8217;s John&#8217;s Linguistica 3 &amp; 4
+format. The major version is <code class="docutils literal"><span class="pre">5</span></code> because there’s John’s Linguistica 3 &amp; 4
 written in C++. The minor version number increments when a new release comes
 with new features. The patch number increments when a new release comes with
 changes with no API ramifications such as bug fixes.</p>
 <p>The first release of Linguistica 5 was 5.1.0 instead of 5.0.0, because 5.0.0
-was John&#8217;s in-house version written in Python 2.</p>
+was John’s in-house version written in Python 2.</p>
 </div>
 <div class="section" id="documentation">
 <span id="codebase-documentation"></span><h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
@@ -401,13 +426,16 @@ should be documented in <code class="docutils literal"><span class="pre">CHANGEL
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="dev.html" class="btn btn-neutral" title="For developers" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="dev.html" class="btn btn-neutral" title="For developers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -417,7 +445,7 @@ should be documented in <code class="docutils literal"><span class="pre">CHANGEL
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015-2017, Jackson Lee.
-      Last updated on May 16, 2017.
+      Last updated on Oct 13, 2017.
 
     </p>
   </div>
@@ -442,7 +470,8 @@ should be documented in <code class="docutils literal"><span class="pre">CHANGEL
             VERSION:'5.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>

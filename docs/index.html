@@ -13,6 +13,8 @@
 
   
   
+  
+  
 
   
 
@@ -41,6 +43,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -81,7 +84,10 @@
           
             
             
-                <ul>
+              
+            
+            
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="download.html">Download and install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demo.html">Quick demonstration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
@@ -103,8 +109,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="#">Linguistica</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Linguistica</a>
+        
       </nav>
 
 
@@ -113,21 +121,38 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="#">Docs</a> &raquo;</li>
-      
-    <li>Linguistica 5</li>
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>Linguistica 5</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -137,10 +162,10 @@
 <span id="index"></span><h1>Linguistica 5<a class="headerlink" href="#linguistica-5" title="Permalink to this headline">¶</a></h1>
 <p>Linguistica 5 is a Python library for unsupervised learning of linguistic
 structure.</p>
-<p>Please note that this code is not John Goldsmith&#8217;s development code,
+<p>Please note that this code is not John Goldsmith’s development code,
 which can be found on
 <a class="reference external" href="https://github.com/JohnAGoldsmith/lxa5_0">his GitHub repository</a>.
-The most recent release of John Goldsmith&#8217;s code is Linguistica 4; see
+The most recent release of John Goldsmith’s code is Linguistica 4; see
 <a class="reference external" href="http://linguistica.uchicago.edu/">Linguistica at UChicago</a>.</p>
 <p>Linguistica 5 is available in three modes:</p>
 <ul class="simple">
@@ -210,7 +235,6 @@ Alternatively, please feel free to contact
 <li class="toctree-l1"><a class="reference internal" href="dev.html">For developers</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="dev.html#important-reminders">Important reminders</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dev.html#setting-up-the-development-environment">Setting up the development environment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dev.html#getting-linguistica-5">Getting Linguistica 5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dev.html#committing-changes-and-making-a-pull-request">Committing changes and making a pull request</a></li>
 </ul>
 </li>
@@ -233,12 +257,15 @@ Alternatively, please feel free to contact
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="download.html" class="btn btn-neutral float-right" title="Download and install" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="download.html" class="btn btn-neutral float-right" title="Download and install" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>
@@ -249,7 +276,7 @@ Alternatively, please feel free to contact
   <div role="contentinfo">
     <p>
         &copy; Copyright 2015-2017, Jackson Lee.
-      Last updated on May 16, 2017.
+      Last updated on Oct 13, 2017.
 
     </p>
   </div>
@@ -274,7 +301,8 @@ Alternatively, please feel free to contact
             VERSION:'5.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>
