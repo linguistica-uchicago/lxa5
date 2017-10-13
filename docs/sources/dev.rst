@@ -78,57 +78,6 @@ To work on the Linguistica 5 code:
       GitHub by Git.
 
 
-3. **Download and install Miniconda**
-
-      If you are sure that you have Python 3 with the required dependencies
-      (NumPy, SciPy and networkx) and are happy to use it for the Linguistica 5
-      development work, then you may skip this section. Otherwise,
-      consider using Miniconda_ (get Python 3.5).
-
-      Miniconda allows you to set up specific environments with a specific version
-      of Python and dependencies. For our purposes, you can use Miniconda to
-      create a dedicated environment for the Linguistica 5 project (and no other
-      projects).
-      Having such a dedicated environment is desirable as you are likely working
-      on multiple projects at any given time (Linguistica 5 being just one of them),
-      and you don't want the environment for one project to contaminate that for
-      another project.
-
-      After Miniconda is installed,
-      run the following command to create the new environment
-      for Linguistica 5:
-
-      .. code::
-
-         $ conda create -n lxa5 python=3.5 numpy scipy networkx
-
-      This command creates the new environment called ``lxa5`` with Python 3.5
-      as well as the specified dependencies for Linguistica 5. After this command
-      is done with all the installation work, run the following to activate the
-      new environment ``lxa5``:
-
-      .. code::
-
-         $ source activate lxa5
-
-      Now you are in the ``lxa5`` environment (no longer in the root environment).
-      As an indicator for this change, your command line prompt is now prefixed
-      with ``(lxa5)``. Whenever you are working on the Linguistica 5 codebase,
-      be sure you are in this environment at your command line
-      (otherwise you might get puzzled from time to time: "I thought I had the correct Python
-      version, but it's not right?" or "I thought I already had SciPy but it
-      says it's not there?" etc.). If you run ``python`` now, you will see
-      the Python interpreter says it is the Python 3.5 distribution by
-      Continuum Analytics, Inc. (the company that maintains Miniconda).
-
-      To deactivate the environment (for going back to the root environment, or
-      for preparing to switch to another environment), simply run this:
-
-      .. code::
-
-         $ source deactivate
-
-
 Getting Linguistica 5
 ---------------------
 
