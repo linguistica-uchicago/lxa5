@@ -7,20 +7,9 @@ For all commands below:
 * They are run at the root directory of the project codebase.
 * The command `python` points to the specific Python distribution you use
   for the Linguistica 5 project.
-* The command `pip` points to the pip associated with the specific Python
-  distribution.
 
-## Install the dependencies for development and documentation
-
-```
-$ pip install Sphinx flake8 pytest pytest-cov sphinx_rtd_theme
-```
-
-## Run tests
-
-```
-$ pytest -v --cov
-```
+This page assumes that you have the development environment set up
+by following the notes [here](http://linguistica-uchicago.github.io/lxa5/dev.html#setting-up-the-development-environment).
 
 ## Build documentation
 
