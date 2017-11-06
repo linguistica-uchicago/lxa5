@@ -32,9 +32,12 @@ setup(name='linguistica',
       install_requires=requirements,
 
       package_data={
-          'linguistica': ['VERSION', 'gui/d3.min.js',
-                          'gui/lxa_splash_screen.png',
-                          'datasets/*.txt', 'datasets/*.dx1'],
+          'linguistica': [
+              'VERSION',
+              'gui/*',
+              'datasets/*',
+              'tests/data/*',
+          ],
       },
 
       zip_safe=False,
