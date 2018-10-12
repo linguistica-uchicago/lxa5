@@ -1,54 +1,58 @@
 from os import path
 from setuptools import setup, find_packages
 
-this_dir = path.dirname(__file__)
+_THIS_DIR = path.dirname(__file__)
 
-version_path = path.join(this_dir, 'linguistica', 'VERSION')
-with open(version_path) as f:
-    package_version = f.read().strip()
 
-readme_path = path.join(this_dir, 'README.rst')
-with open(readme_path) as f:
-    long_description = f.read()
+def main():
+    version_path = path.join(_THIS_DIR, 'linguistica', 'VERSION')
+    with open(version_path) as f:
+        package_version = f.read().strip()
 
-requirements_path = path.join(this_dir, 'requirements.txt')
-with open(requirements_path) as f:
-    requirements = [x.strip() for x in f.readlines()]
+    readme_path = path.join(_THIS_DIR, 'README.rst')
+    with open(readme_path) as f:
+        long_description = f.read()
 
-setup(name='linguistica',
-      version=package_version,
-      description='Linguistica 5: Unsupervised Learning of Linguistic Structure',
-      long_description=long_description,
-      url='http://linguistica.uchicago.edu/',
-      author='Jackson Lee',
-      author_email='jacksonlunlee@gmail.com',
-      license='MIT License',
-      packages=find_packages(),
-      keywords=['computational linguistics', 'natural language processing',
-                'NLP', 'linguistics', 'corpora', 'speech',
-                'language', 'machine learning', 'unsupervised learning',
-                'data visualization'],
+    requirements_path = path.join(_THIS_DIR, 'requirements.txt')
+    with open(requirements_path) as f:
+        requirements = [x.strip() for x in f.readlines()]
 
-      install_requires=requirements,
+    setup(
+        name='linguistica',
+        version=package_version,
+        description='Linguistica 5: Unsupervised Learning of Linguistic Structure',  # noqa
+        long_description=long_description,
+        url='http://linguistica.uchicago.edu/',
+        author='Jackson Lee',
+        author_email='jacksonlunlee@gmail.com',
+        license='MIT License',
+        packages=find_packages(),
+        keywords=[
+            'computational linguistics', 'natural language processing',
+            'NLP', 'linguistics', 'corpora', 'speech',
+            'language', 'machine learning', 'unsupervised learning',
+            'data visualization'],
 
-      package_data={
+        install_requires=requirements,
+
+        package_data={
           'linguistica': [
               'VERSION',
               'gui/*',
               'datasets/*',
               'tests/data/*',
           ],
-      },
+        },
 
-      zip_safe=False,
+        zip_safe=False,
 
-      entry_points={
+        entry_points={
           'console_scripts': [
               'linguistica = linguistica.__main__:main'
           ]
-      },
+        },
 
-      classifiers=[
+        classifiers=[
           'Development Status :: 4 - Beta',
           'Intended Audience :: Developers',
           'Intended Audience :: Education',
@@ -62,6 +66,7 @@ setup(name='linguistica',
           'Programming Language :: Python :: 3.4',
           'Programming Language :: Python :: 3.5',
           'Programming Language :: Python :: 3.6',
+          'Programming Language :: Python :: 3.7',
           'Topic :: Scientific/Engineering',
           'Topic :: Scientific/Engineering :: Artificial Intelligence',
           'Topic :: Scientific/Engineering :: Human Machine Interfaces',
@@ -72,4 +77,8 @@ setup(name='linguistica',
           'Topic :: Text Processing :: Indexing',
           'Topic :: Text Processing :: Linguistic',
           ],
-      )
+    )
+
+
+if __name__ == '__main__':
+    main()
