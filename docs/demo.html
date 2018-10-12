@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Quick demonstration &mdash; Linguistica 5.2.0 documentation</title>
+  <title>Quick demonstration &mdash; Linguistica 5.2.1 documentation</title>
   
 
   
@@ -24,25 +24,18 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Linguistica 5.2.0 documentation" href="index.html"/>
-        <link rel="next" title="Data" href="data.html"/>
-        <link rel="prev" title="Download and install" href="download.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Data" href="data.html" />
+    <link rel="prev" title="Download and install" href="download.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -64,7 +57,7 @@
             
             
               <div class="version">
-                5.2.0
+                5.2.1
               </div>
             
           
@@ -117,7 +110,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">Linguistica</a>
@@ -125,9 +118,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -176,19 +170,19 @@ There are two other use modes: <a class="reference internal" href="gui.html#gui"
 <div class="section" id="the-basics">
 <h2>The Basics<a class="headerlink" href="#the-basics" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Importing the <code class="docutils literal"><span class="pre">linguistica</span></code> library</li>
+<li>Importing the <code class="docutils literal notranslate"><span class="pre">linguistica</span></code> library</li>
 <li>Using a built-in dataset (the English Brown corpus)</li>
 <li>Creating a Linguistica object for a given dataset</li>
 </ul>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">linguistica</span> <span class="k">as</span> <span class="nn">lxa</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">linguistica</span> <span class="k">as</span> <span class="nn">lxa</span>
 <span class="kn">from</span> <span class="nn">linguistica.datasets</span> <span class="k">import</span> <span class="n">brown</span>
 
 <span class="n">lxa_object</span> <span class="o">=</span> <span class="n">lxa</span><span class="o">.</span><span class="n">read_corpus</span><span class="p">(</span><span class="n">brown</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><code class="docutils literal"><span class="pre">brown</span></code> (str) is the file path of the English Brown corpus text file
+<p><code class="docutils literal notranslate"><span class="pre">brown</span></code> (str) is the file path of the English Brown corpus text file
 built in the Linguistica 5 library. If you would like to use a corpus
-text from the local drive, the argument for <code class="docutils literal"><span class="pre">read_corpus()</span></code> should
+text from the local drive, the argument for <code class="docutils literal notranslate"><span class="pre">read_corpus()</span></code> should
 take the file path (as a str) of your desired text file.</p>
 </div>
 <div class="section" id="methods-with-a-linguistica-object">
@@ -196,19 +190,19 @@ take the file path (as a str) of your desired text file.</p>
 <p>Sample uses: (1) word trigrams, (2) signatures to stems</p>
 <div class="section" id="word-trigrams">
 <h3>(1) Word trigrams<a class="headerlink" href="#word-trigrams" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">trigrams</span> <span class="o">=</span> <span class="n">lxa_object</span><span class="o">.</span><span class="n">word_trigram_counter</span><span class="p">()</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">trigrams</span> <span class="o">=</span> <span class="n">lxa_object</span><span class="o">.</span><span class="n">word_trigram_counter</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><code class="docutils literal"><span class="pre">trigrams</span></code> is a dict with word trigrams (each as a tuple) mapped to
+<p><code class="docutils literal notranslate"><span class="pre">trigrams</span></code> is a dict with word trigrams (each as a tuple) mapped to
 their respective counts.</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">trigram</span><span class="p">,</span> <span class="n">count_</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">trigrams</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">trigram</span><span class="p">,</span> <span class="n">count_</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">trigrams</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">trigram</span><span class="p">,</span> <span class="n">count_</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">count_</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">:</span>
         <span class="k">break</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">)</span> <span class="mi">662</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">)</span> <span class="mi">662</span>
 <span class="p">(</span><span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="s1">&#39;of&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">)</span> <span class="mi">403</span>
 <span class="p">(</span><span class="s1">&#39;the&#39;</span><span class="p">,</span> <span class="s1">&#39;united&#39;</span><span class="p">,</span> <span class="s1">&#39;states&#39;</span><span class="p">)</span> <span class="mi">328</span>
 <span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;however&#39;</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="mi">321</span>
@@ -274,25 +268,25 @@ their respective counts.</p>
 <span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;on&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">)</span> <span class="mi">99</span>
 </pre></div>
 </div>
-<p>Given <code class="docutils literal"><span class="pre">trigrams</span></code> is a dict that maps something to counts, it is
-natural to convert it to a Counter instance (via the <code class="docutils literal"><span class="pre">collections</span></code>
+<p>Given <code class="docutils literal notranslate"><span class="pre">trigrams</span></code> is a dict that maps something to counts, it is
+natural to convert it to a Counter instance (via the <code class="docutils literal notranslate"><span class="pre">collections</span></code>
 module in the standard library) and take advantage of the methods
-available (e.g., <code class="docutils literal"><span class="pre">most_common(k)</span></code> for accessible the most common k
+available (e.g., <code class="docutils literal notranslate"><span class="pre">most_common(k)</span></code> for accessible the most common k
 items).</p>
 </div>
 <div class="section" id="signatures-to-stems">
 <h3>(2) Signatures to stems<a class="headerlink" href="#signatures-to-stems" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">sigs_to_stems</span> <span class="o">=</span> <span class="n">lxa_object</span><span class="o">.</span><span class="n">signatures_to_stems</span><span class="p">()</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sigs_to_stems</span> <span class="o">=</span> <span class="n">lxa_object</span><span class="o">.</span><span class="n">signatures_to_stems</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">sig</span><span class="p">,</span> <span class="n">stems</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">sigs_to_stems</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">sig</span><span class="p">,</span> <span class="n">stems</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">sigs_to_stems</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">stems</span><span class="p">))</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stems</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">50</span><span class="p">:</span>
         <span class="k">break</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span> <span class="mi">2327</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span> <span class="mi">2327</span>
 <span class="p">(</span><span class="s2">&quot;&#39;s&quot;</span><span class="p">,</span> <span class="s1">&#39;NULL&#39;</span><span class="p">)</span> <span class="mi">813</span>
 <span class="p">(</span><span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;ly&#39;</span><span class="p">)</span> <span class="mi">587</span>
 <span class="p">(</span><span class="s1">&#39;NULL&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span> <span class="mi">346</span>
@@ -330,9 +324,7 @@ objects: <a class="reference internal" href="lexicon.html#lexicon"><span class="
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -350,12 +342,12 @@ objects: <a class="reference internal" href="lexicon.html#lexicon"><span class="
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015-2017, Jackson Lee.
-      Last updated on Oct 13, 2017.
+        &copy; Copyright 2015-2018, Jackson Lee
+      Last updated on Oct 12, 2018.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -370,35 +362,24 @@ objects: <a class="reference internal" href="lexicon.html#lexicon"><span class="
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'5.2.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

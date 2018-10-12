@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Codebase &mdash; Linguistica 5.2.0 documentation</title>
+  <title>Codebase &mdash; Linguistica 5.2.1 documentation</title>
   
 
   
@@ -24,24 +24,17 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Linguistica 5.2.0 documentation" href="index.html"/>
-        <link rel="prev" title="For developers" href="dev.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="For developers" href="dev.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -63,7 +56,7 @@
             
             
               <div class="version">
-                5.2.0
+                5.2.1
               </div>
             
           
@@ -102,7 +95,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tests">Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#continuous-integration">Continuous integration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#setup-py"><code class="docutils literal"><span class="pre">setup.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setup-py"><code class="docutils literal notranslate"><span class="pre">setup.py</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#readme">Readme</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version">Version</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
@@ -119,7 +112,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">Linguistica</a>
@@ -127,9 +120,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -180,7 +174,7 @@ provides the technical notes.</p>
 The codebase can be concretely considered as a directory containing several
 components:</p>
 <ul class="simple">
-<li>The Python library source code in the directory <code class="docutils literal"><span class="pre">linguistica</span></code>.
+<li>The Python library source code in the directory <code class="docutils literal notranslate"><span class="pre">linguistica</span></code>.
 This is arguably the core of the codebase where most of the research and development
 efforts go.
 To get a sense of how the code works,
@@ -201,7 +195,7 @@ set-up and workflow.</p>
 <p>How does the Linguistica 5 code work in general?
 We get a good sense of it by understanding how the code gets us a dictionary of
 signatures to stems:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">linguistica</span> <span class="k">as</span> <span class="nn">lxa</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">linguistica</span> <span class="k">as</span> <span class="nn">lxa</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">linguistica.datasets</span> <span class="k">import</span> <span class="n">brown</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">lxa_object</span> <span class="o">=</span> <span class="n">lxa</span><span class="o">.</span><span class="n">read_corpus</span><span class="p">(</span><span class="n">brown</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sigs_to_stems</span> <span class="o">=</span> <span class="n">lxa_object</span><span class="o">.</span><span class="n">signatures_to_stems</span><span class="p">()</span>
@@ -209,17 +203,17 @@ signatures to stems:</p>
 </div>
 <p>This overview walks through what happens under the hood
 when this code snippet is run.</p>
-<p><code class="docutils literal"><span class="pre">brown</span></code> is a string which is the path pointing to the Brown corpus that comes
+<p><code class="docutils literal notranslate"><span class="pre">brown</span></code> is a string which is the path pointing to the Brown corpus that comes
 with the Linguistica 5 library on your local disk.</p>
-<p><code class="docutils literal"><span class="pre">lxa_object</span></code> (created by <code class="docutils literal"><span class="pre">lxa.read_corpus(brown)</span></code>) is an instance of the class
-<code class="docutils literal"><span class="pre">Lexicon</span></code> defined in <code class="docutils literal"><span class="pre">linguistica/lexicon.py</span></code>.
-<code class="docutils literal"><span class="pre">Lexicon</span></code> has many methods, one of which is <code class="docutils literal"><span class="pre">signatures_to_stems()</span></code>.</p>
-<p>What is the magic behind <code class="docutils literal"><span class="pre">lxa_object.signatures_to_stems()</span></code>
+<p><code class="docutils literal notranslate"><span class="pre">lxa_object</span></code> (created by <code class="docutils literal notranslate"><span class="pre">lxa.read_corpus(brown)</span></code>) is an instance of the class
+<code class="docutils literal notranslate"><span class="pre">Lexicon</span></code> defined in <code class="docutils literal notranslate"><span class="pre">linguistica/lexicon.py</span></code>.
+<code class="docutils literal notranslate"><span class="pre">Lexicon</span></code> has many methods, one of which is <code class="docutils literal notranslate"><span class="pre">signatures_to_stems()</span></code>.</p>
+<p>What is the magic behind <code class="docutils literal notranslate"><span class="pre">lxa_object.signatures_to_stems()</span></code>
 which returns a dict of signatures to stems?
-The answer lies in the design of the class <code class="docutils literal"><span class="pre">Lexicon</span></code>.
+The answer lies in the design of the class <code class="docutils literal notranslate"><span class="pre">Lexicon</span></code>.
 Given the definition of the class is fairly long, we will examine it step by step,
 unfolding only the relevant bits as we move along:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Lexicon</span><span class="p">:</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Lexicon</span><span class="p">:</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">...</span><span class="p">):</span>
 
@@ -231,23 +225,23 @@ unfolding only the relevant bits as we move along:</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">_signatures_to_stems</span> <span class="o">=</span> <span class="kc">None</span>
 </pre></div>
 </div>
-<p>When we create a Linguistica object by the line <code class="docutils literal"><span class="pre">lxa_object</span> <span class="pre">=</span> <span class="pre">lxa.read_corpus(brown)</span></code>,
-an instance of the class <code class="docutils literal"><span class="pre">Lexicon</span></code> is created.
-When this instance is created, <code class="docutils literal"><span class="pre">__init__()</span></code> is called.
-<code class="docutils literal"><span class="pre">__init__()</span></code> initializes several attributes (those in the form of <code class="docutils literal"><span class="pre">self.X</span></code>)
-and triggers the method <code class="docutils literal"><span class="pre">_initialize()</span></code>.</p>
-<p>What does <code class="docutils literal"><span class="pre">_initialize()</span></code> do? It initializes all objects of interest.
-Most of them are initialized as <code class="docutils literal"><span class="pre">None</span></code>, like <code class="docutils literal"><span class="pre">_signatures_to_stems</span></code>
-as shown here. Very soon we will see why we need <code class="docutils literal"><span class="pre">_signatures_to_stems</span></code>
+<p>When we create a Linguistica object by the line <code class="docutils literal notranslate"><span class="pre">lxa_object</span> <span class="pre">=</span> <span class="pre">lxa.read_corpus(brown)</span></code>,
+an instance of the class <code class="docutils literal notranslate"><span class="pre">Lexicon</span></code> is created.
+When this instance is created, <code class="docutils literal notranslate"><span class="pre">__init__()</span></code> is called.
+<code class="docutils literal notranslate"><span class="pre">__init__()</span></code> initializes several attributes (those in the form of <code class="docutils literal notranslate"><span class="pre">self.X</span></code>)
+and triggers the method <code class="docutils literal notranslate"><span class="pre">_initialize()</span></code>.</p>
+<p>What does <code class="docutils literal notranslate"><span class="pre">_initialize()</span></code> do? It initializes all objects of interest.
+Most of them are initialized as <code class="docutils literal notranslate"><span class="pre">None</span></code>, like <code class="docutils literal notranslate"><span class="pre">_signatures_to_stems</span></code>
+as shown here. Very soon we will see why we need <code class="docutils literal notranslate"><span class="pre">_signatures_to_stems</span></code>
 (named with a leading underscore so that it is a private attribute),
-and why it is default to <code class="docutils literal"><span class="pre">None</span></code>.</p>
-<p>Now that all initialization work is done and <code class="docutils literal"><span class="pre">lxa_object</span></code> is ready in the memory,
+and why it is default to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<p>Now that all initialization work is done and <code class="docutils literal notranslate"><span class="pre">lxa_object</span></code> is ready in the memory,
 we examine what happens when the final line
-<code class="docutils literal"><span class="pre">sigs_to_stems</span> <span class="pre">=</span> <span class="pre">lxa_object.signatures_to_stems()</span></code> in the code snippet is run.</p>
-<p>When <code class="docutils literal"><span class="pre">lxa_object.signatures_to_stems()</span></code> is called, the method
-<code class="docutils literal"><span class="pre">signatures_to_stems()</span></code> of the <code class="docutils literal"><span class="pre">Lexicon</span></code> class is called.
+<code class="docutils literal notranslate"><span class="pre">sigs_to_stems</span> <span class="pre">=</span> <span class="pre">lxa_object.signatures_to_stems()</span></code> in the code snippet is run.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">lxa_object.signatures_to_stems()</span></code> is called, the method
+<code class="docutils literal notranslate"><span class="pre">signatures_to_stems()</span></code> of the <code class="docutils literal notranslate"><span class="pre">Lexicon</span></code> class is called.
 What does this method do? Let’s check out the code:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Lexicon</span><span class="p">:</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Lexicon</span><span class="p">:</span>
 
     <span class="k">def</span> <span class="nf">signatures_to_stems</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -272,39 +266,39 @@ What does this method do? Let’s check out the code:</p>
         <span class="o">...</span>
 </pre></div>
 </div>
-<p>When <code class="docutils literal"><span class="pre">signatures_to_stems()</span></code> is called, an if statement is first executed.
-The condition of this if statement, <code class="docutils literal"><span class="pre">self._signatures_to_stems</span> <span class="pre">is</span> <span class="pre">None</span></code>,
-evaluates to <code class="docutils literal"><span class="pre">True</span></code>, because <code class="docutils literal"><span class="pre">self._signatures_to_stems</span></code> has just been
-initialized to be <code class="docutils literal"><span class="pre">None</span></code>. Then <code class="docutils literal"><span class="pre">self._make_all_signature_objects()</span></code> is
+<p>When <code class="docutils literal notranslate"><span class="pre">signatures_to_stems()</span></code> is called, an if statement is first executed.
+The condition of this if statement, <code class="docutils literal notranslate"><span class="pre">self._signatures_to_stems</span> <span class="pre">is</span> <span class="pre">None</span></code>,
+evaluates to <code class="docutils literal notranslate"><span class="pre">True</span></code>, because <code class="docutils literal notranslate"><span class="pre">self._signatures_to_stems</span></code> has just been
+initialized to be <code class="docutils literal notranslate"><span class="pre">None</span></code>. Then <code class="docutils literal notranslate"><span class="pre">self._make_all_signature_objects()</span></code> is
 executed (more on this below).
-When it finishes, <code class="docutils literal"><span class="pre">self._signatures_to_stems</span></code> holds the expected
-dict (no longer <code class="docutils literal"><span class="pre">None</span></code>) and is returned.
-(If <code class="docutils literal"><span class="pre">signatures_to_stems()</span></code> is called again, <code class="docutils literal"><span class="pre">self._signatures_to_stems</span></code>
-is not <code class="docutils literal"><span class="pre">None</span></code> anymore and the expensive computation at <code class="docutils literal"><span class="pre">self._make_all_signature_objects()</span></code>
+When it finishes, <code class="docutils literal notranslate"><span class="pre">self._signatures_to_stems</span></code> holds the expected
+dict (no longer <code class="docutils literal notranslate"><span class="pre">None</span></code>) and is returned.
+(If <code class="docutils literal notranslate"><span class="pre">signatures_to_stems()</span></code> is called again, <code class="docutils literal notranslate"><span class="pre">self._signatures_to_stems</span></code>
+is not <code class="docutils literal notranslate"><span class="pre">None</span></code> anymore and the expensive computation at <code class="docutils literal notranslate"><span class="pre">self._make_all_signature_objects()</span></code>
 is avoided. This explains why in general the Linguistica 5 code has the distinction
-between the private attribute <code class="docutils literal"><span class="pre">self._x</span></code> and the public method <code class="docutils literal"><span class="pre">self.x()</span></code>
+between the private attribute <code class="docutils literal notranslate"><span class="pre">self._x</span></code> and the public method <code class="docutils literal notranslate"><span class="pre">self.x()</span></code>
 for most objects of interest).</p>
-<p>So, what is the method <code class="docutils literal"><span class="pre">self._make_all_signature_objects()</span></code>? As its name suggests,
-it makes all signature-related <code class="docutils literal"><span class="pre">self._x</span></code>. In the code shown above,
-two of these <code class="docutils literal"><span class="pre">self._x</span></code> are shown, including <code class="docutils literal"><span class="pre">self._signatures_to_stems</span></code>.
-The order by which these <code class="docutils literal"><span class="pre">self._x</span></code> is computed matters,
-because there is dependency among them. For example, <code class="docutils literal"><span class="pre">self._signatures_to_stems</span></code>
-depends on <code class="docutils literal"><span class="pre">self._stems_to_words</span></code> just computed in the same method.</p>
+<p>So, what is the method <code class="docutils literal notranslate"><span class="pre">self._make_all_signature_objects()</span></code>? As its name suggests,
+it makes all signature-related <code class="docutils literal notranslate"><span class="pre">self._x</span></code>. In the code shown above,
+two of these <code class="docutils literal notranslate"><span class="pre">self._x</span></code> are shown, including <code class="docutils literal notranslate"><span class="pre">self._signatures_to_stems</span></code>.
+The order by which these <code class="docutils literal notranslate"><span class="pre">self._x</span></code> is computed matters,
+because there is dependency among them. For example, <code class="docutils literal notranslate"><span class="pre">self._signatures_to_stems</span></code>
+depends on <code class="docutils literal notranslate"><span class="pre">self._stems_to_words</span></code> just computed in the same method.</p>
 <p>We are potentially interested in many of the intermediate objects for
-research purposes. In our example, <code class="docutils literal"><span class="pre">self._stems_to_words</span></code> is intermediate
-for the computation of <code class="docutils literal"><span class="pre">self._signatures_to_stems</span></code>, but we expose it
-(by making it <code class="docutils literal"><span class="pre">self._x</span></code> as well as allowing the <code class="docutils literal"><span class="pre">self.x()</span></code> API access)
+research purposes. In our example, <code class="docutils literal notranslate"><span class="pre">self._stems_to_words</span></code> is intermediate
+for the computation of <code class="docutils literal notranslate"><span class="pre">self._signatures_to_stems</span></code>, but we expose it
+(by making it <code class="docutils literal notranslate"><span class="pre">self._x</span></code> as well as allowing the <code class="docutils literal notranslate"><span class="pre">self.x()</span></code> API access)
 because a mapping from stems to words is of interest.</p>
-<p>To compute <code class="docutils literal"><span class="pre">self._x</span></code> in <code class="docutils literal"><span class="pre">_make_all_signature_objects()</span></code>, many function calls
-in the form of <code class="docutils literal"><span class="pre">signature.make_x()</span></code> are made. Here, <code class="docutils literal"><span class="pre">signature</span></code> refers
-to the imported module, and all the function calls <code class="docutils literal"><span class="pre">make_x()</span></code> are defined
-in <code class="docutils literal"><span class="pre">linguistica/signature.py</span></code>.</p>
-<p>So this is essentially how objects of interest are created via the <code class="docutils literal"><span class="pre">Lexicon</span></code>
+<p>To compute <code class="docutils literal notranslate"><span class="pre">self._x</span></code> in <code class="docutils literal notranslate"><span class="pre">_make_all_signature_objects()</span></code>, many function calls
+in the form of <code class="docutils literal notranslate"><span class="pre">signature.make_x()</span></code> are made. Here, <code class="docutils literal notranslate"><span class="pre">signature</span></code> refers
+to the imported module, and all the function calls <code class="docutils literal notranslate"><span class="pre">make_x()</span></code> are defined
+in <code class="docutils literal notranslate"><span class="pre">linguistica/signature.py</span></code>.</p>
+<p>So this is essentially how objects of interest are created via the <code class="docutils literal notranslate"><span class="pre">Lexicon</span></code>
 class. They are initialized in some way and are <em>not</em> actually
 computed until necessary. Once computed, they are available in memory for
 immediate retrieval. All heavy lifting is only called but not done within
-the class <code class="docutils literal"><span class="pre">Lexicon</span></code> – the real work is done in the respective modules
-such as <code class="docutils literal"><span class="pre">signature</span></code>, <code class="docutils literal"><span class="pre">manifold</span></code>, and so on.</p>
+the class <code class="docutils literal notranslate"><span class="pre">Lexicon</span></code> – the real work is done in the respective modules
+such as <code class="docutils literal notranslate"><span class="pre">signature</span></code>, <code class="docutils literal notranslate"><span class="pre">manifold</span></code>, and so on.</p>
 <p>Notes on the graphicsl user interface (GUI):</p>
 <ul class="simple">
 <li>The GUI is Python 3 only. The main reason is tha the GUI requires PyQt5 (and
@@ -313,55 +307,55 @@ SIP), and PyQt5 appears to be Python 3 only (at least officially?).</li>
 is possibly non-trivial. They are designated as <em>optional</em> dependencies
 for Linguistica 5 (the GUI is not an absolute must-have for Linguistica 5
 to work).</li>
-<li>The GUI code is in <code class="docutils literal"><span class="pre">linguistica/gui</span></code>. The GUI is launched by
-calling <code class="docutils literal"><span class="pre">linguistica.gui.main()</span></code> in <code class="docutils literal"><span class="pre">linguistica/__main__.py</span></code>.</li>
-<li>All GUI code is accessible through only <code class="docutils literal"><span class="pre">linguistica.gui.main()</span></code>
-defined in <code class="docutils literal"><span class="pre">linguistica/gui/__init__.py</span></code>.
+<li>The GUI code is in <code class="docutils literal notranslate"><span class="pre">linguistica/gui</span></code>. The GUI is launched by
+calling <code class="docutils literal notranslate"><span class="pre">linguistica.gui.main()</span></code> in <code class="docutils literal notranslate"><span class="pre">linguistica/__main__.py</span></code>.</li>
+<li>All GUI code is accessible through only <code class="docutils literal notranslate"><span class="pre">linguistica.gui.main()</span></code>
+defined in <code class="docutils literal notranslate"><span class="pre">linguistica/gui/__init__.py</span></code>.
 This is important, because PyQt5 may potentially be unavailable
-at the user’s system. The <code class="docutils literal"><span class="pre">__init__.py</span></code> safeguards against import errors,
-but other <code class="docutils literal"><span class="pre">.py</span></code> files in <code class="docutils literal"><span class="pre">linguistica/gui</span></code> do not.
-Relatedly, when <code class="docutils literal"><span class="pre">linguistica.gui.main()</span></code> is to be called
-(as in <code class="docutils literal"><span class="pre">linguistica/__main__.py</span></code>), there is always code that checks
-whether PyQt5 is importable before <code class="docutils literal"><span class="pre">linguistica.gui.main()</span></code> can
+at the user’s system. The <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> safeguards against import errors,
+but other <code class="docutils literal notranslate"><span class="pre">.py</span></code> files in <code class="docutils literal notranslate"><span class="pre">linguistica/gui</span></code> do not.
+Relatedly, when <code class="docutils literal notranslate"><span class="pre">linguistica.gui.main()</span></code> is to be called
+(as in <code class="docutils literal notranslate"><span class="pre">linguistica/__main__.py</span></code>), there is always code that checks
+whether PyQt5 is importable before <code class="docutils literal notranslate"><span class="pre">linguistica.gui.main()</span></code> can
 actually be called.</li>
 </ul>
 <p>Notes on the command line interface (CLI):</p>
 <ul class="simple">
-<li>The CLI code is in <code class="docutils literal"><span class="pre">linguistica/cli.py</span></code>, all wrapped in
-<code class="docutils literal"><span class="pre">linguistica.cli.main()</span></code> which is called in <code class="docutils literal"><span class="pre">linguistica/__main__.py</span></code>.</li>
-<li>We don’t output <code class="docutils literal"><span class="pre">words_to_contexts</span></code>
-and <code class="docutils literal"><span class="pre">contexts_to_words</span></code>, because they are huge…
+<li>The CLI code is in <code class="docutils literal notranslate"><span class="pre">linguistica/cli.py</span></code>, all wrapped in
+<code class="docutils literal notranslate"><span class="pre">linguistica.cli.main()</span></code> which is called in <code class="docutils literal notranslate"><span class="pre">linguistica/__main__.py</span></code>.</li>
+<li>We don’t output <code class="docutils literal notranslate"><span class="pre">words_to_contexts</span></code>
+and <code class="docutils literal notranslate"><span class="pre">contexts_to_words</span></code>, because they are huge…
 Or we could just output those whose counts are higher than some threshold?</li>
 </ul>
 </div>
 <div class="section" id="dependencies">
 <span id="codebase-dependencies"></span><h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
-<p>The core dependencies are specified in <code class="docutils literal"><span class="pre">requirements.txt</span></code> which is read by
-<code class="docutils literal"><span class="pre">setup.py</span></code> and used in build tests by Travis CI.
+<p>The core dependencies are specified in <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> which is read by
+<code class="docutils literal notranslate"><span class="pre">setup.py</span></code> and used in build tests by Travis CI.
 For reproducibility, we pin down each dependency’s major and minor version
 numbers, while allowing flexibility for getting bug fixes.
-For example, <code class="docutils literal"><span class="pre">six&gt;=1.10.0,&lt;=1.10.99</span></code> points to the latest six v1.10.x.</p>
-<p>There is also <code class="docutils literal"><span class="pre">dev-requirements.txt</span></code> with dependencies for running tests and
+For example, <code class="docutils literal notranslate"><span class="pre">six&gt;=1.10.0,&lt;=1.10.99</span></code> points to the latest six v1.10.x.</p>
+<p>There is also <code class="docutils literal notranslate"><span class="pre">dev-requirements.txt</span></code> with dependencies for running tests and
 code quality checks. Travis CI uses this file for build tests.
 It is recommended that developers and administrators of the Linguistica 5
 also install these dependencies and use them for maintaining high code quality.</p>
 </div>
 <div class="section" id="tests">
 <span id="codebase-tests"></span><h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
-<p>We use <code class="docutils literal"><span class="pre">pytest</span></code> as the testing framework. Developers and administrators
+<p>We use <code class="docutils literal notranslate"><span class="pre">pytest</span></code> as the testing framework. Developers and administrators
 should install the dependencies for running tests:
-<code class="docutils literal"><span class="pre">$</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-r</span> <span class="pre">dev-requirements</span></code></p>
+<code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-r</span> <span class="pre">dev-requirements</span></code></p>
 <p>Run tests as often as you can. In particular, it must be run before <em>and</em>
 after each coding session:
-<code class="docutils literal"><span class="pre">$</span> <span class="pre">pytest</span> <span class="pre">-vv</span> <span class="pre">--cov</span> <span class="pre">linguistica</span> <span class="pre">linguistica</span></code>.
-<code class="docutils literal"><span class="pre">-vv</span></code> outputs a verbose test report. <code class="docutils literal"><span class="pre">--cov</span> <span class="pre">linguistica</span></code> means that we
-check test coverage for <code class="docutils literal"><span class="pre">.py</span></code> files under the directory <code class="docutils literal"><span class="pre">linguistica</span></code>
-(so just the library code). Lastly, the second <code class="docutils literal"><span class="pre">linguistica</span></code> in the command
+<code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">pytest</span> <span class="pre">-vv</span> <span class="pre">--cov</span> <span class="pre">linguistica</span> <span class="pre">linguistica</span></code>.
+<code class="docutils literal notranslate"><span class="pre">-vv</span></code> outputs a verbose test report. <code class="docutils literal notranslate"><span class="pre">--cov</span> <span class="pre">linguistica</span></code> means that we
+check test coverage for <code class="docutils literal notranslate"><span class="pre">.py</span></code> files under the directory <code class="docutils literal notranslate"><span class="pre">linguistica</span></code>
+(so just the library code). Lastly, the second <code class="docutils literal notranslate"><span class="pre">linguistica</span></code> in the command
 specifies the directory (again, the library code) where pytest should look for
-tests in <code class="docutils literal"><span class="pre">test_*.py</span></code>. <code class="docutils literal"><span class="pre">.coveragerc</span></code> configures the test coverage report.</p>
-<p>We are also using <code class="docutils literal"><span class="pre">flake8</span></code> for maintaining high code quality. Essentially,
+tests in <code class="docutils literal notranslate"><span class="pre">test_*.py</span></code>. <code class="docutils literal notranslate"><span class="pre">.coveragerc</span></code> configures the test coverage report.</p>
+<p>We are also using <code class="docutils literal notranslate"><span class="pre">flake8</span></code> for maintaining high code quality. Essentially,
 no PEP8 violations are allowed – not even trailing whitespace or extra
-empty lines. Run flake8 with <code class="docutils literal"><span class="pre">$</span> <span class="pre">flake8</span> <span class="pre">linguistica</span></code>. If you see no
+empty lines. Run flake8 with <code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">flake8</span> <span class="pre">linguistica</span></code>. If you see no
 terminal output, it means everything is compliant. Note that the Travis CI
 build tests also run flake8. Do not try to work around the robots!</p>
 </div>
@@ -369,7 +363,7 @@ build tests also run flake8. Do not try to work around the robots!</p>
 <span id="codebase-continuous-integration"></span><h2>Continuous integration<a class="headerlink" href="#continuous-integration" title="Permalink to this headline">¶</a></h2>
 <p>The Linguistica 5 repository is set up with Travis CI for automatically
 running build tests for all pull requests. The configuration is in
-<code class="docutils literal"><span class="pre">.travis.yml</span></code>. We take advantage of continuous integration to:</p>
+<code class="docutils literal notranslate"><span class="pre">.travis.yml</span></code>. We take advantage of continuous integration to:</p>
 <blockquote>
 <div><ul class="simple">
 <li>test whether the Linguistica 5 library can be successfully installed</li>
@@ -380,30 +374,30 @@ running build tests for all pull requests. The configuration is in
 <p>Build tests are run for all supported Python versions (2.7 and 3.4+).</p>
 </div>
 <div class="section" id="setup-py">
-<span id="codebase-setup-dot-py"></span><h2><code class="docutils literal"><span class="pre">setup.py</span></code><a class="headerlink" href="#setup-py" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal"><span class="pre">setup.py</span></code> installs the Linguistica 5 library. It also specifies the metadata
+<span id="codebase-setup-dot-py"></span><h2><code class="docutils literal notranslate"><span class="pre">setup.py</span></code><a class="headerlink" href="#setup-py" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">setup.py</span></code> installs the Linguistica 5 library. It also specifies the metadata
 of the library (displayed on the PyPI site). Developers and administrators
-are recommended to install Linguisitca 5 with <code class="docutils literal"><span class="pre">$</span> <span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">develop</span></code>
+are recommended to install Linguisitca 5 with <code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">develop</span></code>
 for development purposes.</p>
 </div>
 <div class="section" id="readme">
 <span id="codebase-readme"></span><h2>Readme<a class="headerlink" href="#readme" title="Permalink to this headline">¶</a></h2>
-<p>The readme, <code class="docutils literal"><span class="pre">README.rst</span></code>, is in reStructuredText instead of Markdown,
+<p>The readme, <code class="docutils literal notranslate"><span class="pre">README.rst</span></code>, is in reStructuredText instead of Markdown,
 simply because PyPI
-does not seem to render Markdown mark-up for the <code class="docutils literal"><span class="pre">long_description</span></code> in
-<code class="docutils literal"><span class="pre">setup.py</span></code>.</p>
-<p><code class="docutils literal"><span class="pre">readme-dev.md</span></code> contains notes for the administrators of the Linguistica 5
+does not seem to render Markdown mark-up for the <code class="docutils literal notranslate"><span class="pre">long_description</span></code> in
+<code class="docutils literal notranslate"><span class="pre">setup.py</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">readme-dev.md</span></code> contains notes for the administrators of the Linguistica 5
 project.</p>
 </div>
 <div class="section" id="version">
 <span id="codebase-version"></span><h2>Version<a class="headerlink" href="#version" title="Permalink to this headline">¶</a></h2>
 <p>The version number is specified in the text file <cite>linguistica/VERSION</cite> and
-nowhere else. The version number in both <code class="docutils literal"><span class="pre">setup.py</span></code> and
-<code class="docutils literal"><span class="pre">linguistica.__version__</span></code> points to this text file. It is important to
+nowhere else. The version number in both <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> and
+<code class="docutils literal notranslate"><span class="pre">linguistica.__version__</span></code> points to this text file. It is important to
 <strong>not</strong> hard-code or even mention the current version number anywhere else
-(not even in the source <code class="docutils literal"><span class="pre">.rst</span></code> of this documentation) to avoid confusion.</p>
-<p>We essentially follow <a class="reference external" href="http://semver.org/">http://semver.org/</a> for the <code class="docutils literal"><span class="pre">major.minor.patch</span></code>
-format. The major version is <code class="docutils literal"><span class="pre">5</span></code> because there’s John’s Linguistica 3 &amp; 4
+(not even in the source <code class="docutils literal notranslate"><span class="pre">.rst</span></code> of this documentation) to avoid confusion.</p>
+<p>We essentially follow <a class="reference external" href="http://semver.org/">http://semver.org/</a> for the <code class="docutils literal notranslate"><span class="pre">major.minor.patch</span></code>
+format. The major version is <code class="docutils literal notranslate"><span class="pre">5</span></code> because there’s John’s Linguistica 3 &amp; 4
 written in C++. The minor version number increments when a new release comes
 with new features. The patch number increments when a new release comes with
 changes with no API ramifications such as bug fixes.</p>
@@ -415,20 +409,18 @@ was John’s in-house version written in Python 2.</p>
 <p>We use Sphinx as the documentation framework, as it is the official tool for
 Python projects (including the docs of the Python language itself).
 The source files (in the reStructuredText mark-up language) are in
-<code class="docutils literal"><span class="pre">docs/sources/</span></code>. These source files are what generates the <code class="docutils literal"><span class="pre">docs/*.html</span></code>
+<code class="docutils literal notranslate"><span class="pre">docs/sources/</span></code>. These source files are what generates the <code class="docutils literal notranslate"><span class="pre">docs/*.html</span></code>
 files, which GitHub renders as the documentation website
 (= what you are reading now). To update the HTML files after the source
-<code class="docutils literal"><span class="pre">.rst</span></code> files are updated, run <code class="docutils literal"><span class="pre">$</span> <span class="pre">sh</span> <span class="pre">build-doc.sh</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">.rst</span></code> files are updated, run <code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">sh</span> <span class="pre">build-doc.sh</span></code>.</p>
 <p>Changes (new features, bug fixes) together with new version releases
-should be documented in <code class="docutils literal"><span class="pre">CHANGELOG.md</span></code>.</p>
+should be documented in <code class="docutils literal notranslate"><span class="pre">CHANGELOG.md</span></code>.</p>
 </div>
 </div>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -444,12 +436,12 @@ should be documented in <code class="docutils literal"><span class="pre">CHANGEL
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015-2017, Jackson Lee.
-      Last updated on Oct 13, 2017.
+        &copy; Copyright 2015-2018, Jackson Lee
+      Last updated on Oct 12, 2018.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -464,35 +456,24 @@ should be documented in <code class="docutils literal"><span class="pre">CHANGEL
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'5.2.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

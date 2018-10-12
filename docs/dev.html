@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>For developers &mdash; Linguistica 5.2.0 documentation</title>
+  <title>For developers &mdash; Linguistica 5.2.1 documentation</title>
   
 
   
@@ -24,25 +24,18 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Linguistica 5.2.0 documentation" href="index.html"/>
-        <link rel="next" title="Codebase" href="codebase.html"/>
-        <link rel="prev" title="Full API documentation" href="lexicon.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Codebase" href="codebase.html" />
+    <link rel="prev" title="Full API documentation" href="lexicon.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -64,7 +57,7 @@
             
             
               <div class="version">
-                5.2.0
+                5.2.1
               </div>
             
           
@@ -114,7 +107,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">Linguistica</a>
@@ -122,9 +115,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -215,9 +209,9 @@ at a high level of quality.</p>
 <li><p class="first"><strong>Do not directly modify the HTML files of the documentation.</strong></p>
 <blockquote>
 <div><blockquote>
-<div><p>To update the documentation, edit the source <code class="docutils literal"><span class="pre">.rst</span></code> files under</p>
+<div><p>To update the documentation, edit the source <code class="docutils literal notranslate"><span class="pre">.rst</span></code> files under</p>
 </div></blockquote>
-<p><code class="docutils literal"><span class="pre">docs/sources/</span></code>, and then follow the notes in <code class="docutils literal"><span class="pre">readme-dev.md</span></code> to
+<p><code class="docutils literal notranslate"><span class="pre">docs/sources/</span></code>, and then follow the notes in <code class="docutils literal notranslate"><span class="pre">readme-dev.md</span></code> to
 generate the new HTML files.</p>
 </div></blockquote>
 </li>
@@ -244,7 +238,7 @@ GitHub by Git.</p>
 </li>
 <li><p class="first">Clone this repository onto your local disk using Git,
 and also install the Linguistica 5 Python library and its dependencies:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span>$ git clone https://github.com/&lt;your-github-username&gt;/lxa5.git
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/&lt;your-github-username&gt;/lxa5.git
 $ cd lxa5
 $ pip install -r requirements.txt
 $ pip install -r dev-requirements.txt
@@ -252,17 +246,17 @@ $ python setup.py develop
 </pre></div>
 </div>
 <p>In the last command just above,
-<code class="docutils literal"><span class="pre">python</span></code> is meant to point to the specific Python interpreter
+<code class="docutils literal notranslate"><span class="pre">python</span></code> is meant to point to the specific Python interpreter
 you are using for the Linguistica 5 project. Depending on how your Python
 distribution is set up, the command you need could be something else, e.g.
-<code class="docutils literal"><span class="pre">python3</span></code>.
-Also, if you’re on Linux, you will probably need <code class="docutils literal"><span class="pre">sudo</span></code>.</p>
-<p>Now you have the Python library (called <code class="docutils literal"><span class="pre">linguistica</span></code>) installed in development mode
+<code class="docutils literal notranslate"><span class="pre">python3</span></code>.
+Also, if you’re on Linux, you will probably need <code class="docutils literal notranslate"><span class="pre">sudo</span></code>.</p>
+<p>Now you have the Python library (called <code class="docutils literal notranslate"><span class="pre">linguistica</span></code>) installed in development mode
 (i.e. changes in source code are immediately effective – no need to uninstall
 and reinstall to try out new code).</p>
 </li>
 <li><p class="first">Add a link to the linguistica-uchicago/lxa5 repository:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span>$ git remote add upstream https://github.com/linguistica-uchicago/lxa5.git
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>$ git remote add upstream https://github.com/linguistica-uchicago/lxa5.git
 </pre></div>
 </div>
 <p>This command adds a new link to the linguistica-uchicago/lxa5 repository
@@ -276,7 +270,7 @@ your local drive (in step 4 above), there is already a link called “origin”
 set up and linked to your fork on GitHub. Run the following to verify you
 have “origin” pointing to your fork and “upstream” pointing to
 linguistica-uchicago/lxa5:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span>$ git remote -v
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>$ git remote -v
 </pre></div>
 </div>
 </li>
@@ -292,7 +286,7 @@ the master on linguistica-uchicago/lxa5.</strong></p>
 <blockquote>
 <div><p>It is important to make sure you start working with the latest
 codebase:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span>$ git checkout master  # go to master branch
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>$ git checkout master  # go to master branch
 $ git pull upstream master  # pull latest from master branch of upstream
 </pre></div>
 </div>
@@ -305,7 +299,7 @@ $ git pull upstream master  # pull latest from master branch of upstream
 (Run “git branch” anytime to see what branches you have and which branch you’re on.)</p>
 <p>Instead, work on a different branch whose name indicates what you are doing,
 e.g. “revamp-stems-to-signatures”, “update-docs”, “fix-bug-in-function-x”:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span>$ git checkout -b &lt;branch-name&gt;
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>$ git checkout -b &lt;branch-name&gt;
 </pre></div>
 </div>
 <p>After this command is run, the new branch is created <em>and</em> you are on
@@ -317,12 +311,12 @@ that branch as well (no longer on master branch).</p>
 <div><p>Now (and finally!) you can actually make changes to the source code.
 Make changes incrementally and commit them with Git.
 Run this pair of commands for each commit:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span>$ git add &lt;files-changed&gt;
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>$ git add &lt;files-changed&gt;
 $ git commit -m &quot;&lt;commit-message&gt;&quot;
 </pre></div>
 </div>
-<p><code class="docutils literal"><span class="pre">&lt;files-changed&gt;</span></code> can be a single file (e.g. <code class="docutils literal"><span class="pre">foo.py</span></code>) or multiple ones
-separated by spaces (e.g. <code class="docutils literal"><span class="pre">foo.py</span> <span class="pre">bar.py</span></code>).</p>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;files-changed&gt;</span></code> can be a single file (e.g. <code class="docutils literal notranslate"><span class="pre">foo.py</span></code>) or multiple ones
+separated by spaces (e.g. <code class="docutils literal notranslate"><span class="pre">foo.py</span> <span class="pre">bar.py</span></code>).</p>
 <p>Write brief and meaningful commit messages,
 e.g. “Fix bug in stems_to_signatures”.
 Aim at making each commit a logical and meaningful chunk of changes.</p>
@@ -338,11 +332,11 @@ efficient and effective code review possible.</p>
 <li><p class="first"><strong>Run tests to make sure nothing breaks.</strong></p>
 <blockquote>
 <div><p>Run the tests (and get a detailed report if anything breaks):</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span>$ py.test -vv --cov linguistica linguistica
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>$ py.test -vv --cov linguistica linguistica
 </pre></div>
 </div>
 <p>Make sure the code is PEP8 compliant:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span>$ flake8 linguistica
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>$ flake8 linguistica
 </pre></div>
 </div>
 </div></blockquote>
@@ -351,7 +345,7 @@ efficient and effective code review possible.</p>
 <blockquote>
 <div><p>To make your changes available for review and for merging,
 you will first have to push your changes to your fork on GitHub:</p>
-<div class="code highlight-default"><div class="highlight"><pre><span></span>$ git push origin &lt;branch-name&gt;
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>$ git push origin &lt;branch-name&gt;
 </pre></div>
 </div>
 <p>Recall that “origin” is the (default) name point to your fork &lt;your-github-username&gt;/lxa5 on GitHub.</p>
@@ -385,9 +379,7 @@ for a new branch and an upcoming pull request!</p>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -405,12 +397,12 @@ for a new branch and an upcoming pull request!</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015-2017, Jackson Lee.
-      Last updated on Oct 13, 2017.
+        &copy; Copyright 2015-2018, Jackson Lee
+      Last updated on Oct 12, 2018.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -425,35 +417,24 @@ for a new branch and an upcoming pull request!</p>
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'5.2.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

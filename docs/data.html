@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Data &mdash; Linguistica 5.2.0 documentation</title>
+  <title>Data &mdash; Linguistica 5.2.1 documentation</title>
   
 
   
@@ -24,25 +24,18 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Linguistica 5.2.0 documentation" href="index.html"/>
-        <link rel="next" title="Python library" href="read.html"/>
-        <link rel="prev" title="Quick demonstration" href="demo.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Python library" href="read.html" />
+    <link rel="prev" title="Quick demonstration" href="demo.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -64,7 +57,7 @@
             
             
               <div class="version">
-                5.2.0
+                5.2.1
               </div>
             
           
@@ -113,7 +106,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">Linguistica</a>
@@ -121,9 +114,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -185,44 +179,44 @@ An example is the
 (Kučera and Francis 1967) with
 about one million word tokens (for about 50,000 word types).
 This corpus is a built-in dataset that comes with Linguistica 5 –
-its file path is accessible as <code class="docutils literal"><span class="pre">brown</span></code> as follows:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">linguistica</span> <span class="k">as</span> <span class="nn">lxa</span>
+its file path is accessible as <code class="docutils literal notranslate"><span class="pre">brown</span></code> as follows:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">linguistica</span> <span class="k">as</span> <span class="nn">lxa</span>
 <span class="kn">from</span> <span class="nn">linguistica.datasets</span> <span class="k">import</span> <span class="n">brown</span>
 
 <span class="n">lxa_object</span> <span class="o">=</span> <span class="n">lxa</span><span class="o">.</span><span class="n">read_corpus</span><span class="p">(</span><span class="n">brown</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>In lieu of <code class="docutils literal"><span class="pre">brown</span></code>, you may pass the file path as argument to
-<code class="docutils literal"><span class="pre">read_corpus()</span></code> for your raw corpus text.
+<p>In lieu of <code class="docutils literal notranslate"><span class="pre">brown</span></code>, you may pass the file path as argument to
+<code class="docutils literal notranslate"><span class="pre">read_corpus()</span></code> for your raw corpus text.
 As long as your corpus is
 one single text file encoded in Unicode UTF-8,
 Linguistica 5 can handle it.</p>
 <p>Alternatively, if you use Linguistica 5 as a Python library in your own
 Python programs and would like to use an in-memory object as corpus data,
-the function <code class="docutils literal"><span class="pre">from_corpus()</span></code> (see <a class="reference internal" href="read.html#source"><span class="std std-ref">Data source</span></a>) is probably what
+the function <code class="docutils literal notranslate"><span class="pre">from_corpus()</span></code> (see <a class="reference internal" href="read.html#source"><span class="std std-ref">Data source</span></a>) is probably what
 you need.</p>
 </div>
 <div class="section" id="wordlist">
 <span id="id2"></span><h2>Wordlist<a class="headerlink" href="#wordlist" title="Permalink to this headline">¶</a></h2>
 <p>A wordlist file is a plain text file in a specific format (more below)
 that Linguistica 5 recognizes as a wordlist.
-The Linguistica team has conventionally called this format <code class="docutils literal"><span class="pre">.dx1</span></code>
+The Linguistica team has conventionally called this format <code class="docutils literal notranslate"><span class="pre">.dx1</span></code>
 (think: a dictionary file; that’s “one” but not “L” at the end)
 which is also the file extension name.
-An example of a <code class="docutils literal"><span class="pre">.dx1</span></code> file is <code class="docutils literal"><span class="pre">english-cmudict.dx1</span></code> available
+An example of a <code class="docutils literal notranslate"><span class="pre">.dx1</span></code> file is <code class="docutils literal notranslate"><span class="pre">english-cmudict.dx1</span></code> available
 <a class="reference external" href="https://github.com/linguistica-uchicago/lxa5/blob/master/linguistica/datasets/english-cmudict.dx1">here</a>.
 (This file is essentially the
 <a class="reference external" href="http://www.speech.cs.cmu.edu/cgi-bin/cmudict">CMU Pronouncing Dictionary</a>
 with English words represented phonemically by Arpabet,
 with the addition of word token counts—if available—based on the English
 Brown corpus.) This wordlist is also a built-in dataset:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">linguistica</span> <span class="k">as</span> <span class="nn">lxa</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">linguistica</span> <span class="k">as</span> <span class="nn">lxa</span>
 <span class="kn">from</span> <span class="nn">linguistica.datasets</span> <span class="k">import</span> <span class="n">cmudict</span>
 
 <span class="n">lxa_object</span> <span class="o">=</span> <span class="n">lxa</span><span class="o">.</span><span class="n">read_wordlist</span><span class="p">(</span><span class="n">cmudict</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><code class="docutils literal"><span class="pre">cmudict</span></code> is the file path for the built-in <code class="docutils literal"><span class="pre">english-cmudict.dx1</span></code>.
+<p><code class="docutils literal notranslate"><span class="pre">cmudict</span></code> is the file path for the built-in <code class="docutils literal notranslate"><span class="pre">english-cmudict.dx1</span></code>.
 It can be replaced with the file path of a wordlist from your local drive.</p>
 <p>As for the format of a wordlist file,
 each line of the file contains three pieces of information for a
@@ -243,31 +237,29 @@ phonemic representation.</p>
 </li>
 </ol>
 <p>To illustrate what the required format looks like, here are a few lines
-from <code class="docutils literal"><span class="pre">english-cmudict.dx1</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ABANDON</span> <span class="mi">18</span> <span class="n">AH0</span> <span class="n">B</span> <span class="n">AE1</span> <span class="n">N</span> <span class="n">D</span> <span class="n">AH0</span> <span class="n">N</span>
+from <code class="docutils literal notranslate"><span class="pre">english-cmudict.dx1</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ABANDON</span> <span class="mi">18</span> <span class="n">AH0</span> <span class="n">B</span> <span class="n">AE1</span> <span class="n">N</span> <span class="n">D</span> <span class="n">AH0</span> <span class="n">N</span>
 <span class="n">ABANDONED</span> <span class="mi">26</span> <span class="n">AH0</span> <span class="n">B</span> <span class="n">AE1</span> <span class="n">N</span> <span class="n">D</span> <span class="n">AH0</span> <span class="n">N</span> <span class="n">D</span>
 <span class="n">ABANDONING</span> <span class="mi">8</span> <span class="n">AH0</span> <span class="n">B</span> <span class="n">AE1</span> <span class="n">N</span> <span class="n">D</span> <span class="n">AH0</span> <span class="n">N</span> <span class="n">IH0</span> <span class="n">NG</span>
 </pre></div>
 </div>
 <p>If phonemic representations were not available,
 these lines would be as follows:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ABANDON</span> <span class="mi">18</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ABANDON</span> <span class="mi">18</span>
 <span class="n">ABANDONED</span> <span class="mi">26</span>
 <span class="n">ABANDONING</span> <span class="mi">8</span>
 </pre></div>
 </div>
-<p>Blank lines as well as those that begin with <code class="docutils literal"><span class="pre">#</span></code> (for comments, metadata etc)
+<p>Blank lines as well as those that begin with <code class="docutils literal notranslate"><span class="pre">#</span></code> (for comments, metadata etc)
 are ignored by Linguistica 5.</p>
 <p>To use Linguistica 5 as a Python library with an in-memory wordlist object,
-the relevant function is <code class="docutils literal"><span class="pre">from_wordlist()</span></code> (see <a class="reference internal" href="read.html#source"><span class="std std-ref">Data source</span></a>).</p>
+the relevant function is <code class="docutils literal notranslate"><span class="pre">from_wordlist()</span></code> (see <a class="reference internal" href="read.html#source"><span class="std std-ref">Data source</span></a>).</p>
 </div>
 </div>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -285,12 +277,12 @@ the relevant function is <code class="docutils literal"><span class="pre">from_w
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015-2017, Jackson Lee.
-      Last updated on Oct 13, 2017.
+        &copy; Copyright 2015-2018, Jackson Lee
+      Last updated on Oct 12, 2018.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -305,35 +297,24 @@ the relevant function is <code class="docutils literal"><span class="pre">from_w
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'5.2.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

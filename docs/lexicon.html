@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Full API documentation &mdash; Linguistica 5.2.0 documentation</title>
+  <title>Full API documentation &mdash; Linguistica 5.2.1 documentation</title>
   
 
   
@@ -24,25 +24,18 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Linguistica 5.2.0 documentation" href="index.html"/>
-        <link rel="next" title="For developers" href="dev.html"/>
-        <link rel="prev" title="Command line interface (CLI)" href="cli.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="For developers" href="dev.html" />
+    <link rel="prev" title="Command line interface (CLI)" href="cli.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -64,7 +57,7 @@
             
             
               <div class="version">
-                5.2.0
+                5.2.1
               </div>
             
           
@@ -118,7 +111,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">Linguistica</a>
@@ -126,9 +119,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -170,10 +164,10 @@
             
   <div class="section" id="full-api-documentation">
 <span id="lexicon"></span><h1>Full API documentation<a class="headerlink" href="#full-api-documentation" title="Permalink to this headline">¶</a></h1>
-<p>Once a Linguistica object (such as <code class="docutils literal"><span class="pre">lxa_object</span></code> below with the Brown corpus)
+<p>Once a Linguistica object (such as <code class="docutils literal notranslate"><span class="pre">lxa_object</span></code> below with the Brown corpus)
 is initialized, various methods and attributes are available for automatic
 linguistic analysis:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">linguistica</span> <span class="kn">as</span> <span class="nn">lxa</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">linguistica</span> <span class="kn">as</span> <span class="nn">lxa</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">lxa_object</span> <span class="o">=</span> <span class="n">lxa</span><span class="o">.</span><span class="n">read_corpus</span><span class="p">(</span><span class="s1">&#39;path/to/english-brown.txt&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">words</span> <span class="o">=</span> <span class="n">lxa_object</span><span class="o">.</span><span class="n">wordlist</span><span class="p">()</span>  <span class="c1"># using wordlist()</span>
 </pre></div>
@@ -186,10 +180,10 @@ linguistic analysis:</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.number_of_word_tokens" title="linguistica.lexicon.Lexicon.number_of_word_tokens"><code class="xref py py-obj docutils literal"><span class="pre">number_of_word_tokens</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.number_of_word_tokens" title="linguistica.lexicon.Lexicon.number_of_word_tokens"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_word_tokens</span></code></a>()</td>
 <td>Return the number of word tokens.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.number_of_word_types" title="linguistica.lexicon.Lexicon.number_of_word_types"><code class="xref py py-obj docutils literal"><span class="pre">number_of_word_types</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.number_of_word_types" title="linguistica.lexicon.Lexicon.number_of_word_types"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_word_types</span></code></a>()</td>
 <td>Return the number of word types.</td>
 </tr>
 </tbody>
@@ -197,23 +191,23 @@ linguistic analysis:</p>
 </div>
 <div class="section" id="word-ngrams">
 <h2>Word ngrams<a class="headerlink" href="#word-ngrams" title="Permalink to this headline">¶</a></h2>
-<p>Parameter: <code class="docutils literal"><span class="pre">max_word_tokens</span></code></p>
+<p>Parameter: <code class="docutils literal notranslate"><span class="pre">max_word_tokens</span></code></p>
 <table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.wordlist" title="linguistica.lexicon.Lexicon.wordlist"><code class="xref py py-obj docutils literal"><span class="pre">wordlist</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.wordlist" title="linguistica.lexicon.Lexicon.wordlist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wordlist</span></code></a>()</td>
 <td>Return a wordlist sorted by word frequency in descending order.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.word_unigram_counter" title="linguistica.lexicon.Lexicon.word_unigram_counter"><code class="xref py py-obj docutils literal"><span class="pre">word_unigram_counter</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.word_unigram_counter" title="linguistica.lexicon.Lexicon.word_unigram_counter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">word_unigram_counter</span></code></a>()</td>
 <td>Return a dict of words with their counts.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.word_bigram_counter" title="linguistica.lexicon.Lexicon.word_bigram_counter"><code class="xref py py-obj docutils literal"><span class="pre">word_bigram_counter</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.word_bigram_counter" title="linguistica.lexicon.Lexicon.word_bigram_counter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">word_bigram_counter</span></code></a>()</td>
 <td>Return a dict of word bigrams with their counts.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.word_trigram_counter" title="linguistica.lexicon.Lexicon.word_trigram_counter"><code class="xref py py-obj docutils literal"><span class="pre">word_trigram_counter</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.word_trigram_counter" title="linguistica.lexicon.Lexicon.word_trigram_counter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">word_trigram_counter</span></code></a>()</td>
 <td>Return a dict of word trigrams with their counts.</td>
 </tr>
 </tbody>
@@ -221,44 +215,44 @@ linguistic analysis:</p>
 </div>
 <div class="section" id="morphological-signatures">
 <h2>Morphological signatures<a class="headerlink" href="#morphological-signatures" title="Permalink to this headline">¶</a></h2>
-<p>Parameters: <code class="docutils literal"><span class="pre">min_stem_length</span></code>, <code class="docutils literal"><span class="pre">max_affix_length</span></code>, <code class="docutils literal"><span class="pre">min_sig_count</span></code>, <code class="docutils literal"><span class="pre">suffixing</span></code></p>
+<p>Parameters: <code class="docutils literal notranslate"><span class="pre">min_stem_length</span></code>, <code class="docutils literal notranslate"><span class="pre">max_affix_length</span></code>, <code class="docutils literal notranslate"><span class="pre">min_sig_count</span></code>, <code class="docutils literal notranslate"><span class="pre">suffixing</span></code></p>
 <table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.signatures" title="linguistica.lexicon.Lexicon.signatures"><code class="xref py py-obj docutils literal"><span class="pre">signatures</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.signatures" title="linguistica.lexicon.Lexicon.signatures"><code class="xref py py-obj docutils literal notranslate"><span class="pre">signatures</span></code></a>()</td>
 <td>Return a set of morphological signatures.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.stems" title="linguistica.lexicon.Lexicon.stems"><code class="xref py py-obj docutils literal"><span class="pre">stems</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.stems" title="linguistica.lexicon.Lexicon.stems"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stems</span></code></a>()</td>
 <td>Return a set of stems.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.affixes" title="linguistica.lexicon.Lexicon.affixes"><code class="xref py py-obj docutils literal"><span class="pre">affixes</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.affixes" title="linguistica.lexicon.Lexicon.affixes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">affixes</span></code></a>()</td>
 <td>Return a set of affixes.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.signatures_to_stems" title="linguistica.lexicon.Lexicon.signatures_to_stems"><code class="xref py py-obj docutils literal"><span class="pre">signatures_to_stems</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.signatures_to_stems" title="linguistica.lexicon.Lexicon.signatures_to_stems"><code class="xref py py-obj docutils literal notranslate"><span class="pre">signatures_to_stems</span></code></a>()</td>
 <td>Return a dict of morphological signatures to stems.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.signatures_to_words" title="linguistica.lexicon.Lexicon.signatures_to_words"><code class="xref py py-obj docutils literal"><span class="pre">signatures_to_words</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.signatures_to_words" title="linguistica.lexicon.Lexicon.signatures_to_words"><code class="xref py py-obj docutils literal notranslate"><span class="pre">signatures_to_words</span></code></a>()</td>
 <td>Return a dict of morphological signatures to words.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.affixes_to_signatures" title="linguistica.lexicon.Lexicon.affixes_to_signatures"><code class="xref py py-obj docutils literal"><span class="pre">affixes_to_signatures</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.affixes_to_signatures" title="linguistica.lexicon.Lexicon.affixes_to_signatures"><code class="xref py py-obj docutils literal notranslate"><span class="pre">affixes_to_signatures</span></code></a>()</td>
 <td>Return a dict of affixes to morphological signatures.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.stems_to_signatures" title="linguistica.lexicon.Lexicon.stems_to_signatures"><code class="xref py py-obj docutils literal"><span class="pre">stems_to_signatures</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.stems_to_signatures" title="linguistica.lexicon.Lexicon.stems_to_signatures"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stems_to_signatures</span></code></a>()</td>
 <td>Return a dict of stems to morphological signatures.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.stems_to_words" title="linguistica.lexicon.Lexicon.stems_to_words"><code class="xref py py-obj docutils literal"><span class="pre">stems_to_words</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.stems_to_words" title="linguistica.lexicon.Lexicon.stems_to_words"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stems_to_words</span></code></a>()</td>
 <td>Return a dict of stems to words.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.words_in_signatures" title="linguistica.lexicon.Lexicon.words_in_signatures"><code class="xref py py-obj docutils literal"><span class="pre">words_in_signatures</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.words_in_signatures" title="linguistica.lexicon.Lexicon.words_in_signatures"><code class="xref py py-obj docutils literal notranslate"><span class="pre">words_in_signatures</span></code></a>()</td>
 <td>Return a set of words that are in at least one morphological signature.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.words_to_signatures" title="linguistica.lexicon.Lexicon.words_to_signatures"><code class="xref py py-obj docutils literal"><span class="pre">words_to_signatures</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.words_to_signatures" title="linguistica.lexicon.Lexicon.words_to_signatures"><code class="xref py py-obj docutils literal notranslate"><span class="pre">words_to_signatures</span></code></a>()</td>
 <td>Return a dict of words to morphological signatures.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.words_to_sigtransforms" title="linguistica.lexicon.Lexicon.words_to_sigtransforms"><code class="xref py py-obj docutils literal"><span class="pre">words_to_sigtransforms</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.words_to_sigtransforms" title="linguistica.lexicon.Lexicon.words_to_sigtransforms"><code class="xref py py-obj docutils literal notranslate"><span class="pre">words_to_sigtransforms</span></code></a>()</td>
 <td>Return a dict of words to signature transforms.</td>
 </tr>
 </tbody>
@@ -266,23 +260,23 @@ linguistic analysis:</p>
 </div>
 <div class="section" id="word-manifolds-and-syntactic-word-neighborhood">
 <h2>Word manifolds and syntactic word neighborhood<a class="headerlink" href="#word-manifolds-and-syntactic-word-neighborhood" title="Permalink to this headline">¶</a></h2>
-<p>Parameters: <code class="docutils literal"><span class="pre">max_word_types</span></code>, <code class="docutils literal"><span class="pre">min_context_count</span></code>, <code class="docutils literal"><span class="pre">n_neighbors</span></code>, <code class="docutils literal"><span class="pre">n_eigenvectors</span></code></p>
+<p>Parameters: <code class="docutils literal notranslate"><span class="pre">max_word_types</span></code>, <code class="docutils literal notranslate"><span class="pre">min_context_count</span></code>, <code class="docutils literal notranslate"><span class="pre">n_neighbors</span></code>, <code class="docutils literal notranslate"><span class="pre">n_eigenvectors</span></code></p>
 <table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.words_to_neighbors" title="linguistica.lexicon.Lexicon.words_to_neighbors"><code class="xref py py-obj docutils literal"><span class="pre">words_to_neighbors</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.words_to_neighbors" title="linguistica.lexicon.Lexicon.words_to_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">words_to_neighbors</span></code></a>()</td>
 <td>Return a dict of words to syntactic neighbors.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.neighbor_graph" title="linguistica.lexicon.Lexicon.neighbor_graph"><code class="xref py py-obj docutils literal"><span class="pre">neighbor_graph</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.neighbor_graph" title="linguistica.lexicon.Lexicon.neighbor_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">neighbor_graph</span></code></a>()</td>
 <td>Return the syntactic word neighborhood graph.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.words_to_contexts" title="linguistica.lexicon.Lexicon.words_to_contexts"><code class="xref py py-obj docutils literal"><span class="pre">words_to_contexts</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.words_to_contexts" title="linguistica.lexicon.Lexicon.words_to_contexts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">words_to_contexts</span></code></a>()</td>
 <td>Return a dict of words to contexts with counts.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.contexts_to_words" title="linguistica.lexicon.Lexicon.contexts_to_words"><code class="xref py py-obj docutils literal"><span class="pre">contexts_to_words</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.contexts_to_words" title="linguistica.lexicon.Lexicon.contexts_to_words"><code class="xref py py-obj docutils literal notranslate"><span class="pre">contexts_to_words</span></code></a>()</td>
 <td>Return a dict of contexts to words with counts.</td>
 </tr>
 </tbody>
@@ -296,13 +290,13 @@ linguistic analysis:</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.phone_unigram_counter" title="linguistica.lexicon.Lexicon.phone_unigram_counter"><code class="xref py py-obj docutils literal"><span class="pre">phone_unigram_counter</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.phone_unigram_counter" title="linguistica.lexicon.Lexicon.phone_unigram_counter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phone_unigram_counter</span></code></a>()</td>
 <td>Return a dict of phone unigrams with counts.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.phone_bigram_counter" title="linguistica.lexicon.Lexicon.phone_bigram_counter"><code class="xref py py-obj docutils literal"><span class="pre">phone_bigram_counter</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.phone_bigram_counter" title="linguistica.lexicon.Lexicon.phone_bigram_counter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phone_bigram_counter</span></code></a>()</td>
 <td>Return a dict of phone bigrams with counts.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.phone_trigram_counter" title="linguistica.lexicon.Lexicon.phone_trigram_counter"><code class="xref py py-obj docutils literal"><span class="pre">phone_trigram_counter</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.phone_trigram_counter" title="linguistica.lexicon.Lexicon.phone_trigram_counter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phone_trigram_counter</span></code></a>()</td>
 <td>Return a dict of phone trigrams with counts.</td>
 </tr>
 </tbody>
@@ -310,23 +304,23 @@ linguistic analysis:</p>
 </div>
 <div class="section" id="tries">
 <h2>Tries<a class="headerlink" href="#tries" title="Permalink to this headline">¶</a></h2>
-<p>Parameter: <code class="docutils literal"><span class="pre">min_stem_length</span></code></p>
+<p>Parameter: <code class="docutils literal notranslate"><span class="pre">min_stem_length</span></code></p>
 <table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.broken_words_left_to_right" title="linguistica.lexicon.Lexicon.broken_words_left_to_right"><code class="xref py py-obj docutils literal"><span class="pre">broken_words_left_to_right</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.broken_words_left_to_right" title="linguistica.lexicon.Lexicon.broken_words_left_to_right"><code class="xref py py-obj docutils literal notranslate"><span class="pre">broken_words_left_to_right</span></code></a>()</td>
 <td>Return a dict of words to their left-to-right broken form.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.broken_words_right_to_left" title="linguistica.lexicon.Lexicon.broken_words_right_to_left"><code class="xref py py-obj docutils literal"><span class="pre">broken_words_right_to_left</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.broken_words_right_to_left" title="linguistica.lexicon.Lexicon.broken_words_right_to_left"><code class="xref py py-obj docutils literal notranslate"><span class="pre">broken_words_right_to_left</span></code></a>()</td>
 <td>Return a dict of words to their right-to-left broken form.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.successors" title="linguistica.lexicon.Lexicon.successors"><code class="xref py py-obj docutils literal"><span class="pre">successors</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.successors" title="linguistica.lexicon.Lexicon.successors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">successors</span></code></a>()</td>
 <td>Return a dict of word (sub)strings to their successors.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.predecessors" title="linguistica.lexicon.Lexicon.predecessors"><code class="xref py py-obj docutils literal"><span class="pre">predecessors</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.predecessors" title="linguistica.lexicon.Lexicon.predecessors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predecessors</span></code></a>()</td>
 <td>Return a dict of word (sub)strings to their predecessors.</td>
 </tr>
 </tbody>
@@ -340,16 +334,16 @@ linguistic analysis:</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.parameters" title="linguistica.lexicon.Lexicon.parameters"><code class="xref py py-obj docutils literal"><span class="pre">parameters</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.parameters" title="linguistica.lexicon.Lexicon.parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parameters</span></code></a>()</td>
 <td>Return the parameter dict.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.change_parameters" title="linguistica.lexicon.Lexicon.change_parameters"><code class="xref py py-obj docutils literal"><span class="pre">change_parameters</span></code></a>(**kwargs)</td>
+<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.change_parameters" title="linguistica.lexicon.Lexicon.change_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">change_parameters</span></code></a>(**kwargs)</td>
 <td>Change parameters specified by <em>kwargs</em>.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.use_default_parameters" title="linguistica.lexicon.Lexicon.use_default_parameters"><code class="xref py py-obj docutils literal"><span class="pre">use_default_parameters</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.use_default_parameters" title="linguistica.lexicon.Lexicon.use_default_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_default_parameters</span></code></a>()</td>
 <td>Reset parameters to their default values.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.reset" title="linguistica.lexicon.Lexicon.reset"><code class="xref py py-obj docutils literal"><span class="pre">reset</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#linguistica.lexicon.Lexicon.reset" title="linguistica.lexicon.Lexicon.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a>()</td>
 <td>Reset the Linguistica object.</td>
 </tr>
 </tbody>
@@ -391,8 +385,8 @@ linguistic analysis:</p>
 <code class="descname">biphone_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#linguistica.lexicon.Lexicon.biphone_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a dict of phone bigrams to Biphone objects.
 A Biphone instance has the methods
-<code class="docutils literal"><span class="pre">spelling()</span></code>, <code class="docutils literal"><span class="pre">count()</span></code>, <code class="docutils literal"><span class="pre">frequency()</span></code>, <code class="docutils literal"><span class="pre">MI()</span></code>, and
-<code class="docutils literal"><span class="pre">weighted_MI()</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">spelling()</span></code>, <code class="docutils literal notranslate"><span class="pre">count()</span></code>, <code class="docutils literal notranslate"><span class="pre">frequency()</span></code>, <code class="docutils literal notranslate"><span class="pre">MI()</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">weighted_MI()</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -510,7 +504,7 @@ A Biphone instance has the methods
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>directory</strong> – output directory. If not specified, it defaults to
-the current directory given by <code class="docutils literal"><span class="pre">os.getcwd()</span></code>.</td>
+the current directory given by <code class="docutils literal notranslate"><span class="pre">os.getcwd()</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -549,7 +543,7 @@ the current directory given by <code class="docutils literal"><span class="pre">
 <code class="descname">phone_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#linguistica.lexicon.Lexicon.phone_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a dict of phone unigrams to Phone objects.
 A Phone instance has the methods
-<code class="docutils literal"><span class="pre">spelling()</span></code>, <code class="docutils literal"><span class="pre">count()</span></code>, <code class="docutils literal"><span class="pre">frequency()</span></code>, and <code class="docutils literal"><span class="pre">plog()</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">spelling()</span></code>, <code class="docutils literal notranslate"><span class="pre">count()</span></code>, <code class="docutils literal notranslate"><span class="pre">frequency()</span></code>, and <code class="docutils literal notranslate"><span class="pre">plog()</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -607,7 +601,7 @@ A Phone instance has the methods
 <code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#linguistica.lexicon.Lexicon.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reset the Linguistica object. While the file path information is
 retained, all computed objects (ngrams, signatures, word neighbors,
-etc) are reset to <code class="docutils literal"><span class="pre">NULL</span></code>; if they are called again, they are
+etc) are reset to <code class="docutils literal notranslate"><span class="pre">NULL</span></code>; if they are called again, they are
 re-computed.</p>
 </dd></dl>
 
@@ -770,9 +764,9 @@ re-computed.</p>
 <code class="descname">word_phonology_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#linguistica.lexicon.Lexicon.word_phonology_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a dict of words to Word objects.
 A Word instance has the methods
-<code class="docutils literal"><span class="pre">spelling()</span></code>, <code class="docutils literal"><span class="pre">phones()</span></code>, <code class="docutils literal"><span class="pre">count()</span></code>, <code class="docutils literal"><span class="pre">frequency()</span></code>,
-<code class="docutils literal"><span class="pre">unigram_plog()</span></code>, <code class="docutils literal"><span class="pre">avg_unigram_plog()</span></code>,
-<code class="docutils literal"><span class="pre">bigram_plog()</span></code>, and <code class="docutils literal"><span class="pre">avg_bigram_plog()</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">spelling()</span></code>, <code class="docutils literal notranslate"><span class="pre">phones()</span></code>, <code class="docutils literal notranslate"><span class="pre">count()</span></code>, <code class="docutils literal notranslate"><span class="pre">frequency()</span></code>,
+<code class="docutils literal notranslate"><span class="pre">unigram_plog()</span></code>, <code class="docutils literal notranslate"><span class="pre">avg_unigram_plog()</span></code>,
+<code class="docutils literal notranslate"><span class="pre">bigram_plog()</span></code>, and <code class="docutils literal notranslate"><span class="pre">avg_bigram_plog()</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -917,9 +911,7 @@ A Word instance has the methods
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -937,12 +929,12 @@ A Word instance has the methods
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015-2017, Jackson Lee.
-      Last updated on Oct 13, 2017.
+        &copy; Copyright 2015-2018, Jackson Lee
+      Last updated on Oct 12, 2018.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -957,35 +949,24 @@ A Word instance has the methods
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'5.2.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>
