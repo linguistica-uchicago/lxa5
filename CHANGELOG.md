@@ -1,10 +1,11 @@
 Change log
 ==========
 
-v5.?.? (?-?-?) -- work in progress
-----------------------------------
+v5.2.1 (2018-10-12)
+-------------------
 
-* ???
+* Relax dependency requirements by removing the upper version number bounds.
+* 
 
 v5.2.0 (2017-04-09)
 -------------------
