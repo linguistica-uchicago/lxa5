@@ -9,6 +9,8 @@ from pprint import pformat
 import platform
 from io import open  # not using built-in open(), for py2+3 cross compatibility
 
+import six #BX
+
 import scipy
 import numpy
 import networkx
@@ -59,6 +61,8 @@ PARAMETERS = {'max_word_tokens': 0,  # zero means all word tokens
               'max_word_types': 1000,
               'suffixing': 1,  # 1 means yes, 0 means no
               'keep_case': 0,  # 1 means yes, 0 means no
+              
+              'BX_xanthos': 0, # BX: 1 means Xanthos' function, 0 Jackson's 
               }
 
 PARAMETERS_RANGES = {'max_word_tokens': (0, 1000000000),
@@ -71,6 +75,8 @@ PARAMETERS_RANGES = {'max_word_tokens': (0, 1000000000),
                      'max_word_types': (0, 1000000000),
                      'suffixing': (0, 1),  # 1 means yes, 0 means no
                      'keep_case': (0, 1),  # 1 means yes, 0 means no
+                     
+                     'BX_xanthos': (0, 1), # BX: 1 Xanthos', 0 Jackson's
                      }
 
 PARAMETERS_HINTS = {'max_word_tokens': '0 = all word tokens',
@@ -83,6 +89,8 @@ PARAMETERS_HINTS = {'max_word_tokens': '0 = all word tokens',
                     'max_word_types': '',
                     'suffixing': '1 = yes; 0 = no',
                     'keep_case': '1 = yes; 0 = no',
+                    
+                    'BX_xanthos': '', # BX
                     }
 
 
@@ -193,36 +201,40 @@ def output_latex(iter_obj, file_path, title, headers,
     print(file=file)
 
     print('Results:\n=============================================', file=file)
+    
+    # BX adjusted for xanthos signature output
+    if isinstance(iter_obj, six.string_types):
+        print(iter_obj, file=file)
+    else:     
+        header_list = list()
 
-    header_list = list()
-
-    index_str_length = 10
-    if index:
-        header_list = ['Index'.ljust(index_str_length)]
-
-    for header, col_width in zip(headers, column_widths):
-        header_list.append(header.ljust(col_width))
-
-    number_of_columns = len(header_list)
-
-    print(title + '\n', file=file)
-    print('\\begin{{tabular}}{{{}}}'.format('l' * number_of_columns),
-          file=file)
-    print('\\toprule', file=file)
-
-    print('{} \\\\'.format(' & '.join(header_list)), file=file)
-    print('\\midrule', file=file)
-
-    for i, row_obj in enumerate(iter_obj, 1):
+        index_str_length = 10
         if index:
-            row_list = [str(i).ljust(index_str_length)]
-        else:
-            row_list = list()
+            header_list = ['Index'.ljust(index_str_length)]
 
-        for row_func, col_width in zip(row_functions, column_widths):
-            row_list.append(str(row_func(row_obj)).ljust(col_width))
+        for header, col_width in zip(headers, column_widths):
+            header_list.append(header.ljust(col_width))
 
-            print('{} \\\\'.format(' & '.join(row_list)), file=file)
+        number_of_columns = len(header_list)
+        
+        print(title + '\n', file=file)
+        print('\\begin{{tabular}}{{{}}}'.format('l' * number_of_columns),
+              file=file)
+        print('\\toprule', file=file)
+
+        print('{} \\\\'.format(' & '.join(header_list)), file=file)
+        print('\\midrule', file=file)
+
+        for i, row_obj in enumerate(iter_obj, 1):
+            if index:
+                row_list = [str(i).ljust(index_str_length)]
+            else:
+                row_list = list()
+
+            for row_func, col_width in zip(row_functions, column_widths):
+                row_list.append(str(row_func(row_obj)).ljust(col_width))
+
+                print('{} \\\\'.format(' & '.join(row_list)), file=file)
 
     print('\\bottomrule', file=file)
     print('\\end{tabular}\n', file=file)

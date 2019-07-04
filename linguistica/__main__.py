@@ -26,7 +26,7 @@ def main():
         lxa_mode = sys.argv[1].lower()
     except IndexError:
         lxa_mode = None
-        error_msg_template = 'Error: no running mode specified.' \
+        error_msg_template = 'Error: (BX) no running mode specified.' \
                              '\n\nRun one of the following:\n\n{}'
 
         sys.exit(error_msg_template.format(

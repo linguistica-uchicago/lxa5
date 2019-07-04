@@ -146,6 +146,8 @@ def main():
           '\nWelcome to Linguistica {}!'
           '\n================================================================'
           .format(lxa_version))
+    
+    print('**********BLAKE ANDERSON AND ARIS XANTHOS EDITS**********')
 
     # --------------------------------------------------------------------------
     # determine if file is a wordlist or a corpus text

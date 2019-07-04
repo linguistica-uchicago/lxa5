@@ -11,6 +11,8 @@ from linguistica.util import (ENCODING, PARAMETERS, SEP_SIG, SEP_SIGTRANSFORM,
                               double_sorted, fix_punctuations,
                               output_latex, vprint)
 
+import collections #BX
+import textwrap #BX
 
 try:
     FileNotFoundError
@@ -160,6 +162,13 @@ class Lexicon:
         self._words_in_signatures = None
         self._affixes = None
         self._stems = None
+        
+        # BX Xanthos signature functions objects
+        self._BX_signatures = None
+        self._BX_stems = None
+        self._BX_suffixes = None
+        self._BX_protostems = None
+        self._BX_signatures_print = None
 
         # corpus file object
         if self.corpus_object is not None:
@@ -221,7 +230,7 @@ class Lexicon:
         """
         self.run_ngram_module(verbose=verbose)
         self.run_phon_module(verbose=verbose)
-        self.run_signature_module(verbose=verbose)
+        self.BX_run_signature_module(verbose=verbose) # BX: Xanthos or Jackson 
         self.run_trie_module(verbose=verbose)
 
         if self.corpus_file_object:
@@ -279,200 +288,221 @@ class Lexicon:
 
         # ----------------------------------------------------------------------
         vprint(verbose, 'morphological signature objects')
+        
+        
+        if self.parameters_['BX_xanthos']: 
+            #  BX: ran Xanthos' algorithm, output those results
+            #self._BX_signatures_print
+            fname = 'BX_xanthos_signatures.txt'
+            obj = self._BX_signatures_print
+            f_path = os.path.join(output_dir, fname)
+            output_latex(obj, f_path,
+                         title='BX xanthos signatures',
+                         headers=[],
+                         row_functions=[],
+                         column_widths=[],
+                         lxa_parameters=self.parameters(),
+                         test=test, encoding=self.encoding,
+                         number_of_word_types=self.number_of_word_types(),
+                         number_of_word_tokens=self.number_of_word_tokens(),
+                         input_file_path=self.file_abspath)
+            vprint(verbose, '\t' + fname)
+        else: 
+            #  BX: ran Jackson's algorithm, output those results
+        
+            fname = 'stems_to_words.txt'
+            obj = double_sorted(self.stems_to_words().items(),
+                                key=lambda x: len(x[1]), reverse=True)
+            f_path = os.path.join(output_dir, fname)
+            output_latex(obj, f_path,
+                         title='Stems to words '
+                               '(descending order of word count)',
+                         headers=['Stem', 'Word count', 'Words'],
+                         row_functions=[lambda x: x[0],
+                                        lambda x: len(x[1]),
+                                        lambda x: ', '.join(sorted(x[1]))],
+                         column_widths=[15, 15, 0],
+                         lxa_parameters=self.parameters(),
+                         test=test, encoding=self.encoding,
+                         number_of_word_types=self.number_of_word_types(),
+                         number_of_word_tokens=self.number_of_word_tokens(),
+                         input_file_path=self.file_abspath)
+            vprint(verbose, '\t' + fname)
 
-        fname = 'stems_to_words.txt'
-        obj = double_sorted(self.stems_to_words().items(),
-                            key=lambda x: len(x[1]), reverse=True)
-        f_path = os.path.join(output_dir, fname)
-        output_latex(obj, f_path,
-                     title='Stems to words '
-                           '(descending order of word count)',
-                     headers=['Stem', 'Word count', 'Words'],
-                     row_functions=[lambda x: x[0],
-                                    lambda x: len(x[1]),
-                                    lambda x: ', '.join(sorted(x[1]))],
-                     column_widths=[15, 15, 0],
-                     lxa_parameters=self.parameters(),
-                     test=test, encoding=self.encoding,
-                     number_of_word_types=self.number_of_word_types(),
-                     number_of_word_tokens=self.number_of_word_tokens(),
-                     input_file_path=self.file_abspath)
-        vprint(verbose, '\t' + fname)
+            fname = 'stems_to_words.txt'
+            obj = double_sorted(self.stems_to_words().items(),
+                                key=lambda x: x[0], reverse=False)
+            f_path = os.path.join(output_dir, fname)
+            output_latex(obj, f_path,
+                         title='Stems to words '
+                               '(alphabetical order of stems)',
+                         headers=['Stem', 'Word count', '1st 10 words'],
+                         row_functions=[lambda x: x[0],
+                                        lambda x: len(x[1]),
+                                        lambda x: ', '.join(sorted(x[1]))],
+                        column_widths=[15, 15, 0],
+                        lxa_parameters=self.parameters(),
+                        test=test, encoding=self.encoding,
+                        number_of_word_types=self.number_of_word_types(),
+                        number_of_word_tokens=self.number_of_word_tokens(),
+                        input_file_path=self.file_abspath)
+            vprint(verbose, '\t' + fname)
 
-        fname = 'stems_to_words.txt'
-        obj = double_sorted(self.stems_to_words().items(),
-                            key=lambda x: x[0], reverse=False)
-        f_path = os.path.join(output_dir, fname)
-        output_latex(obj, f_path,
-                     title='Stems to words '
-                           '(alphabetical order of stems)',
-                     headers=['Stem', 'Word count', '1st 10 words'],
-                     row_functions=[lambda x: x[0],
-                                    lambda x: len(x[1]),
-                                    lambda x: ', '.join(sorted(x[1]))],
-                     column_widths=[15, 15, 0],
-                     lxa_parameters=self.parameters(),
-                     test=test, encoding=self.encoding,
-                     number_of_word_types=self.number_of_word_types(),
-                     number_of_word_tokens=self.number_of_word_tokens(),
-                     input_file_path=self.file_abspath)
-        vprint(verbose, '\t' + fname)
+            fname = 'signatures_to_stems.txt'
+            obj = double_sorted(self.signatures_to_stems().items(),
+                                key=lambda x: len(x[1]), reverse=True)
+            f_path = os.path.join(output_dir, fname)
+            output_latex(obj, f_path,
+                         title='Signatures to stems',
+                         headers=['Signature', 'Stem count', 'Stems'],
+                         row_functions=[lambda x: SEP_SIG.join(x[0]),
+                                        lambda x: len(x[1]),
+                                        lambda x: ', '.join(sorted(x[1]))],
+                         column_widths=[30, 15, 0],
+                         lxa_parameters=self.parameters(),
+                         test=test, encoding=self.encoding,
+                         number_of_word_types=self.number_of_word_types(),
+                         number_of_word_tokens=self.number_of_word_tokens(),
+                         input_file_path=self.file_abspath)
+            vprint(verbose, '\t' + fname)
 
-        fname = 'signatures_to_stems.txt'
-        obj = double_sorted(self.signatures_to_stems().items(),
-                            key=lambda x: len(x[1]), reverse=True)
-        f_path = os.path.join(output_dir, fname)
-        output_latex(obj, f_path,
-                     title='Signatures to stems',
-                     headers=['Signature', 'Stem count', 'Stems'],
-                     row_functions=[lambda x: SEP_SIG.join(x[0]),
-                                    lambda x: len(x[1]),
-                                    lambda x: ', '.join(sorted(x[1]))],
-                     column_widths=[30, 15, 0],
-                     lxa_parameters=self.parameters(),
-                     test=test, encoding=self.encoding,
-                     number_of_word_types=self.number_of_word_types(),
-                     number_of_word_tokens=self.number_of_word_tokens(),
-                     input_file_path=self.file_abspath)
-        vprint(verbose, '\t' + fname)
+            fname = 'signatures_to_stems_truncated.txt'
+            obj = double_sorted(self.signatures_to_stems().items(),
+                                key=lambda x: len(x[1]), reverse=True)
+            f_path = os.path.join(output_dir, fname)
+            output_latex(obj, f_path,
+                         title='Signatures to stems '
+                               '(first 10 stems for each sig)',
+                         headers=['Signature', 'Stem count', '1st 10 stems'],
+                         row_functions=[lambda x: SEP_SIG.join(x[0]),
+                                        lambda x: len(x[1]),
+                                        lambda x:
+                                            ' '.join(sorted(x[1])[:10])],
+                         column_widths=[30, 15, 0],
+                         lxa_parameters=self.parameters(),
+                         test=test, encoding=self.encoding,
+                         number_of_word_types=self.number_of_word_types(),
+                         number_of_word_tokens=self.number_of_word_tokens(),
+                         input_file_path=self.file_abspath)
+            vprint(verbose, '\t' + fname)
 
-        fname = 'signatures_to_stems_truncated.txt'
-        obj = double_sorted(self.signatures_to_stems().items(),
-                            key=lambda x: len(x[1]), reverse=True)
-        f_path = os.path.join(output_dir, fname)
-        output_latex(obj, f_path,
-                     title='Signatures to stems '
-                           '(first 10 stems for each sig)',
-                     headers=['Signature', 'Stem count', '1st 10 stems'],
-                     row_functions=[lambda x: SEP_SIG.join(x[0]),
-                                    lambda x: len(x[1]),
-                                    lambda x:
-                                    ' '.join(sorted(x[1])[:10])],
-                     column_widths=[30, 15, 0],
-                     lxa_parameters=self.parameters(),
-                     test=test, encoding=self.encoding,
-                     number_of_word_types=self.number_of_word_types(),
-                     number_of_word_tokens=self.number_of_word_tokens(),
-                     input_file_path=self.file_abspath)
-        vprint(verbose, '\t' + fname)
+            fname = 'stems_to_signatures.txt'
+            obj = double_sorted(self.stems_to_signatures().items(),
+                                key=lambda x: len(x[1]), reverse=True)
+            f_path = os.path.join(output_dir, fname)
+            output_latex(obj, f_path,
+                         title='Stems to signatures',
+                         headers=['Stems', 'Signatures'],
+                         row_functions=[lambda x: x[0],
+                                        lambda x:
+                                            ', '.join(SEP_SIG.join(sig)
+                                                  for sig in sorted(x[1]))],
+                         column_widths=[15, 0],
+                         lxa_parameters=self.parameters(),
+                         test=test, encoding=self.encoding,
+                         number_of_word_types=self.number_of_word_types(),
+                         number_of_word_tokens=self.number_of_word_tokens(),
+                         input_file_path=self.file_abspath)
+            vprint(verbose, '\t' + fname)
 
-        fname = 'stems_to_signatures.txt'
-        obj = double_sorted(self.stems_to_signatures().items(),
-                            key=lambda x: len(x[1]), reverse=True)
-        f_path = os.path.join(output_dir, fname)
-        output_latex(obj, f_path,
-                     title='Stems to signatures',
-                     headers=['Stems', 'Signatures'],
-                     row_functions=[lambda x: x[0],
-                                    lambda x:
-                                    ', '.join(SEP_SIG.join(sig)
-                                              for sig in sorted(x[1]))],
-                     column_widths=[15, 0],
-                     lxa_parameters=self.parameters(),
-                     test=test, encoding=self.encoding,
-                     number_of_word_types=self.number_of_word_types(),
-                     number_of_word_tokens=self.number_of_word_tokens(),
-                     input_file_path=self.file_abspath)
-        vprint(verbose, '\t' + fname)
+            fname = 'words_to_signatures.txt'
+            obj = double_sorted(self.words_to_signatures().items(),
+                                key=lambda x: len(x[1]), reverse=True)
+            f_path = os.path.join(output_dir, fname)
+            output_latex(obj, f_path,
+                         title='Words to signatures',
+                         headers=['Word', 'Sig count', 'Signatures'],
+                         row_functions=[lambda x: x[0],
+                                        lambda x: len(x[1]),
+                                        lambda x:
+                                            ', '.join(SEP_SIG.join(sig)
+                                                  for sig in sorted(x[1]))],
+                         column_widths=[25, 15, 0],
+                         lxa_parameters=self.parameters(),
+                         test=test, encoding=self.encoding,
+                         number_of_word_types=self.number_of_word_types(),
+                         number_of_word_tokens=self.number_of_word_tokens(),
+                         input_file_path=self.file_abspath)
+            vprint(verbose, '\t' + fname)
 
-        fname = 'words_to_signatures.txt'
-        obj = double_sorted(self.words_to_signatures().items(),
-                            key=lambda x: len(x[1]), reverse=True)
-        f_path = os.path.join(output_dir, fname)
-        output_latex(obj, f_path,
-                     title='Words to signatures',
-                     headers=['Word', 'Sig count', 'Signatures'],
-                     row_functions=[lambda x: x[0],
-                                    lambda x: len(x[1]),
-                                    lambda x:
-                                    ', '.join(SEP_SIG.join(sig)
-                                              for sig in sorted(x[1]))],
-                     column_widths=[25, 15, 0],
-                     lxa_parameters=self.parameters(),
-                     test=test, encoding=self.encoding,
-                     number_of_word_types=self.number_of_word_types(),
-                     number_of_word_tokens=self.number_of_word_tokens(),
-                     input_file_path=self.file_abspath)
-        vprint(verbose, '\t' + fname)
+            fname = 'signatures_to_words.txt'
+            obj = double_sorted(self.signatures_to_words().items(),
+                                key=lambda x: len(x[1]), reverse=True)
+            f_path = os.path.join(output_dir, fname)
+            output_latex(obj, f_path,
+                         title='Signatures to words',
+                         headers=['Signature', 'Word count', 'Words'],
+                         row_functions=[lambda x: SEP_SIG.join(x[0]),
+                                        lambda x: len(x[1]),
+                                        lambda x: ', '.join(sorted(x[1]))],
+                         column_widths=[20, 15, 0],
+                         lxa_parameters=self.parameters(),
+                         test=test, encoding=self.encoding,
+                         number_of_word_types=self.number_of_word_types(),
+                         number_of_word_tokens=self.number_of_word_tokens(),
+                         input_file_path=self.file_abspath)
+            vprint(verbose, '\t' + fname)
 
-        fname = 'signatures_to_words.txt'
-        obj = double_sorted(self.signatures_to_words().items(),
-                            key=lambda x: len(x[1]), reverse=True)
-        f_path = os.path.join(output_dir, fname)
-        output_latex(obj, f_path,
-                     title='Signatures to words',
-                     headers=['Signature', 'Word count', 'Words'],
-                     row_functions=[lambda x: SEP_SIG.join(x[0]),
-                                    lambda x: len(x[1]),
-                                    lambda x: ', '.join(sorted(x[1]))],
-                     column_widths=[20, 15, 0],
-                     lxa_parameters=self.parameters(),
-                     test=test, encoding=self.encoding,
-                     number_of_word_types=self.number_of_word_types(),
-                     number_of_word_tokens=self.number_of_word_tokens(),
-                     input_file_path=self.file_abspath)
-        vprint(verbose, '\t' + fname)
+            fname = 'signatures_to_words_truncated.txt'
+            obj = double_sorted(self.signatures_to_words().items(),
+                                key=lambda x: len(x[1]), reverse=True)
+            f_path = os.path.join(output_dir, fname)
+            output_latex(obj, f_path,
+                         title='Signatures to words '
+                               '(first 10 words for each sig)',
+                         headers=['Signature', 'Word count', '1st 10 words'],
+                         row_functions=[lambda x: SEP_SIG.join(x[0]),
+                                        lambda x: len(x[1]),
+                                        lambda x:
+                                            ', '.join(sorted(x[1])[:10])],
+                         column_widths=[20, 15, 0],
+                         lxa_parameters=self.parameters(),
+                         test=test, encoding=self.encoding,
+                         number_of_word_types=self.number_of_word_types(),
+                         number_of_word_tokens=self.number_of_word_tokens(),
+                         input_file_path=self.file_abspath)
+            vprint(verbose, '\t' + fname)
 
-        fname = 'signatures_to_words_truncated.txt'
-        obj = double_sorted(self.signatures_to_words().items(),
-                            key=lambda x: len(x[1]), reverse=True)
-        f_path = os.path.join(output_dir, fname)
-        output_latex(obj, f_path,
-                     title='Signatures to words '
-                           '(first 10 words for each sig)',
-                     headers=['Signature', 'Word count', '1st 10 words'],
-                     row_functions=[lambda x: SEP_SIG.join(x[0]),
-                                    lambda x: len(x[1]),
-                                    lambda x:
-                                    ', '.join(sorted(x[1])[:10])],
-                     column_widths=[20, 15, 0],
-                     lxa_parameters=self.parameters(),
-                     test=test, encoding=self.encoding,
-                     number_of_word_types=self.number_of_word_types(),
-                     number_of_word_tokens=self.number_of_word_tokens(),
-                     input_file_path=self.file_abspath)
-        vprint(verbose, '\t' + fname)
-
-        fname = 'words_to_sigtransforms.txt'
-        obj = double_sorted(self.words_to_sigtransforms().items(),
-                            key=lambda x: len(x[1]), reverse=True)
-        f_path = os.path.join(output_dir, fname)
-        output_latex(obj, f_path,
-                     title='Words to sigtransforms',
-                     headers=['Word', 'Signature transforms'],
-                     row_functions=[lambda x: x[0],
-                                    lambda x:
-                                    ', '.join(SEP_SIG.join(sig) +
+            fname = 'words_to_sigtransforms.txt'
+            obj = double_sorted(self.words_to_sigtransforms().items(),
+                                key=lambda x: len(x[1]), reverse=True)
+            f_path = os.path.join(output_dir, fname)
+            output_latex(obj, f_path,
+                         title='Words to sigtransforms',
+                         headers=['Word', 'Signature transforms'],
+                         row_functions=[lambda x: x[0],
+                                        lambda x:
+                                        ', '.join(SEP_SIG.join(sig) +
                                               SEP_SIGTRANSFORM + affix
                                               for sig, affix in sorted(x[1]))],
-                     column_widths=[20, 0],
-                     lxa_parameters=self.parameters(),
-                     test=test, encoding=self.encoding,
-                     number_of_word_types=self.number_of_word_types(),
-                     number_of_word_tokens=self.number_of_word_tokens(),
-                     input_file_path=self.file_abspath)
-        vprint(verbose, '\t' + fname)
+                         column_widths=[20, 0],
+                         lxa_parameters=self.parameters(),
+                         test=test, encoding=self.encoding,
+                         number_of_word_types=self.number_of_word_types(),
+                         number_of_word_tokens=self.number_of_word_tokens(),
+                         input_file_path=self.file_abspath)
+            vprint(verbose, '\t' + fname)
 
-        fname = 'affixes_to_signatures.txt'
-        obj = double_sorted(self.affixes_to_signatures().items(),
-                            key=lambda x: len(x[1]), reverse=True)
-        f_path = os.path.join(output_dir, fname)
-        output_latex(obj, f_path,
-                     title='Affixes to signatures',
-                     headers=['Affix', 'Sig count', 'Signatures'],
-                     row_functions=[lambda x: x[0],
-                                    lambda x: len(x[1]),
-                                    lambda x:
-                                    ', '.join(SEP_SIG.join(sig)
-                                              for sig in sorted(x[1]))],
-                     column_widths=[15, 15, 0],
-                     lxa_parameters=self.parameters(),
-                     test=test, encoding=self.encoding,
-                     number_of_word_types=self.number_of_word_types(),
-                     number_of_word_tokens=self.number_of_word_tokens(),
-                     input_file_path=self.file_abspath)
-        vprint(verbose, '\t' + fname)
-
+            fname = 'affixes_to_signatures.txt'
+            obj = double_sorted(self.affixes_to_signatures().items(),
+                                key=lambda x: len(x[1]), reverse=True)
+            f_path = os.path.join(output_dir, fname)
+            output_latex(obj, f_path,
+                         title='Affixes to signatures',
+                         headers=['Affix', 'Sig count', 'Signatures'],
+                         row_functions=[lambda x: x[0],
+                                        lambda x: len(x[1]),
+                                        lambda x:
+                                        ', '.join(SEP_SIG.join(sig)
+                                                  for sig in sorted(x[1]))],
+                         column_widths=[15, 15, 0],
+                         lxa_parameters=self.parameters(),
+                         test=test, encoding=self.encoding,
+                         number_of_word_types=self.number_of_word_types(),
+                         number_of_word_tokens=self.number_of_word_tokens(),
+                         input_file_path=self.file_abspath)
+            vprint(verbose, '\t' + fname)
+            # BX: end of if-statement for Jackson's algorithm outputs
         # ----------------------------------------------------------------------
         if self.corpus_file_object:
             vprint(verbose, 'manifold objects')
@@ -972,6 +1002,125 @@ class Lexicon:
         self._words_in_signatures = set(self._words_to_signatures.keys())
         self._affixes = set(self._affixes_to_signatures.keys())
         self._stems = set(self._stems_to_words.keys())
+        
+    def _BX_find_protostems(self, verbose=False):
+        vprint(verbose, 'BX find protostems ...')
+        """Find potential stems"""
+        self._BX_protostems = set()
+        word_counts = self._word_unigram_counter #self._wordlist
+
+        # For each pair of successive words (in alphabetical order)...
+        sorted_words = sorted(word_counts.keys())
+        for idx in range(len(sorted_words)-1):
+
+            # Add longest common prefix to protostems (if long enough)...
+            protostem = os.path.commonprefix(sorted_words[idx:idx+2])
+            if len(protostem) >= self.parameters_['min_stem_length']:
+                self._BX_protostems.add(protostem)
+
+        if len(self._BX_protostems) == 0:
+            message = "Unable to find any stems in data."
+            if len(word_counts) == 1:
+                message += " Please check that they are segmented into words."
+                raise ValueError(message)
+        
+        #return protostems
+        
+    def _BX_serialize_signatures(self, verbose=False):
+        """Pretty-print signatures"""
+        signature_num = 1
+        output = ""
+        for suffixes, stems in self._BX_signatures.items():
+            output += "=" * 80 + "\n"
+            output += "Signature #" + str(signature_num) + "\n"
+            output += "-" * 80 + "\n"
+            output += "\n".join(textwrap.wrap(
+                "Stems: " + ", ".join(sorted(stems)), width=80)) + "\n"
+            output += "\n".join(textwrap.wrap("Suffixes: " + 
+                ", ".join(s or "NULL" for s in suffixes), width=80)) + "\n"
+            output += "=" * 80 + "\n\n"
+            signature_num += 1
+        self._BX_signatures_print = output
+    #return output
+    
+    def _BX_find_signatures(self, verbose=False):
+        vprint(verbose, 'BX Xanthos signature function ...')
+        """Find signatures (based on Goldsmith's Lxa-Crab algorithm)"""
+        word_counts = self._word_unigram_counter #self._wordlist
+
+        # Find protostems.
+        self._BX_find_protostems(verbose=verbose)     
+        vprint(verbose, 'BX protostems found ...')
+
+        # List all possible continuations of each protostem...
+        continuations = collections.defaultdict(list)
+        for word in word_counts.keys():
+            for protostem in self._BX_protostems:
+                if word.startswith(protostem):
+                    continuations[protostem].append(word[len(protostem):])
+
+        # Find all stems associated with each continuation list...
+        protostem_lists = collections.defaultdict(set)
+        for protostem, continuation in continuations.items():
+            protostem_lists[tuple(sorted(continuation))].add(protostem)
+
+        # Signatures are continuation lists with more than 1 stem...
+        signatures = collections.defaultdict(set)
+        parasignatures = dict()
+        for continuations, protostems in protostem_lists.items():
+            container = signatures if len(protostems) > 1 else parasignatures
+            container[continuations] = protostems
+
+        # Get list of known suffixes from signatures...
+        known_suffixes = set()
+        for suffixes in signatures:
+            known_suffixes = known_suffixes.union(suffixes)
+
+        # Second generation tentative signatures are parasignatures stripped
+        # from unknown suffixes and having at least 2 continuations...
+        tentative_signatures = collections.defaultdict(set)
+        for continuations, protostems in parasignatures.items():
+            good_conts = sorted(c for c in continuations if c in known_suffixes)
+            if len(good_conts) > 1:
+                tentative_signatures[tuple(good_conts)].add(next(iter(protostems)))
+
+        # Add those tentative signatures which occur with at least 2 stems...
+        single_stem_sigs = collections.defaultdict(set)
+        for continuations, protostems in tentative_signatures.items():
+            container = signatures if len(protostems) > 1 else single_stem_sigs
+            container[continuations] = container[continuations].union(protostems)
+
+        # Add each stem in remaining tentative signatures to the existing
+        # signature that contains the largest number of its continuations...
+        sorted_signatures = sorted(signatures, key=len, reverse=True)
+        for continuations, protostems in single_stem_sigs.items():
+            continuation_set = set(continuations)
+            for suffixes in sorted_signatures:
+                if set(suffixes).issubset(continuation_set):
+                    signatures[suffixes].add(next(iter(protostems)))
+                    break
+
+        # Get list of known stems from signatures...
+        known_stems = set()
+        for stems in signatures.values():
+            known_stems = known_stems.union(stems)
+
+        self._BX_signatures = signatures
+        self._BX_stems = stems
+        self._BX_suffixes = suffixes
+        
+        self._BX_serialize_signatures(verbose=verbose)
+        #return signatures, stems, suffixes
+        
+    def BX_run_signature_module(self, verbose=False):
+        """
+        Run either Xanthos or JAckson signature module
+        """
+        vprint(verbose, 'BX Morphological signatures ...')
+        if self.parameters_['BX_xanthos']:
+            self._BX_find_signatures(verbose=verbose) # Xanthos version
+        else:
+            self.run_signature_module(verbose=verbose) # Jackson version
 
     def run_signature_module(self, verbose=False):
         """
