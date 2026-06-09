@@ -1,0 +1,1258 @@
+from __future__ import annotations
+
+import sys
+import os
+from io import StringIO
+from typing import Any, Iterable, TextIO, Unpack, cast
+
+import networkx as nx
+
+from linguistica import ngram, signature, manifold, phon, trie
+from linguistica.manifold import Context
+from linguistica.parameters import PARAMETERS, ParametersKwargs
+from linguistica.phon import Biphone, Phone, Word
+from linguistica.util import (
+    ENCODING,
+    SEP_SIG,
+    SEP_SIGTRANSFORM,
+    Bigram,
+    FilePath,
+    Signature,
+    SigTransform,
+    Trigram,
+    double_sorted,
+    fix_punctuations,
+    output_latex,
+    vprint,
+)
+
+
+class Lexicon:
+    """A class for a Linguistica object."""
+
+    def __init__(
+        self,
+        file_path: FilePath | None = None,
+        wordlist_file: bool = False,
+        corpus_object: str | list[str] | None = None,
+        wordlist_object: dict[str, int] | Iterable[str] | None = None,
+        encoding: str = ENCODING,
+        **kwargs: Unpack[ParametersKwargs],
+    ) -> None:
+        self.file_abspath = self._check_file_path(file_path)
+
+        if self.file_abspath is None:
+            self.directory = None
+        else:
+            self.directory = os.path.dirname(self.file_abspath)
+
+        self.file_is_wordlist = wordlist_file
+        self.encoding = encoding
+        self.corpus_object = corpus_object
+        self.wordlist_object = wordlist_object
+        self.parameters_ = self._determine_parameters(**kwargs)
+
+        self._initialize()
+
+    @staticmethod
+    def _check_file_path(file_path: FilePath | None) -> str | None:
+        """Return the absolute path of ``file_path``."""
+        if file_path is None:
+            return None
+
+        # Accept a str or any os.PathLike (e.g. pathlib.Path); os.fspath
+        # normalizes to a str and raises TypeError for non-path inputs.
+        file_path = os.fspath(file_path)
+
+        if sys.platform.startswith("win"):
+            file_path = file_path.replace("/", os.sep)
+        else:
+            file_path = file_path.replace("\\", os.sep)
+
+        file_abspath = os.path.abspath(file_path)
+        if not os.path.isfile(file_abspath):
+            raise FileNotFoundError
+        else:
+            return file_abspath
+
+    @staticmethod
+    def _determine_parameters(**kwargs: Unpack[ParametersKwargs]) -> dict[str, int]:
+        """Determine the parameter dict."""
+        temp_parameters = dict(PARAMETERS)
+
+        for parameter, value in kwargs.items():
+            if parameter not in PARAMETERS:
+                raise KeyError("unknown parameter -- " + parameter)
+            else:
+                temp_parameters[parameter] = cast("int", value)
+
+        return temp_parameters
+
+    def parameters(self) -> dict[str, int]:
+        """Return the parameter dict."""
+        return self.parameters_
+
+    def change_parameters(self, **kwargs: Unpack[ParametersKwargs]) -> None:
+        """Change the specified parameters.
+
+        :param kwargs: keyword arguments for parameters and their new values
+        """
+        for parameter, new_value in kwargs.items():
+            if parameter not in self.parameters_:
+                raise KeyError("unknown parameter -- " + parameter)
+
+            self.parameters_[parameter] = cast("int", new_value)
+
+    def use_default_parameters(self) -> None:
+        """Reset parameters to their default values."""
+        self.parameters_ = dict(PARAMETERS)
+
+    def _initialize(self) -> None:
+        # number of word types and tokens
+        self._number_of_word_types: int | None = None
+        self._number_of_word_tokens: int | None = None
+
+        # word ngrams
+        self._word_unigram_counter: dict[str, int] | None = None
+        self._word_bigram_counter: dict[Bigram, int] | None = None
+        self._word_trigram_counter: dict[Trigram, int] | None = None
+
+        # wordlist
+        self._wordlist: list[str] | None = None
+        if self.wordlist_object is not None:
+            # self.wordlist_object is
+            # either an iterable or a dict of word-count pairs
+            if type(self.wordlist_object) is dict:
+                wl_dict = cast("dict[str, int]", self.wordlist_object)
+                word_count_dict: dict[str, int] = dict()
+                if self.parameters_["keep_case"]:
+                    word_count_dict = wl_dict
+                else:
+                    for word, count in cast("Iterable[tuple[str, int]]", wl_dict):
+                        word = word.lower()
+                        if word not in word_count_dict:
+                            word_count_dict[word] = 0
+                        word_count_dict[word] += count
+
+                self._wordlist = [
+                    word_
+                    for word_, _ in double_sorted(
+                        word_count_dict.items(), key=lambda x: x[1], reverse=True
+                    )
+                ]
+                self._word_unigram_counter = word_count_dict
+
+            elif hasattr(self.wordlist_object, "__iter__"):
+                wl_iter = self.wordlist_object
+                if self.parameters_["keep_case"]:
+                    self._wordlist = sorted(set(wl_iter))
+                else:
+                    self._wordlist = sorted(set(w.lower() for w in wl_iter))
+                self._word_unigram_counter = {w: 1 for w in self._wordlist}
+
+            else:
+                raise TypeError(
+                    "wordlist object must be a dict of word-count"
+                    "pairs or an iterable of words"
+                )
+
+        # signature-related objects
+        self._stems_to_words: dict[str, set[str]] | None = None
+        self._signatures_to_stems: dict[Signature, set[str]] | None = None
+        self._stems_to_signatures: dict[str, set[Signature]] | None = None
+        self._words_to_signatures: dict[str, set[Signature]] | None = None
+        self._signatures_to_words: dict[Signature, set[str]] | None = None
+        self._words_to_sigtransforms: dict[str, set[SigTransform]] | None = None
+
+        self._signatures: set[Signature] | None = None
+        self._affixes_to_signatures: dict[str, set[Signature]] | None = None
+        self._words_in_signatures: set[str] | None = None
+        self._affixes: set[str] | None = None
+        self._stems: set[str] | None = None
+
+        # corpus file object
+        self.corpus_file_object: TextIO | None
+        if self.corpus_object is not None:
+            # self.corpus_object is either a list of strings or a long str
+            if isinstance(self.corpus_object, list):
+                corpus_str = fix_punctuations(" ".join(self.corpus_object))
+            elif isinstance(self.corpus_object, str):
+                corpus_str = fix_punctuations(self.corpus_object)
+            else:
+                raise TypeError("corpus object must be either a text or list")
+            self.corpus_file_object = StringIO(corpus_str)
+        elif self.file_abspath and not self.file_is_wordlist:
+            self.corpus_file_object = open(self.file_abspath, encoding=self.encoding)
+        else:
+            self.corpus_file_object = None
+
+        # wordlist file object
+        self.wordlist_file_object: TextIO
+        if self.file_is_wordlist:
+            assert self.file_abspath is not None
+            self.wordlist_file_object = open(self.file_abspath, encoding=self.encoding)
+        else:
+            self.wordlist_file_object = StringIO()
+
+        # manifold-related objects
+        self._words_to_neighbors: dict[str, list[str]] | None = None
+        self._words_to_contexts: dict[str, dict[Context, int]] | None = None
+        self._contexts_to_words: dict[Context, dict[str, int]] | None = None
+        self._neighbor_graph: nx.Graph | None = None
+
+        # phon objects
+        self._phone_unigram_counter: dict[str, int] | None = None
+        self._phone_bigram_counter: dict[Bigram, int] | None = None
+        self._phone_trigram_counter: dict[Trigram, int] | None = None
+
+        self._phone_dict: dict[str, Phone] | None = None
+        self._biphone_dict: dict[Bigram, Biphone] | None = None
+        self._word_dict: dict[str, Word] | None = None
+        self._words_to_phones: dict[str, list[str]] | None = None
+
+        # trie objects
+        self._broken_words_left_to_right: dict[str, list[str]] | None = None
+        self._broken_words_right_to_left: dict[str, list[str]] | None = None
+        self._successors: dict[str, set[str]] | None = None
+        self._predecessors: dict[str, set[str]] | None = None
+
+    def reset(self) -> None:
+        """Reset the Linguistica object.
+
+        While the file path information is
+        retained, all computed objects (ngrams, signatures, word neighbors,
+        etc) are reset to ``None``; if they are called again, they are
+        re-computed.
+        """
+        self._initialize()
+
+    def run_all_modules(self, verbose: bool = False) -> None:
+        """Run all modules."""
+        self.run_ngram_module(verbose=verbose)
+        self.run_phon_module(verbose=verbose)
+        self.run_signature_module(verbose=verbose)
+        self.run_trie_module(verbose=verbose)
+
+        if self.corpus_file_object:
+            self.run_manifold_module(verbose=verbose)
+
+    def output_all_results(
+        self,
+        directory: FilePath | None = None,
+        verbose: bool = False,
+        test: bool = False,
+    ) -> None:
+        """Output all Linguistica results to a directory.
+
+        :param directory: output directory. If not specified, it defaults to
+            the current directory given by ``os.getcwd()``.
+        """
+        if not directory:
+            output_dir = os.getcwd()
+        else:
+            output_dir = os.path.abspath(directory)
+
+        # ----------------------------------------------------------------------
+        if self.corpus_file_object:
+            vprint(verbose, "ngram objects")
+
+            fname = "word_bigrams.txt"
+            obj = double_sorted(
+                self.word_bigram_counter().items(), key=lambda x: x[1], reverse=True
+            )
+            f_path = os.path.join(output_dir, fname)
+            output_latex(
+                obj,
+                f_path,
+                title="Word bigrams",
+                headers=["Word bigram", "Count"],
+                row_functions=[lambda x: " ".join(x[0]), lambda x: x[1]],
+                column_widths=[50, 10],
+                lxa_parameters=self.parameters(),
+                test=test,
+                encoding=self.encoding,
+                number_of_word_types=self.number_of_word_types(),
+                number_of_word_tokens=self.number_of_word_tokens(),
+                input_file_path=self.file_abspath,
+            )
+            vprint(verbose, "\t" + fname)
+
+            fname = "word_trigrams.txt"
+            obj = double_sorted(
+                self.word_trigram_counter().items(), key=lambda x: x[1], reverse=True
+            )
+            f_path = os.path.join(output_dir, fname)
+            output_latex(
+                obj,
+                f_path,
+                title="Word trigrams",
+                headers=["Word trigram", "Count"],
+                row_functions=[lambda x: " ".join(x[0]), lambda x: x[1]],
+                column_widths=[75, 10],
+                lxa_parameters=self.parameters(),
+                test=test,
+                encoding=self.encoding,
+                number_of_word_types=self.number_of_word_types(),
+                number_of_word_tokens=self.number_of_word_tokens(),
+                input_file_path=self.file_abspath,
+            )
+            vprint(verbose, "\t" + fname)
+
+        # ----------------------------------------------------------------------
+        vprint(verbose, "morphological signature objects")
+
+        fname = "stems_to_words.txt"
+        obj = double_sorted(
+            self.stems_to_words().items(), key=lambda x: len(x[1]), reverse=True
+        )
+        f_path = os.path.join(output_dir, fname)
+        output_latex(
+            obj,
+            f_path,
+            title="Stems to words " "(descending order of word count)",
+            headers=["Stem", "Word count", "Words"],
+            row_functions=[
+                lambda x: x[0],
+                lambda x: len(x[1]),
+                lambda x: ", ".join(sorted(x[1])),
+            ],
+            column_widths=[15, 15, 0],
+            lxa_parameters=self.parameters(),
+            test=test,
+            encoding=self.encoding,
+            number_of_word_types=self.number_of_word_types(),
+            number_of_word_tokens=self.number_of_word_tokens(),
+            input_file_path=self.file_abspath,
+        )
+        vprint(verbose, "\t" + fname)
+
+        fname = "stems_to_words.txt"
+        obj = double_sorted(
+            self.stems_to_words().items(), key=lambda x: x[0], reverse=False
+        )
+        f_path = os.path.join(output_dir, fname)
+        output_latex(
+            obj,
+            f_path,
+            title="Stems to words " "(alphabetical order of stems)",
+            headers=["Stem", "Word count", "1st 10 words"],
+            row_functions=[
+                lambda x: x[0],
+                lambda x: len(x[1]),
+                lambda x: ", ".join(sorted(x[1])),
+            ],
+            column_widths=[15, 15, 0],
+            lxa_parameters=self.parameters(),
+            test=test,
+            encoding=self.encoding,
+            number_of_word_types=self.number_of_word_types(),
+            number_of_word_tokens=self.number_of_word_tokens(),
+            input_file_path=self.file_abspath,
+        )
+        vprint(verbose, "\t" + fname)
+
+        fname = "signatures_to_stems.txt"
+        obj = double_sorted(
+            self.signatures_to_stems().items(), key=lambda x: len(x[1]), reverse=True
+        )
+        f_path = os.path.join(output_dir, fname)
+        output_latex(
+            obj,
+            f_path,
+            title="Signatures to stems",
+            headers=["Signature", "Stem count", "Stems"],
+            row_functions=[
+                lambda x: SEP_SIG.join(x[0]),
+                lambda x: len(x[1]),
+                lambda x: ", ".join(sorted(x[1])),
+            ],
+            column_widths=[30, 15, 0],
+            lxa_parameters=self.parameters(),
+            test=test,
+            encoding=self.encoding,
+            number_of_word_types=self.number_of_word_types(),
+            number_of_word_tokens=self.number_of_word_tokens(),
+            input_file_path=self.file_abspath,
+        )
+        vprint(verbose, "\t" + fname)
+
+        fname = "signatures_to_stems_truncated.txt"
+        obj = double_sorted(
+            self.signatures_to_stems().items(), key=lambda x: len(x[1]), reverse=True
+        )
+        f_path = os.path.join(output_dir, fname)
+        output_latex(
+            obj,
+            f_path,
+            title="Signatures to stems " "(first 10 stems for each sig)",
+            headers=["Signature", "Stem count", "1st 10 stems"],
+            row_functions=[
+                lambda x: SEP_SIG.join(x[0]),
+                lambda x: len(x[1]),
+                lambda x: " ".join(sorted(x[1])[:10]),
+            ],
+            column_widths=[30, 15, 0],
+            lxa_parameters=self.parameters(),
+            test=test,
+            encoding=self.encoding,
+            number_of_word_types=self.number_of_word_types(),
+            number_of_word_tokens=self.number_of_word_tokens(),
+            input_file_path=self.file_abspath,
+        )
+        vprint(verbose, "\t" + fname)
+
+        fname = "stems_to_signatures.txt"
+        obj = double_sorted(
+            self.stems_to_signatures().items(), key=lambda x: len(x[1]), reverse=True
+        )
+        f_path = os.path.join(output_dir, fname)
+        output_latex(
+            obj,
+            f_path,
+            title="Stems to signatures",
+            headers=["Stems", "Signatures"],
+            row_functions=[
+                lambda x: x[0],
+                lambda x: ", ".join(SEP_SIG.join(sig) for sig in sorted(x[1])),
+            ],
+            column_widths=[15, 0],
+            lxa_parameters=self.parameters(),
+            test=test,
+            encoding=self.encoding,
+            number_of_word_types=self.number_of_word_types(),
+            number_of_word_tokens=self.number_of_word_tokens(),
+            input_file_path=self.file_abspath,
+        )
+        vprint(verbose, "\t" + fname)
+
+        fname = "words_to_signatures.txt"
+        obj = double_sorted(
+            self.words_to_signatures().items(), key=lambda x: len(x[1]), reverse=True
+        )
+        f_path = os.path.join(output_dir, fname)
+        output_latex(
+            obj,
+            f_path,
+            title="Words to signatures",
+            headers=["Word", "Sig count", "Signatures"],
+            row_functions=[
+                lambda x: x[0],
+                lambda x: len(x[1]),
+                lambda x: ", ".join(SEP_SIG.join(sig) for sig in sorted(x[1])),
+            ],
+            column_widths=[25, 15, 0],
+            lxa_parameters=self.parameters(),
+            test=test,
+            encoding=self.encoding,
+            number_of_word_types=self.number_of_word_types(),
+            number_of_word_tokens=self.number_of_word_tokens(),
+            input_file_path=self.file_abspath,
+        )
+        vprint(verbose, "\t" + fname)
+
+        fname = "signatures_to_words.txt"
+        obj = double_sorted(
+            self.signatures_to_words().items(), key=lambda x: len(x[1]), reverse=True
+        )
+        f_path = os.path.join(output_dir, fname)
+        output_latex(
+            obj,
+            f_path,
+            title="Signatures to words",
+            headers=["Signature", "Word count", "Words"],
+            row_functions=[
+                lambda x: SEP_SIG.join(x[0]),
+                lambda x: len(x[1]),
+                lambda x: ", ".join(sorted(x[1])),
+            ],
+            column_widths=[20, 15, 0],
+            lxa_parameters=self.parameters(),
+            test=test,
+            encoding=self.encoding,
+            number_of_word_types=self.number_of_word_types(),
+            number_of_word_tokens=self.number_of_word_tokens(),
+            input_file_path=self.file_abspath,
+        )
+        vprint(verbose, "\t" + fname)
+
+        fname = "signatures_to_words_truncated.txt"
+        obj = double_sorted(
+            self.signatures_to_words().items(), key=lambda x: len(x[1]), reverse=True
+        )
+        f_path = os.path.join(output_dir, fname)
+        output_latex(
+            obj,
+            f_path,
+            title="Signatures to words " "(first 10 words for each sig)",
+            headers=["Signature", "Word count", "1st 10 words"],
+            row_functions=[
+                lambda x: SEP_SIG.join(x[0]),
+                lambda x: len(x[1]),
+                lambda x: ", ".join(sorted(x[1])[:10]),
+            ],
+            column_widths=[20, 15, 0],
+            lxa_parameters=self.parameters(),
+            test=test,
+            encoding=self.encoding,
+            number_of_word_types=self.number_of_word_types(),
+            number_of_word_tokens=self.number_of_word_tokens(),
+            input_file_path=self.file_abspath,
+        )
+        vprint(verbose, "\t" + fname)
+
+        fname = "words_to_sigtransforms.txt"
+        obj = double_sorted(
+            self.words_to_sigtransforms().items(), key=lambda x: len(x[1]), reverse=True
+        )
+        f_path = os.path.join(output_dir, fname)
+        output_latex(
+            obj,
+            f_path,
+            title="Words to sigtransforms",
+            headers=["Word", "Signature transforms"],
+            row_functions=[
+                lambda x: x[0],
+                lambda x: ", ".join(
+                    SEP_SIG.join(sig) + SEP_SIGTRANSFORM + affix
+                    for sig, affix in sorted(x[1])
+                ),
+            ],
+            column_widths=[20, 0],
+            lxa_parameters=self.parameters(),
+            test=test,
+            encoding=self.encoding,
+            number_of_word_types=self.number_of_word_types(),
+            number_of_word_tokens=self.number_of_word_tokens(),
+            input_file_path=self.file_abspath,
+        )
+        vprint(verbose, "\t" + fname)
+
+        fname = "affixes_to_signatures.txt"
+        obj = double_sorted(
+            self.affixes_to_signatures().items(), key=lambda x: len(x[1]), reverse=True
+        )
+        f_path = os.path.join(output_dir, fname)
+        output_latex(
+            obj,
+            f_path,
+            title="Affixes to signatures",
+            headers=["Affix", "Sig count", "Signatures"],
+            row_functions=[
+                lambda x: x[0],
+                lambda x: len(x[1]),
+                lambda x: ", ".join(SEP_SIG.join(sig) for sig in sorted(x[1])),
+            ],
+            column_widths=[15, 15, 0],
+            lxa_parameters=self.parameters(),
+            test=test,
+            encoding=self.encoding,
+            number_of_word_types=self.number_of_word_types(),
+            number_of_word_tokens=self.number_of_word_tokens(),
+            input_file_path=self.file_abspath,
+        )
+        vprint(verbose, "\t" + fname)
+
+        # ----------------------------------------------------------------------
+        if self.corpus_file_object:
+            vprint(verbose, "manifold objects")
+
+            fname = "words_to_neighbors.txt"
+            obj = list()  # list of tuple(word, list of neighbor words)
+            neighbors_map = self.words_to_neighbors()
+            assert neighbors_map is not None
+            for word in self.wordlist()[: self.parameters()["max_word_types"]]:
+                obj.append((word, neighbors_map[word]))
+            f_path = os.path.join(output_dir, fname)
+            output_latex(
+                obj,
+                f_path,
+                title="Words to neighbors",
+                headers=["Word", "Neighbors"],
+                row_functions=[lambda x: x[0], lambda x: " ".join(x[1])],
+                column_widths=[25, 0],
+                lxa_parameters=self.parameters(),
+                test=test,
+                encoding=self.encoding,
+                number_of_word_types=self.number_of_word_types(),
+                number_of_word_tokens=self.number_of_word_tokens(),
+                input_file_path=self.file_abspath,
+            )
+            vprint(verbose, "\t" + fname)
+
+        # ----------------------------------------------------------------------
+        vprint(verbose, "phon objects")
+
+        def output_latex_for_phon_words(
+            obj_: Iterable[Any],
+            f_path_: str,
+            title_: str,
+            lxa_parameters_: dict[str, int],
+            test_: bool,
+            encoding_: str,
+            number_of_word_types_: int,
+            number_of_word_tokens_: int,
+            input_file_path_: str | None,
+        ) -> None:
+            output_latex(
+                obj_,
+                f_path_,
+                title=title_,
+                headers=[
+                    "Word",
+                    "Count",
+                    "Frequency",
+                    "Phones",
+                    "Unigram plog",
+                    "Avg unigram plog",
+                    "Bigram plog",
+                    "Avg bigram plog",
+                ],
+                row_functions=[
+                    lambda x: x[0],
+                    lambda x: x[1].count,
+                    lambda x: "%.6f" % x[1].frequency,
+                    lambda x: " ".join(x[1].phones),
+                    lambda x: "%8.3f" % x[1].unigram_plog,
+                    lambda x: "%8.3f" % x[1].avg_unigram_plog,
+                    lambda x: "%8.3f" % x[1].bigram_plog,
+                    lambda x: "%8.3f" % x[1].avg_bigram_plog,
+                ],
+                column_widths=[35, 10, 15, 60, 15, 15, 15, 15],
+                lxa_parameters=lxa_parameters_,
+                test=test_,
+                encoding=encoding_,
+                number_of_word_types=number_of_word_types_,
+                number_of_word_tokens=number_of_word_tokens_,
+                input_file_path=input_file_path_,
+            )
+
+        fname = "wordlist.txt"
+        obj_word_phon = list()  # list of tuple(word, list of neighbor words)
+        for word in self.wordlist():
+            obj_word_phon.append((word, self.word_phonology_dict()[word]))
+        f_path = os.path.join(output_dir, "wordlist.txt")
+        output_latex_for_phon_words(
+            obj_word_phon,
+            f_path,
+            "Wordlist sorted by word count",
+            self.parameters(),
+            test,
+            self.encoding,
+            self.number_of_word_types(),
+            self.number_of_word_tokens(),
+            self.file_abspath,
+        )
+        vprint(verbose, "\t" + fname)
+
+        fname = "wordlist_by_avg_unigram_plog.txt"
+        obj_unigram_plog = double_sorted(
+            obj_word_phon, key=lambda x: x[1].avg_unigram_plog, reverse=False
+        )
+        f_path = os.path.join(output_dir, fname)
+        output_latex_for_phon_words(
+            obj_unigram_plog,
+            f_path,
+            "Wordlist sorted by avg unigram plog",
+            self.parameters(),
+            test,
+            self.encoding,
+            self.number_of_word_types(),
+            self.number_of_word_tokens(),
+            self.file_abspath,
+        )
+        vprint(verbose, "\t" + fname)
+
+        fname = "wordlist_by_avg_bigram_plog.txt"
+        obj_bigram_plog = double_sorted(
+            obj_word_phon, key=lambda x: x[1].avg_bigram_plog, reverse=False
+        )
+        f_path = os.path.join(output_dir, fname)
+        output_latex_for_phon_words(
+            obj_bigram_plog,
+            f_path,
+            "Wordlist sorted by avg bigram plog",
+            self.parameters(),
+            test,
+            self.encoding,
+            self.number_of_word_types(),
+            self.number_of_word_tokens(),
+            self.file_abspath,
+        )
+        vprint(verbose, "\t" + fname)
+
+        fname = "phones.txt"
+        obj = double_sorted(
+            self.phone_dict().items(), key=lambda x: x[1].count, reverse=True
+        )
+        f_path = os.path.join(output_dir, fname)
+        output_latex(
+            obj,
+            f_path,
+            title="Phones",
+            headers=["Phone", "Count", "Frequency", "Plog"],
+            row_functions=[
+                lambda x: x[0],
+                lambda x: x[1].count,
+                lambda x: "%.6f" % x[1].frequency,
+                lambda x: "%8.3f" % x[1].plog,
+            ],
+            column_widths=[10, 10, 15, 15],
+            lxa_parameters=self.parameters(),
+            test=test,
+            encoding=self.encoding,
+            number_of_word_types=self.number_of_word_types(),
+            number_of_word_tokens=self.number_of_word_tokens(),
+            input_file_path=self.file_abspath,
+        )
+        vprint(verbose, "\t" + fname)
+
+        fname = "biphones.txt"
+        obj = double_sorted(
+            self.biphone_dict().items(), key=lambda x: x[1].count, reverse=True
+        )
+        f_path = os.path.join(output_dir, fname)
+        output_latex(
+            obj,
+            f_path,
+            title="Biphones",
+            headers=["Biphone", "Count", "Frequency", "MI", "Weighted MI"],
+            row_functions=[
+                lambda x: " ".join(x[0]),
+                lambda x: x[1].count,
+                lambda x: "%.6f" % x[1].frequency,
+                lambda x: "%8.3f" % x[1].MI,
+                lambda x: "%8.3f" % x[1].weighted_MI,
+            ],
+            column_widths=[10, 10, 15, 15, 15],
+            lxa_parameters=self.parameters(),
+            test=test,
+            encoding=self.encoding,
+            number_of_word_types=self.number_of_word_types(),
+            number_of_word_tokens=self.number_of_word_tokens(),
+            input_file_path=self.file_abspath,
+        )
+        vprint(verbose, "\t" + fname)
+
+        fname = "triphones.txt"
+        obj = double_sorted(
+            self.phone_trigram_counter().items(), key=lambda x: x[1], reverse=True
+        )
+        f_path = os.path.join(output_dir, fname)
+        output_latex(
+            obj,
+            f_path,
+            title="Triphones",
+            headers=["Triphone", "Count"],
+            row_functions=[
+                lambda x: " ".join(x[0]),
+                lambda x: x[1],
+            ],
+            column_widths=[15, 10],
+            lxa_parameters=self.parameters(),
+            test=test,
+            encoding=self.encoding,
+            number_of_word_types=self.number_of_word_types(),
+            number_of_word_tokens=self.number_of_word_tokens(),
+            input_file_path=self.file_abspath,
+        )
+        vprint(verbose, "\t" + fname)
+
+        # ----------------------------------------------------------------------
+        vprint(verbose, "trie objects")
+
+        fname = "words_as_tries.txt"
+        obj = list()
+        for word in self.wordlist():
+            obj.append(
+                (
+                    word,
+                    self.broken_words_left_to_right()[word],
+                    self.broken_words_right_to_left()[word],
+                )
+            )
+        f_path = os.path.join(output_dir, fname)
+        output_latex(
+            obj,
+            f_path,
+            title="Words as tries",
+            headers=["Word", "Left-to-right trie", "Right-to-left trie"],
+            row_functions=[
+                lambda x: x[0],
+                lambda x: " ".join(x[1]),
+                lambda x: " ".join(x[2]),
+            ],
+            column_widths=[35, 50, 50],
+            lxa_parameters=self.parameters(),
+            test=test,
+            encoding=self.encoding,
+            number_of_word_types=self.number_of_word_types(),
+            number_of_word_tokens=self.number_of_word_tokens(),
+            input_file_path=self.file_abspath,
+        )
+        vprint(verbose, "\t" + fname)
+
+        fname = "successors.txt"
+        obj = double_sorted(
+            self.successors().items(), key=lambda x: len(x[1]), reverse=False
+        )
+        f_path = os.path.join(output_dir, fname)
+        output_latex(
+            obj,
+            f_path,
+            title="Successors",
+            headers=["String", "Successors"],
+            row_functions=[
+                lambda x: x[0],
+                lambda x: " ".join(sorted(x[1])),
+            ],
+            column_widths=[35, 0],
+            lxa_parameters=self.parameters(),
+            test=test,
+            encoding=self.encoding,
+            number_of_word_types=self.number_of_word_types(),
+            number_of_word_tokens=self.number_of_word_tokens(),
+            input_file_path=self.file_abspath,
+        )
+        vprint(verbose, "\t" + fname)
+
+        fname = "predecessors.txt"
+        obj = double_sorted(
+            self.predecessors().items(), key=lambda x: len(x[1]), reverse=False
+        )
+        f_path = os.path.join(output_dir, fname)
+        output_latex(
+            obj,
+            f_path,
+            title="Predecessors",
+            headers=["String", "Predecessors"],
+            row_functions=[
+                lambda x: x[0],
+                lambda x: " ".join(sorted(x[1])),
+            ],
+            column_widths=[35, 0],
+            lxa_parameters=self.parameters(),
+            test=test,
+            encoding=self.encoding,
+            number_of_word_types=self.number_of_word_types(),
+            number_of_word_tokens=self.number_of_word_tokens(),
+            input_file_path=self.file_abspath,
+        )
+        vprint(verbose, "\t" + fname)
+
+    # --------------------------------------------------------------------------
+    # for number of word types and tokens
+
+    def number_of_word_types(self) -> int:
+        """Return the number of word types."""
+        if self._number_of_word_types is None:
+            self._number_of_word_types = len(self.word_unigram_counter())
+        return self._number_of_word_types
+
+    def number_of_word_tokens(self) -> int:
+        """Return the number of word tokens."""
+        if self._number_of_word_tokens is None:
+            self._number_of_word_tokens = sum(self.word_unigram_counter().values())
+        return self._number_of_word_tokens
+
+    # --------------------------------------------------------------------------
+    # for the "ngram" module
+
+    def word_unigram_counter(self) -> dict[str, int]:
+        """Return a dict of words with their counts."""
+        if self._word_unigram_counter is None:
+            if self.corpus_file_object:
+                self._make_word_ngrams_from_corpus_file_object()
+            elif self.wordlist_file_object:
+                self._read_from_wordlist_file_object()
+
+        assert self._word_unigram_counter is not None
+        return self._word_unigram_counter
+
+    def word_bigram_counter(self) -> dict[Bigram, int]:
+        """Return a dict of word bigrams with their counts."""
+        if self._word_bigram_counter is None:
+            self._make_word_ngrams_from_corpus_file_object()
+        assert self._word_bigram_counter is not None
+        return self._word_bigram_counter
+
+    def word_trigram_counter(self) -> dict[Trigram, int]:
+        """Return a dict of word trigrams with their counts."""
+        if self._word_trigram_counter is None:
+            self._make_word_ngrams_from_corpus_file_object()
+        assert self._word_trigram_counter is not None
+        return self._word_trigram_counter
+
+    def _make_wordlist(self) -> None:
+        """Return a wordlist sorted by word frequency in descending order."""
+        word_counter = self.word_unigram_counter()
+        word_counter_sorted = double_sorted(
+            word_counter.items(), key=lambda x: x[1], reverse=True
+        )
+        self._wordlist = [word for word, _ in word_counter_sorted]
+
+    def wordlist(self) -> list[str]:
+        """Return a wordlist sorted by word frequency in descending order."""
+        if self._wordlist is None:
+            self._make_wordlist()
+        assert self._wordlist is not None
+        return self._wordlist
+
+    def _read_from_wordlist_file_object(self) -> None:
+        word_freq_dict = dict()
+        words_to_phones = dict()
+
+        for line in self.wordlist_file_object:
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+
+            line_split = line.split()
+            word = line_split[0]
+
+            if not self.parameters_["keep_case"]:
+                word = word.lower()
+
+            try:
+                freq = int(line_split[1])
+            except (ValueError, IndexError):
+                freq = 1
+
+            phones = line_split[2:]
+            if not phones:
+                phones = list(word)
+
+            word_freq_dict[word] = freq
+            words_to_phones[word] = phones
+
+        self._word_unigram_counter = word_freq_dict
+        self._words_to_phones = words_to_phones
+
+    def _make_word_ngrams_from_corpus_file_object(self) -> None:
+        if self.corpus_file_object is None:
+            self._word_bigram_counter = dict()
+            self._word_trigram_counter = dict()
+            return
+
+        unigrams, bigrams, trigrams = ngram.run(
+            corpus_file_object=self.corpus_file_object,
+            keep_case=bool(self.parameters_["keep_case"]),
+            max_word_tokens=self.parameters_["max_word_tokens"],
+        )
+
+        self._word_unigram_counter = unigrams
+        self._word_bigram_counter = bigrams
+        self._word_trigram_counter = trigrams
+
+    def run_ngram_module(self, verbose: bool = False) -> None:
+        """Run the ngram module."""
+        vprint(verbose, "Extracting word ngrams...")
+        if self._wordlist is None:
+            self._make_wordlist()
+
+    # --------------------------------------------------------------------------
+    # for the "signature" module
+
+    def stems_to_words(self) -> dict[str, set[str]]:
+        """Return a dict of stems to words."""
+        if self._stems_to_words is None:
+            self._make_all_signature_objects()
+        assert self._stems_to_words is not None
+        return self._stems_to_words
+
+    def signatures_to_stems(self) -> dict[Signature, set[str]]:
+        """Return a dict of morphological signatures to stems."""
+        if self._signatures_to_stems is None:
+            self._make_all_signature_objects()
+        assert self._signatures_to_stems is not None
+        return self._signatures_to_stems
+
+    def stems_to_signatures(self) -> dict[str, set[Signature]]:
+        """Return a dict of stems to morphological signatures."""
+        if self._stems_to_signatures is None:
+            self._make_all_signature_objects()
+        assert self._stems_to_signatures is not None
+        return self._stems_to_signatures
+
+    def words_to_signatures(self) -> dict[str, set[Signature]]:
+        """Return a dict of words to morphological signatures."""
+        if self._words_to_signatures is None:
+            self._make_all_signature_objects()
+        assert self._words_to_signatures is not None
+        return self._words_to_signatures
+
+    def signatures_to_words(self) -> dict[Signature, set[str]]:
+        """Return a dict of morphological signatures to words."""
+        if self._signatures_to_words is None:
+            self._make_all_signature_objects()
+        assert self._signatures_to_words is not None
+        return self._signatures_to_words
+
+    def words_to_sigtransforms(self) -> dict[str, set[SigTransform]]:
+        """Return a dict of words to signature transforms."""
+        if self._words_to_sigtransforms is None:
+            self._make_all_signature_objects()
+        assert self._words_to_sigtransforms is not None
+        return self._words_to_sigtransforms
+
+    def signatures(self) -> set[Signature]:
+        """Return a set of morphological signatures."""
+        if self._signatures is None:
+            self._make_all_signature_objects()
+        assert self._signatures is not None
+        return self._signatures
+
+    def affixes_to_signatures(self) -> dict[str, set[Signature]]:
+        """Return a dict of affixes to morphological signatures."""
+        if self._affixes_to_signatures is None:
+            self._make_all_signature_objects()
+        assert self._affixes_to_signatures is not None
+        return self._affixes_to_signatures
+
+    def words_in_signatures(self) -> set[str]:
+        """Return a set of words in at least one morphological signature."""
+        if self._words_in_signatures is None:
+            self._make_all_signature_objects()
+        assert self._words_in_signatures is not None
+        return self._words_in_signatures
+
+    def affixes(self) -> set[str]:
+        """Return a set of affixes."""
+        if self._affixes is None:
+            self._make_all_signature_objects()
+        assert self._affixes is not None
+        return self._affixes
+
+    def stems(self) -> set[str]:
+        """Return a set of stems."""
+        if self._stems is None:
+            self._make_all_signature_objects()
+        assert self._stems is not None
+        return self._stems
+
+    def _make_all_signature_objects(self) -> None:
+        self._stems_to_words = signature.make_stems_to_words(
+            self.wordlist(),
+            self.parameters_["min_stem_length"],
+            self.parameters_["max_affix_length"],
+            self.parameters_["suffixing"],
+            self.parameters_["min_sig_count"],
+        )
+
+        self._signatures_to_stems = signature.make_signatures_to_stems(
+            self._stems_to_words,
+            self.parameters_["max_affix_length"],
+            self.parameters_["min_sig_count"],
+            self.parameters_["suffixing"],
+        )
+
+        self._stems_to_signatures = signature.make_stems_to_signatures(
+            self._signatures_to_stems
+        )
+
+        self._words_to_signatures = signature.make_words_to_signatures(
+            self._stems_to_words, self._stems_to_signatures
+        )
+
+        self._signatures_to_words = signature.make_signatures_to_words(
+            self._words_to_signatures
+        )
+
+        self._words_to_sigtransforms = signature.make_words_to_sigtransforms(
+            self._words_to_signatures, self.parameters_["suffixing"]
+        )
+
+        self._signatures = set(self._signatures_to_stems.keys())
+
+        self._affixes_to_signatures = signature.make_affixes_to_signatures(
+            self._signatures
+        )
+
+        self._words_in_signatures = set(self._words_to_signatures.keys())
+        self._affixes = set(self._affixes_to_signatures.keys())
+        self._stems = set(self._stems_to_words.keys())
+
+    def run_signature_module(self, verbose: bool = False) -> None:
+        """Run the signature module."""
+        vprint(verbose, "Morphological signatures...")
+        self._make_all_signature_objects()
+
+    # --------------------------------------------------------------------------
+    # for the "manifold" module
+
+    def words_to_neighbors(self) -> dict[str, list[str]] | None:
+        """Return a dict of words to syntactic neighbors."""
+        if self._words_to_neighbors is None:
+            self._make_all_manifold_objects()
+        return self._words_to_neighbors
+
+    def words_to_contexts(self) -> dict[str, dict[Context, int]] | None:
+        """Return a dict of words to contexts with counts."""
+        if self._words_to_contexts is None:
+            self._make_all_manifold_objects()
+        return self._words_to_contexts
+
+    def contexts_to_words(self) -> dict[Context, dict[str, int]] | None:
+        """Return a dict of contexts to words with counts."""
+        if self._contexts_to_words is None:
+            self._make_all_manifold_objects()
+        return self._contexts_to_words
+
+    def neighbor_graph(self) -> nx.Graph | None:
+        """Return the syntactic word neighborhood graph."""
+        if self._neighbor_graph is None:
+            self._make_all_manifold_objects()
+        return self._neighbor_graph
+
+    def _make_all_manifold_objects(self) -> None:
+        self._words_to_neighbors, self._words_to_contexts, self._contexts_to_words = (
+            manifold.run(
+                self.word_unigram_counter(),
+                self.word_bigram_counter(),
+                self.word_trigram_counter(),
+                self.parameters_["max_word_types"],
+                self.parameters_["n_neighbors"],
+                self.parameters_["n_eigenvectors"],
+                self.parameters_["min_context_count"],
+            )
+        )
+        self._neighbor_graph = manifold.compute_graph(self._words_to_neighbors)
+
+    def run_manifold_module(self, verbose: bool = False) -> None:
+        """Run the manifold module."""
+        vprint(verbose, "Syntactic word neighbors...")
+        if self.corpus_file_object:
+            self._make_all_manifold_objects()
+
+    # --------------------------------------------------------------------------
+    # for the "phon" module
+
+    def phone_unigram_counter(self) -> dict[str, int]:
+        """Return a dict of phone unigrams with counts."""
+        if self._phone_unigram_counter is None:
+            self._make_all_phon_objects()
+        assert self._phone_unigram_counter is not None
+        return self._phone_unigram_counter
+
+    def phone_bigram_counter(self) -> dict[Bigram, int]:
+        """Return a dict of phone bigrams with counts."""
+        if self._phone_bigram_counter is None:
+            self._make_all_phon_objects()
+        assert self._phone_bigram_counter is not None
+        return self._phone_bigram_counter
+
+    def phone_trigram_counter(self) -> dict[Trigram, int]:
+        """Return a dict of phone trigrams with counts."""
+        if self._phone_trigram_counter is None:
+            self._make_all_phon_objects()
+        assert self._phone_trigram_counter is not None
+        return self._phone_trigram_counter
+
+    def phone_dict(self) -> dict[str, Phone]:
+        """Return a dict of phone unigrams to Phone objects.
+
+        A Phone instance has the methods
+        ``spelling()``, ``count()``, ``frequency()``, and ``plog()``.
+        """
+        if self._phone_dict is None:
+            self._make_all_phon_objects()
+        assert self._phone_dict is not None
+        return self._phone_dict
+
+    def biphone_dict(self) -> dict[Bigram, Biphone]:
+        """Return a dict of phone bigrams to Biphone objects.
+
+        A Biphone instance has the methods
+        ``spelling()``, ``count()``, ``frequency()``, ``MI()``, and
+        ``weighted_MI()``.
+        """
+        if self._phone_dict is None:
+            self._make_all_phon_objects()
+        assert self._biphone_dict is not None
+        return self._biphone_dict
+
+    def word_phonology_dict(self) -> dict[str, Word]:
+        """Return a dict of words to Word objects.
+
+        A Word instance has the methods
+        ``spelling()``, ``phones()``, ``count()``, ``frequency()``,
+        ``unigram_plog()``, ``avg_unigram_plog()``,
+        ``bigram_plog()``, and ``avg_bigram_plog()``.
+        """
+        if self._word_dict is None:
+            self._make_all_phon_objects()
+        assert self._word_dict is not None
+        return self._word_dict
+
+    def words_to_phones(self) -> dict[str, list[str]] | None:
+        """Return a dict of words with their phones."""
+        return self._words_to_phones
+
+    def _make_all_phon_objects(self) -> None:
+        word_unigram_counter = self.word_unigram_counter()
+        words_to_phones = self.words_to_phones()
+
+        (
+            self._phone_unigram_counter,
+            self._phone_bigram_counter,
+            self._phone_trigram_counter,
+        ) = phon.make_word_ngrams(word_unigram_counter, words_to_phones)
+
+        self._phone_dict = phon.make_phone_dict(self._phone_unigram_counter)
+        self._biphone_dict = phon.make_biphone_dict(
+            self._phone_bigram_counter, self._phone_dict
+        )
+        self._word_dict = phon.make_word_dict(
+            self.word_unigram_counter(),
+            self.phone_dict(),
+            self.biphone_dict(),
+            self.words_to_phones(),
+        )
+
+    def run_phon_module(self, verbose: bool = False) -> None:
+        """Run the phon module."""
+        vprint(verbose, "Phonology...")
+        self._make_all_phon_objects()
+
+    # --------------------------------------------------------------------------
+    # for the "trie" module
+
+    def broken_words_left_to_right(self) -> dict[str, list[str]]:
+        """Return a dict of words to their left-to-right broken form."""
+        if self._broken_words_left_to_right is None:
+            self._make_all_trie_objects()
+        assert self._broken_words_left_to_right is not None
+        return self._broken_words_left_to_right
+
+    def broken_words_right_to_left(self) -> dict[str, list[str]]:
+        """Return a dict of words to their right-to-left broken form."""
+        if self._broken_words_right_to_left is None:
+            self._make_all_trie_objects()
+        assert self._broken_words_right_to_left is not None
+        return self._broken_words_right_to_left
+
+    def successors(self) -> dict[str, set[str]]:
+        """Return a dict of word (sub)strings to their successors."""
+        if self._successors is None:
+            self._make_all_trie_objects()
+        assert self._successors is not None
+        return self._successors
+
+    def predecessors(self) -> dict[str, set[str]]:
+        """Return a dict of word (sub)strings to their predecessors."""
+        if self._predecessors is None:
+            self._make_all_trie_objects()
+        assert self._predecessors is not None
+        return self._predecessors
+
+    def _make_all_trie_objects(self) -> None:
+        (
+            self._broken_words_left_to_right,
+            self._broken_words_right_to_left,
+            self._successors,
+            self._predecessors,
+        ) = trie.run(self.wordlist(), self.parameters_["min_stem_length"])
+
+    def run_trie_module(self, verbose: bool = False) -> None:
+        """Run the trie module."""
+        vprint(verbose, "Tries...")
+        self._make_all_trie_objects()

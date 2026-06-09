@@ -1,0 +1,111 @@
+[build-system]
+requires = ["setuptools>=77.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "linguistica"
+version = "5.3.0"
+description = "Linguistica 5: Unsupervised Learning of Linguistic Structure"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+license-files = ["LICENSE.txt"]
+authors = [
+    {name = "Jackson Lee", email = "jacksonlunlee@gmail.com"},
+]
+keywords = [
+    "computational linguistics",
+    "natural language processing",
+    "NLP",
+    "linguistics",
+    "phonology",
+    "morphology",
+    "corpora",
+    "speech",
+    "language",
+    "machine learning",
+    "unsupervised learning",
+    "data visualization",
+]
+dependencies = [
+    "numpy>=1.12.1",
+    "scipy>=0.19.0",
+    "networkx>=1.11",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Human Machine Interfaces",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Text Processing",
+    "Topic :: Text Processing :: Filters",
+    "Topic :: Text Processing :: General",
+    "Topic :: Text Processing :: Indexing",
+    "Topic :: Text Processing :: Linguistic",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black>=24.0.0",
+    "flake8>=3.3.0",
+    "mypy>=1.8",
+    "pytest>=3.0.7",
+    "pytest-cov>=2.4.0",
+]
+docs = [
+    "Sphinx>=7.0",
+    "sphinx_rtd_theme>=2.0",
+]
+gui = [
+    "PyQt5>=5.15.10",
+    "PyQtWebEngine>=5.15.7",
+]
+
+[project.urls]
+Homepage = "https://linguistica.readthedocs.io/"
+Source = "https://github.com/linguistica-uchicago/lxa5"
+
+[project.scripts]
+linguistica = "linguistica.__main__:main"
+
+[tool.black]
+line-length = 88
+target-version = ["py312"]
+
+[tool.mypy]
+python_version = "3.12"
+files = ["src/linguistica"]
+exclude = "^src/linguistica/(gui/|cli\\.py$|__main__\\.py$)"
+disallow_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+module = ["scipy.*", "networkx.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["linguistica.gui.*", "linguistica.cli", "linguistica.__main__"]
+follow_imports = "skip"
+ignore_errors = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["linguistica*"]
+
+[tool.setuptools.package-data]
+linguistica = ["gui/*", "datasets/*", "py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,9 +1,6 @@
-include README.rst
+include README.md
 include CHANGELOG.md
 include LICENSE.txt
-include requirements.txt
-include dev-requirements.txt
-include linguistica/VERSION
-include linguistica/gui/*
-include linguistica/datasets/*
-include linguistica/tests/data/*
+include src/linguistica/gui/*
+include src/linguistica/datasets/*
+include tests/data/*
